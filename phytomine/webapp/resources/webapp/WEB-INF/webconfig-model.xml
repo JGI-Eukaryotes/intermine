@@ -254,8 +254,21 @@
 
   <class className="org.intermine.model.bio.ProteinFamilyMember">
     <fields>
-      <fieldconfig fieldExpr="organism.shortName" label="Organism" />
-      <fieldconfig fieldExpr="count" label="Number of members" />
+      <fieldconfig fieldExpr="proteinFamily.clusterId" label="Cluster ID" />
+      <fieldconfig fieldExpr="proteinFamily.clusterName" label="Cluster Name" />
+      <fieldconfig fieldExpr="proteinFamily.memberCount" label="Member Count" />
+      <fieldconfig fieldExpr="proteinFamily.methodId" label="Method ID"/>
+      <fieldconfig fieldExpr="proteinFamily.methodName" label="Method Name"/>
+    </fields>
+  </class>
+
+  <class className="org.intermine.model.bio.OntologyAnnotation">
+    <fields>
+      <fieldconfig fieldExpr="ontologyTerm.ontology.name" label="Ontology" />
+      <fieldconfig fieldExpr="ontologyTerm.identifier" label="Term" />
+      <fieldconfig fieldExpr="ontologyTerm.name" label="Name" />
+      <fieldconfig fieldExpr="ontologyTerm.namespace" label="Namespace" />
+      <fieldconfig fieldExpr="ontologyTerm.description" label="Description" />
     </fields>
   </class>
 
