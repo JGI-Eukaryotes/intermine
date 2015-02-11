@@ -162,7 +162,7 @@
     </inlinelist>
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier"/>
-      <!--fieldconfig fieldExpr="primaryAccession" label="UniProt Accession" /-->
+      <fieldconfig fieldExpr="primaryAccession" label="UniProt Accession" />
       <fieldconfig fieldExpr="secondaryIdentifier"/>
       <fieldconfig fieldExpr="organism.name" label="Organism Name" />
       <fieldconfig fieldExpr="length" displayer="/model/sequenceShortDisplayerWithField.jsp" />
@@ -262,7 +262,7 @@
     </fields>
   </class>
 
-  <class className="org.intermine.model.bio.OntologyAnnotation">
+  <!-- class className="org.intermine.model.bio.OntologyAnnotation">
     <fields>
       <fieldconfig fieldExpr="ontologyTerm.ontology.name" label="Ontology" />
       <fieldconfig fieldExpr="ontologyTerm.identifier" label="Term" />
@@ -270,7 +270,7 @@
       <fieldconfig fieldExpr="ontologyTerm.namespace" label="Namespace" />
       <fieldconfig fieldExpr="ontologyTerm.description" label="Description" />
     </fields>
-  </class>
+  </class -->
 
   <class className="org.intermine.model.bio.MSA">
     <headerconfig>
@@ -333,6 +333,12 @@
                      replacesFields=""
                      placement="Genomics"
                      types="Gene"/>
+
+    <reportdisplayer javaClass="org.intermine.bio.web.displayer.OntologyAnnotationDisplayer"
+                     jspName="model/ontologyAnnotationDisplayer.jsp"
+                     replacesFields="OntologyAnnotation"
+                     placement="summary"
+                     types="Gene,Protein"/>
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.GeneHomologDisplayer"
                      jspName="model/geneHomologDisplayer.jsp"
