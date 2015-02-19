@@ -452,7 +452,7 @@ public class PhytozomeDbProcessor {
         seq.setAttribute("length",Integer.toString(seqlen));
         seq.setAttribute("md5checksum", checksum);
         seqId = seq.getIdentifier();
-        converter.store(seq);
+        seqId = store_seq(seq,seqId);
       }
       
       Item feat = converter.createItem(PhytozomeDbConfig.getIntermineType(chadoType));
@@ -553,6 +553,7 @@ public class PhytozomeDbProcessor {
       throw new BuildException("Trouble making chromosome table: "+
           e.getMessage());
     }
+    
     String selectQuery = "SELECT * FROM " + tempChromosomeTableName;
     ResultSet res = stmt.executeQuery(selectQuery);
     int count = 0;
@@ -573,7 +574,7 @@ public class PhytozomeDbProcessor {
         seq.setAttribute("length",Integer.toString(seqlen));
         seq.setAttribute("md5checksum", checksum);
         seqId = seq.getIdentifier();
-        converter.store(seq);
+        seqId = store_seq(seq,seqId);
       }
       Item chrom = converter.createItem("Chromosome");
       chrom.setAttribute("primaryIdentifier", name);
@@ -589,5 +590,20 @@ public class PhytozomeDbProcessor {
     LOG.info("Created " + count + " chromosomes");
     res.close();
     
+  }
+  
+  public String store_seq(Item seq,String seqId) {
+    // a single point call for storing sequence.
+    // this is here in case we need to do a test run and want to
+    // have a single place where we can no-op the sequence storage.
+    // resolving conflicts of sequence seems to be a problem
+    
+    // comment out these two line and un-comment final to not store sequence
+    // or refer to it later.
+    converter.store(seq);
+    return seqId;
+    
+    
+    //return null;
   }
 }

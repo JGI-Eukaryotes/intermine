@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="bio/core/main/src"/>
+	<classpathentry excluding="org/intermine/model/" kind="src" path="intermine/model/main/src"/>
+	<classpathentry kind="src" path="bio/postprocess/main/src"/>
+	<classpathentry kind="src" path="bio/sources/chado-db/main/src"/>
+	<classpathentry kind="src" path="bio/sources/cufflinks/main/src"/>
+	<classpathentry kind="src" path="bio/sources/entrez-organism/main/src"/>
+	<classpathentry kind="src" path="bio/sources/gatkvcf/main/src"/>
+	<classpathentry kind="src" path="bio/sources/gene-defline/main/src"/>
+	<classpathentry kind="src" path="bio/sources/go-annotation/main/src"/>
+	<classpathentry kind="src" path="bio/sources/inparanoid-homologs/main/src"/>
+	<classpathentry kind="src" path="bio/sources/interpro-go/main/src"/>
+	<classpathentry kind="src" path="bio/sources/interpro/main/src"/>
+	<classpathentry kind="src" path="bio/sources/ontology-terms/main/src"/>
+	<classpathentry kind="src" path="bio/sources/pac-clusters/main/src"/>
+	<classpathentry kind="src" path="bio/sources/phytozome-db/main/src"/>
+	<classpathentry kind="src" path="bio/sources/phytozome-homolog/main/src"/>
+	<classpathentry kind="src" path="bio/sources/rna-seq/main/src"/>
+	<classpathentry kind="src" path="bio/sources/rnaseq-experiment-info/main/src"/>
+	<classpathentry kind="src" path="bio/sources/tsv-synonyms/main/src"/>
+	<classpathentry kind="src" path="bio/sources/vcfsampleinfo/main/src"/>
+	<classpathentry kind="src" path="bio/webapp/src"/>
+	<classpathentry kind="src" path="imbuild/im-ant-tasks/src"/>
+	<classpathentry kind="src" path="intermine/api/main/src"/>
+	<classpathentry kind="src" path="intermine/integrate/main/src"/>
+	<classpathentry kind="src" path="intermine/objectstore/main/src"/>
+	<classpathentry kind="src" path="intermine/pathquery/main/src"/>
+	<classpathentry kind="src" path="intermine/web/main/src"/>
+	<classpathentry kind="src" path="intermine/webapp/main/src"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/objectstore/main/lib/ant-1.6.5.jar"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/web/main/lib/struts-tiles-1.3.10.jar"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/web/main/lib/struts-core-1.3.10.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="phytomine-dev/dbmodel/build/classes" sourcepath="/global/u1/j/jcarlson/src/intermine/phytomine-load/dbmodel/build/gen/src"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/model/main/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/model/main/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/objectstore/main/lib/postgresql-9.3-1101.jdbc4.jar"/>
+	<classpathentry kind="lib" path="phytomine/dbmodel/build/classes"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/objectstore/main/lib/log4j.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

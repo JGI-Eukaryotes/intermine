@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 //import org.apache.log4j.Logger;
 import org.intermine.bio.util.Constants;
 import org.intermine.model.bio.BioEntity;
@@ -21,6 +22,7 @@ import org.intermine.model.bio.GOEvidence;
 import org.intermine.model.bio.GOEvidenceCode;
 import org.intermine.model.bio.GOTerm;
 import org.intermine.model.bio.Gene;
+import org.intermine.model.bio.Ontology;
 import org.intermine.model.bio.OntologyAnnotation;
 import org.intermine.model.bio.OntologyTerm;
 import org.intermine.model.bio.Organism;
@@ -54,7 +56,7 @@ import org.intermine.util.DynamicUtil;
  * @author J Carlson 
  */
 public class TransferOntologyAnnotations {
-  //private static final java.util.logging.Logger LOG = Logger.getLogger(TransferOntologyAnnotations.class);
+  private static final Logger LOG = Logger.getLogger(TransferOntologyAnnotations.class);
   protected ObjectStore os;
   protected ObjectStoreWriter osw = null;
   private DataSet dataSet;
@@ -76,11 +78,10 @@ public class TransferOntologyAnnotations {
    */
   public void execute() throws ObjectStoreException {
 
-    //osw.beginTransaction();
-
     HashSet<KnownPair> knownTerms = getKnownTerms(os);
     HashSet<OntologyAnnotation> geneAnnotationSet = new HashSet<OntologyAnnotation>();
     HashSet<OntologyAnnotation> proteinAnnotationSet = new HashSet<OntologyAnnotation>();
+    LOG.info("We alread have "+knownTerms.size()+" terms in the db.");
 
     int geneCount = 0;
     int protCount = 0;
@@ -90,13 +91,15 @@ public class TransferOntologyAnnotations {
     int count = 1000000;
     boolean processMore = true;
 
+    int processed = 0;
     while (processMore) {
       processMore = false;
-      System.out.println("Looping through to find ontology terms...");
+      LOG.info("Looping through to find ontology terms...");
 
       Iterator<?> resIter = findOntologyTerms(offset,count);
       while (resIter.hasNext()  ) {
         processMore = true;
+        processed++;
         ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
         Gene thisGene = (Gene) rr.get(0);
         Protein thisProtein = (Protein) rr.get(1);
@@ -127,7 +130,7 @@ public class TransferOntologyAnnotations {
           geneAnnotationSet.add(gOA);
           geneCount++;
         } else {
-          System.out.println("Already know about term "+thisTerm.getId()+" and gene "+thisGene.getId());
+          LOG.debug("Already know about term "+thisTerm.getId()+" and gene "+thisGene.getId());
         }
 
         // it's protein time
@@ -148,13 +151,12 @@ public class TransferOntologyAnnotations {
           proteinAnnotationSet.add(pOA);
           protCount++;
         } else {
-          //System.out.println("Already know about term "+thisTerm.getId()+" and protein "+thisProtein.getId());
+          LOG.debug("Already know about term "+thisTerm.getId()+" and protein "+thisProtein.getId());
         }
 
         if ( (geneCount + protCount > 0) && ((geneCount+protCount)%50000 == 0) ) {
-          System.out.println("Created "+geneCount+" gene records and "+protCount+" protein records...");
+          LOG.info("Created "+geneCount+" gene records and "+protCount+" protein records...");
         }
-
       }
       offset += count;
     }
@@ -168,9 +170,8 @@ public class TransferOntologyAnnotations {
       osw.store(lastProtein);
     }
 
-
-    System.out.println("Created "+geneCount+" gene records and "+protCount+" protein records.");
-    //osw.commitTransaction();
+    LOG.info("Processed "+processed+" records.");
+    LOG.info("Created "+geneCount+" gene records and "+protCount+" protein records.");
 
   }
 
@@ -204,22 +205,12 @@ public class TransferOntologyAnnotations {
     QueryClass qcOntologyTerm = new QueryClass(OntologyTerm.class);
     q.addFrom(qcOntologyTerm);
     q.addToSelect(qcOntologyTerm);  
-    /*
-        QueryClass qcOrganism = new QueryClass(Organism.class);
-        QueryField qcOrgField = new QueryField(qcOrganism,"proteomeId");
-        QueryValue qcEuc = new QueryValue(201);
-        QueryValue qcPop = new QueryValue(210);
-
-        q.addFrom(qcOrganism);*/
+    
     ConstraintSet cs = new ConstraintSet(ConstraintOp.AND);
 
     QueryCollectionReference geneProtRef = new QueryCollectionReference(qcProtein, "genes");
     cs.addConstraint(new ContainsConstraint(geneProtRef, ConstraintOp.CONTAINS, qcGene));
 
-    /*cs.addConstraint(new SimpleConstraint(qcOrgField,ConstraintOp.EQUALS,qcEuc));
-        cs.addConstraint(new SimpleConstraint(qcOrgField,ConstraintOp.NOT_EQUALS,qcPop));
-        QueryObjectReference qcGeneOrgRef = new QueryObjectReference(qcGene, "organism");
-        cs.addConstraint(new ContainsConstraint(qcGeneOrgRef,ConstraintOp.CONTAINS,qcOrganism));*/
     QueryObjectReference protAnalysisRef = new QueryObjectReference(qcPAF, "protein");
     cs.addConstraint(new ContainsConstraint(protAnalysisRef, ConstraintOp.CONTAINS, qcProtein));
 
@@ -228,7 +219,30 @@ public class TransferOntologyAnnotations {
 
     QueryCollectionReference proteinDomainRef = new QueryCollectionReference(qcOntologyTerm,"xrefs");
     cs.addConstraint(new ContainsConstraint(proteinDomainRef, ConstraintOp.CONTAINS,qcCrossReference));
-
+    /*  
+    // for restricting to a specific term
+    QueryClass qcOntology = new QueryClass(Ontology.class);
+    q.addFrom(qcOntology);
+    QueryField qfOntology = new QueryField(qcOntology,"name");
+    QueryValue qvOntology = new QueryValue("PFAM");
+    QueryObjectReference ontRef = new QueryObjectReference(qcOntologyTerm,"ontology");
+    cs.addConstraint(new SimpleConstraint(qfOntology,ConstraintOp.EQUALS,qvOntology));
+    cs.addConstraint(new ContainsConstraint(ontRef,ConstraintOp.CONTAINS,qcOntology));
+    // end of restriction
+    */    
+    
+    /*
+    // for restricting to a specific organism
+    QueryClass qcOrganism = new QueryClass(Organism.class);
+    q.addFrom(qcOrganism);
+    QueryField qfOrganism = new QueryField(qcOrganism,"proteomeId");
+    QueryValue qvOrganism = new QueryValue(new Integer(256));
+    QueryObjectReference orgRef = new QueryObjectReference(qcPAF,"organism");
+    cs.addConstraint(new SimpleConstraint(qfOrganism,ConstraintOp.EQUALS,qvOrganism));
+    cs.addConstraint(new ContainsConstraint(orgRef,ConstraintOp.CONTAINS,qcOrganism));
+    // end of restriction
+    */
+    
     q.setConstraint(cs);
     q.addToOrderBy(qcGene);
     q.addToOrderBy(qcProtein);
@@ -256,14 +270,39 @@ public class TransferOntologyAnnotations {
     QueryClass qcOntologyTerm = new QueryClass(OntologyTerm.class);
     q.addFrom(qcOntologyTerm);
     QueryField tField = new QueryField(qcOntologyTerm,"id");
-    q.addToSelect(tField); 
+    q.addToSelect(tField);
+
     ConstraintSet cs = new ConstraintSet(ConstraintOp.AND);
 
     QueryObjectReference qcGeneRef = new QueryObjectReference(qcOntologyAnnotation, "subject");
     cs.addConstraint(new ContainsConstraint(qcGeneRef,ConstraintOp.CONTAINS,qcBio));
     QueryObjectReference qcTermRef = new QueryObjectReference(qcOntologyAnnotation, "ontologyTerm");
     cs.addConstraint(new ContainsConstraint(qcTermRef,ConstraintOp.CONTAINS,qcOntologyTerm));
-
+ 
+    /*  
+    // for restricting to a specific term
+    QueryClass qcOntology = new QueryClass(Ontology.class);
+    q.addFrom(qcOntology);
+    QueryField qfOntology = new QueryField(qcOntology,"name");
+    QueryValue qvOntology = new QueryValue("PFAM");
+    QueryObjectReference ontRef = new QueryObjectReference(qcOntologyTerm,"ontology");
+    cs.addConstraint(new SimpleConstraint(qfOntology,ConstraintOp.EQUALS,qvOntology));
+    cs.addConstraint(new ContainsConstraint(ontRef,ConstraintOp.CONTAINS,qcOntology));
+    // end of restriction
+    */
+    
+    /*
+    // for restricting to s specific organism 
+    QueryClass qcOrganism = new QueryClass(Organism.class);
+    q.addFrom(qcOrganism);
+    QueryField qfOrganism = new QueryField(qcOrganism,"proteomeId");
+    QueryValue qvOrganism = new QueryValue(new Integer(256));
+    QueryObjectReference orgRef = new QueryObjectReference(qcBio,"organism");
+    cs.addConstraint(new SimpleConstraint(qfOrganism,ConstraintOp.EQUALS,qvOrganism));
+    cs.addConstraint(new ContainsConstraint(orgRef,ConstraintOp.CONTAINS,qcOrganism));
+    // end of restriction
+    */
+    
     q.setConstraint(cs);
 
     ((ObjectStoreInterMineImpl) os).precompute(q, Constants.PRECOMPUTE_CATEGORY);
@@ -276,6 +315,7 @@ public class TransferOntologyAnnotations {
       Integer thisTermId = (Integer) rr.get(1);
       ret.add(new KnownPair(thisTermId,thisBioId));
     }
+    LOG.info("Extracted "+ret.size()+" existing terms.");
 
     return ret;
   }

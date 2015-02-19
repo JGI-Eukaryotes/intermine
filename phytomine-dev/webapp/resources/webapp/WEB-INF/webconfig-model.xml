@@ -49,18 +49,19 @@
   <class className="org.intermine.model.bio.Gene">
     <inlinelist>
       <table path="synonyms.value" showLinksToObjects="true" />
+      <table path="proteins.primaryIdentifier" showLinksToObjects="true" />
+      <table path="transcripts.primaryIdentifier" showLinksToObjects="true" />
     </inlinelist>
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier"/>
       <fieldconfig fieldExpr="secondaryIdentifier"/>
+      <fieldconfig fieldExpr="organism.shortName" label="Organism Name"/>
       <fieldconfig fieldExpr="symbol"/>
-      <fieldconfig fieldExpr="name"/>
       <fieldconfig fieldExpr="length" displayer="/model/sequenceShortDisplayerWithField.jsp" />
       <fieldconfig fieldExpr="chromosomeLocation" displayer="/model/chromosomeLocDisplayer.jsp" showInResults="false" />
       <fieldconfig fieldExpr="chromosome.primaryIdentifier" showInInlineCollection="false" showInSummary="false" />
       <fieldconfig fieldExpr="chromosomeLocation.start" showInInlineCollection="false" showInSummary="false" />
       <fieldconfig fieldExpr="chromosomeLocation.end" showInInlineCollection="false" showInSummary="false" />
-      <fieldconfig fieldExpr="organism.shortName" label="Organism Name"/>
     </fields>
    <bagdisplayers>
       <displayer src="heatMap.tile" showOnLeft="true"/>
@@ -157,8 +158,9 @@
 
   <class className="org.intermine.model.bio.Protein">
     <inlinelist>
-      <table path="synonyms.value" showLinksToObjects="true" />
-      <table path="dataSets.name" />
+      <table path="synonyms.value" showLinksToObjects="true" showInHeader="true" />
+      <table path="genes.primaryIdentifier" showLinksToObjects="true" showInHeader="true" />
+      <table path="transcripts.primaryIdentifier" showLinksToObjects="true" showInHeader="true" />
     </inlinelist>
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier"/>
@@ -171,9 +173,9 @@
 
   <class className="org.intermine.model.bio.Publication">
     <headerconfig>
-  <titles>
-    <title mainTitles="title" />
- </titles>
+      <titles>
+        <title mainTitles="title" />
+      </titles>
     </headerconfig>
     <inlinelist>
       <table path="authors.name" showLinksToObjects="true" />
@@ -237,12 +239,13 @@
 
   <class className="org.intermine.model.bio.ProteinFamily">
     <headerconfig>
-      <titles> <title mainTitles="clusterName|clusterId" numberOfMainTitlesToShow="1" />
+      <titles>
+        <title mainTitles="clusterId" />
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="clusterId" label="Cluster ID" />
-      <fieldconfig fieldExpr="clusterName" label="Cluster Name" />
+      <fieldconfig fieldExpr="member.protein.primaryIdentifier" label="Protein Name" />
+      <fieldconfig fieldExpr="member.membershipDetail" label="Membership Detail" />
       <fieldconfig fieldExpr="methodId" label="Method ID" />
       <fieldconfig fieldExpr="methodName" label="Method Name" />
       <fieldconfig fieldExpr="consensus" label="Centroid Sequence"
@@ -253,10 +256,18 @@
   </class>
 
   <class className="org.intermine.model.bio.ProteinFamilyMember">
+
+    <headerconfig>
+      <titles>
+        <title mainTitles="proteinFamily.clusterName|proteinFamily.clusterId" numberOfMainTitlesToShow="1" />
+      </titles>
+    </headerconfig>
     <fields>
+      <fieldconfig fieldExpr="protein.primaryIdentifier" label="Protein Name" />
+      <fieldconfig fieldExpr="protein.organism.shortName" label="Organism Name" />
       <fieldconfig fieldExpr="proteinFamily.clusterId" label="Cluster ID" />
       <fieldconfig fieldExpr="proteinFamily.clusterName" label="Cluster Name" />
-      <fieldconfig fieldExpr="proteinFamily.memberCount" label="Member Count" />
+      <fieldconfig fieldExpr="count" label="Same Organism Count" />
       <fieldconfig fieldExpr="proteinFamily.methodId" label="Method ID"/>
       <fieldconfig fieldExpr="proteinFamily.methodName" label="Method Name"/>
     </fields>
@@ -278,6 +289,7 @@
       </titles>
     </headerconfig>
     <fields>
+      <fieldconfig fieldExpr="primaryIdentifier" label="Name" />
       <fieldconfig fieldExpr="alignment" label="MSA"
             showInResults="false" showInInlineCollection="false" showInSummary="false"
                      displayer="model/alignmentDisplayer.jsp" />
@@ -346,17 +358,17 @@
                      placement="Orthology"
                      types="Gene"/>
 
-    <reportdisplayer javaClass="org.intermine.bio.web.displayer.FamilyAlignmentDisplayer"
+    <!--reportdisplayer javaClass="org.intermine.bio.web.displayer.FamilyAlignmentDisplayer"
                      jspName="model/nullFormatter.jsp"
-                     replacesFields="msa"
+                     replacemethodNamesFields="msa"
                      placement="summary"
-                     types="ProteinFamily"/>
+                     types="ProteinFamily"/ -->
 
-    <reportdisplayer javaClass="org.intermine.bio.web.displayer.AlignmentDisplayer"
+    <!-- reportdisplayer javaClass="org.intermine.bio.web.displayer.AlignmentDisplayer"
                      jspName="model/alignmentDisplayer.jsp"
                      replacesFields=""
                      placement="summary"
-                     types="MSA"/>
+                     types="MSA"/ -->
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.ProteinAnalysisDisplayer"
                      jspName="model/proteinAnalysisDisplayer.jsp"
