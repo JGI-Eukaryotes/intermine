@@ -1,0 +1,16 @@
+# On branch phytozome-v10.1
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   bio/postprocess/main/src/org/intermine/bio/postprocess/TransferGOAnnotations.java
+#	modified:   bio/postprocess/main/src/org/intermine/bio/postprocess/TransferOntologyAnnotations.java
+#	modified:   bio/webapp/src/org/intermine/bio/web/displayer/OntologyAnnotationDisplayer.java
+#	modified:   bio/webapp/src/org/intermine/bio/web/displayer/ProteinAnalysisDisplayer.java
+#	modified:   phytomine-dev/webapp/resources/webapp/WEB-INF/webconfig-model.xml
+#	modified:   phytomine/webapp/resources/webapp/WEB-INF/webconfig-model.xml
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	bio/webapp/src/org/intermine/bio/web/displayer/ProteinFamilyDisplayer.java

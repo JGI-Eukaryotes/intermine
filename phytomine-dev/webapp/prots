@@ -1,0 +1,7 @@
+select t.id,a.value from transcript t, annotation a where
+a.active=1 and t.active=1 and t.id=objectId and objectTypeId=1 and
+fieldId=4 and proteomeId in (
+199, 145, 284, 277, 251, 290, 298, 299, 297, 296, 210, 201, 147, 283,
+218, 195, 264, 107, 167, 291, 278, 182, 266, 113, 281, 183, 122, 154,
+227, 173, 226, 275, 221, 200, 196, 228, 229, 285, 231, 204, 274, 139,
+273, 119, 255, 164, 225, 91, 289, 206, 233, 256) order by 1,2;

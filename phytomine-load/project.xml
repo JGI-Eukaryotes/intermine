@@ -398,6 +398,7 @@
       <property name="annotationVersion" value="v4.1" />
       <property name="dataSetTitle" value="Phytozome v10" />
     </source>
+
     <source name="phytozome-chado-M.guttatus" type="phytozome-db">
       <property name="source.db.name" value="phytozome" />
       <property name="genus" value="Mimulus" />
@@ -412,6 +413,63 @@
       <property name="annotationVersion" value="v2.0" />
       <property name="dataSetTitle" value="Phytozome v10" />
     </source>
+    <source name="phytozome-chado-M.guttatus-annotation" type="phytozome-db">
+      <property name="source.db.name" value="phytozome" />
+      <property name="genus" value="Mimulus" />
+      <property name="species" value="guttatus" />
+      <property name="dbxrefId" value="7522540" />
+      <property name="proteomeId" value="256" />
+      <property name="taxonId" value="4155" />
+      <property name="dataSourceName" value="phytozome-M.guttatus" />
+      <property name="commonName" value="Monkey flower" />
+      <property name="shortName" value="M. guttatus" />
+      <property name="version" value="current" />
+      <property name="annotationVersion" value="v2.0" />
+      <property name="dataSetTitle" value="Phytozome v10" />
+    </source>
+    <source name="phytozome-chado-M.guttatus-reannotation" type="phytozome-db">
+      <property name="source.db.name" value="phytozome" />
+      <property name="genus" value="Mimulus" />
+      <property name="species" value="guttatus" />
+      <property name="dbxrefId" value="7522540" />
+      <property name="proteomeId" value="256" />
+      <property name="taxonId" value="4155" />
+      <property name="dataSourceName" value="phytozome-M.guttatus" />
+      <property name="commonName" value="Monkey flower" />
+      <property name="shortName" value="M. guttatus" />
+      <property name="version" value="current" />
+      <property name="annotationVersion" value="v2.0" />
+      <property name="dataSetTitle" value="Phytozome v10" />
+    </source>
+    <source name="phytozome-chado-M.guttatus-rereannotation" type="phytozome-db">
+      <property name="source.db.name" value="phytozome" />
+      <property name="genus" value="Mimulus" />
+      <property name="species" value="guttatus" />
+      <property name="dbxrefId" value="7522540" />
+      <property name="proteomeId" value="256" />
+      <property name="taxonId" value="4155" />
+      <property name="dataSourceName" value="phytozome-M.guttatus" />
+      <property name="commonName" value="Monkey flower" />
+      <property name="shortName" value="M. guttatus" />
+      <property name="version" value="current" />
+      <property name="annotationVersion" value="v2.0" />
+      <property name="dataSetTitle" value="Phytozome v10" />
+    </source>
+    <source name="phytozome-chado-M.guttatus-rererereannotation" type="phytozome-db">
+      <property name="source.db.name" value="phytozome" />
+      <property name="genus" value="Mimulus" />
+      <property name="species" value="guttatus" />
+      <property name="dbxrefId" value="7522540" />
+      <property name="proteomeId" value="256" />
+      <property name="taxonId" value="4155" />
+      <property name="dataSourceName" value="phytozome-M.guttatus" />
+      <property name="commonName" value="Monkey flower" />
+      <property name="shortName" value="M. guttatus" />
+      <property name="version" value="current" />
+      <property name="annotationVersion" value="v2.0" />
+      <property name="dataSetTitle" value="Phytozome v10" />
+    </source>
+
     <source name="phytozome-chado-M.pusilla_CCMP1545" type="phytozome-db">
       <property name="source.db.name" value="phytozome" />
       <property name="genus" value="Micromonas" />
