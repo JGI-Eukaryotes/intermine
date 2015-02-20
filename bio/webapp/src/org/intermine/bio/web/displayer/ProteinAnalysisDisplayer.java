@@ -5,6 +5,8 @@ package org.intermine.bio.web.displayer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +38,28 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
 
   protected static final Logger LOG = Logger.getLogger(ProteinAnalysisDisplayer.class);
 
+  // when it comes time to display the results, how do we rank them?
+  private static final HashMap<String,Integer> dbRank = new HashMap<String,Integer>();
+  static {
+  // this is tough; how can I set this better?
+  dbRank.put("PFAM",       new Integer(0));
+  dbRank.put("PANTHER",    new Integer(1));
+  dbRank.put("KEGG",       new Integer(2));
+  dbRank.put("KOG",        new Integer(3));
+  dbRank.put("PIR",        new Integer(4));
+  dbRank.put("PIRSF",      new Integer(5));
+  dbRank.put("PROFILE",    new Integer(6));
+  dbRank.put("PRODOM",     new Integer(7));
+  dbRank.put("PROSITE",    new Integer(8));
+  dbRank.put("SMART",      new Integer(9));
+  dbRank.put("SIGNALP",    new Integer(10));
+  dbRank.put("SUPERFAMILY",new Integer(11));
+  dbRank.put("TIGRFAMs",   new Integer(12));
+  dbRank.put("PRINTS",     new Integer(13));
+  dbRank.put("TMHMM",      new Integer(14));
+  dbRank.put("GENE3D",     new Integer(15));
+  }
+  
   /**
    * Construct with config and the InterMineAPI.
    * @param config to describe the report displayer
@@ -75,6 +99,7 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
       }
       
       // order per our guardian angel.
+      Collections.sort(list);
       
       request.setAttribute("list",list);
   }
@@ -96,7 +121,7 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
     return query;
   }
 
-  public class ProteinAnalysisFeatureRecord {
+  public class ProteinAnalysisFeatureRecord implements Comparable {
     private String database;
     private String subject;
     private String domain;
@@ -105,7 +130,9 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
     private String end;
     private String score;
     private String significance;
-
+    // this is the sorting rank
+    private Integer rank;
+    
     public ProteinAnalysisFeatureRecord(List<ResultElement> resElement) {
       // the fields are a copy of the query results
       database = ((resElement.get(0)!=null) && (resElement.get(0).getField()!= null))?
@@ -124,6 +151,8 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
                                  resElement.get(6).getField().toString():"&nbsp;";
       significance = ((resElement.get(7)!=null) && (resElement.get(7).getField()!= null))?
                                  resElement.get(7).getField().toString():"&nbsp;";
+      rank = (dbRank.containsKey(database))?(dbRank.get(database)):(dbRank.size());           
+                                 
 
     }
     public String getDatabase() { return database; }
@@ -134,6 +163,12 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
     public String getEnd() { return end; }
     public String getScore() { return score; }
     public String getSignificance() { return significance; }
+    public int getRank() { return rank.intValue(); }
+    
+    @Override
+    public int compareTo(Object o) {
+      return this.getRank() - ((ProteinAnalysisFeatureRecord)o).getRank();
+    }
   }
 
 

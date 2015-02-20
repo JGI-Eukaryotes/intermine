@@ -236,7 +236,7 @@ public class TransferOntologyAnnotations {
     QueryClass qcOrganism = new QueryClass(Organism.class);
     q.addFrom(qcOrganism);
     QueryField qfOrganism = new QueryField(qcOrganism,"proteomeId");
-    QueryValue qvOrganism = new QueryValue(new Integer(256));
+    QueryValue qvOrganism = new QueryValue(new Integer(183));
     QueryObjectReference orgRef = new QueryObjectReference(qcPAF,"organism");
     cs.addConstraint(new SimpleConstraint(qfOrganism,ConstraintOp.EQUALS,qvOrganism));
     cs.addConstraint(new ContainsConstraint(orgRef,ConstraintOp.CONTAINS,qcOrganism));
@@ -296,7 +296,7 @@ public class TransferOntologyAnnotations {
     QueryClass qcOrganism = new QueryClass(Organism.class);
     q.addFrom(qcOrganism);
     QueryField qfOrganism = new QueryField(qcOrganism,"proteomeId");
-    QueryValue qvOrganism = new QueryValue(new Integer(256));
+    QueryValue qvOrganism = new QueryValue(new Integer(183));
     QueryObjectReference orgRef = new QueryObjectReference(qcBio,"organism");
     cs.addConstraint(new SimpleConstraint(qfOrganism,ConstraintOp.EQUALS,qvOrganism));
     cs.addConstraint(new ContainsConstraint(orgRef,ConstraintOp.CONTAINS,qcOrganism));

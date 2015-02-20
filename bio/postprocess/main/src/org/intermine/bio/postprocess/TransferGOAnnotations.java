@@ -174,7 +174,7 @@ public class TransferGOAnnotations {
           lastGene = thisGene;
 
 
-          prepareHash(knownGO,thisProtein.getOrganism().getId(),thisProtein.getPrimaryIdentifier());
+          prepareHash(knownGO,thisGene.getOrganism().getId(),thisGene.getPrimaryIdentifier());
         
           // store the evidence if not known already and add to the gene's annotation list
           if (!knownGO.get(thisGene.getOrganism().getId()).get(thisGene.getPrimaryIdentifier()).contains(thisGOTerm.getIdentifier()) ){
@@ -280,7 +280,14 @@ public class TransferGOAnnotations {
 
       QueryObjectReference goTermRef = new QueryObjectReference(qcGOAnnotation, "ontologyTerm");
       cs.addConstraint(new ContainsConstraint(goTermRef, ConstraintOp.CONTAINS, qcGoTerm));
-
+      
+      QueryClass qcOrganism = new QueryClass(Organism.class);
+      q.addFrom(qcOrganism);
+      QueryField qfOrganism = new QueryField(qcOrganism,"proteomeId");
+      QueryValue qvOrganism = new QueryValue(new Integer(256));
+      QueryObjectReference orgRef = new QueryObjectReference(qcGene,"organism");
+      cs.addConstraint(new SimpleConstraint(qfOrganism,ConstraintOp.EQUALS,qvOrganism));
+      cs.addConstraint(new ContainsConstraint(orgRef,ConstraintOp.CONTAINS,qcOrganism));
       q.setConstraint(cs);
 
       ((ObjectStoreInterMineImpl) os).precompute(q, Constants.PRECOMPUTE_CATEGORY);
@@ -326,7 +333,20 @@ public class TransferGOAnnotations {
 
       QueryObjectReference goTermRef = new QueryObjectReference(qcOAnnotation, "ontologyTerm");
       cs.addConstraint(new ContainsConstraint(goTermRef, ConstraintOp.CONTAINS, qcOTerm));
-
+      
+      
+      /*
+      // for restricting to a specific organism
+      QueryClass qcOrganism = new QueryClass(Organism.class);
+      q.addFrom(qcOrganism);
+      QueryField qfOrganism = new QueryField(qcOrganism,"proteomeId");
+      QueryValue qvOrganism = new QueryValue(new Integer(256));
+      QueryObjectReference orgRef = new QueryObjectReference(qcBio,"organism");
+      cs.addConstraint(new SimpleConstraint(qfOrganism,ConstraintOp.EQUALS,qvOrganism));
+      cs.addConstraint(new ContainsConstraint(orgRef,ConstraintOp.CONTAINS,qcOrganism));
+      // end of restricting
+      */
+      
       q.setConstraint(cs);
 
       ((ObjectStoreInterMineImpl) os).precompute(q, Constants.PRECOMPUTE_CATEGORY);
@@ -338,7 +358,7 @@ public class TransferGOAnnotations {
         if (thisBio.getOrganism() != null ) {
           LOG.debug("There is a known annotation for "+thisBio.getPrimaryIdentifier() + 
               " organism "+thisBio.getOrganism() + " to " + thisTerm.getIdentifier());
-          prepareHash(knownGO,thisBio.getOrganism().getId(),thisBio.getPrimaryIdentifier());
+          prepareHash(knownOntology,thisBio.getOrganism().getId(),thisBio.getPrimaryIdentifier());
           knownOntology.get(thisBio.getOrganism().getId()).get(thisBio.getPrimaryIdentifier()).add(thisTerm.getIdentifier());
         }
       }
@@ -402,7 +422,18 @@ public class TransferGOAnnotations {
 
         QueryObjectReference goTermRef = new QueryObjectReference(qcAnnotation, "ontologyTerm");
         cs.addConstraint(new ContainsConstraint(goTermRef, ConstraintOp.CONTAINS, qcGoTerm));
-
+        
+        /*
+        // for restricting to a specific organism. uncomment this block.
+        QueryClass qcOrganism = new QueryClass(Organism.class);
+        q.addFrom(qcOrganism);
+        QueryField qfOrganism = new QueryField(qcOrganism,"proteomeId");
+        QueryValue qvOrganism = new QueryValue(new Integer(256));
+        QueryObjectReference orgRef = new QueryObjectReference(qcPAF,"organism");
+        cs.addConstraint(new SimpleConstraint(qfOrganism,ConstraintOp.EQUALS,qvOrganism));
+        cs.addConstraint(new ContainsConstraint(orgRef,ConstraintOp.CONTAINS,qcOrganism));
+        // end of restricting
+        */
         q.setConstraint(cs);
 
         ((ObjectStoreInterMineImpl) os).precompute(q, Constants.PRECOMPUTE_CATEGORY);
