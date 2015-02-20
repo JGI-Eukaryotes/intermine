@@ -49,7 +49,7 @@
             </div>
           </c:if>
           <c:choose>
-            <c:when test="${collection.size > 1}">
+            <c:when test="${collection.size > 1 && !fn:endsWith(fieldDisplayName,'s')}">
             ${collection.size}&nbsp;${fieldDisplayName}s
             </c:when>
             <c:otherwise>

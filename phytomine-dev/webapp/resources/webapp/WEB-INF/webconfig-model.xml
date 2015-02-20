@@ -244,8 +244,8 @@
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="member.protein.primaryIdentifier" label="Protein Name" />
-      <fieldconfig fieldExpr="member.membershipDetail" label="Membership Detail" />
+      <!--fieldconfig fieldExpr="member.protein.primaryIdentifier" label="Protein Name" />
+      <fieldconfig fieldExpr="member.membershipDetail" label="Membership Detail" /-->
       <fieldconfig fieldExpr="methodId" label="Method ID" />
       <fieldconfig fieldExpr="methodName" label="Method Name" />
       <fieldconfig fieldExpr="consensus" label="Centroid Sequence"
@@ -285,11 +285,11 @@
 
   <class className="org.intermine.model.bio.MSA">
     <headerconfig>
-      <titles> <title mainTitles="primaryIdentifier" numberOfMainTitlesToShow="1" />
+      <titles>
+         <title mainTitles="primaryIdentifier" numberOfMainTitlesToShow="1" />
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="primaryIdentifier" label="Name" />
       <fieldconfig fieldExpr="alignment" label="MSA"
             showInResults="false" showInInlineCollection="false" showInSummary="false"
                      displayer="model/alignmentDisplayer.jsp" />
@@ -364,11 +364,11 @@
                      placement="summary"
                      types="ProteinFamily"/ -->
 
-    <!-- reportdisplayer javaClass="org.intermine.bio.web.displayer.AlignmentDisplayer"
+    <reportdisplayer javaClass="org.intermine.bio.web.displayer.AlignmentDisplayer"
                      jspName="model/alignmentDisplayer.jsp"
                      replacesFields=""
                      placement="summary"
-                     types="MSA"/ -->
+                     types="MSA"/>
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.ProteinAnalysisDisplayer"
                      jspName="model/proteinAnalysisDisplayer.jsp"

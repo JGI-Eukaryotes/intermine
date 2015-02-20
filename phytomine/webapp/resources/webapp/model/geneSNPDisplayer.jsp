@@ -45,27 +45,31 @@
                 <c:forEach var="genoSample" items="${row.genoSamples}">
                      <td> ${genoSample.genotype} </td>
                      <td> 
-                     <c:choose>
-                       <c:when test="${fn:length(genoSample.samples) > 50}">
-                         <div id="show_more_${divCtr}"> ${fn:substring(genoSample.samples,0,40)}
-                             <a id="show_more_${divCtr}" > ...(more) </a> </div>
-                         <div id="hidden_more_${divCtr}" style="display:none" >
-                               ${genoSample.samples} 
-                          <a id="show_less_${divCtr}" > (less) </a> </div>
-                         <script type="text/javascript">
-                           jQuery("#show_more_${divCtr}").click(function() {
-                                      jQuery("#show_more_${divCtr}").toggle();
-                                      jQuery("#hidden_more_${divCtr}").toggle();})
-                           jQuery("#show_less_${divCtr}").click(function() {
-                                      jQuery("#show_more_${divCtr}").toggle();
-                                      jQuery("#hidden_more_${divCtr}").toggle();})
-                         </script>
-                         <c:set var="divCtr" value="${divCtr + 1}" scope="page" />
-                       </c:when>
-                       <c:otherwise>
-                         ${genoSample.samples}
-                       </c:otherwise>
-                     </c:choose>
+                         <div id="click_more_${divCtr}"> ${genoSample.sampleCount}
+                           of ${row.sampleCount} samples
+                           <a id="click_more_${divCtr}" > (show) </a> </div>
+                         <div id="click_hide_${divCtr}" style="display:none" >
+                             ${genoSample.samples} 
+                           <a id="click_hide_${divCtr}" > (hide) </a> </div>
+                       <script type="text/javascript">
+                         jQuery("#click_more_${divCtr}").click(function() {
+                                    jQuery("#click_more_${divCtr}").toggle();
+                                    jQuery("#click_hide_${divCtr}").toggle();})
+                         jQuery("#click_hide_${divCtr}").click(function() {
+                                    jQuery("#click_more_${divCtr}").toggle();
+                                    jQuery("#click_hide_${divCtr}").toggle();})
+                         jQuery("#click_more_${divCtr}").hover(
+                              function() { jQuery("#click_more_${divCtr}").css('cursor','pointer');
+                                           jQuery("#click_more_${divCtr}").css('text-decoration','underline');},
+                              function() { jQuery("#click_more_${divCtr}").css('cursor','default');
+                                           jQuery("#click_more_${divCtr}").css('text-decoration','none');})
+                         jQuery("#click_hide_${divCtr}").hover(
+                              function() { jQuery("#click_hide_${divCtr}").css('cursor','pointer');
+                                           jQuery("#click_hide_${divCtr}").css('text-decoration','underline');},
+                              function() { jQuery("#click_hide_${divCtr}").css('cursor','default');
+                                           jQuery("#click_hide_${divCtr}").css('text-decoration','none');})
+                       </script>
+                       <c:set var="divCtr" value="${divCtr + 1}" scope="page" />
                      </td>
                   <c:if test="${ctr < row.genoSampleCount}">
                     </tr> <tr>
