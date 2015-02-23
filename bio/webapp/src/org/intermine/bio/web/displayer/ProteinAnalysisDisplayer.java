@@ -80,7 +80,7 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
       LOG.info("Entering GeneSNPDisplayer.display for "+proteinObj.getPrimaryIdentifier());
 
       // query the consequences, snps and location
-      PathQuery query = getAnalysisTable(proteinObj.getPrimaryIdentifier());
+      PathQuery query = getAnalysisTable(proteinObj.getSecondaryIdentifier());
       Profile profile = SessionMethods.getProfile(session);
       PathQueryExecutor exec = im.getPathQueryExecutor(profile);
       ArrayList<ProteinAnalysisFeatureRecord> list = new ArrayList<ProteinAnalysisFeatureRecord>();
@@ -117,7 +117,7 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
         "Protein.proteinAnalysisFeatures.significance");
     query.setOuterJoinStatus("Protein.proteinAnalysisFeatures.crossReference.subject",OuterJoinStatus.OUTER);
     query.addOrderBy("Protein.proteinAnalysisFeatures.sourceDatabase.name", OrderDirection.ASC);
-    query.addConstraint(Constraints.eq("Protein.primaryIdentifier",identifier));
+    query.addConstraint(Constraints.eq("Protein.secondaryIdentifier",identifier));
     return query;
   }
 
