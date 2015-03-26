@@ -101,7 +101,10 @@ public class CorrelatedExpressionDisplayer extends ReportDisplayer {
         return;
       }
       // normalize the base data.
-      normalize(baseData);
+      // if this returns false, we cannot compute
+      if( !normalize(baseData)) {
+        return;
+      }
 
       // go through the results and compute correlation
 
@@ -117,7 +120,7 @@ public class CorrelatedExpressionDisplayer extends ReportDisplayer {
         } else {
           if( data.size() == baseData.size()) {
             Float correlation = calcCorrelation(baseData,data);
-            if (correlation > threshold) correlationList.add(new GeneCorrelation(lastGeneId,lastGeneName,correlation));
+            if (correlation != null && correlation > threshold) correlationList.add(new GeneCorrelation(lastGeneId,lastGeneName,correlation));
           }
           data = new ArrayList<Float>();
           data.add((Float)(resElement.get(3).getField()));
@@ -182,31 +185,45 @@ public class CorrelatedExpressionDisplayer extends ReportDisplayer {
     return query;
   }
   
-  private void normalize(ArrayList<Float> data) {
+  private boolean normalize(ArrayList<Float> data) {
     double sum1 = 0;
     double sum2 = 0;
+    int ctr = 0;
     for( Float x : data ) {
       if (x==null) {
         LOG.warn("Had a null value in data.");
-        return;
+        return false;
       }
+      if (x == 0.) {
+        x = new Float(-20);
+      } else {
+        x = new Float(Math.log(x.doubleValue())/Math.log(2.));
+      }
+      data.set(ctr,x);
       sum1 += x;
       sum2 += x*x;
+      ctr++;
     }
     sum1 = sum1/data.size();
     sum2 = Math.sqrt(sum2-sum1*sum1*data.size());
+    if( sum2 == 0.) {
+      return false;
+    }
     for(int i=0;i<data.size();i++) {
       data.set(i,new Float((data.get(i)-sum1)/sum2));
     }
-    return;
+    return true;
   }
   private Float calcCorrelation(ArrayList<Float> base, ArrayList<Float> data) {
-    normalize(data);
-    Float sum = new Float(0.);
-    for(int i=0;i<base.size();i++) {
-      sum += base.get(i)*data.get(i);
+    if (normalize(data)) {
+      Float sum = new Float(0.);
+      for(int i=0;i<base.size();i++) {
+        sum += base.get(i)*data.get(i);
+      }
+      return sum;
+    } else {
+      return null;
     }
-    return sum;
   }
 
   public class GeneCorrelation implements Comparable {
