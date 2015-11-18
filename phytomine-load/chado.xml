@@ -1052,3 +1052,37 @@
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
+  <source name="phytozome-chado-A.comosus-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="pineapple" />
+    <property name="genus" value="Ananas" />
+    <property name="name" value="Ananas comosus" />
+    <property name="species" value="comosus" />
+    <property name="assemblyDbxrefId" value="9647470" />
+    <property name="proteomeId" value="321" />
+    <property name="taxonId" value="4615" />
+    <property name="annotationVersion" value="v3" />
+    <property name="dataSourceName" value="phytozome-A.comosus" />
+    <property name="shortName" value="A. comosus early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="9647471" />
+    <property name="assemblyVersion" value="v3" />
+    <property name="dataSetTitle" value="Phytozome v10" />
+  </source>
+  <source name="phytozome-chado-A.comosus-early-release-redo" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="pineapple" />
+    <property name="genus" value="Ananas" />
+    <property name="name" value="Ananas comosus" />
+    <property name="species" value="comosus" />
+    <property name="assemblyDbxrefId" value="9647470" />
+    <property name="proteomeId" value="321" />
+    <property name="taxonId" value="4615" />
+    <property name="annotationVersion" value="v3" />
+    <property name="dataSourceName" value="phytozome-A.comosus" />
+    <property name="shortName" value="A. comosus early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="9647471" />
+    <property name="assemblyVersion" value="v3" />
+    <property name="dataSetTitle" value="Phytozome v10" />
+  </source>
