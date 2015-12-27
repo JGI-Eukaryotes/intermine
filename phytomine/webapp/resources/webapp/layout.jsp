@@ -115,6 +115,7 @@ if ((typeof intermine != 'undefined') && (intermine.Service != null)) {
         "token": "${PROFILE.dayToken}",
         "help": "${WEB_PROPERTIES['feedback.destination']}"
     });
+
     var notification = new FailureNotification({message: $SERVICE.root + " is incorrect"});
     $SERVICE.fetchVersion().fail(notification.render).done(function(v) {
         console.log("Webservice is at version " + v);

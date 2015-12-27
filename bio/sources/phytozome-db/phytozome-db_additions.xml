@@ -13,7 +13,6 @@
   </class>
   <class name="ProteinAnalysisFeature" extends="BioEntity" is-interface="true">
     <reference name="crossReference" referenced-type="CrossReference" />
-    <reference name="sourceDatabase" referenced-type="DataSource" />
     <attribute name="programname" type="java.lang.String" />
     <attribute name="normscore" type="java.lang.Double" />
     <attribute name="rawscore" type="java.lang.Double" />

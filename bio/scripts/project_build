@@ -306,8 +306,8 @@ sub run_build_db
   my $saved_dir = getcwd;
   chdir "$saved_dir/dbmodel" or die "can't change directory into: $saved_dir/dbmodel\n";
 
-  run_and_check_status @ant_command, "clean";
-  run_and_check_status @ant_command, "build-db";
+  #run_and_check_status @ant_command, "clean";
+  #run_and_check_status @ant_command, "build-db";
 
   chdir $saved_dir
     or die "can't return to previous directory ($saved_dir) after $saved_dir/dbmodel\n";
@@ -345,6 +345,7 @@ sub create_prod_db
   my ($db, $user, $pass, $host, $port, $suffix) = @_;
 
   my @params = ('-U', $user, '-h', $host, $db);
+  unshift @params , '-p', $port if $port;
 
   log_and_print `date`, "\n";
   log_and_print "\ncreating database: @createdb_command @params\n";

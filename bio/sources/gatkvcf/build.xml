@@ -24,6 +24,7 @@
       classpathref="task.class.path"/>
     <read-gatkvcf integrationWriterAlias="integration.production"
                 proteomeId="${proteomeId}"
+                sampleGroup="${sampleGroup}"
                 sourceName="${source.name}"
                 sourceType="${source.type}">
       <fileset dir="${src.data.dir}" includes="${src.data.dir.includes}"/>

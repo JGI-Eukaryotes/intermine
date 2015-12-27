@@ -1120,25 +1120,47 @@
     <metadata>
         <name>Enrichment Widgets</name>
         <minVersion>8</minVersion>
-        <method authenticationRequired="true" type="GET" ALSO="POST">
+        <method authenticationRequired="false" type="GET" ALSO="POST">
             <summary>get the data for a given enrichment widget</summary>
             <description>
                 Enrichment widgets provide a statistical summary of what makes a list distinct from
                 the background population over a certain domain. They return a list of members of the
                 domain ranked by p-value (low to high).
             </description>
-            <param type="String" required="true" description="The name of the list to investigate">list</param>
-            <param type="String" required="true" description="The name of the enrichment widget to display">widget</param>
-            <param type="String" required="false" description="The name of the list to use as the background population">population</param>
-            <param type="Float" default="0.05" required="true" description="The maximum p-value of results to display. The range is 0.0 - 1.0">maxp</param>
-            <param type="enumerated" values="Holm-Bonferroni,Benjamini and Hochberg,Bonferroni,None" default="Holm-Bonferroni" required="true" description="The error correction algorithm to use.">correction</param>
-            <param type="String" required="false" description="An optional filter that some widgets accept">filter</param>
+            <param type="String"
+                required="true"
+                description="The name of the list to investigate"
+                options="/lists|lists{status=CURRENT}"
+                default="{name}">list</param>
+            <param type="String"
+                required="true"
+                description="The name of the enrichment widget to display"
+                options="/widgets|widgets{widgetType=enrichment}"
+                default="{name}">widget</param>
+            <param type="String"
+                required="false"
+                description="The name of the list to use as the background population"
+                options="/lists|lists{status=CURRENT}"
+                default="{name}">population</param>
+            <param type="Float"
+                default="0.05"
+                required="true"
+                description="The maximum p-value of results to display. The range is 0.0 - 1.0">maxp</param>
+            <param type="enumerated"
+                values="Holm-Bonferroni,Benjamini and Hochberg,Bonferroni,None"
+                default="Holm-Bonferroni"
+                required="true"
+                description="The error correction algorithm to use.">correction</param>
+            <param type="String"
+                required="false"
+                options="/widgets|widgets{name=$name}.0.filters"
+                description="An optional filter that some widgets accept">filter</param>
             <returns>
-	            <format key="results">json</format>
-	            <format>xml</format>
-	            <format>tab</format>
-	            <format>csv</format>
-	        </returns>
+              <format key="results">json</format>
+              <format>xml</format>
+              <format>tab</format>
+              <format>csv</format>
+          </returns>
         </method>
     </metadata>
   </servlet-mapping>

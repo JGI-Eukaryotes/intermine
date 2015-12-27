@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="bio/postprocess/main/src"/>
+	<classpathentry kind="src" path="bio/sources/e2p2-enzymes/main/src"/>
+	<classpathentry kind="src" path="bio/sources/interflowscan/main/src"/>
 	<classpathentry kind="src" path="bio/sources/genetic-marker/main/src"/>
 	<classpathentry kind="src" path="bio/sources/TroubleMaker/main/src"/>
 	<classpathentry kind="src" path="bio/sources/plantcyc-pathway/main/src"/>
@@ -82,5 +84,12 @@
 	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/api/main/lib/lucene-queries-3.0.2.jar"/>
 	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/api/main/lib/lucene-snowball-3.0.2.jar"/>
 	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/intermine/model/main/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/lib/jar/postgresql-cvs-2010-07-20-patched.jar"/>
+	<classpathentry kind="lib" path="intermine/web/main/lib/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry kind="lib" path="intermine/web/main/lib/javax.servlet.jsp-api-2.3.1.jar"/>
+	<classpathentry kind="lib" path="intermine/web/main/lib/struts-core-1.3.10.jar"/>
+	<classpathentry kind="lib" path="intermine/web/main/lib/struts-extras-1.3.10.jar"/>
+	<classpathentry kind="lib" path="intermine/web/main/lib/struts-taglib-1.3.10.jar"/>
+	<classpathentry kind="lib" path="intermine/web/main/lib/struts-tiles-1.3.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
