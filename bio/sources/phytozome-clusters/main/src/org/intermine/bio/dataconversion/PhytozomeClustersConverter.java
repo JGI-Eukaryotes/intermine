@@ -32,43 +32,31 @@ import java.util.zip.Inflater;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
-import org.intermine.dataconversion.ItemWriter;
 import org.intermine.dataloader.IntegrationWriterDataTrackingImpl;
 import org.intermine.metadata.ConstraintOp;
-import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
-import org.intermine.model.bio.Chromosome;
-import org.intermine.model.bio.ConsequenceType;
 import org.intermine.model.bio.CrossReference;
 import org.intermine.model.bio.DataSource;
 import org.intermine.model.bio.Gene;
 import org.intermine.model.bio.GeneShadow;
-import org.intermine.model.bio.MRNA;
 import org.intermine.model.bio.MSA;
 import org.intermine.model.bio.Organism;
 import org.intermine.model.bio.Protein;
 import org.intermine.model.bio.ProteinFamily;
 import org.intermine.model.bio.ProteinFamilyMember;
-import org.intermine.model.bio.SNP;
 import org.intermine.model.bio.Sequence;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.objectstore.query.ConstraintSet;
-import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.PendingClob;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryField;
-import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SimpleConstraint;
-import org.intermine.sql.Database;
-import org.intermine.sql.DatabaseFactory;
 import org.intermine.task.DBDirectDataLoaderTask;
-import org.intermine.task.DirectDataLoaderTask;
-import org.intermine.xml.full.Item;
 
 
 /**
@@ -77,9 +65,6 @@ import org.intermine.xml.full.Item;
  */
 public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
 {
-  //
-  private static final String DATASET_TITLE = "Phytozome Clusters";
-  private static final String DATA_SOURCE_NAME = "Phytozome";
   private static final Logger LOG = Logger.getLogger(PhytozomeClustersConverter.class);
   private Connection connection;
 
@@ -87,8 +72,8 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
   protected Map<String,String> methodNames = new HashMap<String,String>();
   protected String methodIds = null;
 
-  private Map<String,ProxyReference> geneProxy = new HashMap<String, ProxyReference>();
-  private Map<String,ProxyReference> protProxy = new HashMap<String, ProxyReference>();
+  private Map<String,InterMineObject> geneMap = new HashMap<String, InterMineObject>();
+  private Map<String,InterMineObject> protMap = new HashMap<String, InterMineObject>();
   private Map<Integer,ProxyReference> organismProxy = new HashMap<Integer,ProxyReference>();
   private Map<String,ProxyReference> crossRefProxy = new HashMap<String,ProxyReference>();
   private Map<String,ProxyReference> dataSourceProxy = new HashMap<String,ProxyReference>();
@@ -148,8 +133,8 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     
     connection = getConnection();
 
-    preFill(geneProxy,Gene.class);
-    preFill(protProxy,Protein.class);
+    preFill(geneMap,Gene.class);
+    preFill(protMap,Protein.class);
     preFillOrganism();
     preFillMethodMap();
     preFillExisting();
@@ -281,29 +266,25 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
       Integer proteomeId = res.getInt("proteomeid");
       idToName.put(res.getString("transcriptId"), res.getString("peptideName"));
 
-      String proteinName = res.getString("peptideName");
       String pacID = "PAC:"+res.getString("transcriptId");
-      if (!protProxy.containsKey(pacID)) {
+      if (!protMap.containsKey(pacID)) {
         LOG.info("Need to register protein for pac id "+pacID);
         Protein p = getDirectDataLoader().createObject(Protein.class);
         p.setSecondaryIdentifier(pacID);
         p.proxyOrganism(getOrganism(proteomeId));
         getDirectDataLoader().store(p);
-        protProxy.put(pacID,new ProxyReference(getIntegrationWriter().getObjectStore(),
-            p.getId(),Protein.class));
+        protMap.put(pacID,p);
       }
-      String geneName = res.getString("locusName");
-      if (!geneProxy.containsKey(pacID)) {
+      if (!geneMap.containsKey(pacID)) {
         LOG.info("Need to register gene for pac id "+pacID);
         Gene g = getDirectDataLoader().createObject(Gene.class);
         g.setSecondaryIdentifier(pacID);
         g.proxyOrganism(getOrganism(proteomeId));
         getDirectDataLoader().store(g);
-        geneProxy.put(pacID,new ProxyReference(getIntegrationWriter().getObjectStore(),
-            g.getId(),Gene.class));
+        geneMap.put(pacID,g);
       }
       GeneShadow g = new GeneShadow();
-      g.setId(geneProxy.get(pacID).getId());
+      g.setId(geneMap.get(pacID).getId());
       g.proxyOrganism(getOrganism(proteomeId));
       g.setSecondaryIdentifier(pacID);
       family.addGene(g);
@@ -311,7 +292,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
       pfm.setMembershipDetail(res.getString("name"));
       LOG.info("Adding member "+pacID+" with proteome id "+proteomeId);
       pfm.proxyOrganism(getOrganism(proteomeId));
-      pfm.proxyProtein(protProxy.get(pacID));
+      pfm.setProtein((Protein)protMap.get(pacID));
       pfm.setProteinFamily(family);
  
       family.addMember(pfm);
@@ -615,14 +596,13 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     }
   }
 
-  private void preFill(Map<String,ProxyReference> map, Class<? extends InterMineObject> objectClass) {
+  private void preFill(Map<String,InterMineObject> map,Class<? extends InterMineObject> objectClass) {
     Query q = new Query();
     QueryClass qC = new QueryClass(objectClass);
     q.addFrom(qC);
     QueryField qFName = new QueryField(qC,"secondaryIdentifier");
-    QueryField qFId = new QueryField(qC,"id");
     q.addToSelect(qFName);
-    q.addToSelect(qFId);
+    q.addToSelect(qC);
 
     LOG.info("Prefilling ProxyReferences. Query is "+q);
     try {
@@ -633,9 +613,9 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
         @SuppressWarnings("unchecked")
         ResultsRow<Object> rr = (ResultsRow<Object>) resIter.next();
         String name = (String)rr.get(0);
-        Integer id = (Integer)rr.get(1);
-        map.put(name,new ProxyReference(getIntegrationWriter().getObjectStore(),id,objectClass));
-        ((IntegrationWriterDataTrackingImpl)getIntegrationWriter()).markAsStored(id);
+        InterMineObject obj = (InterMineObject)rr.get(1);
+        map.put(name,obj);
+        //((IntegrationWriterDataTrackingImpl)getIntegrationWriter()).markAsStored(id);
       }
     } catch (Exception e) {
       throw new BuildException("Problem in prefilling ProxyReferences: " + e.getMessage());

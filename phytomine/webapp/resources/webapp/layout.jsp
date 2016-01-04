@@ -107,28 +107,53 @@ jQuery(document).ready(function() {
   jQuery("p#contactUsLink").toggle();
   });
 
+setOption(['CDN'], 'server', "${WEB_PROPERTIES['head.cdn.location']}");
+
 if ((typeof intermine != 'undefined') && (intermine.Service != null)) {
     // Set up the service, if required.
-    var root = window.location.protocol + "//" + window.location.host + "/${WEB_PROPERTIES['webapp.path']}";
+    var root = window.location.origin + "/${WEB_PROPERTIES['webapp.path']}";
     $SERVICE = new intermine.Service({
         "root": root,
         "token": "${PROFILE.dayToken}",
         "help": "${WEB_PROPERTIES['feedback.destination']}"
     });
+    console.log("var root is "+root);
+    console.log("service is "+$SERVICE);
 
     var notification = new FailureNotification({message: $SERVICE.root + " is incorrect"});
-    $SERVICE.fetchVersion().fail(notification.render).done(function(v) {
-        console.log("Webservice is at version " + v);
-    });
-    if (intermine.widgets != null) {
-        // Make sure we have all deps required in `global.web.properties`, otherwise we fail!!!
-        var opts = { 'root': $SERVICE.root, 'token': $SERVICE.token, 'skipDeps': true };
-        window.widgets = new intermine.widgets($SERVICE.root, $SERVICE.token, opts);
+
+    $SERVICE.fetchVersion().then(reportVersion, notification.render);
+    if (typeof imtables !== 'undefined') {
+        console.debug('Using imtables: ' + (imtables.version || 'UNKNOWN'));
     }
+
+    // Load list widgets.
+    (function() {
+      if (window['list-widgets'] != null) {
+        // Make sure we have all deps required in `global.web.properties`, otherwise we fail!!!
+        var ListWidgets = require('list-widgets');
+        window.widgets = new ListWidgets({ 'root': $SERVICE.root, 'token': $SERVICE.token });
+      }
+    })();
+
     var ua = jQuery.browser; // kinda evil, but best way to do this for now
     if (ua.msie && parseInt(ua.version, 10) < 9) {
         new Notification({message: '<fmt:message key="old.browser"/>'}).render();
     }
+}
+
+function setOption (ns, key, val) {
+    var i, step, options = (window.intermine && window.intermine.options);
+    if (!options) return;
+    for (i = 0; i < ns.length; i++) {
+        step = ns[i];
+        options = options[step] || (options[step] = {});
+    }
+    options[key] = val;
+}
+
+function reportVersion (v) {
+    console.log("Webservice is at version " + v);
 }
 
 $MODEL_TRANSLATION_TABLE = {
@@ -146,11 +171,11 @@ $MODEL_TRANSLATION_TABLE = {
 };
 
 <c:if test="${! empty WEB_PROPERTIES['constraint.default.value']}">
-if (typeof intermine != 'undefined') {
-    intermine.scope('intermine.conbuilder.messages', {
-        "ValuePlaceholder": "${WEB_PROPERTIES['constraint.default.value']}",
-        "ExtraPlaceholder": "${WEB_PROPERTIES['constraint.default.extra-value']}"
-    }, true);
+if (typeof imtables != 'undefined' && imtables.setMessages) {
+    imtables.setMessages({
+        "conbuilder.ValuePlaceholder": "${WEB_PROPERTIES['constraint.default.value']}",
+        "conbuilder.ExtraPlaceholder": "${WEB_PROPERTIES['constraint.default.extra-value']}"
+    });
 }
 </c:if>
 

@@ -185,6 +185,9 @@ public class InterflowscanConverter extends BioFileConverter
         if (dbName.equals("PFAM") ) hitAcc = hitAcc.replaceAll("\\.\\d+$","");
         
         // make the item for the ontology term and store it.
+        if (!oTermMap.containsKey(dbName)) {
+          throw new BuildException("There is no dbinfo entry for "+dbName);
+        }
         if (!oTermMap.get(dbName).containsKey(hitAcc) ) {
           Item hit = createItem("OntologyTerm");
           hit.setAttribute("identifier",hitAcc);
