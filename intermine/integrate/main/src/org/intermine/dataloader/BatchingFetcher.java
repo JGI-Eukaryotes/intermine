@@ -156,7 +156,7 @@ public class BatchingFetcher extends HintingFetcher
             for (Object object : row) {
                 if (object instanceof InterMineObject) {
                     InterMineObject imo = (InterMineObject) object;
-                    if (idMap.get(imo.getId()) == null) {
+                    if (imo.getId()==null || idMap.get(imo.getId()) == null) {
                         objects.add(imo);
                         for (String fieldName : TypeUtil.getFieldInfos(imo.getClass()).keySet()) {
                             Object fieldValue;
