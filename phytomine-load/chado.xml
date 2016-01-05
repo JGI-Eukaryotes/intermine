@@ -1793,3 +1793,27 @@
     <property name="dataSourceName" value="Phytozome v11" />
     <property name="dataSetTitle" value="InterFlowScan" />
   </source>
+  <source name="phytozome-chado-Z.marina-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="common eelgrass" />
+    <property name="genus" value="Zostera" />
+    <property name="name" value="Zostera marina" />
+    <property name="species" value="marina" />
+    <property name="assemblyDbxrefId" value="9779214" />
+    <property name="proteomeId" value="324" />
+    <property name="taxonId" value="29655" />
+    <property name="annotationVersion" value="v2.2" />
+    <property name="dataSourceName" value="phytozome-Z.marina" />
+    <property name="shortName" value="Z. marina early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="9779216" />
+    <property name="assemblyVersion" value="v2.2" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="interflowscan-Z.marina_324" type="interflowscan">
+    <property name="proteomeId" value="324" />
+    <property name="src.data.file" value="Z.marina_324.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>

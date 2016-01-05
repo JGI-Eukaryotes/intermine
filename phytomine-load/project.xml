@@ -11,8 +11,15 @@
   <property name="source.location" location="../bio/sources/" />
   <sources>
     &chado;
+    &family;
 
   <source name="ec-assignments" type="e2p2-enzymes">
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="E2P2" />
+  </source>
+
+  <source name="ec-assignments-plus" type="e2p2-enzymes">
     <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
     <property name="dataSourceName" value="Phytozome v11" />
     <property name="dataSetTitle" value="E2P2" />
@@ -38,24 +45,44 @@
       <property name="dataSetTitle" value="A.hypochondriacus RNA-seq Info" />
     </source>
 
-    <source name="cufflinks-P.vulgaris" type="cufflinks">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
-      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
+    <source name="cufflinks-A.thaliana-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="167" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Athaliana-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-A.thaliana-geneAtlas" />
+      <property name="dataSetTitle" value="A.thaliana-geneAtlas RNA-seq" />
     </source>
-    <source name="coexpression-P.vulgaris" type="coexpression">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
+    <source name="coexpression-A.thaliana-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="167" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Athaliana-geneAtlas/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
+      <property name="dataSourceName" value="rnaseq-A.thaliana-geneAtlas" />
+      <property name="dataSetTitle" value="A.thaliana-geneAtlas RNA-seq" />
     </source>
-    <source name="cufflinks-P.vulgaris-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
-      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris RNA-seq Info" />
+    <source name="cufflinks-A.thaliana-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="167" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Athaliana-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-A.thaliana-geneAtlas" />
+      <property name="dataSetTitle" value="A.thaliana-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-B.distachyon-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Bdistachyon-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-B.distachyon-geneAtlas" />
+      <property name="dataSetTitle" value="B.distachyon-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-B.distachyon-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Bdistachyon-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-B.distachyon-geneAtlas" />
+      <property name="dataSetTitle" value="B.distachyon-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-B.distachyon-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Bdistachyon-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-B.distachyon-geneAtlas" />
+      <property name="dataSetTitle" value="B.distachyon-geneAtlas RNA-seq Info" />
     </source>
 
     <source name="cufflinks-C.reinhardtii" type="cufflinks">
@@ -64,13 +91,6 @@
       <property name="dataSourceName" value="rnaseq-C.reinhardtii" />
       <property name="dataSetTitle" value="C.reinhardtii RNA-seq" />
     </source>
-    <!--source name="coexpression-C.reinhardtii" type="coexpression">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii/" />
-      <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii" />
-      <property name="dataSetTitle" value="C.reinhardtii RNA-seq" />
-    </source-->
     <source name="cufflinks-C.reinhardtii-info" type="rnaseq-experiment-info">
       <property name="proteomeId" value="281" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii/" />
@@ -78,24 +98,24 @@
       <property name="dataSetTitle" value="C.reinhardtii RNA-seq Info" />
     </source>
 
-    <source name="cufflinks-G.max" type="cufflinks">
-      <property name="proteomeId" value="275" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax/" />
-      <property name="dataSourceName" value="rnaseq-G.max" />
-      <property name="dataSetTitle" value="G.max RNA-seq" />
+    <source name="cufflinks-C.reinhardtii-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
+      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq" />
     </source>
-    <source name="coexpression-G.max" type="coexpression">
-      <property name="proteomeId" value="275" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax/" />
+    <source name="coexpression-C.reinhardtii-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-G.max" />
-      <property name="dataSetTitle" value="G.max RNA-seq" />
+      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
+      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq" />
     </source>
-    <source name="cufflinks-G.max-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="275" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax/" />
-      <property name="dataSourceName" value="rnaseq-G.max" />
-      <property name="dataSetTitle" value="G.max RNA-seq Info" />
+    <source name="cufflinks-C.reinhardtii-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
+      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq Info" />
     </source>
 
     <source name="cufflinks-E.grandis" type="cufflinks">
@@ -118,44 +138,77 @@
       <property name="dataSetTitle" value="E.grandis RNA-seq Info" />
     </source>
 
-    <source name="cufflinks-P.trichocarpa-geneAtlas" type="cufflinks">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ptrichocarpa-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-P.trichocarpa-geneAtlas" />
-      <property name="dataSetTitle" value="P.trichocarpa-geneAtlas RNA-seq" />
+    <source name="cufflinks-G.max" type="cufflinks">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax/" />
+      <property name="dataSourceName" value="rnaseq-G.max" />
+      <property name="dataSetTitle" value="G.max RNA-seq" />
     </source>
-    <source name="coexpression-P.trichocarpa-geneAtlas" type="coexpression">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ptrichocarpa-geneAtlas/" />
-      <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-P.trichocarpa-geneAtlas" />
-      <property name="dataSetTitle" value="P.trichocarpa-geneAtlas RNA-seq" />
-    </source>
-    <source name="cufflinks-P.trichocarpa-geneAtlas-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ptrichocarpa-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-P.trichocarpa-geneAtlas" />
-      <property name="dataSetTitle" value="P.trichocarpa-geneAtlas RNA-seq Info" />
+    <source name="cufflinks-G.max-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax/" />
+      <property name="dataSourceName" value="rnaseq-G.max" />
+      <property name="dataSetTitle" value="G.max RNA-seq Info" />
     </source>
 
-    <source name="cufflinks-C.reinhardtii-geneAtlas" type="cufflinks">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
-      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq" />
+    <source name="cufflinks-G.max-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-G.max-geneAtlas" />
+      <property name="dataSetTitle" value="G.max-geneAtlas RNA-seq" />
     </source>
-    <source name="coexpression-C.reinhardtii-geneAtlas" type="coexpression">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
+    <source name="coexpression-G.max-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax-geneAtlas/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
-      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq Info" />
+      <property name="dataSourceName" value="rnaseq-G.max-geneAtlas" />
+      <property name="dataSetTitle" value="G.max-geneAtlas RNA-seq" />
     </source>
-    <source name="cufflinks-C.reinhardtii-geneAtlas-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
-      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq Info" />
+    <source name="cufflinks-G.max-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-G.max-geneAtlas" />
+      <property name="dataSetTitle" value="G.max-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-M.truncatula-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="285" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Mtruncatula-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-M.truncatula-geneAtlas" />
+      <property name="dataSetTitle" value="M.truncatula-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-M.truncatula-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="285" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Mtruncatula-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-M.truncatula-geneAtlas" />
+      <property name="dataSetTitle" value="M.truncatula-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-M.truncatula-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="285" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Mtruncatula-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-M.truncatula-geneAtlas" />
+      <property name="dataSetTitle" value="M.truncatula-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-P.hallii-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="308" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Phallii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.hallii-geneAtlas" />
+      <property name="dataSetTitle" value="P.hallii-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-P.hallii-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="308" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Phallii-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-P.hallii-geneAtlas" />
+      <property name="dataSetTitle" value="P.hallii-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-P.hallii-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="308" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Phallii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.hallii-geneAtlas" />
+      <property name="dataSetTitle" value="P.hallii-geneAtlas RNA-seq Info" />
     </source>
 
     <source name="cufflinks-P.patens-geneAtlas" type="cufflinks">
@@ -178,532 +231,126 @@
       <property name="dataSetTitle" value="P.patens-geneAtlas RNA-seq Info" />
     </source>
 
+    <source name="cufflinks-P.trichocarpa-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="210" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ptrichocarpa-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.trichocarpa-geneAtlas" />
+      <property name="dataSetTitle" value="P.trichocarpa-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-P.trichocarpa-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="210" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ptrichocarpa-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-P.trichocarpa-geneAtlas" />
+      <property name="dataSetTitle" value="P.trichocarpa-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-P.trichocarpa-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="210" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ptrichocarpa-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.trichocarpa-geneAtlas" />
+      <property name="dataSetTitle" value="P.trichocarpa-geneAtlas RNA-seq Info" />
+    </source>
 
-  <source name="phytozome-cluster-node-2289" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2289" />
-  </source>
-  <source name="phytozome-cluster-node-2290" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2290" />
-  </source>
-  <source name="phytozome-cluster-node-2295" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2295" />
-  </source>
-  <source name="phytozome-cluster-node-2296" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2296" />
-  </source>
-  <source name="phytozome-cluster-node-2297" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2297" />
-  </source>
-  <source name="phytozome-cluster-node-2298" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2298" />
-  </source>
-  <source name="phytozome-cluster-node-2299" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2299" />
-  </source>
-  <source name="phytozome-cluster-node-2304" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2304" />
-  </source>
-  <source name="phytozome-cluster-node-2307" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2307" />
-  </source>
-  <source name="phytozome-cluster-node-2312" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2312" />
-  </source>
-  <source name="phytozome-cluster-node-2395" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="2395" />
-  </source>
-  <source name="phytozome-cluster-node-3123" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3123" />
-  </source>
-  <source name="phytozome-cluster-node-3124" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3124" />
-  </source>
-  <source name="phytozome-cluster-node-3127" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3127" />
-  </source>
-  <source name="phytozome-cluster-node-3141" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3141" />
-  </source>
-  <source name="phytozome-cluster-node-3142" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3142" />
-  </source>
-  <source name="phytozome-cluster-node-3144" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3144" />
-  </source>
-  <source name="phytozome-cluster-node-3246" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3246" />
-  </source>
-  <source name="phytozome-cluster-node-3252" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3252" />
-  </source>
-  <source name="phytozome-cluster-node-3253" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3253" />
-  </source>
-  <source name="phytozome-cluster-node-3254" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3254" />
-  </source>
-  <source name="phytozome-cluster-node-3299" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3299" />
-  </source>
-  <source name="phytozome-cluster-node-3301" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3301" />
-  </source>
-  <source name="phytozome-cluster-node-3302" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3302" />
-  </source>
-  <source name="phytozome-cluster-node-3304" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3304" />
-  </source>
-  <source name="phytozome-cluster-node-3305" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3305" />
-  </source>
-  <source name="phytozome-cluster-node-3306" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3306" />
-  </source>
-  <source name="phytozome-cluster-node-3307" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3307" />
-  </source>
-  <source name="phytozome-cluster-node-3308" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3308" />
-  </source>
-  <source name="phytozome-cluster-node-3309" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3309" />
-  </source>
-  <source name="phytozome-cluster-node-3352" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3352" />
-  </source>
-  <source name="phytozome-cluster-node-3445" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3445" />
-  </source>
-  <source name="phytozome-cluster-node-3451" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3451" />
-  </source>
-  <source name="phytozome-cluster-node-3464" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3464" />
-  </source>
-  <source name="phytozome-cluster-node-3467" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="3467" />
-  </source>
-  <source name="phytozome-cluster-node-4431" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4431" />
-  </source>
-  <source name="phytozome-cluster-node-4432" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4432" />
-  </source>
-  <source name="phytozome-cluster-node-4433" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4433" />
-  </source>
-  <source name="phytozome-cluster-node-4434" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4434" />
-  </source>
-  <source name="phytozome-cluster-node-4435" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4435" />
-  </source>
-  <source name="phytozome-cluster-node-4436" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4436" />
-  </source>
-  <source name="phytozome-cluster-node-4612" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4612" />
-  </source>
-  <source name="phytozome-cluster-node-4614" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4614" />
-  </source>
-  <source name="phytozome-cluster-node-4759" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4759" />
-  </source>
-  <source name="phytozome-cluster-node-4850" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4850" />
-  </source>
-  <source name="phytozome-cluster-node-4851" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4851" />
-  </source>
-  <source name="phytozome-cluster-node-4865" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4865" />
-  </source>
-  <source name="phytozome-cluster-node-4907" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4907" />
-  </source>
-  <source name="phytozome-cluster-node-4908" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4908" />
-  </source>
-  <source name="phytozome-cluster-node-4909" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4909" />
-  </source>
-  <source name="phytozome-cluster-node-4910" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4910" />
-  </source>
-  <source name="phytozome-cluster-node-4954" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4954" />
-  </source>
-  <source name="phytozome-cluster-node-4955" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4955" />
-  </source>
-  <source name="phytozome-cluster-node-4956" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4956" />
-  </source>
-  <source name="phytozome-cluster-node-4957" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4957" />
-  </source>
-  <source name="phytozome-cluster-node-4958" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4958" />
-  </source>
-  <source name="phytozome-cluster-node-4959" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4959" />
-  </source>
-  <source name="phytozome-cluster-node-4960" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4960" />
-  </source>
-  <source name="phytozome-cluster-node-4961" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4961" />
-  </source>
-  <source name="phytozome-cluster-node-4962" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4962" />
-  </source>
-  <source name="phytozome-cluster-node-4963" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4963" />
-  </source>
-  <source name="phytozome-cluster-node-4964" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4964" />
-  </source>
-  <source name="phytozome-cluster-node-4965" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4965" />
-  </source>
-  <source name="phytozome-cluster-node-4987" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4987" />
-  </source>
-  <source name="phytozome-cluster-node-4988" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="4988" />
-  </source>
-  <source name="phytozome-cluster-node-5003" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5003" />
-  </source>
-  <source name="phytozome-cluster-node-5004" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5004" />
-  </source>
-  <source name="phytozome-cluster-node-5006" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5006" />
-  </source>
-  <source name="phytozome-cluster-node-5007" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5007" />
-  </source>
-  <source name="phytozome-cluster-node-5008" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5008" />
-  </source>
-  <source name="phytozome-cluster-node-5009" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5009" />
-  </source>
-  <source name="phytozome-cluster-node-5010" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5010" />
-  </source>
-  <source name="phytozome-cluster-node-5011" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5011" />
-  </source>
-  <source name="phytozome-cluster-node-5012" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5012" />
-  </source>
-  <source name="phytozome-cluster-node-5013" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome v11" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5013" />
-  </source>
+    <source name="cufflinks-P.virgatum-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="273" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvirgatum-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.virgatum-geneAtlas" />
+      <property name="dataSetTitle" value="P.virgatum-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-P.virgatum-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="273" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvirgatum-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-P.virgatum-geneAtlas" />
+      <property name="dataSetTitle" value="P.virgatum-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-P.virgatum-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="273" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvirgatum-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.virgatum-geneAtlas" />
+      <property name="dataSetTitle" value="P.virgatum-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-P.vulgaris" type="cufflinks">
+      <property name="proteomeId" value="218" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
+      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
+    </source>
+    <source name="coexpression-P.vulgaris" type="coexpression">
+      <property name="proteomeId" value="218" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
+    </source>
+    <source name="cufflinks-P.vulgaris-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="218" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
+      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-S.bicolor-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
+      <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-S.bicolor-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
+      <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-S.bicolor-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
+      <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-S.italica-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="312" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sitalica-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.italica-geneAtlas" />
+      <property name="dataSetTitle" value="S.italica-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-S.italica-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="312" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sitalica-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-S.italica-geneAtlas" />
+      <property name="dataSetTitle" value="S.italica-geneAtlas RNA-seq Info" />
+    </source>
+    <source name="cufflinks-S.italica-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="312" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sitalica-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.italica-geneAtlas" />
+      <property name="dataSetTitle" value="S.italica-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-S.viridis-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="311" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sviridis-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.viridis-geneAtlas" />
+      <property name="dataSetTitle" value="S.viridis-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-S.viridis-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="311" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sviridis-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-S.viridis-geneAtlas" />
+      <property name="dataSetTitle" value="S.viridis-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-S.viridis-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="311" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sviridis-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.viridis-geneAtlas" />
+      <property name="dataSetTitle" value="S.viridis-geneAtlas RNA-seq Info" />
+    </source>
+
     <source name="provisional-defline" type="gene-defline">
       <property name="src.data.file" value="defline.tsv" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/defline/" />
@@ -840,6 +487,11 @@
     </source>
 
     <source name="phytozome-homologs" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    </source>
+
+    <source name="phytozome-homologs-extra" type="inparanoid-homologs" >
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
@@ -1045,11 +697,13 @@
     <post-process name="create-gene-flanking-features" />
     <post-process name="transfer-sequences" />
     <post-process name="create-references" />
+    <post-process name="create-attribute-indexes" />
     <post-process name="add-uniprot-ids" />
     <!-- this runs the postprocessing steps in all sources -->
     <post-process name="do-sources" />
     <post-process name="transfer-go-terms" />
     <post-process name="transfer-ontology-terms" />
+    <post-process name="transfer-protein-domains" />
     <post-process name="summarise-objectstore" />
     <post-process name="create-autocomplete-index" />
     <post-process name="create-search-index" />
