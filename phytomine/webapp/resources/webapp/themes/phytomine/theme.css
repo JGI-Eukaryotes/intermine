@@ -934,6 +934,35 @@ div.bagDetails-page div.widget table.table-striped tbody tr:hover td { backgroun
 }
 
 .attributeField {
-  text-align: left; }
-
+    text-align: left;
+}
+table.zebra {
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: 7px;
+}
+table.zebra th, table.zebra td {
+    padding: 0.5em 1.5em;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+table.zebra tbody tr:nth-child(odd) {
+    background: #ebebeb;
+}
+.monospace {
+    font-family: "Courier New", courier, monospace;
+    font-size: 110%;
+}
+th.organism, th.tissues-conditions {
+    width: 35%;
+}
+th.gene-atlas, th.confidence {
+    width: 15%;
+}
+table.zebra ul {
+    list-style-type: circle;
+}
+table.zebra li {
+    margin-left: 0;
+}
 
