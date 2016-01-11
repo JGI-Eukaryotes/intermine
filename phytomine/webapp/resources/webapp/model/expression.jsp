@@ -3,7 +3,7 @@
 
 <table width="100%">
   <tr>
-    <td valign="top" rowspan="2">
+    <td valign="top" colspan="2">
       <div class="heading2">
         Current data
       </div>
@@ -26,8 +26,8 @@
 	      </tr>
 	     </thead>
 	     <tbody>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Ahypochondriacus_er"><em>Amaranthus hypochondriacus</em></a></td>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ahypochondriacus_er"><em>Amaranthus hypochondriacus</em></a></td>
 		<td class="gene-atlas">no</td>
 		<td>
 		  <ul>
@@ -44,7 +44,7 @@
 		<td>8, from the lab of <a href="//lifesciences.byu.edu/~pjm43">P. Jeff Maughan</a>, BYU</td>
 	      </tr>	      
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Athaliana"><em>Arabidopsis thaliana</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Athaliana"><em>Arabidopsis thaliana</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -53,8 +53,13 @@
 		</td>
 		<td>6</td>
 	      </tr>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Bdistachyon"><em>Brachypodium distachyon</em></a></td>
+	      <tr class="no-cell">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Bdistachyon"><em>Brachypodium distachyon</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -69,8 +74,13 @@
 		</td>
 		<td>62</td>
 	      </tr>
+	      <tr class="no-cell dark-stripe">
+	        <td colspan="4">
+		Contact for permission to use: <a href="https://biology.duke.edu/people/thomas-mitchell-olds">Thomas Mitchell-Olds</a> (Duke, <span class="monospace">tmo1 AT duke DOT edu</span>)
+		</td>
+	      </tr>	      
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Creinhardtii"><em>Chlamydomonas reinhardtii</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Creinhardtii"><em>Chlamydomonas reinhardtii</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -85,8 +95,13 @@
 		</td>
 		<td>133</td>
 	      </tr>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Egrandis"><em>Eucalyptus grandis</em></a></td>
+	      <tr class="no-cell">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.chem.ucla.edu/dept/Faculty/merchant/">Sabeeha Merchant</a> (UCLA, <span class="monospace">merchant AT chem DOT ucla DOT edu</span>) and<br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Egrandis"><em>Eucalyptus grandis</em></a></td>
 		<td class="gene-atlas">no</td>
 		<td>
 		  <ul>
@@ -101,7 +116,7 @@
 		<td>6, performed on a <em>E. grandis</em> &times; <em>E. urophylla</em> hybrid</td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Gmax"><em>Glycine max</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Gmax"><em>Glycine max</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -113,8 +128,13 @@
 		</td>
 		<td>26</td>
 	      </tr>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Mtruncatula"><em>Medicago truncatula</em><a/></td>
+	      <tr class="no-cell">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Mtruncatula"><em>Medicago truncatula</em><a/></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -124,8 +144,13 @@
 		</td>
 		<td>9</td>
 	      </tr>	      
+	      <tr class="no-cell dark-stripe">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Phallii_er"><em>Panicum hallii</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Phallii_er"><em>Panicum hallii</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -134,8 +159,13 @@
 		</td>
 		<td>9</td>
 	      </tr>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Pvirgatum"><em>Panicum virgatum</em></a></td>
+	      <tr class="no-cell">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Pvirgatum"><em>Panicum virgatum</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -149,8 +179,13 @@
 		</td>
 		<td>26</td>
 	      </tr>
+	      <tr class="no-cell dark-stripe">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
 	      <tr>		
-		<td><a href="/pz/portal.html#!info?alias=Org_Pvulgaris"><em>Phaseolus vulgaris</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Pvulgaris"><em>Phaseolus vulgaris</em></a></td>
 		<td class="gene-atlas">no</td>
 		<td>
 		<ul>
@@ -161,8 +196,8 @@
 		</td>
 		<td>11</td>
 	      </tr>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Ppatens"><em>Physcomitrella patens</em></a></td>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ppatens"><em>Physcomitrella patens</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -176,8 +211,13 @@
 		</td>
 		<td>32</td>
 	      </tr>
+	      <tr class="no-cell dark-stripe">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://old-site.bioss-freiburg.de/www.bioss.uni-freiburg.de/cms/rensing.html">Stefan Rensing</a>, (Freiburg, <span class="monospace">stefan DOT rensing AT biologie DOT uni-marburg DOT de</span>) and<br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Ptrichocarpa"><em>Populus trichocarpa</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ptrichocarpa"><em>Populus trichocarpa</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -188,8 +228,13 @@
 		</td>
 		<td>24</td>
 	      </tr>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Sitalica"><em>Setaria italica</em></a></td>
+	      <tr class="no-cell">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.esd.ornl.gov/PGG/tuskan_bio.htm">Gerald Tuskan</a> (Oak Ridge NL, <span class="monospace">gtk AT ornl DOT gov</span>) and<br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, email: <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Sitalica"><em>Setaria italica</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -202,8 +247,13 @@
 		</td>
 		<td>20</td>
 	      </tr>
+	      <tr class="no-cell dark-stripe"">
+	        <td colspan="4">
+		Contact for permission to use: <a href="https://www.danforthcenter.org/scientists-research/principal-investigators/thomas-brutnell">Thomas Brutnell</a> (Danforth Center, <span class="monospace">tbrutnell AT danforthcenter DOT org</span>)
+		</td>
+	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Sviridis_er"><em>Setaria viridis</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Sviridis_er"><em>Setaria viridis</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -216,8 +266,13 @@
 		</td>
 		<td>19</td>
 	      </tr>
-	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Sbicolor_er"><em>Sorghum bicolor</em></a></td>
+	      <tr class="no-cell">
+	        <td colspan="4">
+		Contact for permission to use: <a href="https://www.danforthcenter.org/scientists-research/principal-investigators/thomas-brutnell">Thomas Brutnell</a> (Danforth Center, <span class="monospace">tbrutnell AT danforthcenter DOT org</span>)
+		</td>
+	      </tr>
+	      <tr class="dark-stripe">
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Sbicolor_er"><em>Sorghum bicolor</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		 <ul>
@@ -227,21 +282,20 @@
 		 </ul>	    
 		</td>
 		<td>47</td>
-	      </tr>	      
+	      </tr>
+	      <tr class="no-cell dark-stripe">
+	        <td colspan="4">
+		Contact for permission to use: <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> (JGI/HudsonAlpha, <span class="monospace">jschmutz AT hudsonalpha DOT org</span>)
+		</td>
+	      </tr>
+	      
 	     </tbody> 
 	    </table>
             </p>
-            <p class="body">
-            Please note this includes some data from the initial release of JGI Plant Gene Atlas Project:
-            <ul>
-              <li><em>Chlamydomonas reinhardtii</em> (26 unpublished experiments from <a href="http://www.chem.ucla.edu/dept/Faculty/merchant/">Sabeeha Merchant</a>, email: <span class="monospace">merchant AT chem DOT ucla DOT edu</span>)</li>
-              <li><em>Physcomitrella patens</em> (unpublished data from <a href="http://old-site.bioss-freiburg.de/www.bioss.uni-freiburg.de/cms/rensing.html">Stefan Rensing</a>, email: <span class="monospace">stefan DOT rensing AT biologie DOT uni-marburg DOT de</span>)</li>
-              <li><em>Populus trichocarpa</em> (unpublished data from <a href="http://www.esd.ornl.gov/PGG/tuskan_bio.htm">Gerald Tuskan</a>, email: <span class="monospace">gtk AT ornl DOT gov</a>)</li>
-            </ul>
-            </p>
+
 
             <p class="body">
-            This project is a multi-laboratory collaboration that seeks to produce a standardized
+            The JGI Plant Gene Atlas Project is a multi-laboratory collaboration that seeks to produce a standardized
             expression atlas across diverse tissues and time courses from JGI Plant
             Flagship organisms.  More detail about the Plant Flagship Genomes can be
             found
@@ -253,14 +307,9 @@
             JGI Community Science Program
             </a>.
             </p>
-
-            <p class="body">
-            This v0.1 release provides normalized expression values for diverse
-	    growth conditions of <em>Chlamydomonas</em>, <em>Populus</em>, and <em>Physcomitrella</em>.
-	    </p>
 	    
             <p class="body">
-            This data is unpublished.  As a public service, the
+            The data included in the Atlas is unpublished.  As a public service, the
             Department of Energy's Joint Genome Institute (JGI) is
             making the RNA-seq expression data
             available before scientific publication according to the
@@ -272,7 +321,7 @@
             by other groups.
             </p>
 	        <p class="body">
-            At the present time, we request that anyone intending to download Gene Atlas data for use in any analysis to <b>please contact the overall project lead</b>,
+            At the present time, we request that anyone intending to download Gene Atlas data for use in any analysis to email contacts as noted with individual organisms.  The overall project lead is
 	    <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> at JGI/HudsonAlpha, email: <span class="monospace">jschmutz AT hudsonalpha DOT org</span>.   To be kept informed on the progress of the JGI Gene Atlas project, changes in 
 	   the data usage policy, or to ask questions, please subscribe to the project mailing list by sending a blank email with the Subject line <span class="monospace">subscribe jgi-gene_atlas FirstName LastName</span>
 	   to <span class="monospace">sympa@lists.lbl.gov</span>.

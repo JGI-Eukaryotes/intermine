@@ -940,14 +940,26 @@ table.zebra {
     border-collapse: collapse;
     width: 100%;
     margin-left: 7px;
+    border: 1px solid #ddd;
+    border-left: 0;
+    border-right: 0;
 }
 table.zebra th, table.zebra td {
     padding: 0.5em 1.5em;
     text-align: left;
     border: 1px solid #ddd;
+    border-top: transparent;
+    border-bottom: transparent;
 }
-table.zebra tbody tr:nth-child(odd) {
+table.zebra tbody tr.dark-stripe {
     background: #ebebeb;
+}
+table.zebra tr.no-cell td {
+    text-align: center;
+    font-szie: 90%;
+}
+table.zebra td.organism {
+    font-size: 110%;
 }
 .monospace {
     font-family: "Courier New", courier, monospace;
