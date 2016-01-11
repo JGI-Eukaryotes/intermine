@@ -58,7 +58,8 @@
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
-		    <li>Above ground tissues varied by light exposure</li>
+		    <li>Above ground tissues grown for 20 days with 18 hours of light, harvested between 1 and 24 hours varied by cold, heat, drought, salt treatment</li>
+		    <li>Shoots grown for 29, 30, 31 days with 12 hours of light / dark, series of samples harvested at different times of day and night</li>
 		    <li>Root, leaf varied by nitrogen source</li>
 		    <li>Young and mature leaf</li>
 		    <li>Gradient young leaf tissues</li>
