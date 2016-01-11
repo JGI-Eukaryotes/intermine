@@ -940,36 +940,28 @@ table.zebra {
     border-collapse: collapse;
     width: 100%;
     margin-left: 7px;
-    border: 1px solid #ddd;
-    border-left: 0;
-    border-right: 0;
+    margin: 2em 0;
 }
 table.zebra th, table.zebra td {
     padding: 0.5em 1.5em;
     text-align: left;
     border: 1px solid #ddd;
-    border-top: transparent;
-    border-bottom: transparent;
 }
-table.zebra tbody tr.dark-stripe {
+table.zebra tbody tr:nth-child(odd) {
     background: #ebebeb;
-}
-table.zebra tr.no-cell td {
-    text-align: center;
-    font-szie: 90%;
-}
-table.zebra td.organism {
-    font-size: 110%;
 }
 .monospace {
     font-family: "Courier New", courier, monospace;
     font-size: 110%;
 }
-th.organism, th.tissues-conditions {
+td.permissions .monospace {
+    font-size: 90%;
+}
+th.tissues-conditions {
     width: 35%;
 }
 th.gene-atlas, th.confidence {
-    width: 15%;
+    width: 8%;
 }
 table.zebra ul {
     list-style-type: circle;
