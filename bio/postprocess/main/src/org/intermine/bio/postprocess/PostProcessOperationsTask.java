@@ -238,6 +238,9 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
             } else if ("transfer-protein-domains".equals(operation)) {
               TransferDomainAnnotations task = new TransferDomainAnnotations(getObjectStoreWriter());
               task.execute();
+            } else if ("characterize-cufflinks".equals(operation)) {
+              CufflinksPostProcessor task = new CufflinksPostProcessor(getObjectStoreWriter());
+              task.execute();
             } else if ("rename-ontologies".equals(operation)) {
               OntologyRenamer task = new OntologyRenamer(getObjectStoreWriter());
               task.execute();

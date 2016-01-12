@@ -700,7 +700,7 @@
     <post-process name="create-attribute-indexes" />
     <post-process name="add-uniprot-ids" />
     <!-- this runs the postprocessing steps in all sources -->
-    <post-process name="do-sources" />
+    <post-process name="characterize-cufflinks" />
     <post-process name="transfer-go-terms" />
     <post-process name="transfer-ontology-terms" />
     <post-process name="transfer-protein-domains" />

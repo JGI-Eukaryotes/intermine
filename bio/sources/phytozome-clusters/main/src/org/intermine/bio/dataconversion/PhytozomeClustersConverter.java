@@ -228,8 +228,8 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
 
         try {
           getDirectDataLoader().store(proFamily);
-          ProxyReference pFRef = new ProxyReference(getIntegrationWriter().getObjectStore(),
-                  proFamily.getId(),ProteinFamily.class);
+         // ProxyReference pFRef = new ProxyReference(getIntegrationWriter().getObjectStore(),
+         //         proFamily.getId(),ProteinFamily.class);
           ctr++;
           if (ctr%10000 == 0) {
             LOG.info("Stored "+ctr+" clusters...");
@@ -237,7 +237,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
           for( Integer protId : thingsToStore.keySet() ) {
             ArrayList<ProteinFamilyMember> pfmByOrganism = thingsToStore.get(protId);
             for(ProteinFamilyMember pfm : pfmByOrganism ) {
-              //pfm.proxyProteinFamily(pFRef);
+              pfm.setProteinFamily(proFamily);
               getDirectDataLoader().store(pfm);
             }
           }
