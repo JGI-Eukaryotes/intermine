@@ -940,6 +940,7 @@ table.zebra {
     border-collapse: collapse;
     width: 100%;
     margin-left: 7px;
+    margin: 2em 0;
 }
 table.zebra th, table.zebra td {
     padding: 0.5em 1.5em;
@@ -953,11 +954,14 @@ table.zebra tbody tr:nth-child(odd) {
     font-family: "Courier New", courier, monospace;
     font-size: 110%;
 }
-th.organism, th.tissues-conditions {
+td.permissions .monospace {
+    font-size: 90%;
+}
+th.tissues-conditions {
     width: 35%;
 }
 th.gene-atlas, th.confidence {
-    width: 15%;
+    width: 8%;
 }
 table.zebra ul {
     list-style-type: circle;

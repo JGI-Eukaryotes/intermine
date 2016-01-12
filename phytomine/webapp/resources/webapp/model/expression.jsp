@@ -3,7 +3,7 @@
 
 <table width="100%">
   <tr>
-    <td valign="top" rowspan="2">
+    <td valign="top" colspan="2">
       <div class="heading2">
         Current data
       </div>
@@ -20,14 +20,15 @@
 	     <thead>
 	      <tr>
 		<th class="organism">organism</th>
-		<th class="gene-atlas">in Gene Atlas?</th>
-		<th class="tissues-conditions">tissues / conditions</th>
-		<th class="confidence"># of experiments</th>
+		<th class="gene-atlas">Gene Atlas?</th>
+		<th class="tissues-conditions">tissues&nbsp;/ conditions</th>
+		<th class="confidence"># of expts</th>
+		<th class="permissions">permissions&nbsp;/ contact</th>
 	      </tr>
 	     </thead>
 	     <tbody>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Ahypochondriacus_er"><em>Amaranthus hypochondriacus</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ahypochondriacus_er"><em>Amaranthus hypochondriacus</em></a></td>
 		<td class="gene-atlas">no</td>
 		<td>
 		  <ul>
@@ -41,10 +42,11 @@
 		    <li>Stem</li>
 		  </ul>
 		</td>
-		<td>8, from the lab of <a href="//lifesciences.byu.edu/~pjm43">P. Jeff Maughan</a>, BYU</td>
+		<td>8</td>
+		<td class="permissions"><a href="//lifesciences.byu.edu/~pjm43">P. Jeff Maughan</a><br />BYU<br /><span class="monospace">Jeff_Maughan AT byu DOT edu</span></td>
 	      </tr>	      
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Athaliana"><em>Arabidopsis thaliana</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Athaliana"><em>Arabidopsis thaliana</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -52,13 +54,15 @@
 		  </ul>
 		</td>
 		<td>6</td>
+	        <td class="permissions"><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br>JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Bdistachyon"><em>Brachypodium distachyon</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Bdistachyon"><em>Brachypodium distachyon</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
-		    <li>Above ground tissues varied by light exposure</li>
+		    <li>Above ground tissues grown for 20 days / 18 hours of light, varied for harvesting time between 1 and 24 hours and by cold, heat, drought, salt treatment</li>
+		    <li>Shoots grown for 29 through 31 days / 12 hours of light, sample series varied by day and hour of harvest</li>
 		    <li>Root, leaf varied by nitrogen source</li>
 		    <li>Young and mature leaf</li>
 		    <li>Gradient young leaf tissues</li>
@@ -67,9 +71,10 @@
 		  </ul>
 		</td>
 		<td>62</td>
-	      </tr>
+	        <td class="permissions"><a href="https://www.danforthcenter.org/scientists-research/principal-investigators/todd-mockler">Todd Mockler</a><br />Danforth Center<br /><span class="monospace">tmockler AT danforthcenter DOT org</span></td>
+	      </tr>	      
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Creinhardtii"><em>Chlamydomonas reinhardtii</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Creinhardtii"><em>Chlamydomonas reinhardtii</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -83,11 +88,13 @@
 		  </ul>
 		</td>
 		<td>133</td>
+		<td class="permissions"><a href="http://www.chem.ucla.edu/dept/Faculty/merchant/">Sabeeha Merchant</a><br />UCLA<br /><span class="monospace">merchant AT chem DOT ucla DOT edu</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Egrandis"><em>Eucalyptus grandis</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Egrandis"><em>Eucalyptus grandis</em></a></td>
 		<td class="gene-atlas">no</td>
 		<td>
+		  From a <em>E. grandis</em> &times; <em>E. urophylla</em> hybrid:<br /><br />
 		  <ul>
 		    <li>Mature leaf</li>
 		    <li>Young leaf</li>
@@ -97,23 +104,25 @@
 		    <li>Immature xylem</li>
 		  </ul>
 		</td>
-		<td>6, performed on a <em>E. grandis</em> &times; <em>E. urophylla</em> hybrid</td>
+		<td>6</td>
+		<td></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Gmax"><em>Glycine max</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Gmax"><em>Glycine max</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
-		    <li>Root, lateral root, root tip, root hairs, nodules, shoot tip, apical meristem shoot, leaf, flower, seed</li>  
+		    <li>Root, lateral root, root tip, root hairs, nodules, shoot tip, apical metristem shoot, leaf, flower, seed in a series of developmental stages</li>  
 		    <li>Root, leaf varied by nitrogen source</li>
 		    <li>Opened, unopened flower</li>
 		    <li>Symbiotic conditions for root, nodules, leaf</li>
 		  </ul>
 		</td>
 		<td>26</td>
+		<td class="permissions"><a href="http://staceylab.missouri.edu/personnel/gary-stacey-ph-d/">Gary Stacey</a><br />Missouri<br /><span class="monospace">STACEYG AT missouri DOT edu</span></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Mtruncatula"><em>Medicago truncatula</em><a/></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Mtruncatula"><em>Medicago truncatula</em><a/></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -122,9 +131,10 @@
 		  </ul>
 		</td>
 		<td>9</td>
-	      </tr>	      
+		<td class="permissions"><a href="http://staceylab.missouri.edu/personnel/gary-stacey-ph-d/">Gary Stacey</a><br />Missouri<br /><span class="monospace">STACEYG AT missouri DOT edu</span></td>
+	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Phallii_er"><em>Panicum hallii</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Phallii_er"><em>Panicum hallii</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -132,36 +142,39 @@
 		  </ul>
 		</td>
 		<td>9</td>
+	        <td class="permissions"><a href="https://sites.cns.utexas.edu/juenger_lab/people/thomas-juenger">Thomas Juenger</a><br />UT, Austin<br /><span class="monospace">tjuenger AT austin DOT utexas DOT edu</span></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Pvirgatum"><em>Panicum virgatum</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Pvirgatum"><em>Panicum virgatum</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
 		    <li>Stem varied by nitrogen source</li>
 		    <li>Leaf blade, sheath</li>
 		    <li>Vascular bundle</li>
-		    <li>Root, nodes, crown, floret</li> 
+		    <li>Root, shoot, nodes, crown, floret</li> 
 		    <li>Inflorescence: emerging panicle, elongating rachis branch</li>
 		    <li>Seed varied by length of germination</li> 
 		  </ul>
 		</td>
 		<td>26</td>
+	        <td class="permissions"><a href="http://www.noble.org/corefacilities/genomics/">Yuhong Tang</a><br />Noble Foundation<br /><span class="monospace">ytang AT noble DOT org</span></td>
 	      </tr>
 	      <tr>		
-		<td><a href="/pz/portal.html#!info?alias=Org_Pvulgaris"><em>Phaseolus vulgaris</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Pvulgaris"><em>Phaseolus vulgaris</em></a></td>
 		<td class="gene-atlas">no</td>
 		<td>
 		<ul>
-		  <li>Root, nodule, stem, leaf</li>
+		  <li>Root, nodule, stem, young trifoliates, leaf</li>
 		  <li>Young pod, green mature pod</li>
 		  <li>Budding and mature flower</li>
 		</ul>
 		</td>
 		<td>11</td>
+		<td></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Ppatens"><em>Physcomitrella patens</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ppatens"><em>Physcomitrella patens</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -174,9 +187,10 @@
 		  </ul>
 		</td>
 		<td>32</td>
+	        <td class="permissions"><a href="http://old-site.bioss-freiburg.de/www.bioss.uni-freiburg.de/cms/rensing.html">Stefan Rensing</a><br />Freiburg<br /><span class="monospace">stefan DOT rensing AT biologie DOT uni-marburg DOT de</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Ptrichocarpa"><em>Populus trichocarpa</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ptrichocarpa"><em>Populus trichocarpa</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -186,9 +200,10 @@
 		  </ul>
 		</td>
 		<td>24</td>
+		<td class="permissions"><a href="http://www.esd.ornl.gov/PGG/tuskan_bio.htm">Gerald Tuskan</a><br />Oak Ridge NL<br /><span class="monospace">gtk AT ornl DOT gov</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Sitalica"><em>Setaria italica</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Sitalica"><em>Setaria italica</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -196,13 +211,15 @@
 		    <li>Multiple runs of leaf tissue in high light</li>
 		    <li>Root, shoot, panicle</li>
 		    <li>Root varied by nitrogen source, amount of H<sub>2</sub>O</li>
-		    <li>Mixed tissue varied by light condition</li>
+		    <li>Mixed above-ground tissue varied by light condition</li>
 		  </ul>
 		</td>
 		<td>20</td>
+	      <td class="permissions"><a href="https://www.danforthcenter.org/scientists-research/principal-investigators/thomas-brutnell">Thomas Brutnell</a><br />Danforth Center<br /><span class="monospace">tbrutnell AT danforthcenter DOT org</span>
+		</td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Sviridis_er"><em>Setaria viridis</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Sviridis_er"><em>Setaria viridis</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		  <ul>
@@ -210,13 +227,15 @@
 		    <li>Multiple runs of leaf tissue in high light</li>
 		    <li>Root, tiller, shoot, panicle</li>
 		    <li>Root varied by nitrogen source, amount of H<sub>2</sub>O</li>
-		    <li>Mixed tissue varied by light condition</li>		  
+		    <li>Mixed above-ground tissue varied by light condition</li>		  
 		  </ul>
 		</td>
 		<td>19</td>
+		<td class="permissions"><a href="https://www.danforthcenter.org/scientists-research/principal-investigators/thomas-brutnell">Thomas Brutnell</a><br />Danforth Center<br /><span class="monospace">tbrutnell AT danforthcenter DOT org</span>
+		</td>
 	      </tr>
 	      <tr>
-		<td><a href="/pz/portal.html#!info?alias=Org_Sbicolor_er"><em>Sorghum bicolor</em></a></td>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Sbicolor_er"><em>Sorghum bicolor</em></a></td>
 		<td class="gene-atlas">yes</td>
 		<td>
 		 <ul>
@@ -226,21 +245,15 @@
 		 </ul>	    
 		</td>
 		<td>47</td>
+	        <td class="permissions"><a href="http://biochemistry.tamu.edu/people/mullet-john/">John Mullet</a><br />Texas A&M<br /><span class="monospace">jmullet AT tamu DOT edu</span></td>
 	      </tr>	      
 	     </tbody> 
 	    </table>
             </p>
-            <p class="body">
-            Please note this includes some data from the initial release of JGI Plant Gene Atlas Project:
-            <ul>
-              <li><em>Chlamydomonas reinhardtii</em> (26 unpublished experiments from <a href="http://www.chem.ucla.edu/dept/Faculty/merchant/">Sabeeha Merchant</a>, email: <span class="monospace">merchant AT chem DOT ucla DOT edu</span>)</li>
-              <li><em>Physcomitrella patens</em> (unpublished data from <a href="http://old-site.bioss-freiburg.de/www.bioss.uni-freiburg.de/cms/rensing.html">Stefan Rensing</a>, email: <span class="monospace">stefan DOT rensing AT biologie DOT uni-marburg DOT de</span>)</li>
-              <li><em>Populus trichocarpa</em> (unpublished data from <a href="http://www.esd.ornl.gov/PGG/tuskan_bio.htm">Gerald Tuskan</a>, email: <span class="monospace">gtk AT ornl DOT gov</a>)</li>
-            </ul>
-            </p>
+
 
             <p class="body">
-            This project is a multi-laboratory collaboration that seeks to produce a standardized
+            The JGI Plant Gene Atlas Project is a multi-laboratory collaboration that seeks to produce a standardized
             expression atlas across diverse tissues and time courses from JGI Plant
             Flagship organisms.  More detail about the Plant Flagship Genomes can be
             found
@@ -252,14 +265,9 @@
             JGI Community Science Program
             </a>.
             </p>
-
-            <p class="body">
-            This v0.1 release provides normalized expression values for diverse
-	    growth conditions of <em>Chlamydomonas</em>, <em>Populus</em>, and <em>Physcomitrella</em>.
-	    </p>
 	    
             <p class="body">
-            This data is unpublished.  As a public service, the
+            The data included in the Atlas is unpublished.  As a public service, the
             Department of Energy's Joint Genome Institute (JGI) is
             making the RNA-seq expression data
             available before scientific publication according to the
@@ -271,8 +279,8 @@
             by other groups.
             </p>
 	        <p class="body">
-            At the present time, we request that anyone intending to download Gene Atlas data for use in any analysis to <b>please contact the overall project lead</b>,
-	    <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> at JGI/HudsonAlpha, email: <span class="monospace">jschmutz AT hudsonalpha DOT org</span>.   To be kept informed on the progress of the JGI Gene Atlas project, changes in 
+            At the present time, we request that anyone intending to download Gene Atlas data for use in any analysis to email contacts as noted with individual organisms.  The overall project lead is
+	    <a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a> at JGI / HudsonAlpha, email: <span class="monospace">jschmutz AT hudsonalpha DOT org</span>.   To be kept informed on the progress of the JGI Gene Atlas project, changes in 
 	   the data usage policy, or to ask questions, please subscribe to the project mailing list by sending a blank email with the Subject line <span class="monospace">subscribe jgi-gene_atlas FirstName LastName</span>
 	   to <span class="monospace">sympa@lists.lbl.gov</span>.
             </p>
