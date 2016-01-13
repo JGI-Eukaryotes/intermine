@@ -187,7 +187,7 @@
 		  </ul>
 		</td>
 		<td>32</td>
-	        <td class="permissions"><a href="http://old-site.bioss-freiburg.de/www.bioss.uni-freiburg.de/cms/rensing.html">Stefan Rensing</a><br />Freiburg<br /><span class="monospace">stefan DOT rensing AT biologie DOT uni-marburg DOT de</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
+	        <td class="permissions"><a href="http://plantco.de/people/Stefan.html">Stefan Rensing</a><br />Marburg<br /><span class="monospace">stefan DOT rensing AT biologie DOT uni-marburg DOT de</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
 		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ptrichocarpa"><em>Populus trichocarpa</em></a></td>
