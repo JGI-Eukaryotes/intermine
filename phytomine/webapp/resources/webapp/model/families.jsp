@@ -28,8 +28,8 @@
           <li>
             <span style="white-space:nowrap">
               <im:querylink text="A bulk query for Protein Families with more than 1 member" skipBuilder="true">
-<query name="" model="genomic" view="ProteinFamily.clusterId ProteinFamily.clusterName ProteinFamily.protein.primaryIdentifier ProteinFamily.methodName" sortOrder="ProteinFamily.clusterId asc">
-  <constraint path="ProteinFamily.memberCount" op="&gt;" value="1"/>
+<query name="" model="genomic" view="ProteinFamily.clusterId ProteinFamily.clusterName ProteinFamily.member.protein.primaryIdentifier" longDescription="" sortOrder="ProteinFamily.clusterId asc">
+  <constraint path="ProteinFamily.memberCount" op="&gt;" value="2"/>
 </query>
               </im:querylink>
             </span>
