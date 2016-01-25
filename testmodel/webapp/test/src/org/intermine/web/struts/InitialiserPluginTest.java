@@ -38,6 +38,7 @@ import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryField;
 import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.SimpleConstraint;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.SingletonResults;
 
 /**
@@ -50,7 +51,7 @@ public class InitialiserPluginTest extends TestCase
     private ProfileManager pm;
     private ObjectStore os, userProfileOS;
     private ObjectStoreWriter userProfileOSW;
-    private Integer bobId = new Integer(101);
+    private InterMineId bobId = new InterMineId(101);
     private String bobPass = "bob_pass";
 
     public InitialiserPluginTest(String arg) {

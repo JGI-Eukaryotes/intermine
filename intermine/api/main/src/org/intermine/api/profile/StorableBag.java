@@ -41,6 +41,7 @@ import org.intermine.objectstore.intermine.ObjectStoreWriterInterMineImpl;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.objectstore.query.ObjectStoreBag;
 import org.intermine.sql.writebatch.Batch;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.writebatch.BatchWriterPostgresCopyImpl;
 
 /**
@@ -69,8 +70,8 @@ public abstract class StorableBag implements WebSearchable
         }
     }
 
-    protected Integer profileId;
-    protected Integer savedBagId;
+    protected InterMineId profileId;
+    protected InterMineId savedBagId;
 
     /**
      * Returns the size of the bag.
@@ -108,12 +109,12 @@ public abstract class StorableBag implements WebSearchable
     public abstract String getType();
 
     /** @return the id of the profile belonging to the user this list belongs to */
-    public Integer getProfileId() {
+    public InterMineId getProfileId() {
         return profileId;
     }
 
     /** @return the id of the saved bag this list represents */
-    public Integer getSavedBagId() {
+    public InterMineId getSavedBagId() {
         return savedBagId;
     }
 
@@ -157,7 +158,7 @@ public abstract class StorableBag implements WebSearchable
      * @param bagValues the list of the key field values of the objects contained by the bag
      * @throws ObjectStoreException if something goes wrong when inserting data into the database.
      */
-    public void saveWithBagValues(Integer profile, Collection<BagValue> bagValues)
+    public void saveWithBagValues(InterMineId profile, Collection<BagValue> bagValues)
         throws ObjectStoreException {
         if (profile == null) {
             throw new NullPointerException("profileId may not be null");
@@ -310,7 +311,7 @@ public abstract class StorableBag implements WebSearchable
         Batch batch = null;
         Boolean oldAuto = null;
         ObjectStoreWriter uosw = getUserProfileWriter();
-        Integer sbid = getSavedBagId();
+        InterMineId sbid = getSavedBagId();
         try {
             conn = ((ObjectStoreWriterInterMineImpl) uosw).getConnection();
             oldAuto = conn.getAutoCommit();

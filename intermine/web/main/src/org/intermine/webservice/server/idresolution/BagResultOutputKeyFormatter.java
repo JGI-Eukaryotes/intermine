@@ -33,6 +33,7 @@ import org.intermine.util.DynamicUtil;
 import org.intermine.web.context.InterMineContext;
 import org.intermine.web.logic.config.FieldConfig;
 import org.intermine.web.logic.config.FieldConfigHelper;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.config.WebConfig;
 
 /**
@@ -77,9 +78,9 @@ public class BagResultOutputKeyFormatter implements BagResultFormatter
                 for (Object o: identToObjects.getValue()) {
                     InterMineObject imo;
                     Map<String, Object> resultItem;
-                    if (o instanceof Integer) {
+                    if (o instanceof InterMineId) {
                         try {
-                            imo = im.getObjectStore().getObjectById((Integer) o);
+                            imo = im.getObjectStore().getObjectById((InterMineId) o);
                         } catch (ObjectStoreException e) {
                             throw new IllegalStateException(
                                     "Could not retrieve object reported as match", e);
@@ -117,7 +118,7 @@ public class BagResultOutputKeyFormatter implements BagResultFormatter
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void doMatches(Map<String, Object> ret, BagQueryResult bqr) {
-        for (Entry<Integer, List> pair: bqr.getMatches().entrySet()) {
+        for (Entry<InterMineId, List> pair: bqr.getMatches().entrySet()) {
             Map<String, Object> resultItem;
             InterMineObject imo;
             try {

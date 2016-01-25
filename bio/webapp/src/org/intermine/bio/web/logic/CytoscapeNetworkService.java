@@ -36,6 +36,7 @@ import org.intermine.model.bio.Gene;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.metadata.StringUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -81,9 +82,9 @@ public class CytoscapeNetworkService
             return LARGE_NETWORK;
         }
 
-        Set<Integer> fullInteractingGeneSet = new HashSet<Integer>();
+        Set<InterMineId> fullInteractingGeneSet = new HashSet<InterMineId>();
         for (String s : fullInteractingGeneList) {
-            fullInteractingGeneSet.add(Integer.valueOf(s));
+            fullInteractingGeneSet.add(InterMineId.valueOf(s));
         }
 
         //=== Query interactions ===
@@ -166,8 +167,8 @@ public class CytoscapeNetworkService
 
         for (List<Object> aRecode : results) {
 
-            Integer sourceId = (Integer) aRecode.get(7);
-            Integer targetId = (Integer) aRecode.get(8);
+            InterMineId sourceId = (InterMineId) aRecode.get(7);
+            InterMineId targetId = (InterMineId) aRecode.get(8);
 
             if (!interactionNodeMap.containsKey(String.valueOf(sourceId))
                     && !interactionNodeMap.containsKey(String.valueOf(targetId))) {
@@ -299,8 +300,8 @@ public class CytoscapeNetworkService
             String targetSymbol = (String) aRecode.get(4);
             String dataSourceName = (String) aRecode.get(5);
             String interactionShortName = (String) aRecode.get(6);
-            Integer sourceId = (Integer) aRecode.get(7);
-            Integer targetId = (Integer) aRecode.get(8);
+            InterMineId sourceId = (InterMineId) aRecode.get(7);
+            InterMineId targetId = (InterMineId) aRecode.get(8);
 
             Object sourceGenekeyFldVal = ClassKeyHelper.getKeyFieldValue(im.getObjectStore()
                     .getObjectById(sourceId), im.getClassKeys());

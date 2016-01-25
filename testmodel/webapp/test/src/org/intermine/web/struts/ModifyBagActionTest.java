@@ -33,6 +33,7 @@ import org.intermine.template.TemplateQuery;
 import org.intermine.web.logic.Constants;
 import org.intermine.web.logic.session.SessionMethods;
 
+import org.intermine.model.InterMineId;
 import servletunit.struts.MockStrutsTestCase;
 
 
@@ -44,7 +45,7 @@ public class ModifyBagActionTest extends MockStrutsTestCase
     InterMineBag bag2;
     TemplateQuery template;
     ObjectStoreWriter userProfileOSW;
-    Integer userId;
+    InterMineId userId;
     ProfileManager profileManager;
     ObjectStore os;
 
@@ -72,7 +73,7 @@ public class ModifyBagActionTest extends MockStrutsTestCase
             fieldNames.add("username");
             ObjectStore uos = userProfileOSW.getObjectStore();
             UserProfile profile4ID = (UserProfile) uos.getObjectByExample(realProfile, fieldNames);
-            userId = new Integer(profile4ID.getId());
+            userId = new InterMineId(profile4ID.getId());
 
 
             HttpSession session = getSession();

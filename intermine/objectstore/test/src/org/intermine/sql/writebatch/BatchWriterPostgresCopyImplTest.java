@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.intermine.sql.Database;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.DatabaseFactory;
 
 /**
@@ -59,7 +60,7 @@ public class BatchWriterPostgresCopyImplTest extends BatchWriterTestCase
             Batch batch = new Batch(writer);
             String[] colNames = new String[] {"key", "int4"};
             for (int i = 0; i < 1010000; i++) {
-                batch.addRow(con, "table1", new Integer(i), colNames, new Object[] {new Integer(i), new Integer(765234 * i)});
+                batch.addRow(con, "table1", new InterMineId(i), colNames, new Object[] {new InterMineId(i), new InterMineId(765234 * i)});
                 if ((i == 490000) || (i == 240000) || (i == 115000)) {
                     batch.flush(con);
                 }

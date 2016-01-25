@@ -18,6 +18,7 @@ import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.util.DynamicUtil;
 
+import org.intermine.model.InterMineId;
 import junit.framework.TestCase;
 
 public class CreateFlankingRegionsTest extends TestCase {
@@ -85,15 +86,15 @@ public class CreateFlankingRegionsTest extends TestCase {
 
         Organism organism =
             (Organism) DynamicUtil.createObject(Collections.singleton(Organism.class));
-        organism.setTaxonId(new Integer(7227));
+        organism.setTaxonId(new InterMineId(7227));
 
         toStore.add(organism);
 
         Chromosome chr =
             (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("X");
-        chr.setLength(new Integer(200000));
-        chr.setId(new Integer(101));
+        chr.setLength(new InterMineId(200000));
+        chr.setId(new InterMineId(101));
         chr.setOrganism(organism);
 
         toStore.add(chr);
@@ -107,8 +108,8 @@ public class CreateFlankingRegionsTest extends TestCase {
         toStore.add(gene);
 
         Location loc =  (Location) DynamicUtil.createObject(Collections.singleton(Location.class));
-        loc.setStart(new Integer(100000));
-        loc.setEnd(new Integer(101000));
+        loc.setStart(new InterMineId(100000));
+        loc.setEnd(new InterMineId(101000));
         loc.setStrand("-1");
         loc.setLocatedOn(chr);
         loc.setFeature(gene);

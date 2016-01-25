@@ -17,6 +17,7 @@ import org.intermine.metadata.ConstraintOp;
 import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Department;
 import org.intermine.model.testmodel.Manager;
+import org.intermine.model.InterMineId;
 import org.intermine.testing.OneTimeTestCase;
 
 public class QueryTestCaseTest extends QueryTestCase
@@ -140,7 +141,7 @@ public class QueryTestCaseTest extends QueryTestCase
 
     public void testQueriesClassConstraint() throws Exception {
         Department dept = new Department();
-        dept.setId(new Integer(14));
+        dept.setId(new InterMineId(14));
 
         Query q1 = new Query();
         QueryClass qc1 = new QueryClass(Department.class);
@@ -160,7 +161,7 @@ public class QueryTestCaseTest extends QueryTestCase
 
         assertEquals(q1, q2);
         Department d1 = new Department();
-        d1.setId(new Integer(25));
+        d1.setId(new InterMineId(25));
         c2 = new ClassConstraint(qc2, ConstraintOp.EQUALS, d1);
         q2.setConstraint(c2);
 

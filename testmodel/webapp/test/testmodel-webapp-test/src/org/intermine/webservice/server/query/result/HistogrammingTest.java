@@ -31,6 +31,7 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.util.DynamicUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.intermine.model.InterMineId;
 import org.junit.Test;
 
 public class HistogrammingTest
@@ -38,7 +39,7 @@ public class HistogrammingTest
     private static ObjectStoreWriter osw;
     private static Random generator = new Random(System.currentTimeMillis());
     private static final Logger LOG = Logger.getLogger(HistogrammingTest.class);
-    private static Map<Integer, Long> expected = new TreeMap<Integer, Long>();
+    private static Map<InterMineId, Long> expected = new TreeMap<InterMineId, Long>();
     private static final int MAX_SCALE =  5000;
     private static final int MIN_BIN   =   250;
 
@@ -76,14 +77,14 @@ public class HistogrammingTest
        System.out.printf("Made %d things\n", made);
     }
 
-    private static void showHistogram(String label, Map<Integer, Long> data) {
+    private static void showHistogram(String label, Map<InterMineId, Long> data) {
         System.out.println();
         System.out.printf("%s\n===============\n", label);
         Long max = Collections.max(data.values());
         double[] heights = new double[data.size()];
         String[] groupStarts = new String[data.size()];
         int idx = 0;
-        for (Entry<Integer, Long> pair: data.entrySet()) {
+        for (Entry<InterMineId, Long> pair: data.entrySet()) {
             heights[idx]     = Double.valueOf(pair.getValue()) / Double.valueOf(max) * 10;
             groupStarts[idx] = String.format("%2d ", pair.getKey());
             idx++;
@@ -157,12 +158,12 @@ public class HistogrammingTest
         Results res = osw.execute(q, 100000, true, false, false);
 
         Long sum = 0L;
-        Map<Integer, Long> actual = new TreeMap<Integer, Long>();
+        Map<InterMineId, Long> actual = new TreeMap<InterMineId, Long>();
 
         for (Object o: res) {
             //System.out.println("ROW:" + o);
             List row = (List) o;
-            Integer bucket  = (Integer) row.get(5);
+            InterMineId bucket  = (InterMineId) row.get(5);
             Long count = ((BigDecimal) row.get(6)).longValue();
             actual.put(bucket, count);
             sum += count;
@@ -207,17 +208,17 @@ public class HistogrammingTest
         Results res = osw.execute(q, 100000, true, false, false);
 
         Long sum = 0L;
-        Map<Integer, Long> actual = new TreeMap<Integer, Long>();
+        Map<InterMineId, Long> actual = new TreeMap<InterMineId, Long>();
 
         for (Object o: res) {
             //System.out.println("ROW:" + o);
             List row = (List) o;
-            Integer bucket  = (Integer) row.get(5);
-            Integer min     = (Integer) row.get(0);
-            Integer max     = (Integer) row.get(1);
-            Integer buckets = (Integer) row.get(4);
-            Integer width   = (max - min) / (buckets - 1);
-            Integer group   = min + ((bucket - 1) * width);
+            InterMineId bucket  = (InterMineId) row.get(5);
+            InterMineId min     = (InterMineId) row.get(0);
+            InterMineId max     = (InterMineId) row.get(1);
+            InterMineId buckets = (InterMineId) row.get(4);
+            InterMineId width   = (max - min) / (buckets - 1);
+            InterMineId group   = min + ((bucket - 1) * width);
             Long count = ((BigDecimal) row.get(6)).longValue();
             actual.put(group, count);
             sum += count;

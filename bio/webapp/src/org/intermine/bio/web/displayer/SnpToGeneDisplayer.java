@@ -32,6 +32,7 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
 import org.intermine.web.logic.results.ReportObject;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -103,13 +104,13 @@ public class SnpToGeneDisplayer extends ReportDisplayer
                             break;
                         }
                     case 5:
-                        snpStart = Integer.parseInt(e.toString());
+                        snpStart = InterMineId.parseInt(e.toString());
                         break; // SNP start
                     case 6:
-                        geneStart = Integer.parseInt(e.toString());
+                        geneStart = InterMineId.parseInt(e.toString());
                         break; // Gene start
                     case 7:
-                        geneEnd = Integer.parseInt(e.toString());
+                        geneEnd = InterMineId.parseInt(e.toString());
                         break; // Gene end
                     case 8:
                         direction = e.toString();
@@ -132,13 +133,13 @@ public class SnpToGeneDisplayer extends ReportDisplayer
                 } else {
                     //columns.add(geneStart - snpStart + "b " + direction);
                     // distance for the comparator, comes last!
-                    columns.add(Integer.toString(geneStart - snpStart));
+                    columns.add(InterMineId.toString(geneStart - snpStart));
                     columns.add(direction);
                 }
             } else {
                 //columns.add(snpStart - geneEnd + "b " + direction);
                 // distance for the comparator, comes last!
-                columns.add(Integer.toString(snpStart - geneEnd));
+                columns.add(InterMineId.toString(snpStart - geneEnd));
                 columns.add(direction);
             }
 
@@ -154,8 +155,8 @@ public class SnpToGeneDisplayer extends ReportDisplayer
                 ArrayList<String> firstGene = (ArrayList<String>) first;
                 ArrayList<String> secondGene = (ArrayList<String>) second;
                 // get the distance as an int
-                int firstGeneDistance = Integer.parseInt(firstGene.get(firstGene.size() - 2));
-                int secondGeneDistance = Integer.parseInt(secondGene.get(secondGene.size() - 2));
+                int firstGeneDistance = InterMineId.parseInt(firstGene.get(firstGene.size() - 2));
+                int secondGeneDistance = InterMineId.parseInt(secondGene.get(secondGene.size() - 2));
 
                 // "comparator"
                 return firstGeneDistance - secondGeneDistance;

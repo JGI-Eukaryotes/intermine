@@ -52,6 +52,7 @@ import org.intermine.web.logic.results.ReportObject;
 import org.intermine.web.logic.results.ReportObjectFactory;
 import org.intermine.web.logic.session.SessionMethods;
 import org.jfree.util.Log;
+import org.intermine.model.InterMineId;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -248,7 +249,7 @@ public class ReportController extends InterMineAction
         if (!StringUtils.isNumeric(idString) || StringUtils.isBlank(idString)) {
             return null;
         }
-        Integer id = new Integer(Integer.parseInt(idString));
+        InterMineId id = new InterMineId(InterMineId.parseInt(idString));
         ObjectStore os = im.getObjectStore();
         InterMineObject requestedObject = null;
         try {

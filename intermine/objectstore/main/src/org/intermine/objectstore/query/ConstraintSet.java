@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 
 /**
@@ -110,7 +111,7 @@ public class ConstraintSet extends Constraint
      */
     @Override
     public String toString() {
-        return "ConstraintSet@" + Integer.toHexString(System.identityHashCode(this)) + "(" + op
+        return "ConstraintSet@" + InterMineId.toHexString(System.identityHashCode(this)) + "(" + op
                 + ", " + constraints + ")";
     }
 

@@ -46,6 +46,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.query.ObjectStoreBag;
 import org.intermine.objectstore.query.ObjectStoreBagsForObject;
 import org.intermine.objectstore.query.Query;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.Results;
 
 /**
@@ -547,7 +548,7 @@ public class BagManager
      * @param id the id to search bags for
      * @return bags containing the given id
      */
-    public Collection<InterMineBag> getGlobalBagsContainingId(Integer id) {
+    public Collection<InterMineBag> getGlobalBagsContainingId(InterMineId id) {
         return getBagsContainingId(getGlobalBags(), id);
     }
 
@@ -557,7 +558,7 @@ public class BagManager
      * @param profile the user to fetch bags from
      * @return bags containing the given id
      */
-    public Collection<InterMineBag> getUserBagsContainingId(Profile profile, Integer id) {
+    public Collection<InterMineBag> getUserBagsContainingId(Profile profile, InterMineId id) {
         return getBagsContainingId(getUserBags(profile), id);
     }
 
@@ -567,7 +568,7 @@ public class BagManager
      * @param profile the user to fetch bags from
      * @return bags containing the given id
      */
-    public Collection<InterMineBag> getSharedBagsContainingId(Profile profile, Integer id) {
+    public Collection<InterMineBag> getSharedBagsContainingId(Profile profile, InterMineId id) {
         return getBagsContainingId(getSharedBags(profile), id);
     }
 
@@ -580,7 +581,7 @@ public class BagManager
      * @return bags containing the given id
      */
     public Collection<InterMineBag> getCurrentBagsContainingId(Profile profile,
-                                                                           Integer id) {
+                                                                           InterMineId id) {
         HashSet<InterMineBag> bagsContainingId = new HashSet<InterMineBag>();
         for (InterMineBag bag: getGlobalBagsContainingId(id)) {
             if (bag.isCurrent()) {
@@ -601,9 +602,9 @@ public class BagManager
     }
 
     private Collection<InterMineBag> getBagsContainingId(Map<String, InterMineBag> imBags,
-            Integer id) {
+            InterMineId id) {
         Collection<ObjectStoreBag> objectStoreBags = getObjectStoreBags(imBags.values());
-        Map<Integer, InterMineBag> osBagIdToInterMineBag =
+        Map<InterMineId, InterMineBag> osBagIdToInterMineBag =
             getOsBagIdToInterMineBag(imBags.values());
 
         // this searches bags for an object
@@ -619,7 +620,7 @@ public class BagManager
         Results res = osProduction.executeSingleton(q);
         Iterator<Object> resIter = res.iterator();
         while (resIter.hasNext()) {
-            Integer osBagId = (Integer) resIter.next();
+            InterMineId osBagId = (InterMineId) resIter.next();
             if (osBagIdToInterMineBag.containsKey(osBagId)) {
                 bagsContainingId.add(osBagIdToInterMineBag.get(osBagId));
             }
@@ -628,12 +629,12 @@ public class BagManager
         return bagsContainingId;
     }
 
-    private static Map<Integer, InterMineBag> getOsBagIdToInterMineBag(
+    private static Map<InterMineId, InterMineBag> getOsBagIdToInterMineBag(
             Collection<InterMineBag> imBags) {
-        Map<Integer, InterMineBag> osBagIdToInterMineBag = new HashMap<Integer, InterMineBag>();
+        Map<InterMineId, InterMineBag> osBagIdToInterMineBag = new HashMap<InterMineId, InterMineBag>();
 
         for (InterMineBag imBag : imBags) {
-            osBagIdToInterMineBag.put(new Integer(imBag.getOsb().getBagId()), imBag);
+            osBagIdToInterMineBag.put(new InterMineId(imBag.getOsb().getBagId()), imBag);
         }
         return osBagIdToInterMineBag;
     }
@@ -659,21 +660,21 @@ public class BagManager
          * @param tags
          * @return
          */
-        private Integer resolveOrderFromTagsList(List<Tag> tags) {
+        private InterMineId resolveOrderFromTagsList(List<Tag> tags) {
             for (Tag t : tags) {
                 String name = t.getTagName();
                 if (name.startsWith("im:order:")) {
-                    return Integer.parseInt(name.replaceAll("[^0-9]", ""));
+                    return InterMineId.parseInt(name.replaceAll("[^0-9]", ""));
                 }
             }
-            return Integer.MAX_VALUE;
+            return InterMineId.MAX_VALUE;
         }
 
         @Override
         public int compare(String aK, String bK) {
             // get the order from the tags for the bags for the superduper profile
-            Integer aO = resolveOrderFromTagsList(tagManager.getTags(null, aK, TagTypes.BAG, null));
-            Integer bO = resolveOrderFromTagsList(tagManager.getTags(null, bK, TagTypes.BAG, null));
+            InterMineId aO = resolveOrderFromTagsList(tagManager.getTags(null, aK, TagTypes.BAG, null));
+            InterMineId bO = resolveOrderFromTagsList(tagManager.getTags(null, bK, TagTypes.BAG, null));
 
             if (aO < bO) {
                 return -1;

@@ -37,6 +37,7 @@ import org.intermine.web.logic.export.http.HttpExporterBase;
 import org.intermine.web.logic.results.PagedTable;
 import org.intermine.web.logic.session.SessionMethods;
 import org.intermine.web.struts.InterMineAction;
+import org.intermine.model.InterMineId;
 import org.intermine.web.util.URLGenerator;
 
 /**
@@ -67,7 +68,7 @@ public class GalaxyExportAction extends InterMineAction
 
         /*
         // >>>>> Reset view - Use Default view for different types of Sequence features
-        Integer index = Integer.parseInt(request.getParameter("index"));
+        InterMineId index = InterMineId.parseInt(request.getParameter("index"));
         String prefix = request.getParameter("prefix");
 
         String type = TypeUtil.unqualifiedName(ExportHelper
@@ -131,7 +132,7 @@ public class GalaxyExportAction extends InterMineAction
 
         // Get extra information - genomeBuild & organism & extra info
 //        ResultManipulater rm = new ResultManipulater();
-//        Map<Integer, String> orgNameMap = rm.findOrganisms(pt, request, index);
+//        Map<InterMineId, String> orgNameMap = rm.findOrganisms(pt, request, index);
 
         // Genome Build is in web.properties now, refer to AttributeLinkDisplayerController
 //        Properties webProperties =
@@ -176,13 +177,13 @@ class ResultManipulater extends HttpExporterBase
      * @param index index of pagedTable column for the feature to export
      * @return A Map: Key - organism's TaxonId; Value - organism's shortName
      */
-    public Map<Integer, String> findOrganisms(PagedTable pt,
+    public Map<InterMineId, String> findOrganisms(PagedTable pt,
             HttpServletRequest request, int index) {
 
 //        if (pt.getEstimatedSize() > 10000) { }
         ExportResultsIterator resultIt = getResultRows(pt, request);
 
-        Map<Integer, String> orgNameMap = new LinkedHashMap<Integer, String>();
+        Map<InterMineId, String> orgNameMap = new LinkedHashMap<InterMineId, String>();
         try {
             while (resultIt.hasNext()) {
                 List<ResultElement> row = resultIt.next();

@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.intermine.metadata.Util;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -33,7 +34,7 @@ public class UniprotEntry
     private String datasetRefId = null;
     private String length, molecularWeight;
     private Set<Item> features = new HashSet<Item>();
-    private Map<Integer, List<String>> commentEvidence = new HashMap<Integer, List<String>>();
+    private Map<InterMineId, List<String>> commentEvidence = new HashMap<InterMineId, List<String>>();
     private boolean isIsoform = false, isFragment = false;
     private String taxonId, name;
     private String primaryAccession, uniprotAccession, primaryIdentifier;
@@ -139,7 +140,7 @@ public class UniprotEntry
      * @param refId id representing comment intermine object
      * @param objectId id representing the object in the database.  used later to add pub collection
      */
-    public void addCommentRefId(String refId, Integer objectId) {
+    public void addCommentRefId(String refId, InterMineId objectId) {
         commentEvidence.put(objectId, new ArrayList(comment.evidence));
         addRefId("comments", refId);
     }
@@ -174,7 +175,7 @@ public class UniprotEntry
     /**
      * @return map from commentRefId to evidence codes
      */
-    public Map<Integer, List<String>> getCommentEvidence() {
+    public Map<InterMineId, List<String>> getCommentEvidence() {
         return commentEvidence;
     }
 

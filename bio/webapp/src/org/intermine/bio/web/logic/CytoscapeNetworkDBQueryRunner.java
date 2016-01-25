@@ -22,6 +22,7 @@ import org.intermine.api.results.ResultElement;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.pathquery.Constraints;
+import org.intermine.model.InterMineId;
 import org.intermine.pathquery.PathQuery;
 
 /**
@@ -45,11 +46,11 @@ public class CytoscapeNetworkDBQueryRunner
      * @return a set of genes
      * @throws ObjectStoreException can't access the db
      */
-    public Set<Integer> getInteractingGenes(String featureType, Set<Integer> startingFeatureSet,
+    public Set<InterMineId> getInteractingGenes(String featureType, Set<InterMineId> startingFeatureSet,
             Model model, PathQueryExecutor executor) throws ObjectStoreException {
 
-        Set<Integer> fullInteractingGeneSet = new LinkedHashSet<Integer>();
-        Set<Integer> startingGeneSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> fullInteractingGeneSet = new LinkedHashSet<InterMineId>();
+        Set<InterMineId> startingGeneSet = new LinkedHashSet<InterMineId>();
 
         //=== Get starting genes ===
         if ("Gene".equals(featureType)) {
@@ -66,7 +67,7 @@ public class CytoscapeNetworkDBQueryRunner
             while (results.hasNext()) {
                 List<ResultElement> row = results.next();
 
-                Integer interactingGene = (Integer) row.get(0).getField();
+                InterMineId interactingGene = (InterMineId) row.get(0).getField();
                 startingGeneSet.add(interactingGene);
             }
         }
@@ -75,7 +76,7 @@ public class CytoscapeNetworkDBQueryRunner
 
         PathQuery q = new PathQuery(model);
 
-        Set<Integer> interactingGeneSet = new HashSet<Integer>();
+        Set<InterMineId> interactingGeneSet = new HashSet<InterMineId>();
 
         q.addView("Gene.interactions.gene2.id");
         q.addConstraint(Constraints.inIds("Gene", startingGeneSet));
@@ -85,7 +86,7 @@ public class CytoscapeNetworkDBQueryRunner
         while (results.hasNext()) {
             List<ResultElement> row = results.next();
 
-            Integer interactingGene = (Integer) row.get(0).getField();
+            InterMineId interactingGene = (InterMineId) row.get(0).getField();
             interactingGeneSet.add(interactingGene);
         }
 
@@ -106,7 +107,7 @@ public class CytoscapeNetworkDBQueryRunner
      * @return raw query results
      * @throws ObjectStoreException can't access the db
      */
-    public ExportResultsIterator getInteractions(Set<Integer> keys, Model model,
+    public ExportResultsIterator getInteractions(Set<InterMineId> keys, Model model,
             PathQueryExecutor executor) throws ObjectStoreException {
 
         PathQuery q = new PathQuery(model);
@@ -145,13 +146,13 @@ public class CytoscapeNetworkDBQueryRunner
      * @throws ObjectStoreException If the underlying queries cannot be run.
      */
     public ExportResultsIterator extendNetwork(String geneId,
-            Set<Integer> keys, Model model, PathQueryExecutor executor)
+            Set<InterMineId> keys, Model model, PathQueryExecutor executor)
         throws ObjectStoreException {
 
-        Set<Integer> startingGeneSet = new HashSet<Integer>();
-        startingGeneSet.add(Integer.valueOf(geneId));
+        Set<InterMineId> startingGeneSet = new HashSet<InterMineId>();
+        startingGeneSet.add(InterMineId.valueOf(geneId));
 
-        Set<Integer> fullInteractingGeneSet =
+        Set<InterMineId> fullInteractingGeneSet =
                 getInteractingGenes("Gene", startingGeneSet, model, executor);
         ExportResultsIterator results =
                 getInteractions(fullInteractingGeneSet, model, executor);

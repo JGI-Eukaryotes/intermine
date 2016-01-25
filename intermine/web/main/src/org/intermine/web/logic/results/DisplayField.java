@@ -22,6 +22,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.LazyCollection;
 import org.intermine.objectstore.query.Results;
 import org.intermine.web.logic.Constants;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.config.WebConfig;
 
 /**
@@ -100,13 +101,13 @@ public class DisplayField
     public InlineResultsTable getTable() {
         if (table == null && collection.size() > 0) {
             // on References we will have 1 row
-            Integer tableSize = 1;
+            InterMineId tableSize = 1;
             if (webProperties != null) {
                 // resolve max table size to show from properties
                 String maxInlineTableSizeString =
                     (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
                 try {
-                    tableSize = Integer.parseInt(maxInlineTableSizeString);
+                    tableSize = InterMineId.parseInt(maxInlineTableSizeString);
                 } catch (NumberFormatException e) {
                     LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                              + maxInlineTableSizeString);

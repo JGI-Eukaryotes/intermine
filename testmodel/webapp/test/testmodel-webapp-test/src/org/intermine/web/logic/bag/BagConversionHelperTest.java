@@ -43,6 +43,7 @@ import org.intermine.template.xml.TemplateQueryBinding;
 import org.intermine.web.logic.Constants;
 import org.intermine.web.logic.session.SessionMethods;
 
+import org.intermine.model.InterMineId;
 import servletunit.struts.MockStrutsTestCase;
 
 public class BagConversionHelperTest extends MockStrutsTestCase {
@@ -59,10 +60,10 @@ public class BagConversionHelperTest extends MockStrutsTestCase {
         final String template = "<template name=\"convertEmployeesToAddresses\" title=\"Convert employees to addresses\" longDescription=\"\" comment=\"\" >\n" +
                 "      <query name=\"convertEmployeesToAddresses\" model=\"testmodel\" view=\"Employee.id Employee.address.id\">\n" +
                 "        <node path=\"Employee\" type=\"Employee\"/>\n" +
-                "        <node path=\"Employee.id\" type=\"Integer\">\n" +
+                "        <node path=\"Employee.id\" type=\"InterMineId\">\n" +
                 "          <constraint op=\"=\" value=\"0\" description=\"id\" identifier=\"\" editable=\"true\" code=\"A\"/>\n" +
                 "        </node>\n" +
-                "        <node path=\"Employee.address.id\" type=\"Integer\"/>\n" +
+                "        <node path=\"Employee.address.id\" type=\"InterMineId\"/>\n" +
                 "      </query>\n" +
                 "    </template>";
         uosw = ObjectStoreWriterFactory.getObjectStoreWriter("osw.userprofile-test");
@@ -73,7 +74,7 @@ public class BagConversionHelperTest extends MockStrutsTestCase {
         conversionTemplates = new ArrayList<ApiTemplate>(Collections.singleton(tq));
         final ObjectStore os = ObjectStoreFactory.getObjectStore("os.unittest");
         final ProfileManager profileManager = new ProfileManager(os, uosw);
-        profile = new Profile(profileManager, "test", new Integer(101), "testpass",
+        profile = new Profile(profileManager, "test", new InterMineId(101), "testpass",
                 new HashMap(), new HashMap(), new HashMap(), true, false);
         session = getSession();
         session.setAttribute(Constants.PROFILE, profile);

@@ -30,6 +30,7 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.metadata.StringUtil;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.results.ReportObject;
 
 /**
@@ -54,14 +55,14 @@ public class DiseaseDisplayer extends ReportDisplayer
 
     @Override
     public void display(HttpServletRequest request, ReportObject reportObject) {
-        Integer geneId = reportObject.getObject().getId();
+        InterMineId geneId = reportObject.getObject().getId();
         Set<String> orthologues = getLocalHomologues(geneId);
         if (orthologues != null && !orthologues.isEmpty()) {
             request.setAttribute("ratGenes", StringUtil.join(orthologues, ","));
         }
     }
 
-    private PathQuery getQuery(Integer geneId) {
+    private PathQuery getQuery(InterMineId geneId) {
         PathQuery q = new PathQuery(im.getModel());
         q.addViews("Gene.homologues.homologue.primaryIdentifier",
                 "Gene.homologues.homologue.secondaryIdentifier");
@@ -70,7 +71,7 @@ public class DiseaseDisplayer extends ReportDisplayer
         return q;
     }
 
-    private Set<String> getLocalHomologues(Integer geneId) {
+    private Set<String> getLocalHomologues(InterMineId geneId) {
         Set<String> orthologues = new HashSet<String>();
         ProfileManager profileManager = im.getProfileManager();
         PathQueryExecutor executor = im.getPathQueryExecutor(profileManager.getSuperuserProfile());

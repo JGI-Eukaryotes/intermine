@@ -40,6 +40,7 @@ import org.intermine.model.userprofile.Tag;
 import org.intermine.util.PropertiesUtil;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.web.logic.Constants;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -49,7 +50,7 @@ import org.intermine.web.logic.session.SessionMethods;
  */
 public class BeginAction extends InterMineAction
 {
-    private static final Integer MAX_TEMPLATES = new Integer(8);
+    private static final InterMineId MAX_TEMPLATES = new InterMineId(8);
 
     /**
      * @LinkedHashMap stores tabs of popular templates on the homepage
@@ -138,7 +139,7 @@ public class BeginAction extends InterMineAction
 
                     tab.put("templates", templates);
 
-                    bagOfTabs.put(Integer.toString(i), tab);
+                    bagOfTabs.put(InterMineId.toString(i), tab);
                     i++;
                 } else {
                     break;

@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.intermine.metadata.ConstraintOp;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -212,7 +213,7 @@ public class SimpleConstraint extends Constraint
         if (arg1.equals(arg2)
                 && (arg1.equals(String.class) || arg1.equals(Boolean.class)
                     || arg1.equals(Date.class) || arg1.equals(Short.class)
-                    || arg1.equals(Integer.class) || arg1.equals(Long.class)
+                    || arg1.equals(InterMineId.class) || arg1.equals(Long.class)
                     || arg1.equals(Float.class) || arg1.equals(Double.class)
                     || arg1.equals(BigDecimal.class) || arg1.equals(UnknownTypeValue.class)
                     || arg1.equals(Class.class))) {

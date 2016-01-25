@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.apache.commons.lang.StringEscapeUtils;
 
 /**
@@ -37,13 +38,13 @@ public final class EnrichmentXMLProcessor implements WidgetResultProcessor
         return INSTANCE;
     }
 
-    private static final Map<Integer, String> ELEMENTS = new HashMap<Integer, String>() {
+    private static final Map<InterMineId, String> ELEMENTS = new HashMap<InterMineId, String>() {
         private static final long serialVersionUID = 5353373450297092694L;
         {
-            put(Integer.valueOf(0), "identifier");
-            put(Integer.valueOf(1), "description");
-            put(Integer.valueOf(2), "pValue");
-            put(Integer.valueOf(3), "count"); // Not used for now. May make a return later.
+            put(InterMineId.valueOf(0), "identifier");
+            put(InterMineId.valueOf(1), "description");
+            put(InterMineId.valueOf(2), "pValue");
+            put(InterMineId.valueOf(3), "count"); // Not used for now. May make a return later.
         }
     };
 

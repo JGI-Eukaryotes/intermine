@@ -42,6 +42,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SimpleConstraint;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -160,9 +161,9 @@ public class FindInListAction extends InterMineAction
 
             String attType = attDesc.getType();
 
-            if ("java.lang.Integer".equals(attType)) {
+            if ("InterMineId".equals(attType)) {
                 try {
-                    Integer intSearchTerm = Integer.valueOf(searchTerm);
+                    InterMineId intSearchTerm = InterMineId.valueOf(searchTerm);
                     queryValue = new QueryValue(intSearchTerm);
                 } catch (NumberFormatException e) {
                     // not a number so don't constrain this field
@@ -203,10 +204,10 @@ public class FindInListAction extends InterMineAction
      * Return the id of the first object in the output, or -1 if there aren't any rows.
      */
     @SuppressWarnings("rawtypes")
-    private int findFirst(ObjectStore os, Query q) {
+    private InterMineId findFirst(ObjectStore os, Query q) {
         Results res = os.execute(q);
         try {
-            return ((Integer) ((ResultsRow) res.get(0)).get(0)).intValue();
+            return ((InterMineId) ((ResultsRow) res.get(0)).get(0)).objectValue();
         } catch (IndexOutOfBoundsException e) {
             return -1;
         }

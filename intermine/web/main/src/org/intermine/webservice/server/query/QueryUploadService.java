@@ -50,6 +50,7 @@ import org.intermine.webservice.server.exceptions.ServiceForbiddenException;
 import org.intermine.webservice.server.output.Formatter;
 import org.intermine.webservice.server.output.JSONFormatter;
 import org.intermine.webservice.server.output.Output;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.output.StreamedOutput;
 
 /**
@@ -239,7 +240,7 @@ public class QueryUploadService extends WebService
         return sb.toString();
     }
 
-    private Integer getVersion() {
+    private InterMineId getVersion() {
         return getIntParameter(VERSION_PARAMETER, PathQuery.USERPROFILE_VERSION);
     }
 

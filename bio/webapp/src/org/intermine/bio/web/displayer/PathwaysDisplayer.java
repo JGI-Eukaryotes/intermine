@@ -24,6 +24,7 @@ import org.intermine.api.InterMineAPI;
 import org.intermine.model.InterMineObject;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.results.ReportObject;
 
 /**
@@ -34,8 +35,8 @@ import org.intermine.web.logic.results.ReportObject;
 public class PathwaysDisplayer extends ReportDisplayer
 {
 
-    private Map<Integer, Map<InterMineObject, Integer>> cache =
-        new ConcurrentHashMap<Integer, Map<InterMineObject, Integer>>();
+    private Map<InterMineId, Map<InterMineObject, InterMineId>> cache =
+        new ConcurrentHashMap<InterMineId, Map<InterMineObject, InterMineId>>();
 
     /**
      * Construct with config and the InterMineAPI.
@@ -50,21 +51,21 @@ public class PathwaysDisplayer extends ReportDisplayer
     @Override
     public void display(HttpServletRequest request, ReportObject reportObject) {
         InterMineObject gene = reportObject.getObject();
-        Map<InterMineObject, Integer> pathways = getPathways(gene);
+        Map<InterMineObject, InterMineId> pathways = getPathways(gene);
         if (pathways.isEmpty()) {
             request.setAttribute("noPathwayResults", "No pathways found");
         } else {
-            SortedMap<InterMineObject, Integer> sortedPathways =
-                new TreeMap<InterMineObject, Integer>(new ValueComparator(pathways));
+            SortedMap<InterMineObject, InterMineId> sortedPathways =
+                new TreeMap<InterMineObject, InterMineId>(new ValueComparator(pathways));
             sortedPathways.putAll(pathways);
             request.setAttribute("pathways", sortedPathways);
         }
     }
 
-    private Map<InterMineObject, Integer> getPathways(InterMineObject gene) {
+    private Map<InterMineObject, InterMineId> getPathways(InterMineObject gene) {
         if (!cache.containsKey(gene.getId())) {
             try {
-                Map<InterMineObject, Integer> pathways = new HashMap<InterMineObject, Integer>();
+                Map<InterMineObject, InterMineId> pathways = new HashMap<InterMineObject, InterMineId>();
                 Collection col = (Collection) gene.getFieldValue("pathways");
                 for (Object item : col) {
                     InterMineObject pathway = (InterMineObject) item;
@@ -101,7 +102,7 @@ class ValueComparator implements Comparator
     @Override
     public int compare(Object a, Object b) {
         // sort descending
-        int i = ((Integer) base.get(a)).compareTo((Integer) base.get(b));
+        int i = ((InterMineId) base.get(a)).compareTo((InterMineId) base.get(b));
 
         // gene counts are the same, sort by name ascending
         if (i == 0) {

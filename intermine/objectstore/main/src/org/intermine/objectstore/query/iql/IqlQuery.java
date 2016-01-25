@@ -57,6 +57,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.SubqueryConstraint;
 import org.intermine.objectstore.query.SubqueryExistsConstraint;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.WidthBucketFunction;
 
 /**
@@ -192,7 +193,7 @@ public class IqlQuery
                 retval.append(nodeToString(q, qn, newParameters, null));
             }
         }
-        if (q.getLimit() != Integer.MAX_VALUE) {
+        if (q.getLimit() != InterMineId.MAX_VALUE) {
             retval.append(" LIMIT " + q.getLimit());
         }
         needComma = false;
@@ -492,7 +493,7 @@ public class IqlQuery
             }
         }
         if ((!ref.getSelect().isEmpty()) || (ref.getConstraint() != null)) {
-            Set<Integer> empty = Collections.emptySet();
+            Set<InterMineId> empty = Collections.emptySet();
             Query subQ = ref.getQuery(empty, true);
             retval.append("(");
             boolean needSpace = false;

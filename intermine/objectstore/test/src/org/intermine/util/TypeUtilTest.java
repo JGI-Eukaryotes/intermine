@@ -24,6 +24,7 @@ import org.intermine.model.testmodel.Address;
 import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Manager;
 import org.intermine.objectstore.query.Clob;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.ClobAccess;
 
 
@@ -66,7 +67,7 @@ public class TypeUtilTest extends TestCase
         TypeUtil.FieldInfo idInfo = (TypeUtil.FieldInfo) got.get("id");
         assertEquals("id", idInfo.getName());
         assertEquals(c.getMethod("getId", new Class[] {}), idInfo.getGetter());
-        assertEquals(c.getMethod("setId", new Class[] {Integer.class}), idInfo.getSetter());
+        assertEquals(c.getMethod("setId", new Class[] {InterMineId.class}), idInfo.getSetter());
 
         TypeUtil.FieldInfo addressInfo = (TypeUtil.FieldInfo) got.get("address");
         assertEquals("address", addressInfo.getName());
@@ -83,7 +84,7 @@ public class TypeUtilTest extends TestCase
         TypeUtil.FieldInfo idInfo = (TypeUtil.FieldInfo) got.get("id");
         assertEquals("id", idInfo.getName());
         assertEquals(c.getMethod("getId", new Class[] {}), idInfo.getGetter());
-        assertEquals(c.getMethod("setId", new Class[] {Integer.class}), idInfo.getSetter());
+        assertEquals(c.getMethod("setId", new Class[] {InterMineId.class}), idInfo.getSetter());
 
         TypeUtil.FieldInfo addressInfo = (TypeUtil.FieldInfo) got.get("address");
         assertEquals("address", addressInfo.getName());
@@ -98,7 +99,7 @@ public class TypeUtilTest extends TestCase
         TypeUtil.FieldInfo vatInfo = (TypeUtil.FieldInfo) got.get("vatNumber");
         assertEquals("vatNumber", vatInfo.getName());
         assertEquals(c.getMethod("getVatNumber", new Class[] {}), vatInfo.getGetter());
-        assertEquals(c.getMethod("setVatNumber", new Class[] {Integer.TYPE}), vatInfo.getSetter());
+        assertEquals(c.getMethod("setVatNumber", new Class[] {InterMineId.TYPE}), vatInfo.getSetter());
 
 
     }
@@ -113,7 +114,7 @@ public class TypeUtilTest extends TestCase
         TypeUtil.FieldInfo idInfo = (TypeUtil.FieldInfo) got.get("id");
         assertEquals("id", idInfo.getName());
         assertEquals(c.getMethod("getId", new Class[] {}), idInfo.getGetter());
-        assertEquals(c.getMethod("setId", new Class[] {Integer.class}), idInfo.getSetter());
+        assertEquals(c.getMethod("setId", new Class[] {InterMineId.class}), idInfo.getSetter());
 
         TypeUtil.FieldInfo addressInfo = (TypeUtil.FieldInfo) got.get("address");
         assertEquals("address", addressInfo.getName());
@@ -128,7 +129,7 @@ public class TypeUtilTest extends TestCase
         TypeUtil.FieldInfo vatInfo = (TypeUtil.FieldInfo) got.get("vatNumber");
         assertEquals("vatNumber", vatInfo.getName());
         assertEquals(c.getMethod("getVatNumber", new Class[] {}), vatInfo.getGetter());
-        assertEquals(c.getMethod("setVatNumber", new Class[] {Integer.TYPE}), vatInfo.getSetter());
+        assertEquals(c.getMethod("setVatNumber", new Class[] {InterMineId.TYPE}), vatInfo.getSetter());
 
 
     }
@@ -158,8 +159,8 @@ public class TypeUtilTest extends TestCase
     }
 
     public void testStringToObject() throws Exception {
-        assertEquals(new Integer(6), TypeUtil.stringToObject(Integer.class, "6"));
-        assertEquals(new Integer(6), TypeUtil.stringToObject(Integer.TYPE, "6"));
+        assertEquals(new InterMineId(6), TypeUtil.stringToObject(InterMineId.class, "6"));
+        assertEquals(new InterMineId(6), TypeUtil.stringToObject(InterMineId.TYPE, "6"));
         assertEquals(Boolean.TRUE, TypeUtil.stringToObject(Boolean.class, "true"));
         assertEquals(Boolean.TRUE, TypeUtil.stringToObject(Boolean.TYPE, "true"));
         assertEquals(new Double(12.0d), TypeUtil.stringToObject(Double.class, "12.0"));

@@ -30,6 +30,7 @@ import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Department;
 import org.intermine.model.testmodel.Employee;
 import org.intermine.model.testmodel.Types;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 public class FullRendererTest extends XMLTestCase
@@ -84,9 +85,9 @@ public class FullRendererTest extends XMLTestCase
     public void testToItemMaterial() throws Exception {
         Employee e = new Employee();
         Department d = new Department();
-        e.setId(new Integer(1234));
+        e.setId(new InterMineId(1234));
         e.setName("Employee1");
-        d.setId(new Integer(5678));
+        d.setId(new InterMineId(5678));
         e.setDepartment(d);
 
         Item exp1 = new Item();
@@ -115,13 +116,13 @@ public class FullRendererTest extends XMLTestCase
 
     public void testToItemDynamic() throws Exception {
         Department d1 = new Department();
-        d1.setId(new Integer(5678));
+        d1.setId(new InterMineId(5678));
         Department d2 = new Department();
-        d2.setId(new Integer(6789));
+        d2.setId(new InterMineId(6789));
 
         Object o = DynamicUtil.createObject(new HashSet(Arrays.asList(new Class[] {Company.class, Broke.class})));
         Company c = (Company) o;
-        c.setId(new Integer(1234));
+        c.setId(new InterMineId(1234));
         c.setName("BrokeCompany1");
         c.setDepartments(new LinkedHashSet(Arrays.asList(new Object[] {d1, d2})));
 
@@ -143,18 +144,18 @@ public class FullRendererTest extends XMLTestCase
 
     public void testToItems() throws Exception {
         Address a1 = new Address();
-        a1.setId(new Integer(2));
+        a1.setId(new InterMineId(2));
         a1.setAddress("\"Company's\" street");
         Department d1 = new Department();
-        d1.setId(new Integer(3));
+        d1.setId(new InterMineId(3));
         d1.setName("Department1");
         Department d2 = new Department();
-        d2.setId(new Integer(4));
+        d2.setId(new InterMineId(4));
         d2.setName("Department2");
 
         Object o1 = DynamicUtil.createObject(new HashSet(Arrays.asList(new Class[] {Company.class})));
         Company c1 = (Company) o1;
-        c1.setId(new Integer(1));
+        c1.setId(new InterMineId(1));
         c1.setName("Company1");
         c1.setAddress(a1);
         c1.setVatNumber(10);
@@ -182,9 +183,9 @@ public class FullRendererTest extends XMLTestCase
     public void testRenderObjectMaterial() throws Exception {
         Employee e = new Employee();
         Department d = new Department();
-        e.setId(new Integer(1234));
+        e.setId(new InterMineId(1234));
         e.setName("Employee1");
-        d.setId(new Integer(5678));
+        d.setId(new InterMineId(5678));
         e.setDepartment(d);
 
         String expected = "<item id=\"1234\" class=\"Employee\" implements=\"Employable HasAddress\">" + ENDL
@@ -200,13 +201,13 @@ public class FullRendererTest extends XMLTestCase
 
     public void testRenderObjectDynamic() throws Exception {
         Department d1 = new Department();
-        d1.setId(new Integer(5678));
+        d1.setId(new InterMineId(5678));
         Department d2 = new Department();
-        d2.setId(new Integer(6789));
+        d2.setId(new InterMineId(6789));
 
         Object o = DynamicUtil.createObject(new HashSet(Arrays.asList(new Class[] {Company.class, Broke.class})));
         Company c = (Company) o;
-        c.setId(new Integer(1234));
+        c.setId(new InterMineId(1234));
         c.setName("BrokeCompany1");
         c.setDepartments(new LinkedHashSet(Arrays.asList(new Object[] {d1, d2})));
 
@@ -229,9 +230,9 @@ public class FullRendererTest extends XMLTestCase
 
     public void testRenderBusinessObjects() throws Exception {
         Department d1 = new Department();
-        d1.setId(new Integer(5678));
+        d1.setId(new InterMineId(5678));
         Department d2 = new Department();
-        d2.setId(new Integer(6789));
+        d2.setId(new InterMineId(6789));
 
         List list = Arrays.asList(new Object[] {d1, d2});
 
@@ -247,7 +248,7 @@ public class FullRendererTest extends XMLTestCase
 
     public void testRenderTypes() throws Exception {
         Types t = new Types();
-        t.setId(new Integer(1234));
+        t.setId(new InterMineId(1234));
         t.setName("Types1");
         t.setBooleanType(true);
         t.setFloatType(1.2f);
@@ -259,7 +260,7 @@ public class FullRendererTest extends XMLTestCase
         t.setFloatObjType(new Float(2.2f));
         t.setDoubleObjType(new Double(2.3d));
         t.setShortObjType(new Short((short) 786));
-        t.setIntObjType(new Integer(4));
+        t.setIntObjType(new InterMineId(4));
         t.setLongObjType(new Long(876328471234l));
         t.setBigDecimalObjType(new BigDecimal("9872876349183274123432.876128716235487621432"));
         t.setDateObjType(new Date(7777777777l));

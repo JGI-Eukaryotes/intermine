@@ -13,6 +13,7 @@ package org.intermine.web.tags.table;
 import java.io.IOException;
 
 import javax.servlet.jsp.JspWriter;
+import org.intermine.model.InterMineId;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
@@ -24,9 +25,9 @@ public class NavigationBarTag extends SimpleTagSupport
 
     private String baseLink;
 
-    private Integer pageSize;
+    private InterMineId pageSize;
 
-    private Integer currentPage;
+    private InterMineId currentPage;
 
     private boolean nextEnabled = false;
 
@@ -74,7 +75,7 @@ public class NavigationBarTag extends SimpleTagSupport
     /**
      * @return index of current page, 0-based
      */
-    public Integer getCurrentPage() {
+    public InterMineId getCurrentPage() {
         return currentPage;
     }
 
@@ -110,7 +111,7 @@ public class NavigationBarTag extends SimpleTagSupport
     /**
      * @return page size that is number of result per page
      */
-    public Integer getPageSize() {
+    public InterMineId getPageSize() {
         return pageSize;
     }
 
@@ -136,14 +137,14 @@ public class NavigationBarTag extends SimpleTagSupport
     /**
      * @param currentPage index of page that should be current
      */
-    public void setCurrentPage(Integer currentPage) {
+    public void setCurrentPage(InterMineId currentPage) {
         this.currentPage = currentPage;
     }
 
     /**
      * @param pageSize new page size
      */
-    public void setPageSize(Integer pageSize) {
+    public void setPageSize(InterMineId pageSize) {
         this.pageSize = pageSize;
     }
 

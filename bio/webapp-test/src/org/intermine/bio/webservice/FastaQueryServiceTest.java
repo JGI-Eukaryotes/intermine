@@ -11,16 +11,17 @@ import java.util.Set;
 
 import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.junit.Before;
+import org.intermine.model.InterMineId;
 import org.junit.Test;
 
 public class FastaQueryServiceTest {
 
-    private Map<String, Integer> extensionsToValues;
+    private Map<String, InterMineId> extensionsToValues;
     private Set<String> badExtensions;
 
     @Before
     public void setup() {
-        extensionsToValues = new HashMap<String, Integer>();
+        extensionsToValues = new HashMap<String, InterMineId>();
         extensionsToValues.put("", 0);
         extensionsToValues.put(null, 0);
         extensionsToValues.put("   ", 0);
@@ -53,7 +54,7 @@ public class FastaQueryServiceTest {
         for (String ext: extensionsToValues.keySet()) {
             assertEquals("Can parse this extension: " + ext,
                 extensionsToValues.get(ext),
-                Integer.valueOf(FastaQueryService.parseExtension(ext)));
+                InterMineId.valueOf(FastaQueryService.parseExtension(ext)));
             tested++;
         }
         assertEquals(tested, extensionsToValues.size());

@@ -31,6 +31,7 @@ import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.OrderDirection;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.web.logic.bag.BagConverter;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.config.WebConfig;
 
 /**
@@ -73,17 +74,17 @@ public class OrthologueConverter extends BagConverter
      * @return list of intermine IDs
      * @throws ObjectStoreException if can't store to database
      */
-    public List<Integer> getConvertedObjectIds(Profile profile, String bagType,
-            List<Integer> bagList, String organismName) throws ObjectStoreException {
+    public List<InterMineId> getConvertedObjectIds(Profile profile, String bagType,
+            List<InterMineId> bagList, String organismName) throws ObjectStoreException {
         PathQuery pathQuery = constructPathQuery(organismName);
         pathQuery.addConstraint(Constraints.inIds("Gene", bagList));
         pathQuery.addView("Gene.homologues.homologue.id");
         PathQueryExecutor executor = im.getPathQueryExecutor(profile);
         ExportResultsIterator it = executor.execute(pathQuery);
-        List<Integer> ids = new ArrayList<Integer>();
+        List<InterMineId> ids = new ArrayList<InterMineId>();
         while (it.hasNext()) {
             List<ResultElement> row = it.next();
-            ids.add((Integer) row.get(0).getField());
+            ids.add((InterMineId) row.get(0).getField());
         }
         return ids;
     }
@@ -109,7 +110,7 @@ public class OrthologueConverter extends BagConverter
             if (count == null) {
                 count = "0";
             }
-            int plusOne = Integer.parseInt(count);
+            int plusOne = InterMineId.parseInt(count);
             results.put(homologue, String.valueOf(++plusOne));
         }
         return results;

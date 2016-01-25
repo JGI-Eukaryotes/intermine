@@ -38,6 +38,7 @@ import java.io.InputStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.apache.tools.ant.types.FileSet;
 
 /**
@@ -119,13 +120,13 @@ public class TSVFileReaderTaskTest extends TestCase
 
         assertEquals(3, r.size());
 
-        List expectedRow0 = Arrays.asList(new Object[] {new Integer(10), "EmployeeA1", Boolean.FALSE});
+        List expectedRow0 = Arrays.asList(new Object[] {new InterMineId(10), "EmployeeA1", Boolean.FALSE});
         assertEquals(expectedRow0, r.get(0));
 
-        List expectedRow1 = Arrays.asList(new Object[] {new Integer(20), "EmployeeA2", Boolean.TRUE});
+        List expectedRow1 = Arrays.asList(new Object[] {new InterMineId(20), "EmployeeA2", Boolean.TRUE});
         assertEquals(expectedRow1, r.get(1));
 
-        List expectedRow2 = Arrays.asList(new Object[] {new Integer(0), "EmployeeA3", Boolean.FALSE});
+        List expectedRow2 = Arrays.asList(new Object[] {new InterMineId(0), "EmployeeA3", Boolean.FALSE});
         assertEquals(expectedRow2, r.get(2));
     }
 

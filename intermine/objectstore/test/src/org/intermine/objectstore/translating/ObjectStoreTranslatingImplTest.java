@@ -24,6 +24,7 @@ import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 
 import org.intermine.model.testmodel.Bank;
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Company;
 
 public class ObjectStoreTranslatingImplTest extends ObjectStoreAbstractImplTestCase
@@ -115,7 +116,7 @@ public class ObjectStoreTranslatingImplTest extends ObjectStoreAbstractImplTestC
             return o;
         }
 
-        public Object translateIdToIdentifier(Integer id) {
+        public Object translateIdToIdentifier(InterMineId id) {
             return id;
         }
     }
@@ -148,7 +149,7 @@ public class ObjectStoreTranslatingImplTest extends ObjectStoreAbstractImplTestC
             }
         }
 
-        public Object translateIdToIdentifier(Integer id) {
+        public Object translateIdToIdentifier(InterMineId id) {
             return id;
         }
     }

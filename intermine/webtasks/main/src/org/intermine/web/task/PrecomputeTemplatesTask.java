@@ -37,6 +37,7 @@ import org.intermine.objectstore.intermine.ParallelPrecomputer;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryNode;
+import org.intermine.model.InterMineId;
 import org.intermine.api.template.TemplateManager;
 
 /**
@@ -95,7 +96,7 @@ public class PrecomputeTemplatesTask extends Task
      * than this number of rows will not be precomputed.
      * @param minRows the minimum row count
      */
-    public void setMinRows(Integer minRows) {
+    public void setMinRows(InterMineId minRows) {
         this.minRows = minRows.intValue();
     }
 

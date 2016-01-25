@@ -31,6 +31,7 @@ import org.intermine.webservice.client.core.RequestImpl;
 import org.intermine.webservice.client.core.Service;
 import org.intermine.webservice.client.core.ServiceFactory;
 import org.intermine.webservice.client.util.HttpConnection;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -185,7 +186,7 @@ public class GenesFinder
             // TOLERANCE
             String toleranceVal = getParameter("--tolerance", args);
             if (toleranceVal != null) {
-                tolerance = Integer.parseInt(toleranceVal);
+                tolerance = InterMineId.parseInt(toleranceVal);
             } else {
                 tolerance = 0;
             }

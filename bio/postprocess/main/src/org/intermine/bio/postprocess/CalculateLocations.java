@@ -44,6 +44,7 @@ import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.objectstore.query.iql.IqlQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 
@@ -93,11 +94,11 @@ public class CalculateLocations
     public void createOverlapRelations(List<String> classNamesToIgnore, boolean ignoreSelfMatches)
         throws Exception {
         osw.beginTransaction();
-        Map<String, Integer> summary = new HashMap<String, Integer>();
-        Map<Integer, Chromosome> chromosomeMap = makeChromosomeMap();
+        Map<String, InterMineId> summary = new HashMap<String, InterMineId>();
+        Map<InterMineId, Chromosome> chromosomeMap = makeChromosomeMap();
         Iterator<?> chromosomeIdIter = chromosomeMap.keySet().iterator();
         while (chromosomeIdIter.hasNext()) {
-            Integer id = (Integer) chromosomeIdIter.next();
+            InterMineId id = (InterMineId) chromosomeIdIter.next();
             createSubjectOverlapRelations(chromosomeMap.get(id), classNamesToIgnore,
                     ignoreSelfMatches, summary);
         }
@@ -106,7 +107,7 @@ public class CalculateLocations
         List<SortElement> sortList = new ArrayList<SortElement>();
         Iterator<?> summaryIter = summary.entrySet().iterator();
         while (summaryIter.hasNext()) {
-            Map.Entry<String, Integer> summaryEntry = (Map.Entry<String, Integer>)
+            Map.Entry<String, InterMineId> summaryEntry = (Map.Entry<String, InterMineId>)
                 summaryIter.next();
             sortList.add(new SortElement(summaryEntry.getKey(),
                         summaryEntry.getValue().intValue()));
@@ -156,7 +157,7 @@ public class CalculateLocations
      * @param summary a Map to which summary data will be added
      */
     private void createSubjectOverlapRelations(Chromosome subject, List<String> classNamesToIgnore,
-            boolean ignoreSelfMatches, Map<String, Integer> summary) throws Exception {
+            boolean ignoreSelfMatches, Map<String, InterMineId> summary) throws Exception {
         LOG.info("Creating overlaps for id " + subject.getId() + ", identifier: "
                  + subject.getPrimaryIdentifier());
 
@@ -211,8 +212,8 @@ public class CalculateLocations
         // Map of location.objects to Maps from parent objects to a to their (new) start and end
         // positions.  eg.  Chromosome10 -> Exon1 -> SimpleLoc {start -> 2111, end -> 2999}
         //                  Contig23 ->     Exon1 -> SimpleLoc {start -> 1111, end -> 1999}
-        Map<Integer, Map<Integer, SimpleLoc>> locatedOnObjectMap
-            = new HashMap<Integer, Map<Integer, SimpleLoc>>();
+        Map<InterMineId, Map<InterMineId, SimpleLoc>> locatedOnObjectMap
+            = new HashMap<InterMineId, Map<InterMineId, SimpleLoc>>();
 
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
@@ -224,23 +225,23 @@ public class CalculateLocations
             BioEntity locatedOnObject = (BioEntity) rr.get(3);
 
             // ignore objects that already have locations
-            Integer parentObjectId = parentObject.getId();
+            InterMineId parentObjectId = parentObject.getId();
             if (locatedParents.contains(parentObjectId)) {
                 continue;
             }
 
-            Map<Integer, SimpleLoc> parentObjectMap
+            Map<InterMineId, SimpleLoc> parentObjectMap
                 = locatedOnObjectMap.get(locatedOnObject.getId());
 
             if (parentObjectMap == null) {
-                parentObjectMap = new HashMap<Integer, SimpleLoc>();
+                parentObjectMap = new HashMap<InterMineId, SimpleLoc>();
                 locatedOnObjectMap.put(locatedOnObject.getId(), parentObjectMap);
             }
 
             SimpleLoc parentObjectSimpleLoc = parentObjectMap.get(parentObjectId);
 
             if (parentObjectSimpleLoc == null) {
-                parentObjectSimpleLoc = new SimpleLoc(-1, -1, Integer.MAX_VALUE, -1, "0");
+                parentObjectSimpleLoc = new SimpleLoc(-1, -1, InterMineId.MAX_VALUE, -1, "0");
                 parentObjectMap.put(parentObjectId, parentObjectSimpleLoc);
             }
 
@@ -265,21 +266,21 @@ public class CalculateLocations
         // make new locations and store them
         Iterator<?> locatedOnObjectIterator = locatedOnObjectMap.keySet().iterator();
         while (locatedOnObjectIterator.hasNext()) {
-            Integer locatedOnObjectId = (Integer) locatedOnObjectIterator.next();
+            InterMineId locatedOnObjectId = (InterMineId) locatedOnObjectIterator.next();
             BioEntity locatedOnObject = (BioEntity) os.getObjectById(locatedOnObjectId);
-            Map<Integer, SimpleLoc> parentObjectMap
+            Map<InterMineId, SimpleLoc> parentObjectMap
                 = locatedOnObjectMap.get(locatedOnObjectId);
             Iterator<?> parentObjectMapIterator = parentObjectMap.keySet().iterator();
 
             while (parentObjectMapIterator.hasNext()) {
-                Integer parentObjectId = (Integer) parentObjectMapIterator.next();
+                InterMineId parentObjectId = (InterMineId) parentObjectMapIterator.next();
                 BioEntity parentObject = (BioEntity) os.getObjectById(parentObjectId);
                 SimpleLoc parentObjectSimpleLoc = parentObjectMap.get(parentObjectId);
                 Location newLocation =
                     (Location) DynamicUtil.createObject(Collections.singleton(Location.class));
 
-                newLocation.setStart(new Integer(parentObjectSimpleLoc.getStart()));
-                newLocation.setEnd(new Integer(parentObjectSimpleLoc.getEnd()));
+                newLocation.setStart(new InterMineId(parentObjectSimpleLoc.getStart()));
+                newLocation.setEnd(new InterMineId(parentObjectSimpleLoc.getEnd()));
                 newLocation.setStrand(parentObjectSimpleLoc.getStrand());
                 newLocation.setFeature(parentObject);
                 newLocation.setLocatedOn(locatedOnObject);
@@ -341,8 +342,8 @@ public class CalculateLocations
     /**
      * Hold Chromosomes in map by id
      */
-    private Map<Integer, Chromosome> makeChromosomeMap() throws Exception {
-        Map<Integer, Chromosome>  returnMap = new HashMap<Integer, Chromosome> ();
+    private Map<InterMineId, Chromosome> makeChromosomeMap() throws Exception {
+        Map<InterMineId, Chromosome>  returnMap = new HashMap<InterMineId, Chromosome> ();
         Query q = new Query();
         QueryClass qc = new QueryClass(Chromosome.class);
         q.addToSelect(qc);
@@ -374,7 +375,7 @@ public class CalculateLocations
         // we need to check that there is only one location before setting chromosome[Location]
         // references.  If there are duplicates do nothing - this has happened for some affy
         // probes in FlyMine.
-        Integer lastChrId = null;
+        InterMineId lastChrId = null;
         SequenceFeature lastFeature = null;
         boolean storeLastFeature = true;  // will get set to false if duplicate locations seen
         Location lastLoc = null;
@@ -382,7 +383,7 @@ public class CalculateLocations
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
 
-            Integer chrId = (Integer) rr.get(0);
+            InterMineId chrId = (InterMineId) rr.get(0);
             SequenceFeature lsf = (SequenceFeature) rr.get(1);
             Location locOnChr = (Location) rr.get(2);
 
@@ -426,7 +427,7 @@ public class CalculateLocations
         // we need to check that there is only one location before setting chromosome[Location]
         // references.  If there are duplicates do nothing - this has happened for some affy
         // probes in FlyMine.
-        Integer lastChrId = null;
+        InterMineId lastChrId = null;
         SequenceFeature lastFeature = null;
         boolean storeLastFeature = true;  // will get set to false if duplicate locations seen
         Location lastLoc = null;
@@ -435,7 +436,7 @@ public class CalculateLocations
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
 
-            Integer chrId = (Integer) rr.get(0);
+            InterMineId chrId = (InterMineId) rr.get(0);
             SequenceFeature lsf = (SequenceFeature) rr.get(1);
             Location locOnChr = (Location) rr.get(2);
 
@@ -464,7 +465,7 @@ public class CalculateLocations
     }
 
     private void setChromosomeReferencesAndStore(SequenceFeature lsf, Location loc,
-                                                 Integer chrId) throws Exception {
+                                                 InterMineId chrId) throws Exception {
         SequenceFeature lsfClone = PostProcessUtil.cloneInterMineObject(lsf);
 
         lsfClone.setChromosomeLocation(loc);
@@ -475,7 +476,7 @@ public class CalculateLocations
             // an alternative is to set according to type of feature.
             if (lsfClone.getLength() == null) {
                 int length = Math.abs(end - start) + 1;
-                lsfClone.setLength(new Integer(length));
+                lsfClone.setLength(new InterMineId(length));
             }
         }
         lsfClone.proxyChromosome(new ProxyReference(os, chrId, Chromosome.class));

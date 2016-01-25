@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.intermine.model.InterMineId;
 import junit.framework.TestCase;
 
 public class ObjectPipeTest extends TestCase
@@ -28,13 +29,13 @@ public class ObjectPipeTest extends TestCase
     public void test() throws Exception {
         op = new ObjectPipe();
 
-        op.put(new Integer(1));
-        op.put(new Integer(2));
+        op.put(new InterMineId(1));
+        op.put(new InterMineId(2));
         assertTrue(op.hasNext());
-        assertEquals(new Integer(1), op.next());
+        assertEquals(new InterMineId(1), op.next());
         op.finish();
         assertTrue(op.hasNext());
-        assertEquals(new Integer(2), op.next());
+        assertEquals(new InterMineId(2), op.next());
         assertFalse(op.hasNext());
         try {
             op.next();
@@ -51,7 +52,7 @@ public class ObjectPipeTest extends TestCase
             @Override
             public void run() {
                 while (op.hasNext()) {
-                    int i = ((Integer) op.next()).intValue();
+                    int i = ((InterMineId) op.next()).intValue();
                     if (i == progress + 1) {
                         progress = i;
                     } else {
@@ -67,22 +68,22 @@ public class ObjectPipeTest extends TestCase
         receiver.start();
 
         assertEquals(0, progress);
-        op.put(new Integer(1));
+        op.put(new InterMineId(1));
         for (int i = 0; (i < 40) && (progress < 1); i++) {
             Thread.sleep(50);
         }
         assertEquals(1, progress);
-        op.put(new Integer(2));
+        op.put(new InterMineId(2));
         for (int i = 0; (i < 40) && (progress < 2); i++) {
             Thread.sleep(50);
         }
         assertEquals(2, progress);
 
         List l = new ArrayList();
-        l.add(new Integer(3));
-        l.add(new Integer(4));
-        l.add(new Integer(5));
-        l.add(new Integer(6));
+        l.add(new InterMineId(3));
+        l.add(new InterMineId(4));
+        l.add(new InterMineId(5));
+        l.add(new InterMineId(6));
         op.putAll(l);
         for (int i = 0; (i < 40) && (progress < 6); i++) {
             Thread.sleep(50);
@@ -103,17 +104,17 @@ public class ObjectPipeTest extends TestCase
         Thread sender = new Thread() {
             public void run() {
                 List l = new ArrayList();
-                l.add(new Integer(1));
-                l.add(new Integer(2));
-                l.add(new Integer(3));
-                l.add(new Integer(4));
+                l.add(new InterMineId(1));
+                l.add(new InterMineId(2));
+                l.add(new InterMineId(3));
+                l.add(new InterMineId(4));
                 op.putAll(l);
                 progress = 4;
 
-                op.put(new Integer(5));
+                op.put(new InterMineId(5));
                 progress = 5;
 
-                op.put(new Integer(6));
+                op.put(new InterMineId(6));
                 progress = 6;
 
                 op.finish();
@@ -128,29 +129,29 @@ public class ObjectPipeTest extends TestCase
         }
         assertEquals(4, progress);
         assertTrue(op.hasNext());
-        assertEquals(new Integer(1), op.next());
+        assertEquals(new InterMineId(1), op.next());
         Thread.sleep(200);
         assertEquals(4, progress);
         assertTrue(op.hasNext());
-        assertEquals(new Integer(2), op.next());
+        assertEquals(new InterMineId(2), op.next());
         Thread.sleep(200);
         assertEquals(4, progress);
         assertTrue(op.hasNext());
-        assertEquals(new Integer(3), op.next());
+        assertEquals(new InterMineId(3), op.next());
         for (int i = 0; (i < 40) && (progress < 5); i++) {
             Thread.sleep(50);
         }
         assertEquals(5, progress);
         assertTrue(op.hasNext());
-        assertEquals(new Integer(4), op.next());
+        assertEquals(new InterMineId(4), op.next());
         for (int i = 0; (i < 40) && (progress < 2000); i++) {
             Thread.sleep(50);
         }
         assertEquals(2000, progress);
         assertTrue(op.hasNext());
-        assertEquals(new Integer(5), op.next());
+        assertEquals(new InterMineId(5), op.next());
         assertTrue(op.hasNext());
-        assertEquals(new Integer(6), op.next());
+        assertEquals(new InterMineId(6), op.next());
         assertFalse(op.hasNext());
     }
 
@@ -158,7 +159,7 @@ public class ObjectPipeTest extends TestCase
         op = new ObjectPipe();
         op.finish();
         try {
-            op.put(new Integer(1));
+            op.put(new InterMineId(1));
             fail("Expected: IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }

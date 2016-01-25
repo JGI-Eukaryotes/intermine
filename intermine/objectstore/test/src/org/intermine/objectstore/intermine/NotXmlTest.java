@@ -20,6 +20,7 @@ import org.intermine.model.testmodel.Employee;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreFactory;
 import org.intermine.objectstore.proxy.ProxyReference;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicBean;
 
 public class NotXmlTest extends TestCase
@@ -33,9 +34,9 @@ public class NotXmlTest extends TestCase
     public void test1() throws Exception {
         Employee e = new Employee();
         Department d = new Department();
-        e.setId(new Integer(1234));
+        e.setId(new InterMineId(1234));
         e.setName("Employee1");
-        d.setId(new Integer(5678));
+        d.setId(new InterMineId(5678));
         e.setDepartment(d);
 
         String expected = NotXmlParser.DELIM + "org.intermine.model.testmodel.Employee"
@@ -58,13 +59,13 @@ public class NotXmlTest extends TestCase
         Employee obj1 = (Employee) NotXmlParser.parse(s, os);
 
         assertEquals("Employee1", obj1.getName());
-        assertEquals(new Integer(1234), obj1.getId());
+        assertEquals(new InterMineId(1234), obj1.getId());
         Class c = Employee.class;
         java.lang.reflect.Field f = c.getDeclaredField("department");
         f.setAccessible(true);
         ProxyReference o = (ProxyReference) f.get(obj1);
         assertNotNull(o);
-        assertEquals(new Integer(5678), o.getId());
+        assertEquals(new InterMineId(5678), o.getId());
     }
 
     public void testParseDynamic() throws Exception {
@@ -79,16 +80,16 @@ public class NotXmlTest extends TestCase
 
         assertEquals("CompanyC", obj1.getName());
         assertEquals(100, obj1.getVatNumber());
-        assertEquals(new Integer(74350), obj1.getId());
+        assertEquals(new InterMineId(74350), obj1.getId());
         Map fieldMap = ((DynamicBean) ((net.sf.cglib.proxy.Factory) obj1).getCallback(0)).getMap();
         ProxyReference addressRef = (ProxyReference) fieldMap.get("address");
         assertNotNull(addressRef);
-        assertEquals(new Integer(74328), addressRef.getId());
+        assertEquals(new InterMineId(74328), addressRef.getId());
     }
 
     public void testHandleDelims() throws Exception {
         Employee e = new Employee();
-        e.setId(new Integer(2874));
+        e.setId(new InterMineId(2874));
         e.setName("Flibble $_^ Wotsit");
 
         String notXml = NotXmlRenderer.render(e).toString();

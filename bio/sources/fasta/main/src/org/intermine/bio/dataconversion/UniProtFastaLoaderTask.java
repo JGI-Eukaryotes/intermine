@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.biojava.bio.Annotation;
 import org.biojava.bio.seq.Sequence;
 import org.intermine.model.bio.Organism;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -25,7 +26,7 @@ import org.intermine.objectstore.ObjectStoreException;
  */
 public class UniProtFastaLoaderTask extends FastaLoaderTask
 {
-    private Map<Integer, Organism> organisms = new HashMap<Integer, Organism>();
+    private Map<InterMineId, Organism> organisms = new HashMap<InterMineId, Organism>();
 
     /**
      * {@inheritDoc}
@@ -45,7 +46,7 @@ public class UniProtFastaLoaderTask extends FastaLoaderTask
             if (bits.length != 2) {
                 return null;
             }
-            Integer taxonId = getTaxonId(bits[1]);
+            InterMineId taxonId = getTaxonId(bits[1]);
             if (taxonId == null) {
                 return null;
             }

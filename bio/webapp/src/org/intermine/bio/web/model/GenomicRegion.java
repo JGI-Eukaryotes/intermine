@@ -10,6 +10,9 @@ package org.intermine.bio.web.model;
  *
  */
 
+import org.intermine.model.InterMineId;
+import org.intermine.model.InterMineCoord;
+
 /**
  * This Java bean represents one record of Chromosome coordinates from user input
  * The record should be in BED format: "chr\tstart\tend".
@@ -20,14 +23,14 @@ public class GenomicRegion implements Comparable<GenomicRegion>
 {
     private String organism;
     private String chr;
-    private Integer start;
-    private Integer end;
-    private Integer extendedRegionSize = new Integer(0); // user add region flanking
-    private Integer extendedStart;
-    private Integer extendedEnd;
+    private InterMineCoord start;
+    private InterMineCoord end;
+    private InterMineCoord extendedRegionSize = new InterMineCoord(0); // user add region flanking
+    private InterMineCoord extendedStart;
+    private InterMineCoord extendedEnd;
 
     //user identifier to tag the order of input e.g. X:7880589..7880644:5 is the 5th input
-    private Integer tag = null;
+    private InterMineId tag = null;
 
     /**
      * Default constructor
@@ -69,56 +72,56 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @return start
      */
-    public Integer getStart() {
+    public InterMineCoord getStart() {
         return start;
     }
 
     /**
      * @param start start poistion
      */
-    public void setStart(Integer start) {
+    public void setStart(InterMineCoord start) {
         this.start = start;
     }
 
     /**
      * @return end
      */
-    public Integer getEnd() {
+    public InterMineCoord getEnd() {
         return end;
     }
 
     /**
      * @param end end position
      */
-    public void setEnd(Integer end) {
+    public void setEnd(InterMineCoord end) {
         this.end = end;
     }
 
     /**
      * @return the extendedStart
      */
-    public Integer getExtendedStart() {
+    public InterMineCoord getExtendedStart() {
         return extendedStart;
     }
 
     /**
      * @param extendedStart the extendedStart to set
      */
-    public void setExtendedStart(Integer extendedStart) {
+    public void setExtendedStart(InterMineCoord extendedStart) {
         this.extendedStart = extendedStart;
     }
 
     /**
      * @return the extendedEnd
      */
-    public Integer getExtendedEnd() {
+    public InterMineCoord getExtendedEnd() {
         return extendedEnd;
     }
 
     /**
      * @param extendedEnd the extendedEnd to set
      */
-    public void setExtendedEnd(Integer extendedEnd) {
+    public void setExtendedEnd(InterMineCoord extendedEnd) {
         this.extendedEnd = extendedEnd;
     }
 
@@ -139,14 +142,14 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @param tag as integer
      */
-    public void setTag(Integer tag) {
+    public void setTag(InterMineId tag) {
         this.tag = tag;
     }
 
     /**
      * @return tag value
      */
-    public Integer getTag() {
+    public InterMineId getTag() {
         return tag;
     }
 

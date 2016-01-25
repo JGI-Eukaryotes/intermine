@@ -31,6 +31,7 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
 import org.intermine.web.logic.results.ReportObject;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -108,8 +109,8 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             throw new RuntimeException(e);
         }
 
-        Integer up = 0;
-        Integer down = 0;
+        InterMineId up = 0;
+        InterMineId down = 0;
         while (results.hasNext()) {
             List<ResultElement> item = results.next();
             String expression = item.get(0).getField().toString();
@@ -120,7 +121,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             }
         }
 
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        HashMap<String, InterMineId> map = new HashMap<String, InterMineId>();
         map.put("up", up);
         map.put("down", down);
 
@@ -148,8 +149,8 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             throw new RuntimeException(e);
         }
 
-        Integer up = 0;
-        Integer down = 0;
+        InterMineId up = 0;
+        InterMineId down = 0;
         while (results.hasNext()) {
             List<ResultElement> item = results.next();
             String expression = item.get(0).getField().toString();
@@ -160,7 +161,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             }
         }
 
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        HashMap<String, InterMineId> map = new HashMap<String, InterMineId>();
         map.put("up", up);
         map.put("down", down);
 
@@ -188,7 +189,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
      * @param objectId
      * @return
      */
-    private PathQuery allelesPathQuery(Integer objectId) {
+    private PathQuery allelesPathQuery(InterMineId objectId) {
         PathQuery query = new PathQuery(im.getModel());
         query.addViews("Gene.homologues.homologue.alleles.primaryIdentifier");
         query.addConstraint(Constraints.eq("Gene.homologues.homologue.organism.shortName",
@@ -205,7 +206,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
      * @param objectId
      * @return
      */
-    private PathQuery goTermPathQuery(Integer objectId) {
+    private PathQuery goTermPathQuery(InterMineId objectId) {
         PathQuery query = new PathQuery(im.getModel());
         query.addViews("Gene.goAnnotation.ontologyTerm.name");
         query.addOrderBy("Gene.goAnnotation.ontologyTerm.name", OrderDirection.ASC);
@@ -317,7 +318,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
                     throw new RuntimeException(e);
                 }
 
-                HashMap<String, Integer> temp = new HashMap<String, Integer>();
+                HashMap<String, InterMineId> temp = new HashMap<String, InterMineId>();
                 while (results.hasNext()) {
                     List<ResultElement> item = results.next();
                     String value = item.get(0).getField().toString();
@@ -347,7 +348,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
          *
          * @return InterMineObject ID
          */
-        public Integer getObjectId() {
+        public InterMineId getObjectId() {
             return imObj.getId();
         }
 

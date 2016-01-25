@@ -34,6 +34,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SubqueryExistsConstraint;
 import org.intermine.util.AlwaysSet;
+import org.intermine.model.InterMineId;
 import org.intermine.util.PseudoSet;
 
 /**
@@ -82,7 +83,7 @@ public class EquivalentObjectHints
             QueryClass qc = new QueryClass(InterMineObject.class);
             subQ.addFrom(qc);
             subQ.addToSelect(new QueryField(qc, "id"));
-            q.addToSelect(new QueryValue(new Integer(1)));
+            q.addToSelect(new QueryValue(new InterMineId(1)));
             q.setConstraint(new SubqueryExistsConstraint(ConstraintOp.EXISTS, subQ));
             List<?> results = os.execute(q, 0, 1, false, false, ObjectStore.SEQUENCE_IGNORE);
             if (results.isEmpty()) {
@@ -116,7 +117,7 @@ public class EquivalentObjectHints
                 QueryClass qc = new QueryClass(clazz);
                 subQ.addFrom(qc);
                 subQ.addToSelect(new QueryField(qc, "id"));
-                q.addToSelect(new QueryValue(new Integer(1)));
+                q.addToSelect(new QueryValue(new InterMineId(1)));
                 q.setConstraint(new SubqueryExistsConstraint(ConstraintOp.EXISTS, subQ));
                 List<?> results = os.execute(q, 0, 1, false, false, ObjectStore.SEQUENCE_IGNORE);
                 if (results.isEmpty()) {
@@ -172,13 +173,13 @@ public class EquivalentObjectHints
                         false, ObjectStore.SEQUENCE_IGNORE);
                 if (results.size() < SUMMARY_SIZE) {
                     q = QueryCloner.cloneQuery(q);
-                    q.setLimit(Integer.MAX_VALUE);
+                    q.setLimit(InterMineId.MAX_VALUE);
                     q.setDistinct(true);
                     results = os.execute(q, 0, SUMMARY_SIZE, false, false,
                             ObjectStore.SEQUENCE_IGNORE);
                 }
                 if (results.size() >= SUMMARY_SIZE) {
-                    if (Integer.class.equals(qs.getType())) {
+                    if (InterMineId.class.equals(qs.getType())) {
                         q = new Query();
                         q.addFrom(qc);
                         q.addToSelect(new QueryFunction(qs, QueryFunction.MIN));
@@ -186,8 +187,8 @@ public class EquivalentObjectHints
                         q.setDistinct(false);
                         List<ResultsRow<Object>> results2 = os.execute(q, 0, 2, false, false,
                                 ObjectStore.SEQUENCE_IGNORE);
-                        values = new IntegerRangeSet(((Integer) results2.get(0).get(0)).intValue(),
-                                ((Integer) results2.get(0).get(1)).intValue());
+                        values = new InterMineIdRangeSet(((InterMineId) results2.get(0).get(0)).intValue(),
+                                ((InterMineId) results2.get(0).get(1)).intValue());
                     } else {
                         values = AlwaysSet.getInstance();
                     }
@@ -209,8 +210,8 @@ public class EquivalentObjectHints
         if (queried instanceof HashSet<?>) {
             queried.add(value);
             if (queried.size() >= SUMMARY_SIZE) {
-                if (value instanceof Integer) {
-                    IntegerRangeSet newQueried = new IntegerRangeSet();
+                if (value instanceof InterMineId) {
+                    InterMineIdRangeSet newQueried = new InterMineIdRangeSet();
                     for (Object oldValue : queried) {
                         newQueried.add(oldValue);
                     }
@@ -219,7 +220,7 @@ public class EquivalentObjectHints
                     classAndFieldNameQueried.put(cafn, AlwaysSet.getInstance());
                 }
             }
-        } else if (queried instanceof IntegerRangeSet) {
+        } else if (queried instanceof InterMineIdRangeSet) {
             queried.add(value);
         }
         return !values.contains(value);
@@ -270,28 +271,28 @@ public class EquivalentObjectHints
         }
     }
 
-    private static class IntegerRangeSet extends PseudoSet<Object>
+    private static class InterMineIdRangeSet extends PseudoSet<Object>
     {
         private int low, high;
 
-        public IntegerRangeSet() {
-            this.low = Integer.MAX_VALUE;
-            this.high = Integer.MIN_VALUE;
+        public InterMineIdRangeSet() {
+            this.low = InterMineId.MAX_VALUE;
+            this.high = InterMineId.MIN_VALUE;
         }
 
-        public IntegerRangeSet(int low, int high) {
+        public InterMineIdRangeSet(int low, int high) {
             this.low = low;
             this.high = high;
         }
 
         public boolean contains(Object o) {
-            int i = ((Integer) o).intValue();
+            int i = ((InterMineId) o).intValue();
             return (i >= low) && (i <= high);
         }
 
         @Override
         public boolean add(Object o) {
-            int i = ((Integer) o).intValue();
+            int i = ((InterMineId) o).intValue();
             low = Math.min(low, i);
             high = Math.max(high, i);
             return false;
@@ -299,7 +300,7 @@ public class EquivalentObjectHints
 
         @Override
         public String toString() {
-            return "IntegerRangeSet(" + low + " - " + high + ")";
+            return "InterMineIdRangeSet(" + low + " - " + high + ")";
         }
     }
 }

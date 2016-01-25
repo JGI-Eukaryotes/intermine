@@ -27,6 +27,7 @@ import org.intermine.objectstore.query.ClobAccess;
 import org.intermine.objectstore.query.PendingClob;
 import org.intermine.util.DynamicUtil;
 import org.intermine.util.SAXParser;
+import org.intermine.model.InterMineId;
 import org.xml.sax.InputSource;
 
 /**
@@ -190,7 +191,7 @@ public final class FullParser
             }
 
             if (useIdentifier) {
-                obj.setFieldValue("id", TypeUtil.stringToObject(Integer.class,
+                obj.setFieldValue("id", TypeUtil.stringToObject(InterMineId.class,
                             item.getIdentifier()));
             }
 

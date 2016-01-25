@@ -12,6 +12,7 @@ package org.intermine.webservice.server.lists;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 
 /**
@@ -70,7 +71,7 @@ public class ListsRequestParser
             }
         } else {
             try {
-                ret.setMineId(Integer.parseInt(mineId));
+                ret.setMineId(InterMineId.parseInt(mineId));
             } catch (Throwable t) {
                 throw new BadRequestException("invalid parameter: " + MINE_ID_PARAMETER);
             }

@@ -35,6 +35,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.QueryTestCase;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.iql.IqlQuery;
 
 /**
@@ -71,7 +72,7 @@ public class PrecomputeTaskTest extends QueryTestCase
         TestPrecomputeTask task = new TestPrecomputeTask();
 
         task.setAlias("os.unittest");
-        task.setMinRows(new Integer(1));
+        task.setMinRows(new InterMineId(1));
 
         Properties summaryProperties;
 

@@ -29,6 +29,7 @@ import org.intermine.api.profile.Profile;
 import org.intermine.api.template.ApiTemplate;
 import org.intermine.api.util.NameUtil;
 import org.intermine.template.TemplateQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -89,8 +90,8 @@ public class TemplatesImportAction extends InterMineAction
                 }
             }
 
-            recordMessage(new ActionMessage("importTemplates.done", new Integer(deleted),
-                        new Integer(imported), new Integer(renamed)), request);
+            recordMessage(new ActionMessage("importTemplates.done", new InterMineId(deleted),
+                        new InterMineId(imported), new InterMineId(renamed)), request);
             if (!validConstraints) {
                 recordError(new ActionMessage("importTemplates.error.noneditablelookup"), request);
             }

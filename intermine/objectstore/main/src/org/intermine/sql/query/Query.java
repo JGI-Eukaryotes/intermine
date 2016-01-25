@@ -36,6 +36,7 @@ import java.util.Set;
 import org.intermine.util.ConsistentSet;
 
 import antlr.Token;
+import org.intermine.model.InterMineId;
 import antlr.collections.AST;
 //import antlr.debug.misc.ASTFrame;
 
@@ -653,7 +654,7 @@ public class Query implements SQLStringable
         //   ORDER BY
 
         // find each part of the query first, map by SqlTokenType
-        HashMap<Integer, AST> queryPartASTs = new HashMap<Integer, AST>();
+        HashMap<InterMineId, AST> queryPartASTs = new HashMap<InterMineId, AST>();
         while (ast != null) {
             queryPartASTs.put(ast.getType(), ast.getFirstChild());
             ast = ast.getNextSibling();
@@ -1328,9 +1329,9 @@ public class Query implements SQLStringable
      * @param ast an AST node to process
      */
     public void processLimitClause(AST ast) {
-        limit = Integer.parseInt(ast.getText());
+        limit = InterMineId.parseInt(ast.getText());
         if (ast.getNextSibling() != null) {
-            offset = Integer.parseInt(ast.getNextSibling().getText());
+            offset = InterMineId.parseInt(ast.getNextSibling().getText());
         }
     }
 

@@ -12,6 +12,7 @@ package org.intermine.bio.web.struts;
 
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.web.struts.TableExportForm;
 
 /**
@@ -20,7 +21,7 @@ import org.intermine.web.struts.TableExportForm;
  */
 public class GFF3ExportForm extends TableExportForm
 {
-    private Set<Integer> taxonIds = null;
+    private Set<InterMineId> taxonIds = null;
     private boolean makeUcscCompatible = false;
 
     /**
@@ -44,7 +45,7 @@ public class GFF3ExportForm extends TableExportForm
      *
      * @param taxonIds set of taxon ids
      */
-    public void setOrganisms(Set<Integer> taxonIds) {
+    public void setOrganisms(Set<InterMineId> taxonIds) {
         this.taxonIds = taxonIds;
     }
 
@@ -53,7 +54,7 @@ public class GFF3ExportForm extends TableExportForm
      *
      * @return a set of taxon ids
      */
-    public Set<Integer> getOrganisms() {
+    public Set<InterMineId> getOrganisms() {
         return taxonIds;
     }
 }

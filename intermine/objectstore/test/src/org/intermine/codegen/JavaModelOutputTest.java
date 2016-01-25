@@ -25,6 +25,7 @@ import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
 import org.intermine.metadata.Model;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ReferenceDescriptor;
 
 
@@ -63,9 +64,9 @@ public class JavaModelOutputTest extends TestCase
 
             String expected = "public class Class1 implements org.intermine.model.InterMineObject" + ENDL + "{" + ENDL
                 + INDENT + "// Attr: org.intermine.model.InterMineObject.id" + ENDL
-                + INDENT + "protected java.lang.Integer id;" + ENDL
-                + INDENT + "public java.lang.Integer getId() { return id; }" + ENDL
-                + INDENT + "public void setId(final java.lang.Integer id) { this.id = id; }" + ENDL + ENDL
+                + INDENT + "protected InterMineId id;" + ENDL
+                + INDENT + "public nterMineId getId() { return id; }" + ENDL
+                + INDENT + "public void setId(final InterMineId id) { this.id = id; }" + ENDL + ENDL
                 + INDENT + "@Override public boolean equals(Object o) { return (o instanceof Class1 && id != null) ? id.equals(((Class1)o).getId()) : this == o; }" + ENDL
                 + INDENT + "@Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }" + ENDL
                 + INDENT + "@Override public String toString() { return \"Class1 [id=\" + id + \"]\"; }" + ENDL;
@@ -81,9 +82,9 @@ public class JavaModelOutputTest extends TestCase
 
         String expected = "public class Class1 implements org.intermine.model.InterMineObject" + ENDL + "{" + ENDL
             + INDENT + "// Attr: org.intermine.model.InterMineObject.id" + ENDL
-            + INDENT + "protected java.lang.Integer id;" + ENDL
-            + INDENT + "public java.lang.Integer getId() { return id; }" + ENDL
-            + INDENT + "public void setId(final java.lang.Integer id) { this.id = id; }" + ENDL + ENDL
+            + INDENT + "protected InterMineId id;" + ENDL
+            + INDENT + "public InterMineId getId() { return id; }" + ENDL
+            + INDENT + "public void setId(final InterMineId id) { this.id = id; }" + ENDL + ENDL
             + INDENT + "@Override public boolean equals(Object o) { return (o instanceof Class1 && id != null) ? id.equals(((Class1)o).getId()) : this == o; }" + ENDL
             + INDENT + "@Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }" + ENDL
             + INDENT + "@Override public String toString() { return \"Class1 [id=\" + id + \"]\"; }" + ENDL;
@@ -122,9 +123,9 @@ public class JavaModelOutputTest extends TestCase
 
         String expected = "public class Class1 implements org.intermine.model.InterMineObject" + ENDL + "{" + ENDL
             + INDENT + "// Attr: org.intermine.model.InterMineObject.id" + ENDL
-            + INDENT + "protected java.lang.Integer id;" + ENDL
-            + INDENT + "public java.lang.Integer getId() { return id; }" + ENDL
-            + INDENT + "public void setId(final java.lang.Integer id) { this.id = id; }" + ENDL + ENDL
+            + INDENT + "protected InterMineId id;" + ENDL
+            + INDENT + "public InterMineId getId() { return id; }" + ENDL
+            + INDENT + "public void setId(final InterMineId id) { this.id = id; }" + ENDL + ENDL
             + INDENT + "@Override public boolean equals(Object o) { return (o instanceof Class1 && id != null) ? id.equals(((Class1)o).getId()) : this == o; }" + ENDL
             + INDENT + "@Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }" + ENDL
             + INDENT + "@Override public String toString() { return \"Class1 [id=\" + id + \"]\"; }" + ENDL;
@@ -140,9 +141,9 @@ public class JavaModelOutputTest extends TestCase
 
         String expected = "public class Class1 implements package.name.Interface1, package.name.Interface2" + ENDL + "{" + ENDL
             + INDENT + "// Attr: org.intermine.model.InterMineObject.id" + ENDL
-            + INDENT + "protected java.lang.Integer id;" + ENDL
-            + INDENT + "public java.lang.Integer getId() { return id; }" + ENDL
-            + INDENT + "public void setId(final java.lang.Integer id) { this.id = id; }" + ENDL + ENDL
+            + INDENT + "protected InterMineId id;" + ENDL
+            + INDENT + "public InterMineId getId() { return id; }" + ENDL
+            + INDENT + "public void setId(final InterMineId id) { this.id = id; }" + ENDL + ENDL
             + INDENT + "@Override public boolean equals(Object o) { return (o instanceof Class1 && id != null) ? id.equals(((Class1)o).getId()) : this == o; }" + ENDL
             + INDENT + "@Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }" + ENDL
             + INDENT + "@Override public String toString() { return \"Class1 [id=\" + id + \"]\"; }" + ENDL;
@@ -178,9 +179,9 @@ public class JavaModelOutputTest extends TestCase
             + INDENT + "public void setCod1(final java.util.Set<package.name.Class2> cod1) { this.cod1 = cod1; }" + ENDL
             + INDENT + "public void addCod1(final package.name.Class2 arg) { cod1.add(arg); }" + ENDL + ENDL
             + INDENT + "// Attr: org.intermine.model.InterMineObject.id" + ENDL
-            + INDENT + "protected java.lang.Integer id;" + ENDL
-            + INDENT + "public java.lang.Integer getId() { return id; }" + ENDL
-            + INDENT + "public void setId(final java.lang.Integer id) { this.id = id; }" + ENDL + ENDL
+            + INDENT + "protected InterMineId id;" + ENDL
+            + INDENT + "public InterMineId getId() { return id; }" + ENDL
+            + INDENT + "public void setId(final InterMineId id) { this.id = id; }" + ENDL + ENDL
             + INDENT + "@Override public boolean equals(Object o) { return (o instanceof Class1 && id != null) ? id.equals(((Class1)o).getId()) : this == o; }" + ENDL
             + INDENT + "@Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }" + ENDL
             + INDENT + "@Override public String toString() { return \"Class1 [atd1=\" + (atd1 == null ? \"null\" : \"\\\"\" + atd1 + \"\\\"\") + \", id=\" + id + \", rfd1=\" + (rfd1 == null ? \"null\" : (rfd1.getId() == null ? \"no id\" : rfd1.getId().toString())) + \"]\"; }" + ENDL;
@@ -271,7 +272,7 @@ public class JavaModelOutputTest extends TestCase
     public void testGenerateToString() throws Exception {
         AttributeDescriptor atd1 = new AttributeDescriptor("inty", "int");
         AttributeDescriptor atd2 = new AttributeDescriptor("str", "java.lang.String");
-        AttributeDescriptor atd3 = new AttributeDescriptor("integery", "java.lang.Integer");
+        AttributeDescriptor atd3 = new AttributeDescriptor("integery", "InterMineId");
         ReferenceDescriptor rfd1 = new ReferenceDescriptor("rfd1", "package.name.Class2", null);
         CollectionDescriptor cod1 = new CollectionDescriptor("cod1", "package.name.Class2", null);
         Set<AttributeDescriptor> atts = new LinkedHashSet(Arrays.asList(atd1, atd2, atd3));
@@ -318,9 +319,9 @@ public class JavaModelOutputTest extends TestCase
             + INDENT + "public int getAtd1() { return atd1; }" + ENDL
             + INDENT + "public void setAtd1(final int atd1) { this.atd1 = atd1; }" + ENDL + ENDL
             + INDENT + "// Attr: org.intermine.model.InterMineObject.id" + ENDL
-            + INDENT + "protected java.lang.Integer id;" + ENDL
-            + INDENT + "public java.lang.Integer getId() { return id; }" + ENDL
-            + INDENT + "public void setId(final java.lang.Integer id) { this.id = id; }" + ENDL + ENDL
+            + INDENT + "protected InterMineId id;" + ENDL
+            + INDENT + "public InterMineId getId() { return id; }" + ENDL
+            + INDENT + "public void setId(final InterMineId id) { this.id = id; }" + ENDL + ENDL
             + INDENT + "@Override public boolean equals(Object o) { return (o instanceof Class3 && id != null) ? id.equals(((Class3)o).getId()) : this == o; }" + ENDL
             + INDENT + "@Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }" + ENDL
             + INDENT + "@Override public String toString() { return \"Class3 [atd1=\" + atd1 + \", id=\" + id + \"]\"; }" + ENDL;

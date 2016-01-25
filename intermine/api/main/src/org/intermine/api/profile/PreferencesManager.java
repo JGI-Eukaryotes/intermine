@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.intermine.ObjectStoreWriterInterMineImpl;
 import org.intermine.objectstore.intermine.SQLOperation;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.DatabaseUtil;
 
 /**
@@ -115,10 +116,10 @@ public class PreferencesManager
      */
     protected synchronized void setPreference(final Profile profile, final String key,
             final String value) throws SQLException {
-        Integer updated = osw.performUnsafeOperation(UPDATE_PREFERENCE_SQL,
-                new SQLOperation<Integer>() {
+        InterMineId updated = osw.performUnsafeOperation(UPDATE_PREFERENCE_SQL,
+                new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setString(1, value);
                     stm.setInt(2, profile.getUserId());
                     stm.setString(3, key);
@@ -127,10 +128,10 @@ public class PreferencesManager
             });
 
         if (updated < 1) { // WHERE clause didn't match. Do insert.
-            Integer inserted = osw.performUnsafeOperation(INSERT_PREFERENCE_SQL,
-                    new SQLOperation<Integer>() {
+            InterMineId inserted = osw.performUnsafeOperation(INSERT_PREFERENCE_SQL,
+                    new SQLOperation<InterMineId>() {
                     @Override
-                    public Integer run(PreparedStatement stm) throws SQLException {
+                    public InterMineId run(PreparedStatement stm) throws SQLException {
                         stm.setInt(1, profile.getUserId());
                         stm.setString(2, key);
                         stm.setString(3, value);
@@ -219,15 +220,15 @@ public class PreferencesManager
      * @return user id
      * @throws SQLException something goes wrong
      */
-    public Integer getUserWithUniqueMapping(final String key, final String value)
+    public InterMineId getUserWithUniqueMapping(final String key, final String value)
         throws SQLException {
-        return osw.performUnsafeOperation(FIND_USER_WITH_MAPPING, new SQLOperation<Integer>() {
+        return osw.performUnsafeOperation(FIND_USER_WITH_MAPPING, new SQLOperation<InterMineId>() {
             @Override
-            public Integer run(PreparedStatement stm) throws SQLException {
+            public InterMineId run(PreparedStatement stm) throws SQLException {
                 stm.setString(1, key);
                 stm.setString(2, value);
                 ResultSet rs = stm.executeQuery();
-                Set<Integer> matches = new HashSet<Integer>();
+                Set<InterMineId> matches = new HashSet<InterMineId>();
                 while (rs.next()) {
                     matches.add(rs.getInt(1));
                 }

@@ -17,6 +17,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.intermine.api.InterMineAPI;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -40,10 +41,10 @@ public final class Objects
      * @return The mapping.
      * @throws ObjectStoreException If we can't run the required query.
      */
-    public static Map<Integer, InterMineObject> getObjects(InterMineAPI im, Set<Integer> objectIds)
+    public static Map<InterMineId, InterMineObject> getObjects(InterMineAPI im, Set<InterMineId> objectIds)
         throws ObjectStoreException {
         long time = System.currentTimeMillis();
-        Map<Integer, InterMineObject> objMap = new HashMap<Integer, InterMineObject>();
+        Map<InterMineId, InterMineObject> objMap = new HashMap<InterMineId, InterMineObject>();
         for (InterMineObject obj : im.getObjectStore().getObjectsByIds(objectIds)) {
             objMap.put(obj.getId(), obj);
         }

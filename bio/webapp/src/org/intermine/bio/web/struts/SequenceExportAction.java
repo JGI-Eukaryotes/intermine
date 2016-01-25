@@ -45,6 +45,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.web.logic.Constants;
 import org.intermine.web.logic.session.SessionMethods;
+import org.intermine.model.InterMineId;
 import org.intermine.web.struts.InterMineAction;
 
 /**
@@ -80,7 +81,7 @@ public class SequenceExportAction extends InterMineAction
 
         Properties webProps = (Properties) session.getServletContext().
             getAttribute(Constants.WEB_PROPERTIES);
-        Integer objectId = new Integer(request.getParameter("object"));
+        InterMineId objectId = new InterMineId(request.getParameter("object"));
         InterMineObject obj = getObject(os, webProps, objectId);
 
         if (obj instanceof SequenceFeature || obj instanceof Protein) {
@@ -132,7 +133,7 @@ public class SequenceExportAction extends InterMineAction
     }
 
     private InterMineObject getObject(ObjectStore os, Properties webProps,
-            Integer objectId) throws ObjectStoreException {
+            InterMineId objectId) throws ObjectStoreException {
         String classNames = webProps.getProperty("fasta.export.classes");
         List<Class<?>> classList = new ArrayList<Class<?>>();
         if (classNames != null && classNames.length() != 0) {

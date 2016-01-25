@@ -23,6 +23,7 @@ import org.intermine.web.logic.widget.TableWidget;
 import org.intermine.web.logic.widget.config.TableWidgetConfig;
 import org.intermine.web.logic.widget.config.WidgetConfig;
 import org.intermine.webservice.server.exceptions.ServiceException;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.ResourceNotFoundException;
 
 /**
@@ -74,7 +75,7 @@ public class TableWidgetService extends WidgetService
             throw new ResourceNotFoundException("Could not find a table widget called \""
                     + input.getWidgetId() + "\"", e);
         }
-        addOutputInfo("notAnalysed", Integer.toString(widget.getNotAnalysed()));
+        addOutputInfo("notAnalysed", InterMineId.toString(widget.getNotAnalysed()));
         addOutputPathQuery(widget, widgetConfig);
         try {
             addOutputResult(widget);

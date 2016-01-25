@@ -29,6 +29,7 @@ import org.intermine.metadata.Model;
 import org.intermine.metadata.ReferenceDescriptor;
 import org.intermine.metadata.StringUtil;
 import org.intermine.metadata.TypeUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -605,8 +606,8 @@ public class Path
      * @param field the field
      * @return list of indexes
      */
-    public List<Integer> getElementsContainingField(String cls, String field) {
-        List<Integer> indexElementsContainingField = new ArrayList<Integer>();
+    public List<InterMineId> getElementsContainingField(String cls, String field) {
+        List<InterMineId> indexElementsContainingField = new ArrayList<InterMineId>();
         ClassDescriptor cd;
         for (int index = 0; index < elements.size(); index++) {
             if (elements.get(index).equals(field)) {

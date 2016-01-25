@@ -35,6 +35,7 @@ import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryField;
 import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.Results;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.ResultsRow;
 
 
@@ -71,7 +72,7 @@ public abstract class OverlapUtil
      */
     public static void createOverlaps(final ObjectStore os, SequenceFeature subject,
             List<?> classNamesToIgnore, boolean ignoreSelfMatches, ObjectStoreWriter osw,
-            Map<String, Integer> summary)
+            Map<String, InterMineId> summary)
         throws ObjectStoreException, ClassNotFoundException {
         Model model = os.getModel();
 
@@ -187,11 +188,11 @@ public abstract class OverlapUtil
                                 String summaryLine = classname1.compareTo(classname2) > 0
                                     ? classname2 + " - " + classname1 : classname1 + " - "
                                     + classname2;
-                                Integer summaryCount = summary.get(summaryLine);
+                                InterMineId summaryCount = summary.get(summaryLine);
                                 if (summaryCount == null) {
-                                    summaryCount = new Integer(0);
+                                    summaryCount = new InterMineId(0);
                                 }
-                                summary.put(summaryLine, new Integer(summaryCount.intValue()
+                                summary.put(summaryLine, new InterMineId(summaryCount.intValue()
                                             + 1));
                             }
                         }
@@ -202,11 +203,11 @@ public abstract class OverlapUtil
             LOG.info("Stored " + count + " overlaps for " + results.size()
                     + " features on feature id " + subject.getId() + ", identifier: "
                      + subject.getSecondaryIdentifier());
-            Integer summaryCount = summary.get("total");
+            InterMineId summaryCount = summary.get("total");
             if (summaryCount == null) {
-                summaryCount = new Integer(0);
+                summaryCount = new InterMineId(0);
             }
-            summary.put("total", new Integer(summaryCount.intValue() + count));
+            summary.put("total", new InterMineId(summaryCount.intValue() + count));
         } finally {
             ((ObjectStoreInterMineImpl) os).releaseGoFaster(q);
         }

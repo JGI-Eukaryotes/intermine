@@ -48,6 +48,8 @@ import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.pathquery.PathException;
+import org.intermine.model.InterMineId;
+import org.intermine.model.InterMineCoord;
 import org.intermine.util.ObjectPipe;
 
 /**
@@ -69,7 +71,7 @@ public class InterMineObjectFetcher extends Thread
     final Map<ClassDescriptor, Float> classBoost;
     final Vector<KeywordSearchFacetData> facets;
 
-    final Map<Integer, Document> documents = new HashMap<Integer, Document>();
+    final Map<InterMineId, Document> documents = new HashMap<InterMineId, Document>();
     final Set<String> fieldNames = new HashSet<String>();
     private Set<String> normFields = new HashSet<String>();
     final Map<Class<?>, Vector<ClassAttributes>> decomposedClassesCache =
@@ -310,7 +312,7 @@ public class InterMineObjectFetcher extends Thread
                 // current object's id. See:
                 // https://github.com/intermine/intermine/issues/473
                 while (resultsContainer.getIterator().hasNext()
-                        && ((Integer) next.get(0)).compareTo(
+                        && ((InterMineId) next.get(0)).compareTo(
                                 object.getId()) == -1) {
                     next = resultsContainer.getIterator().next();
                 }
@@ -491,6 +493,8 @@ public class InterMineObjectFetcher extends Thread
                     // only index strings and integers
                     if ("java.lang.String".equals(att.getType())
                             || "java.lang.Integer".equals(att.getType())) {
+                            || "InterMineId".equals(att.getType())) {
+                            || "InterMineCoord".equals(att.getType())) {
                         Object value = obj.getFieldValue(att.getName());
 
                         // ignore null values

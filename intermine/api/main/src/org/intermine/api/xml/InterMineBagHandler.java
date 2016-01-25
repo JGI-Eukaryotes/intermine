@@ -32,6 +32,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -49,7 +50,7 @@ public class InterMineBagHandler extends DefaultHandler
     private ObjectStoreWriter osw;
     private Map<String, InterMineBag> bags;
     private Map<String, InvalidBag> invalidBags;
-    private Integer userId;
+    private InterMineId userId;
     private Model model;
 
     private String bagName;
@@ -74,7 +75,7 @@ public class InterMineBagHandler extends DefaultHandler
      */
     public InterMineBagHandler(ObjectStoreWriter uosw, ObjectStoreWriter osw,
             Map<String, InterMineBag> bags, Map<String, InvalidBag> invalidBags,
-            Map<String, Set<BagValue>> bagsValues, Integer userId) {
+            Map<String, Set<BagValue>> bagsValues, InterMineId userId) {
         this.uosw = uosw;
         this.osw = osw;
         this.bags = bags;

@@ -31,6 +31,7 @@ import org.intermine.objectstore.query.QueryCollectionReference;
 import org.intermine.objectstore.query.QueryField;
 import org.intermine.objectstore.query.QueryHelper;
 import org.intermine.objectstore.query.QueryObjectReference;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.QueryReference;
 
 /**
@@ -191,7 +192,7 @@ public final class QueryGenUtil
                 if (!("reverse".equals(prefix))) {
                     int replacementStartNo;
                     try {
-                        replacementStartNo = Integer.parseInt(prefix) - 1;
+                        replacementStartNo = InterMineId.parseInt(prefix) - 1;
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException("Prefix " + prefix + " is not a number "
                                 + "or \"reverse\"", e);
@@ -303,7 +304,7 @@ public final class QueryGenUtil
                 if (!("reverse".equals(prefix))) {
                     int replacementStartNo;
                     try {
-                        replacementStartNo = Integer.parseInt(prefix) - 1;
+                        replacementStartNo = InterMineId.parseInt(prefix) - 1;
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException("Prefix " + prefix + " is not a number "
                                 + "or \"reverse\"", e);
@@ -323,7 +324,7 @@ public final class QueryGenUtil
             String[] orderBits = order.split("[ \t]");
             for (String orderBit : orderBits) {
                 int posOfDot = orderBit.indexOf('.');
-                int classNo = Integer.parseInt(orderBit.substring(0, posOfDot)) - 1;
+                int classNo = InterMineId.parseInt(orderBit.substring(0, posOfDot)) - 1;
                 String fieldName = orderBit.substring(posOfDot + 1);
                 QueryField qf = new QueryField(qcs.get(classNo), fieldName);
                 q.addToSelect(qf);

@@ -58,6 +58,7 @@ import org.intermine.util.CacheMap;
 import org.intermine.util.DynamicUtil;
 import org.intermine.webservice.server.jbrowse.Command;
 import org.intermine.webservice.server.jbrowse.CommandRunner;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.jbrowse.Segment;
 
 /**
@@ -133,8 +134,8 @@ public class Engine extends CommandRunner
     public void reference(Command command) {
         Query q = getReferenceQuery(command);
         Segment seg = command.getSegment();
-        Integer start = (seg.getStart() == null) ? 0 : seg.getStart();
-        Integer end = seg.getEnd();
+        InterMineId start = (seg.getStart() == null) ? 0 : seg.getStart();
+        InterMineId end = seg.getEnd();
         Iterator<Object> it = getResults(q).iterator();
 
         while (it.hasNext()) {
@@ -173,7 +174,7 @@ public class Engine extends CommandRunner
         return subsegments;
     }
 
-    private static final class PathQueryCounter implements Callable<Integer>
+    private static final class PathQueryCounter implements Callable<InterMineId>
     {
         final PathQuery pq;
         final ObjectStore os;
@@ -184,13 +185,13 @@ public class Engine extends CommandRunner
         }
 
         @Override
-        public Integer call() throws Exception {
+        public InterMineId call() throws Exception {
             Query q = pathQueryToOSQ(pq);
             return os.count(q, ObjectStore.SEQUENCE_IGNORE);
         }
     }
 
-    private static Map<MultiKey, Integer> maxima = new ConcurrentHashMap<MultiKey, Integer>();
+    private static Map<MultiKey, InterMineId> maxima = new ConcurrentHashMap<MultiKey, InterMineId>();
 
     /**
      * @param command command to run
@@ -199,13 +200,13 @@ public class Engine extends CommandRunner
     public void densities(Command command) {
         final int nSlices = getNumberOfSlices(command);
         List<PathQuery> segmentQueries = getSliceQueries(command, nSlices);
-        List<Future<Integer>> pending = countInParallel(segmentQueries);
-        List<Integer> results = new ArrayList<Integer>();
+        List<Future<InterMineId>> pending = countInParallel(segmentQueries);
+        List<InterMineId> results = new ArrayList<InterMineId>();
 
         int max = 0, sum = 0;
-        for (Future<Integer> future: pending) {
+        for (Future<InterMineId> future: pending) {
             try {
-                Integer r = future.get();
+                InterMineId r = future.get();
                 if (r != null && r > max) {
                     max = r;
                 }
@@ -221,9 +222,9 @@ public class Engine extends CommandRunner
 
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String, Number> binStats = new HashMap<String, Number>();
-        Integer currentMax = 0;
+        InterMineId currentMax = 0;
         if (command.getSegment() != Segment.NEGATIVE_SEGMENT) {
-            Integer bpb = command.getSegment().getWidth() / nSlices;
+            InterMineId bpb = command.getSegment().getWidth() / nSlices;
             binStats.put("basesPerBin", bpb);
             MultiKey maxKey = new MultiKey(// Key by domain, type, ref-seq and band size
                     command.getDomain(),
@@ -232,7 +233,7 @@ public class Engine extends CommandRunner
                     bpb);
             currentMax = maxima.get(maxKey);
             if (currentMax == null || max > currentMax) {
-                maxima.put(maxKey, Integer.valueOf(max));
+                maxima.put(maxKey, InterMineId.valueOf(max));
             }
         }
         binStats.put("max", (currentMax != null && max < currentMax) ? currentMax : max);
@@ -255,7 +256,7 @@ public class Engine extends CommandRunner
             return defaultNum;
         }
         int width = command.getSegment().getWidth();
-        int numBPB = Integer.valueOf(bpb);
+        int numBPB = InterMineId.valueOf(bpb);
         return width / numBPB;
     }
 
@@ -271,14 +272,14 @@ public class Engine extends CommandRunner
         return segmentQueries;
     }
 
-    private List<Future<Integer>> countInParallel(List<PathQuery> segmentQueries) {
+    private List<Future<InterMineId>> countInParallel(List<PathQuery> segmentQueries) {
         if (segmentQueries.isEmpty()) {
             return Collections.emptyList();
         }
         ExecutorService executor = Executors.newFixedThreadPool(segmentQueries.size());
-        List<Future<Integer>> pending = new ArrayList<Future<Integer>>();
+        List<Future<InterMineId>> pending = new ArrayList<Future<InterMineId>>();
         for (PathQuery pq: segmentQueries) {
-            Callable<Integer> counter = new PathQueryCounter(pq, getAPI().getObjectStore());
+            Callable<InterMineId> counter = new PathQueryCounter(pq, getAPI().getObjectStore());
             pending.add(executor.submit(counter));
         }
         executor.shutdown();
@@ -309,7 +310,7 @@ public class Engine extends CommandRunner
         cs.addConstraint(new SimpleConstraint(
             new QueryField(organisms, "taxonId"),
             ConstraintOp.EQUALS,
-            new QueryValue(Integer.valueOf(taxonId))));
+            new QueryValue(InterMineId.valueOf(taxonId))));
         return cs;
     }
 
@@ -394,8 +395,8 @@ public class Engine extends CommandRunner
         return getAPI().getObjectStore().executeSingleton(q);
     }
 
-    private static Map<String, Object> makeReferenceFeature(FastPathObject fpo, Integer start,
-            Integer end) {
+    private static Map<String, Object> makeReferenceFeature(FastPathObject fpo, InterMineId start,
+            InterMineId end) {
         CharSequence cs;
         try {
             cs = (CharSequence) fpo.getFieldValue("residues");
@@ -403,7 +404,7 @@ public class Engine extends CommandRunner
             throw new RuntimeException("Could not fetch reference sequence.", e);
         }
         int featureLength = cs.length();
-        Integer featEnd = (end == null) ? featureLength : Math.min(end, featureLength);
+        InterMineId featEnd = (end == null) ? featureLength : Math.min(end, featureLength);
         CharSequence subSequence = cs.subSequence(start, featEnd);
 
         Map<String, Object> refFeature = new HashMap<String, Object>();
@@ -460,7 +461,7 @@ public class Engine extends CommandRunner
             FastPathObject chrLoc = (FastPathObject) fpo.getFieldValue("chromosomeLocation");
             if (chrLoc != null) {
                 // Convert Base -> Interbase Co-ords: start - 1
-                feature.put("start",  ((Integer) chrLoc.getFieldValue("start")) - 1);
+                feature.put("start",  ((InterMineId) chrLoc.getFieldValue("start")) - 1);
                 feature.put("end",    chrLoc.getFieldValue("end"));
                 feature.put("strand", chrLoc.getFieldValue("strand"));
             }

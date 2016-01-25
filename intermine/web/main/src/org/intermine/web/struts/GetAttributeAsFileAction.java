@@ -31,6 +31,7 @@ import org.intermine.web.logic.config.FieldConfig;
 import org.intermine.web.logic.config.Type;
 import org.intermine.web.logic.config.WebConfig;
 import org.intermine.web.logic.export.FieldExporter;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -52,7 +53,7 @@ public class GetAttributeAsFileAction extends Action
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         ObjectStore os = im.getObjectStore();
         WebConfig webConfig = SessionMethods.getWebConfig(request);
-        Integer objectId = new Integer(request.getParameter("object"));
+        InterMineId objectId = new InterMineId(request.getParameter("object"));
         String fieldName = request.getParameter("field");
         String fileType = request.getParameter("type");
         InterMineObject object = os.getObjectById(objectId);

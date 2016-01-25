@@ -20,6 +20,7 @@ import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Contractor;
 import org.intermine.model.testmodel.Employee;
 import org.intermine.model.testmodel.Manager;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 public class ClassConstraintTest extends TestCase {
@@ -44,9 +45,9 @@ public class ClassConstraintTest extends TestCase {
         manager = new QueryClass(Manager.class);
         contractor = new QueryClass(Contractor.class);
         company1Object = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
-        company1Object.setId(new Integer(8762134));
+        company1Object.setId(new InterMineId(8762134));
         managerObject = new Manager();
-        managerObject.setId(new Integer(2687634));
+        managerObject.setId(new InterMineId(2687634));
     }
 
     public void testInvalidTypeQCQC() throws Exception{

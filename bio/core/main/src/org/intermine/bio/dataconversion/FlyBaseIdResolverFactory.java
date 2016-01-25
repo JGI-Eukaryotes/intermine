@@ -23,6 +23,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.sql.Database;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.DatabaseFactory;
 
 /**
@@ -146,7 +147,7 @@ public class FlyBaseIdResolverFactory extends IdResolverFactory
                 String orgConstraint = "";
                 if (taxonId != null) {
                     String abbrev = or.getOrganismDataByTaxon(
-                            new Integer(taxonId)).getAbbreviation();
+                            new InterMineId(taxonId)).getAbbreviation();
                     query = "select organism_id"
                         + " from organism"
                         + " where abbreviation = \'" + abbrev + "\'";

@@ -42,6 +42,7 @@ import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.util.FormattedTextParser;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -66,7 +67,7 @@ public class Protein2iprConverter extends BioFileConverter
     private static final String DATASET_TITLE = "InterPro data set";
     private static final String DATA_SOURCE_NAME = "InterPro";
 
-    private Collection<Integer> taxonIds = new ArrayList<Integer>();
+    private Collection<InterMineId> taxonIds = new ArrayList<InterMineId>();
 
     private Set<String> proteinIds = new HashSet<String>();
     private Set<MultiKey> xrefs = new HashSet<MultiKey>();
@@ -79,7 +80,7 @@ public class Protein2iprConverter extends BioFileConverter
     public void setProtein2iprOrganisms(String taxonIds) {
         String[] taxonStringIds = StringUtils.split(taxonIds, " ");
         for (String string : taxonStringIds) {
-            this.taxonIds.add(Integer.valueOf(string));
+            this.taxonIds.add(InterMineId.valueOf(string));
         }
         LOG.info("Setting list of organisms to " + this.taxonIds);
     }

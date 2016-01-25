@@ -12,6 +12,7 @@ package org.intermine.web.logic.results;
 
 import java.util.Collection;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 
 /**
@@ -44,8 +45,8 @@ public class ReportInList
      *
      * @return size of the collection
      */
-    public Integer getCount() {
-        Integer count = 0;
+    public InterMineId getCount() {
+        InterMineId count = 0;
         for (InterMineBag b : bagsWithId) {
             if (b != null) {
                 count++;

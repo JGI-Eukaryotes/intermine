@@ -35,6 +35,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.api.template.TemplateManager;
 
 /**
@@ -117,7 +118,7 @@ public class TemplateExecutionMapTest extends TestCase
          * Return the template execxutions map
          * @return the map
          */
-        Map<String, Map<String, Integer>> getTemplateExecutions() {
+        Map<String, Map<String, InterMineId>> getTemplateExecutions() {
             return templateExecutions;
         }
     }
@@ -149,7 +150,7 @@ public class TemplateExecutionMapTest extends TestCase
      */
     public void testAddExecution() {
         assertEquals(2, templateExecutionsMap.getTemplateExecutions().size());
-        Map<String, Integer> templateExecutions = templateExecutionsMap.getTemplateExecutions()
+        Map<String, InterMineId> templateExecutions = templateExecutionsMap.getTemplateExecutions()
                                                                        .get("template1");
         assertEquals(3, templateExecutions.get("userName1").intValue());
         assertEquals(1, templateExecutions.get("sessionId1").intValue());

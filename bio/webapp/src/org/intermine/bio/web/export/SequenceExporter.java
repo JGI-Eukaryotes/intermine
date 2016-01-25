@@ -48,6 +48,7 @@ import org.intermine.pathquery.Path;
 import org.intermine.util.IntPresentSet;
 import org.intermine.web.logic.export.ExportException;
 import org.intermine.web.logic.export.ExportHelper;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.export.Exporter;
 
 /**
@@ -155,7 +156,7 @@ public class SequenceExporter implements Exporter
                     continue;
                 }
 
-                Integer objectId = ((InterMineObject) object).getId();
+                InterMineId objectId = ((InterMineObject) object).getId();
                 if (exportedIDs.contains(objectId)) {
                     // exported already
                     continue;
@@ -346,8 +347,8 @@ public class SequenceExporter implements Exporter
             } else {
                 // Assume if loc exits, the following information should be available
                 String chr = loc.getLocatedOn().getPrimaryIdentifier();
-                Integer start = loc.getStart();
-                Integer end = loc.getEnd();
+                InterMineId start = loc.getStart();
+                InterMineId end = loc.getEnd();
 
                 String locString = chr + ':' + start + '-' + end;
                 headerBits.add(locString);

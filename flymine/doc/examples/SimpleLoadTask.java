@@ -44,6 +44,7 @@ import java.util.Set;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
+import org.intermine.model.InterMineId;
 import org.apache.tools.ant.types.FileSet;
 
 /**
@@ -183,13 +184,13 @@ public class SimpleLoadTask extends Task
                     Location featureLocation =
                         (Location) DynamicUtil.createObject(Collections.singleton(Location.class));
                     try {
-                        featureLocation.setStart(new Integer(Integer.parseInt(proteinStart)));
+                        featureLocation.setStart(new InterMineId(InterMineId.parseInt(proteinStart)));
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("failed to parse start position: "
                                                    + proteinStart, e);
                     }
                     try {
-                        featureLocation.setEnd(new Integer(Integer.parseInt(proteinEnd)));
+                        featureLocation.setEnd(new InterMineId(InterMineId.parseInt(proteinEnd)));
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("failed to parse end position: "
                                                    + proteinEnd, e);

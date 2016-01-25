@@ -33,6 +33,7 @@ import org.intermine.pathquery.PathException;
 import org.intermine.util.DynamicUtil;
 import org.intermine.web.logic.config.FieldConfig;
 import org.intermine.web.logic.config.FieldConfigHelper;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.config.WebConfig;
 
 /**
@@ -284,7 +285,7 @@ public class InlineResultsTable
      * @param id imObj
      * @param tableRowObject InlineResultsTableRow (default)
      */
-    protected void saveObjectIdOnTableRow(Integer id, Object tableRowObject) { }
+    protected void saveObjectIdOnTableRow(InterMineId id, Object tableRowObject) { }
 
     /**
      * Main method used from report to resolve a tablefull of ResultElements
@@ -382,7 +383,7 @@ public class InlineResultsTable
      *
      * @return the number of columns in each table, based on all FieldConfigs for all objects
      */
-    public Integer getColumnsSize() {
+    public InterMineId getColumnsSize() {
         return getTableFieldConfigs().size();
     }
 }

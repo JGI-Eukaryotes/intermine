@@ -17,6 +17,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.pathquery.Path;
 import org.intermine.util.DynamicUtil;
 import org.intermine.metadata.TypeUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -108,7 +109,7 @@ public class ResultElement implements Serializable, ResultCell
      *
      * @return the id
      */
-    public Integer getId() {
+    public InterMineId getId() {
         if (imObj instanceof InterMineObject) {
             return ((InterMineObject) imObj).getId();
         }

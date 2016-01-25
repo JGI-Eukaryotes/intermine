@@ -13,6 +13,7 @@ package org.intermine.util;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.intermine.model.InterMineId;
 import java.util.TreeSet;
 
 /**
@@ -30,7 +31,7 @@ public class IntPresentSet
     private static final int PAGE_SIZE = 0x2000; // Number of words per page
     private static final int PAGE_MASK = PAGE_SIZE - 1;
 
-    private Map<Integer, int[]> pages = new HashMap<Integer, int[]>();
+    private Map<InterMineId, int[]> pages = new HashMap<InterMineId, int[]>();
     private int size = 0;
 
     /**
@@ -49,7 +50,7 @@ public class IntPresentSet
         int bitNo = i & WORD_MASK;
         i /= WORD_SIZE;
         int wordNo = i & PAGE_MASK;
-        Integer pageNo = new Integer(i / PAGE_SIZE);
+        InterMineId pageNo = new InterMineId(i / PAGE_SIZE);
         int[] page = pages.get(pageNo);
         if (page == null) {
             page = new int[PAGE_SIZE + 1];
@@ -88,7 +89,7 @@ public class IntPresentSet
         int bitNo = i & WORD_MASK;
         i /= WORD_SIZE;
         int wordNo = i & PAGE_MASK;
-        Integer pageNo = new Integer(i / PAGE_SIZE);
+        InterMineId pageNo = new InterMineId(i / PAGE_SIZE);
         int[] page = pages.get(pageNo);
         if (page == null) {
             return false;
@@ -101,9 +102,9 @@ public class IntPresentSet
     /**
      * Adds an int to the set.
      *
-     * @param i an Integer
+     * @param i an InterMineId
      */
-    public void add(Integer i) {
+    public void add(InterMineId i) {
         if (i == null) {
             throw new NullPointerException("i is null");
         }
@@ -112,12 +113,12 @@ public class IntPresentSet
     }
 
     /**
-     * Returns whether the given Integer is present in this set.
+     * Returns whether the given InterMineId is present in this set.
      *
-     * @param i any Integer
+     * @param i any InterMineId
      * @return true or false
      */
-    public boolean contains(Integer i) {
+    public boolean contains(InterMineId i) {
         if (i == null) {
             throw new NullPointerException("i is null");
         }
@@ -149,10 +150,10 @@ public class IntPresentSet
     public String toString() {
         StringBuffer retval = new StringBuffer("[");
         boolean needComma = false;
-        TreeSet<Integer> sortedKeys = new TreeSet<Integer>(pages.keySet());
-        Iterator<Integer> keyIter = sortedKeys.iterator();
+        TreeSet<InterMineId> sortedKeys = new TreeSet<InterMineId>(pages.keySet());
+        Iterator<InterMineId> keyIter = sortedKeys.iterator();
         while (keyIter.hasNext()) {
-            Integer pageNo = keyIter.next();
+            InterMineId pageNo = keyIter.next();
             int pageNoInt = pageNo.intValue();
             int[] page = pages.get(pageNo);
             for (int wordNo = 0; wordNo < PAGE_SIZE; wordNo++) {
@@ -165,7 +166,7 @@ public class IntPresentSet
                                 retval.append(", ");
                             }
                             needComma = true;
-                            retval.append(Integer.toString((pageNoInt * PAGE_SIZE + wordNo)
+                            retval.append(InterMineId.toString((pageNoInt * PAGE_SIZE + wordNo)
                                         * WORD_SIZE + bitNo));
                         }
                         bitMask <<= 1;

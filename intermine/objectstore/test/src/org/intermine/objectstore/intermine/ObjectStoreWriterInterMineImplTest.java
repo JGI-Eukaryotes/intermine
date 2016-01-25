@@ -19,6 +19,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.model.testmodel.Employee;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriterFactory;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreWriterTestCase;
 
 public class ObjectStoreWriterInterMineImplTest extends ObjectStoreWriterTestCase
@@ -208,10 +209,10 @@ public class ObjectStoreWriterInterMineImplTest extends ObjectStoreWriterTestCas
         // First, cause an exception outside a transaction
         try {
             writer.store(new Employee() {
-                    public Integer getId() {
+                    public InterMineId getId() {
                     throw new RuntimeException();
                     }
-                    public void setId(Integer id) {
+                    public void setId(InterMineId id) {
                     throw new RuntimeException();
                     }
                     });
@@ -219,7 +220,7 @@ public class ObjectStoreWriterInterMineImplTest extends ObjectStoreWriterTestCas
         }
         assertFalse(writer.isInTransaction());
         // Now try and do something normal.
-        Object o = writer.getObjectById(new Integer(2));
+        Object o = writer.getObjectById(new InterMineId(2));
     }
 }
 

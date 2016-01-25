@@ -17,6 +17,7 @@ import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Department;
+import org.intermine.model.InterMineId;
 import org.intermine.testing.OneTimeTestCase;
 
 public class QueryCreatorTest extends QueryTestCase
@@ -42,9 +43,9 @@ public class QueryCreatorTest extends QueryTestCase
         q.addFrom(qc);
         q.addToSelect(qc);
         q.setConstraint(new SimpleConstraint(new QueryField(qc, "id"), ConstraintOp.EQUALS,
-                    new QueryValue(new Integer(5))));
+                    new QueryValue(new InterMineId(5))));
 
-        assertEquals(q, QueryCreator.createQueryForId(new Integer(5), InterMineObject.class));
+        assertEquals(q, QueryCreator.createQueryForId(new InterMineId(5), InterMineObject.class));
     }
 
 
@@ -101,7 +102,7 @@ public class QueryCreatorTest extends QueryTestCase
         cs1.addConstraint(new SimpleConstraint(qf1, ConstraintOp.EQUALS, new QueryValue("Employee 1")));
 
         QueryField qf2 = new QueryField(qcEmployee, "age");
-        cs1.addConstraint(new SimpleConstraint(qf2, ConstraintOp.EQUALS, new QueryValue(new Integer(20))));
+        cs1.addConstraint(new SimpleConstraint(qf2, ConstraintOp.EQUALS, new QueryValue(new InterMineId(20))));
 
         QueryReference qr1 = new QueryObjectReference(qcEmployee, "address");
         cs1.addConstraint(new ContainsConstraint(qr1, ConstraintOp.CONTAINS, qcAddress));
@@ -183,7 +184,7 @@ public class QueryCreatorTest extends QueryTestCase
         cs1.addConstraint(new SimpleConstraint(qf1, ConstraintOp.EQUALS, new QueryValue("Employee 1")));
 
         QueryField qf2 = new QueryField(qcEmployee, "age");
-        cs1.addConstraint(new SimpleConstraint(qf2, ConstraintOp.EQUALS, new QueryValue(new Integer(20))));
+        cs1.addConstraint(new SimpleConstraint(qf2, ConstraintOp.EQUALS, new QueryValue(new InterMineId(20))));
 
         QueryReference qr1 = new QueryObjectReference(qcEmployee, "address");
         cs1.addConstraint(new ContainsConstraint(qr1, ConstraintOp.CONTAINS, qcAddress));

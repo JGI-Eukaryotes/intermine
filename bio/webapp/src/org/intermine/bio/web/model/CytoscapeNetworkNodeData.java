@@ -10,6 +10,7 @@ package org.intermine.bio.web.model;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.Map;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 public class CytoscapeNetworkNodeData
 {
-    private Integer interMineId;
+    private InterMineId interMineId;
     private String sourceId; // TODO combine interMineId to only one id
     private String sourceLabel; // sometimes no values
     private String featueType; //e.g. miRNA/TF
@@ -32,14 +33,14 @@ public class CytoscapeNetworkNodeData
     /**
      * @return the interMineId
      */
-    public Integer getInterMineId() {
+    public InterMineId getInterMineId() {
         return interMineId;
     }
 
     /**
      * @param interMineId the interMineId to set
      */
-    public void setInterMineId(Integer interMineId) {
+    public void setInterMineId(InterMineId interMineId) {
         this.interMineId = interMineId;
     }
 

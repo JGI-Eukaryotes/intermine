@@ -11,6 +11,7 @@ package org.intermine.bio.dataconversion;
  */
 
 import java.util.List;
+import org.intermine.model.InterMineId;
 import java.util.Map;
 
 /**
@@ -19,50 +20,50 @@ import java.util.Map;
 public class PubMedReference
 {
 
-    private Map<Integer, List<Integer>> references;
+    private Map<InterMineId, List<InterMineId>> references;
 
-    private Integer organism;
+    private InterMineId organism;
 
     /**
      * Constructor.
      * @param organism id of organism of which references this object carries
      * @param references references between id of gene and ids of publications in PubMed
      */
-    public PubMedReference(Integer organism, Map<Integer, List<Integer>> references) {
+    public PubMedReference(InterMineId organism, Map<InterMineId, List<InterMineId>> references) {
         this.organism = organism;
         this.references = references;
     }
 
     /**
      * @return references
-     * {@link #PubMedReference(Integer, Map)}
+     * {@link #PubMedReference(InterMineId, Map)}
      */
-    public Map<Integer, List<Integer>> getReferences() {
+    public Map<InterMineId, List<InterMineId>> getReferences() {
         return references;
     }
 
     /**
      * @param references references
-     * {@link #PubMedReference(Integer, Map)}
+     * {@link #PubMedReference(InterMineId, Map)}
      */
-    public void setReferences(Map<Integer, List<Integer>> references) {
+    public void setReferences(Map<InterMineId, List<InterMineId>> references) {
         this.references = references;
     }
 
     /**
      * @return organism
-     * {@link #PubMedReference(Integer, Map)}
+     * {@link #PubMedReference(InterMineId, Map)}
      */
-    public Integer getOrganism() {
+    public InterMineId getOrganism() {
         return organism;
     }
 
     /**
      *
      * @param organism organism
-     * {@link #PubMedReference(Integer, Map)}
+     * {@link #PubMedReference(InterMineId, Map)}
      */
-    public void setOrganism(Integer organism) {
+    public void setOrganism(InterMineId organism) {
         this.organism = organism;
     }
 }

@@ -13,6 +13,7 @@ package org.intermine.bio.chado;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import org.intermine.model.InterMineId;
 import java.util.Set;
 
 /**
@@ -22,7 +23,7 @@ import java.util.Set;
 public class ChadoCV
 {
     private final String cvName;
-    private final Map<Integer, ChadoCVTerm> termMap = new HashMap<Integer, ChadoCVTerm>();
+    private final Map<InterMineId, ChadoCVTerm> termMap = new HashMap<InterMineId, ChadoCVTerm>();
 
     /**
      * Create a new ChadoCV.
@@ -45,7 +46,7 @@ public class ChadoCV
      * @param cvtermId the chado id = cvterm.cvterm_id
      * @param chadoCvTerm the ChadoCVTerm object
      */
-    public void addByChadoId(Integer cvtermId, ChadoCVTerm chadoCvTerm) {
+    public void addByChadoId(InterMineId cvtermId, ChadoCVTerm chadoCvTerm) {
         termMap.put(cvtermId, chadoCvTerm);
     }
 
@@ -54,7 +55,7 @@ public class ChadoCV
      * @param cvtermId the chado id = cvterm.cvterm_id
      * @return the ChadoCVTerm
      */
-    public ChadoCVTerm getByChadoId(Integer cvtermId) {
+    public ChadoCVTerm getByChadoId(InterMineId cvtermId) {
         return termMap.get(cvtermId);
     }
 

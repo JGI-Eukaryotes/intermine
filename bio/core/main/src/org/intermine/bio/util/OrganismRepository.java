@@ -19,6 +19,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.intermine.model.InterMineId;
 import org.apache.commons.collections.keyvalue.MultiKey;
 
 /**
@@ -28,11 +29,11 @@ import org.apache.commons.collections.keyvalue.MultiKey;
 public final class OrganismRepository
 {
     private static OrganismRepository or = null;
-    private Map<Integer, OrganismData> taxonMap = new HashMap<Integer, OrganismData>();
+    private Map<InterMineId, OrganismData> taxonMap = new HashMap<InterMineId, OrganismData>();
     private Map<String, OrganismData> abbreviationMap = new HashMap<String, OrganismData>();
     private Map<String, OrganismData> shortNameMap = new HashMap<String, OrganismData>();
     private Map<MultiKey, OrganismData> genusSpeciesMap = new HashMap<MultiKey, OrganismData>();
-    private Map<Integer, OrganismData> strains = new HashMap<Integer, OrganismData>();
+    private Map<InterMineId, OrganismData> strains = new HashMap<InterMineId, OrganismData>();
     private Map<String, String> organismsWithStrains = new HashMap<String, String>();
     private static Map<String, OrganismData> uniprotToTaxon = new HashMap<String, OrganismData>();
 
@@ -86,7 +87,7 @@ public final class OrganismRepository
                     Matcher matcher = pattern.matcher(name);
                     if (matcher.matches()) {
                         String taxonIdString = matcher.group(1);
-                        int taxonId = Integer.valueOf(taxonIdString).intValue();
+                        int taxonId = InterMineId.valueOf(taxonIdString).intValue();
                         String fieldName = matcher.group(2);
                         OrganismData od = or.getOrganismDataByTaxonInternal(taxonId);
                         final String attributeValue = props.getProperty(name);
@@ -97,7 +98,7 @@ public final class OrganismRepository
                             String[] strains = attributeValue.split(" ");
                             for (String strain : strains) {
                                 try {
-                                    or.strains.put(Integer.valueOf(strain), od);
+                                    or.strains.put(InterMineId.valueOf(strain), od);
                                     or.organismsWithStrains.put(taxonIdString, strain);
                                 } catch (NumberFormatException e) {
                                     throw new NumberFormatException("taxon ID must be a number");
@@ -149,11 +150,11 @@ public final class OrganismRepository
      * @return the OrganismData
      */
     public OrganismData getOrganismDataByTaxonInternal(int taxonId) {
-        OrganismData od = taxonMap.get(new Integer(taxonId));
+        OrganismData od = taxonMap.get(new InterMineId(taxonId));
         if (od == null) {
             od = new OrganismData();
             od.setTaxonId(taxonId);
-            taxonMap.put(new Integer(taxonId), od);
+            taxonMap.put(new InterMineId(taxonId), od);
         }
         return od;
     }
@@ -166,7 +167,7 @@ public final class OrganismRepository
      * @return the OrganismData
      */
     public OrganismData getOrganismDataByTaxon(int taxonId) {
-        OrganismData od = taxonMap.get(new Integer(taxonId));
+        OrganismData od = taxonMap.get(new InterMineId(taxonId));
         if (od == null) {
             od = strains.get(taxonId);
         }

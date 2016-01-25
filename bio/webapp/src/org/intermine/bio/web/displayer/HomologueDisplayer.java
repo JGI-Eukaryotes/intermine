@@ -41,6 +41,7 @@ import org.intermine.web.logic.results.ReportObject;
 import org.intermine.web.logic.session.SessionMethods;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -119,7 +120,7 @@ public class HomologueDisplayer extends ReportDisplayer
         request.setAttribute("homologues", homologues);
     }
 
-    private static PathQuery getQuery(InterMineAPI im, Integer geneId, Set<String> dataSets) {
+    private static PathQuery getQuery(InterMineAPI im, InterMineId geneId, Set<String> dataSets) {
         PathQuery q = new PathQuery(im.getModel());
         q.addViews("Gene.homologues.homologue.organism.shortName",
                 "Gene.homologues.homologue.primaryIdentifier");

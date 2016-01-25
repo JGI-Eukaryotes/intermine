@@ -42,6 +42,7 @@ import org.intermine.api.profile.Profile;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.intermine.webservice.server.exceptions.ServiceException;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.output.JSONFormatter;
 
 /**
@@ -104,7 +105,7 @@ public class ListUploadService extends ListMakerService
      * Sets the size of the list on the header attributes.
      * @param size The size of the newly created list.
      */
-    protected void setListSize(final Integer size) {
+    protected void setListSize(final InterMineId size) {
         addOutputInfo(LIST_SIZE_KEY, size + "");
     }
 

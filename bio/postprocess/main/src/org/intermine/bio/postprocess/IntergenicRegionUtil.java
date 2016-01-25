@@ -36,6 +36,7 @@ import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.util.DynamicUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -100,14 +101,14 @@ public class IntergenicRegionUtil
 
         Iterator<?> resIter = results.iterator();
 
-        Integer previousChrId = null;
+        InterMineId previousChrId = null;
         Set<Location> locationSet = new HashSet<Location>();
-        Map<Integer, Set<Gene>> locToGeneMap = new HashMap<Integer, Set<Gene>>();
+        Map<InterMineId, Set<Gene>> locToGeneMap = new HashMap<InterMineId, Set<Gene>>();
 
         osw.beginTransaction();
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
-            Integer chrId = (Integer) rr.get(0);
+            InterMineId chrId = (InterMineId) rr.get(0);
             Gene gene = (Gene) rr.get(1);
             Location loc = (Location) rr.get(2);
 
@@ -116,7 +117,7 @@ public class IntergenicRegionUtil
                         createIntergenicRegionFeatures(locationSet, locToGeneMap, previousChrId);
                 storeItergenicRegions(osw, irIter);
                 locationSet = new HashSet<Location>();
-                locToGeneMap = new HashMap<Integer, Set<Gene>>();
+                locToGeneMap = new HashMap<InterMineId, Set<Gene>>();
             }
 
             addToLocToGeneMap(locToGeneMap, loc, gene);
@@ -136,7 +137,7 @@ public class IntergenicRegionUtil
         osw.commitTransaction();
     }
 
-    private static void addToLocToGeneMap(Map<Integer, Set<Gene>> locToGeneMap, Location loc,
+    private static void addToLocToGeneMap(Map<InterMineId, Set<Gene>> locToGeneMap, Location loc,
             Gene gene) {
         Util.addToSetMap(locToGeneMap, loc.getStart(), gene);
         Util.addToSetMap(locToGeneMap, loc.getEnd(), gene);
@@ -179,8 +180,8 @@ public class IntergenicRegionUtil
      */
     protected Iterator<SequenceFeature> createIntergenicRegionFeatures(
             final Set<Location> locationSet,
-            final Map<Integer, Set<Gene>> locToGeneMap,
-            final Integer chrId)
+            final Map<InterMineId, Set<Gene>> locToGeneMap,
+            final InterMineId chrId)
         throws ObjectStoreException {
         final Chromosome chr = (Chromosome) os.getObjectById(chrId);
 
@@ -245,8 +246,8 @@ public class IntergenicRegionUtil
                 .createObject(Collections.singleton(igCls));
                 Location location = (Location) DynamicUtil.createObject(
                         Collections.singleton(Location.class));
-                location.setStart(new Integer(newLocStart));
-                location.setEnd(new Integer(newLocEnd));
+                location.setStart(new InterMineId(newLocStart));
+                location.setEnd(new InterMineId(newLocEnd));
                 location.setStrand("1");
 
                 location.setFeature(intergenicRegion);
@@ -258,7 +259,7 @@ public class IntergenicRegionUtil
                 intergenicRegion.addDataSets(dataSet);
 
                 int length = location.getEnd().intValue() - location.getStart().intValue() + 1;
-                intergenicRegion.setLength(new Integer(length));
+                intergenicRegion.setLength(new InterMineId(length));
 
                 String primaryIdentifier = "intergenic_region_chr"
                         + chr.getPrimaryIdentifier() + "_"
@@ -267,7 +268,7 @@ public class IntergenicRegionUtil
 
                 Set<Gene> adjacentGenes = new HashSet<Gene>();
 
-                Set<Gene> nextGenes = locToGeneMap.get(new Integer(newLocEnd + 1));
+                Set<Gene> nextGenes = locToGeneMap.get(new InterMineId(newLocEnd + 1));
                 if (nextGenes != null) {
                     Iterator<?> nextGenesIter = nextGenes.iterator();
 
@@ -290,7 +291,7 @@ public class IntergenicRegionUtil
                     }
                 }
 
-                Set<Gene> prevGenes = locToGeneMap.get(new Integer(newLocStart - 1));
+                Set<Gene> prevGenes = locToGeneMap.get(new InterMineId(newLocStart - 1));
                 if (prevGenes != null) {
                     Iterator<?> prevGenesIter = prevGenes.iterator();
 

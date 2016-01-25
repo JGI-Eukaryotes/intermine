@@ -19,6 +19,7 @@ import java.util.Comparator;
 import org.intermine.bio.chado.ChadoCV;
 import org.intermine.bio.chado.ChadoCVTerm;
 
+import org.intermine.model.InterMineId;
 import com.mockobjects.sql.MockMultiRowResultSet;
 
 /**
@@ -258,7 +259,7 @@ public class TestFlyBaseProcessor extends FlyBaseProcessor
 
             for (int i = 0; i < data.length; i++) {
                 returnVal[i] = data[i];
-                int tempVal = (Integer) returnVal[i][1];
+                int tempVal = (InterMineId) returnVal[i][1];
                 returnVal[i][1] = returnVal[i][2];
                 returnVal[i][2] = tempVal;
             }
@@ -267,8 +268,8 @@ public class TestFlyBaseProcessor extends FlyBaseProcessor
         // results must be sorted by the feature1_id
         Arrays.sort(returnVal, new Comparator() {
             public int compare(Object o1, Object o2) {
-                final Integer i1 = (Integer) ((Object[]) o1)[1];
-                final Integer i2 = (Integer) ((Object[]) o2)[1];
+                final InterMineId i1 = (InterMineId) ((Object[]) o1)[1];
+                final InterMineId i2 = (InterMineId) ((Object[]) o2)[1];
                 if (i1 < i2) {
                     return -1;
                 } else {

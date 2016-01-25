@@ -49,6 +49,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.apache.tools.ant.Task;
 
 /**
@@ -224,12 +225,12 @@ public class CreateIndexesTask extends Task
             Iterator<Map.Entry<String, Map<String, IndexStatement>>> cldsIter =
                 new SynchronisedIterator<Map.Entry<String, Map<String, IndexStatement>>>(clds
                         .entrySet().iterator());
-            Set<Integer> threads = new HashSet<Integer>();
+            Set<InterMineId> threads = new HashSet<InterMineId>();
 
             synchronized (threads) {
                 for (int i = 1; i <= extraThreads; i++) {
                     Thread worker = new Thread(new Worker(threads, cldsIter, existingIndexes, i));
-                    threads.add(new Integer(i));
+                    threads.add(new InterMineId(i));
                     worker.setName("CreateIndexesTask extra thread " + i);
                     worker.start();
                 }
@@ -285,7 +286,7 @@ public class CreateIndexesTask extends Task
     private class Worker implements Runnable
     {
         private int threadNo;
-        private Set<Integer> threads;
+        private Set<InterMineId> threads;
         private Iterator<Map.Entry<String, Map<String, IndexStatement>>> cldsIter;
         private final Map<String, Set<String>> existingIndexes;
         /**
@@ -295,7 +296,7 @@ public class CreateIndexesTask extends Task
          * @param existingIndexes a map from qualified to class name to a list of existing indexes
          * @param threadNo the thread index of this thread
          */
-        public Worker(Set<Integer> threads,
+        public Worker(Set<InterMineId> threads,
                 Iterator<Map.Entry<String, Map<String, IndexStatement>>> cldsIter,
                 Map<String, Set<String>> existingIndexes, int threadNo) {
             this.threads = threads;
@@ -336,7 +337,7 @@ public class CreateIndexesTask extends Task
                     } finally {
                         LOG.info("Thread " + threadNo + " finished");
                         synchronized (threads) {
-                            threads.remove(new Integer(threadNo));
+                            threads.remove(new InterMineId(threadNo));
                             threads.notify();
                         }
                     }

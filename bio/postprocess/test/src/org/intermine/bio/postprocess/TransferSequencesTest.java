@@ -35,6 +35,7 @@ import org.intermine.objectstore.query.PendingClob;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.SingletonResults;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -269,8 +270,8 @@ public class TransferSequencesTest extends TestCase
 
         storedChromosome =
             (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
-        storedChromosome.setLength(new Integer(4000));
-        storedChromosome.setId(new Integer(101));
+        storedChromosome.setLength(new InterMineId(4000));
+        storedChromosome.setId(new InterMineId(101));
         storedChromosome.setPrimaryIdentifier("store_chromosome");
 
 
@@ -367,8 +368,8 @@ public class TransferSequencesTest extends TestCase
         loc.setLocatedOn(object);
         loc.setFeature(subject);
         loc.setStrand(strand);
-        loc.setStart(new Integer(start));
-        loc.setEnd(new Integer(end));
+        loc.setStart(new InterMineId(start));
+        loc.setEnd(new InterMineId(end));
         return loc;
     }
 }

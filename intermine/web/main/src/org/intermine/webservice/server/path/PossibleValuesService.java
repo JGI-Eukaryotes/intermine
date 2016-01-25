@@ -33,6 +33,7 @@ import org.intermine.webservice.server.core.JSONService;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.intermine.webservice.server.output.JSONFormatter;
 import org.json.JSONException;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -171,7 +172,7 @@ public class PossibleValuesService extends JSONService
         if (count) {
             addResultValue(total, false);
         } else {
-            addOutputInfo("count", Integer.toString(total));
+            addOutputInfo("count", InterMineId.toString(total));
 
             Results results = im.getObjectStore().execute(q, DEFAULT_BATCH_SIZE, true, true, false);
             Iterator<Object> iter = results.iterator();

@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 
@@ -269,7 +270,7 @@ public final class Util
         byte[] bits = md5.digest();
         StringBuilder checksum = new StringBuilder();
         for (int i = 0; i < bits.length; i++) {
-            checksum.append(Integer.toHexString((0x000000ff & bits[i]) | 0xffffff00).substring(6));
+            checksum.append(InterMineId.toHexString((0x000000ff & bits[i]) | 0xffffff00).substring(6));
         }
         return checksum.toString().toLowerCase();
     }
@@ -284,8 +285,8 @@ public final class Util
     public static Class<?> getClassFromString(String type) {
         if ("short".equals(type) || "java.lang.Short".equals(type)) {
             return Short.class;
-        } else if ("int".equals(type) || "java.lang.Integer".equals(type)) {
-            return Integer.class;
+        } else if ("int".equals(type) || "java.lang.InterMineId".equals(type)) {
+            return InterMineId.class;
         } else if ("long".equals(type) || "java.lang.Long".equals(type)) {
             return Long.class;
         } else if ("java.lang.String".equals(type)) {
@@ -449,8 +450,8 @@ public final class Util
      * @return the corresponding Class
      */
     protected static Class<?> instantiate(String type) {
-        if (type.equals(Integer.TYPE.toString())) {
-            return Integer.class;
+        if (type.equals(InterMineId.TYPE.toString())) {
+            return InterMineId.class;
         }
         if (type.equals(Boolean.TYPE.toString())) {
             return Boolean.class;

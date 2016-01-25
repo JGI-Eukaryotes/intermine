@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.intermine.api.tracker.track.TemplateTrack;
 import org.intermine.api.template.ApiTemplate;
+import org.intermine.model.InterMineId;
 import org.intermine.api.template.TemplateManager;
 
 /**
@@ -24,8 +25,8 @@ import org.intermine.api.template.TemplateManager;
  */
 public class TemplatesExecutionMap
 {
-    protected Map<String, Map<String, Integer>> templateExecutions =
-                                              new HashMap<String, Map<String, Integer>>();
+    protected Map<String, Map<String, InterMineId>> templateExecutions =
+                                              new HashMap<String, Map<String, InterMineId>>();
 
     /**
      * Add a new template track into the map
@@ -37,9 +38,9 @@ public class TemplatesExecutionMap
                               ? templateTrack.getUserName()
                               : templateTrack.getSessionIdentifier();
         String templateName = templateTrack.getTemplateName();
-        Map<String, Integer> execution;
+        Map<String, InterMineId> execution;
         if (!templateExecutions.containsKey(templateName)) {
-            execution = new HashMap<String, Integer>();
+            execution = new HashMap<String, InterMineId>();
             execution.put(executionKey, 1);
             templateExecutions.put(templateName, execution);
         }
@@ -70,7 +71,7 @@ public class TemplatesExecutionMap
                     templateManager.getValidGlobalTemplates();
                 for (String templateName : templateExecutions.keySet()) {
                     if (publicTemplates.containsKey(templateName)) {
-                        Map<String, Integer> execution = templateExecutions.get(templateName);
+                        Map<String, InterMineId> execution = templateExecutions.get(templateName);
                         double accessLn = 0;
                         for (String key : execution.keySet()) {
                             accessLn = accessLn + Math.log(execution.get(key) + 1);
@@ -81,7 +82,7 @@ public class TemplatesExecutionMap
             }
         } else {
             for (String templateName : templateExecutions.keySet()) {
-                Map<String, Integer> execution = templateExecutions.get(templateName);
+                Map<String, InterMineId> execution = templateExecutions.get(templateName);
                 if (execution.containsKey(executionKey)) {
                     double accessLn = Math.log(execution.get(executionKey) + 1);
                     logarithmMap.put(templateName, accessLn);

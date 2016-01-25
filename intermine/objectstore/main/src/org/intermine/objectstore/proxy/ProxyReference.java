@@ -16,6 +16,7 @@ import org.intermine.model.StringConstructor;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.translating.ObjectStoreTranslatingImpl;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.translating.Translator;
 
 /**
@@ -26,7 +27,7 @@ import org.intermine.objectstore.translating.Translator;
 public class ProxyReference implements InterMineObject, Lazy
 {
     private ObjectStore os;
-    private Integer id;
+    private InterMineId id;
     private Class<? extends InterMineObject> clazz;
 
     /**
@@ -36,7 +37,7 @@ public class ProxyReference implements InterMineObject, Lazy
      * @param id the internal id of the real object
      * @param clazz a hint of the class that this object is - use InterMineObject if unsure
      */
-    public ProxyReference(ObjectStore os, Integer id, Class<? extends InterMineObject> clazz) {
+    public ProxyReference(ObjectStore os, InterMineId id, Class<? extends InterMineObject> clazz) {
         this.os = os;
         this.id = id;
         this.clazz = clazz;
@@ -73,7 +74,7 @@ public class ProxyReference implements InterMineObject, Lazy
      *
      * @return the id
      */
-    public Integer getId() {
+    public InterMineId getId() {
         return id;
     }
 
@@ -82,7 +83,7 @@ public class ProxyReference implements InterMineObject, Lazy
      *
      * @param id the id
      */
-    public void setId(@SuppressWarnings("unused") Integer id) {
+    public void setId(@SuppressWarnings("unused") InterMineId id) {
         throw new IllegalArgumentException("Cannot change the id of a ProxyReference");
     }
 
@@ -162,7 +163,7 @@ public class ProxyReference implements InterMineObject, Lazy
      */
     public Class<?> getFieldType(String fieldName) {
         if ("id".equals(fieldName)) {
-            return Integer.class;
+            return InterMineId.class;
         }
         throw new UnsupportedOperationException("Tried to get field type for field " + fieldName
                 + " from proxy");

@@ -27,6 +27,7 @@ import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.ObjectStoreWriterFactory;
 import org.intermine.web.logic.config.WebConfig;
 import org.intermine.web.logic.session.SessionMethods;
+import org.intermine.model.InterMineId;
 import org.intermine.web.struts.MockServletContext;
 
 
@@ -85,7 +86,7 @@ public class WidgetConfigTestCase extends InterMineAPITestCase {
             osw.store(e1);
             osw.store(e2);
             InterMineBag list = superUser.createBag("employeeList", "Employee", "", im.getClassKeys());
-            Collection<Integer> ids = new ArrayList<Integer>();
+            Collection<InterMineId> ids = new ArrayList<InterMineId>();
             ids.add(e1.getId()); ids.add(e2.getId());
             list.addIdsToBag(ids, "Employee");
             return list;
@@ -106,7 +107,7 @@ public class WidgetConfigTestCase extends InterMineAPITestCase {
             osw.store(c1);
             osw.store(c2);
             InterMineBag list = superUser.createBag("companyList", "Company", "", im.getClassKeys());
-            Collection<Integer> ids = new ArrayList<Integer>();
+            Collection<InterMineId> ids = new ArrayList<InterMineId>();
             ids.add(c1.getId()); ids.add(c2.getId());
             list.addIdsToBag(ids, "Company");
             return list;

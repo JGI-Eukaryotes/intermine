@@ -7,6 +7,7 @@ import org.intermine.model.userprofile.Tag;
 import org.intermine.model.userprofile.UserProfile;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreWriter;
 
 /**
@@ -20,7 +21,7 @@ public class DeletingProfileManager extends ProfileManager {
         super(os, userProfileOS);
     }
 
-    public void deleteProfile(Integer userId) {
+    public void deleteProfile(InterMineId userId) {
         try {
             UserProfile userProfile = getUserProfile(userId);
             if (userProfile != null) {

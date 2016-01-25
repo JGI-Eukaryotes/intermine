@@ -34,6 +34,8 @@ import org.intermine.metadata.ReferenceDescriptor;
 import org.intermine.model.InterMineObject;
 import org.intermine.modelproduction.MetadataManager;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
+import org.intermine.model.InterMineCoord;
 import org.intermine.sql.DatabaseUtil;
 
 /**
@@ -140,8 +142,8 @@ public class TorqueModelOutput
             .append(INDENT + "</table>" + ENDL);
         // Create the integer bag table
         sb.append(INDENT + "<table name=\"" + INT_BAG_TABLE_NAME + "\">" + ENDL)
-            .append(generateColumn(BAGID_COLUMN, "java.lang.Integer"))
-            .append(generateColumn(BAGVAL_COLUMN, "java.lang.Integer"))
+            .append(generateColumn(BAGID_COLUMN, "InterMineId"))
+            .append(generateColumn(BAGVAL_COLUMN, "InterMineId"))
             .append(INDENT + INDENT + "<unique name=\"" + INT_BAG_TABLE_NAME + "_index1\">" + ENDL)
             .append(INDENT + INDENT + INDENT + "<unique-column name=\"" + BAGID_COLUMN + "\"/>"
                     + ENDL)
@@ -157,8 +159,8 @@ public class TorqueModelOutput
             .append(INDENT + "</table>" + ENDL);
         // Create the Clob table
         sb.append(INDENT + "<table name=\"" + CLOB_TABLE_NAME + "\">" + ENDL)
-            .append(generateColumn(CLOBID_COLUMN, "java.lang.Integer"))
-            .append(generateColumn(CLOBPAGE_COLUMN, "java.lang.Integer"))
+            .append(generateColumn(CLOBID_COLUMN, "InterMineId"))
+            .append(generateColumn(CLOBPAGE_COLUMN, "InterMineId"))
             .append(generateColumn(CLOBVAL_COLUMN, "java.lang.String"))
             .append(INDENT + INDENT + "<unique name=\"" + CLOB_TABLE_NAME + "_index\">" + ENDL)
             .append(INDENT + INDENT + INDENT + "<unique-column name=\"" + CLOBID_COLUMN + "\"/>"
@@ -194,7 +196,7 @@ public class TorqueModelOutput
                 sb.append(generateColumn(DatabaseUtil.getColumnName(field), field.getType()));
             }
             for (ReferenceDescriptor field : fields.getReferences()) {
-                sb.append(generateColumn(DatabaseUtil.getColumnName(field), "java.lang.Integer"));
+                sb.append(generateColumn(DatabaseUtil.getColumnName(field), "InterMineId"));
             }
             if (cld.getFieldDescriptorByName("id") != null) {
                 if (schema.isTruncated(cld)) {
@@ -265,7 +267,7 @@ public class TorqueModelOutput
     public static String generateJdbcType(String type) {
         if ("short".equals(type) || "java.lang.Short".equals(type)) {
             return "SMALLINT";
-        } else if ("int".equals(type) || "java.lang.Integer".equals(type)) {
+        } else if ("int".equals(type) || "java.lang.Inteer".equals(type)) {
             return "INTEGER";
         } else if ("long".equals(type) || "java.lang.Long".equals(type)) {
             return "BIGINT";
@@ -281,6 +283,12 @@ public class TorqueModelOutput
             return "BIGINT";
         } else if ("java.math.BigDecimal".equals(type)) {
             return "NUMERIC";
+        } else if ("org.intermine.objectstore.query.ClobAccess".equals(type)) {
+            return "LONGVARCHAR";
+        } else if ("org.intermine.model.InterMineId".equals(type)) {
+            return InterMineId.JDBC_TYPE;
+        } else if ("org.intermine.model.InterMineCoord".equals(type)) {
+            return InterMineCoord.JDBC_TYPE;
         } else if ("org.intermine.objectstore.query.ClobAccess".equals(type)) {
             return "LONGVARCHAR";
         } else {

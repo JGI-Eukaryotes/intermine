@@ -48,6 +48,7 @@ import org.intermine.objectstore.query.QueryObjectPathExpression;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SimpleConstraint;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.SingletonResults;
 
 /**
@@ -91,7 +92,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @throws ObjectStoreException if an error occurs
      */
     public InterMineBag(String name, String type, String description, Date dateCreated,
-        BagState state, ObjectStore os, Integer profileId, ObjectStoreWriter uosw,
+        BagState state, ObjectStore os, InterMineId profileId, ObjectStoreWriter uosw,
         List<String> keyFieldNames)
         throws UnknownBagTypeException, ObjectStoreException {
         this.type = TypeUtil.unqualifiedName(type);
@@ -122,7 +123,7 @@ public class InterMineBag extends StorableBag implements Cloneable
     }
 
     private void init(String listName, String descr, Date created, BagState bagState,
-        ObjectStore objectStore, Integer profile, ObjectStoreWriter osw)
+        ObjectStore objectStore, InterMineId profile, ObjectStoreWriter osw)
         throws UnknownBagTypeException, ObjectStoreException {
         checkAndSetName(listName);
         this.description = descr;
@@ -147,7 +148,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @throws UnknownBagTypeException if the type bag is unknown
      * @throws ObjectStoreException if something goes wrong
      */
-    public InterMineBag(ObjectStore os, Integer savedBagId, ObjectStoreWriter uosw)
+    public InterMineBag(ObjectStore os, InterMineId savedBagId, ObjectStoreWriter uosw)
         throws UnknownBagTypeException, ObjectStoreException {
         this(os, savedBagId, uosw, true);
     }
@@ -162,7 +163,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @throws UnknownBagTypeException if the type bag is unknown
      * @throws ObjectStoreException if something goes wrong
      */
-    public InterMineBag(ObjectStore os, Integer savedBagId, ObjectStoreWriter uosw,
+    public InterMineBag(ObjectStore os, InterMineId savedBagId, ObjectStoreWriter uosw,
         boolean classDescriptor)
         throws UnknownBagTypeException, ObjectStoreException {
         this.os = os;
@@ -239,12 +240,12 @@ public class InterMineBag extends StorableBag implements Cloneable
     }
 
     /**
-     * Returns a List which contains the contents of this bag as Integer IDs.
+     * Returns a List which contains the contents of this bag as InterMineId IDs.
      *
-     * @return a List of Integers
+     * @return a List of InterMineIds
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public List<Integer> getContentsAsIds() {
+    public List<InterMineId> getContentsAsIds() {
         Query q = new Query();
         q.addToSelect(osb);
         q.setDistinct(false);
@@ -254,12 +255,12 @@ public class InterMineBag extends StorableBag implements Cloneable
 
     /**
      * Returns a List which contains the ids given in input and contained
-     * in this bag as Integer IDs.
+     * in this bag as InterMineId IDs.
      * @param ids the list of ids
-     * @return a List of Integers
+     * @return a List of InterMineIds
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public List<Integer> getIdsContained(Collection<Integer> ids) {
+    public List<InterMineId> getIdsContained(Collection<InterMineId> ids) {
         Query q = new Query();
         q.setDistinct(false);
         try {
@@ -315,7 +316,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param ids the collection of id
      * @return the list of values
      */
-    private List<BagValue> getContentsFromOsb(Collection<Integer> ids) {
+    private List<BagValue> getContentsFromOsb(Collection<InterMineId> ids) {
         List<BagValue> keyFieldValueList = new ArrayList<BagValue>();
         Properties bagProperties = new Properties();
         InputStream isBag = getClass().getClassLoader().getResourceAsStream("extraBag.properties");
@@ -409,7 +410,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param updateBagValues id true if we upgrade the bagvalues table
      * @throws ObjectStoreException if an error occurs fetching a new ID
      */
-    public void upgradeOsb(Collection<Integer> values, boolean updateBagValues)
+    public void upgradeOsb(Collection<InterMineId> values, boolean updateBagValues)
         throws ObjectStoreException {
         ObjectStoreWriter oswProduction = null;
         SavedBag savedBag = (SavedBag) uosw.getObjectById(savedBagId, SavedBag.class);
@@ -471,7 +472,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param profileId the ID of the new userprofile
      * @throws ObjectStoreException if something goes wrong
      */
-    public void setProfileId(Integer profileId)
+    public void setProfileId(InterMineId profileId)
         throws ObjectStoreException {
         this.profileId = profileId;
         SavedBag savedBag = storeSavedBag();
@@ -708,7 +709,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param dataType the type of ids being added
      * @throws ObjectStoreException if problem storing
      */
-    public void addIdToBag(Integer id, String dataType) throws ObjectStoreException {
+    public void addIdToBag(InterMineId id, String dataType) throws ObjectStoreException {
         addIdsToBag(Collections.singleton(id), dataType);
     }
 
@@ -720,7 +721,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @throws ObjectStoreException
      *             if problem storing
      */
-    public void addIdsToBag(Collection<Integer> ids, String dataType)
+    public void addIdsToBag(Collection<InterMineId> ids, String dataType)
         throws ObjectStoreException {
         if (!isOfType(dataType)) {
             throw new IncompatibleTypesException("Cannot add type " + dataType
@@ -728,8 +729,8 @@ public class InterMineBag extends StorableBag implements Cloneable
         }
         if (profileId != null) {
             //we add only the ids not already contained
-            Collection<Integer> idsContained = getIdsContained(ids);
-            for (Integer idContained : idsContained) {
+            Collection<InterMineId> idsContained = getIdsContained(ids);
+            for (InterMineId idContained : idsContained) {
                 ids.remove(idContained);
             }
             if (!ids.isEmpty()) {
@@ -799,7 +800,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param id the id to remove
      * @throws ObjectStoreException if problem storing
      */
-    public void removeIdFromBag(Integer id) throws ObjectStoreException {
+    public void removeIdFromBag(InterMineId id) throws ObjectStoreException {
         removeIdsFromBag(Collections.singleton(id), true);
     }
 
@@ -809,7 +810,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param updateBagValues whether or not to update the values
      * @throws ObjectStoreException if problem storing
      */
-    public void removeIdsFromBag(Collection<Integer> ids, boolean updateBagValues)
+    public void removeIdsFromBag(Collection<InterMineId> ids, boolean updateBagValues)
         throws ObjectStoreException {
         ObjectStoreWriter oswProduction = null;
         try {
@@ -838,7 +839,7 @@ public class InterMineBag extends StorableBag implements Cloneable
     /**
      * Save the key field values identified by the ids given in input into bagvalues table
      */
-    private void addBagValuesFromIds(Collection<Integer> ids) {
+    private void addBagValuesFromIds(Collection<InterMineId> ids) {
         if (profileId != null) {
             List<BagValue> values = getContentsFromOsb(ids);
             addBagValues(values);

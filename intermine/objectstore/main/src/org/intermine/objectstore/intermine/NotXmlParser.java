@@ -31,6 +31,7 @@ import org.intermine.objectstore.proxy.ProxyCollection;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.objectstore.query.ClobAccess;
 import org.intermine.util.DynamicBean;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -140,7 +141,7 @@ public final class NotXmlParser
                     }
                 } else if (a[i].startsWith("r")) {
                     String fieldName = a[i].substring(1).intern();
-                    Integer id = Integer.valueOf(a[i + 1]);
+                    InterMineId id = InterMineId.valueOf(a[i + 1]);
                     if (fetchFromInterMineObject) {
                         valueMap.put(fieldName, new ProxyReference(os, id,
                                     InterMineObject.class));
@@ -220,7 +221,7 @@ public final class NotXmlParser
                         }
                     } else if (a[i].startsWith("r")) {
                         String fieldName = a[i].substring(1);
-                        Integer id = Integer.valueOf(a[i + 1]);
+                        InterMineId id = InterMineId.valueOf(a[i + 1]);
                         ReferenceDescriptor ref = (ReferenceDescriptor) fields.get(fieldName);
                         if (ref == null) {
                             throw new RuntimeException("failed to get field " + fieldName

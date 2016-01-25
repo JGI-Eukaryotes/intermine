@@ -27,6 +27,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.SingletonResults;
+import org.intermine.model.InterMineId;
 import org.intermine.util.IntToIntMap;
 
 /**
@@ -40,7 +41,7 @@ public class PkQueryIdUpgrader implements IdUpgrader
     private Source source = null;
     EquivalentObjectFetcher eof;
     private IntToIntMap newIdsCacheSingle = new IntToIntMap();
-    private Map<Integer, Set<Integer>> newIdsCacheMultiple = new HashMap<Integer, Set<Integer>>();
+    private Map<InterMineId, Set<InterMineId>> newIdsCacheMultiple = new HashMap<InterMineId, Set<InterMineId>>();
     private int cacheHits = 0;
     private int cacheLookups = 0;
 
@@ -78,13 +79,13 @@ public class PkQueryIdUpgrader implements IdUpgrader
      * @param os ObjectStore used to resolve objects
      * @return the set of new InterMineObjects
      */
-    public Set<Integer> getNewIds(InterMineObject oldObject, ObjectStore os) {
+    public Set<InterMineId> getNewIds(InterMineObject oldObject, ObjectStore os) {
         cacheLookups++;
         if (cacheLookups % 10000 == 0) {
             LOG.info("newIdsCache - hits: " + cacheHits + " lookups: " + cacheLookups
                     + " queries: " + (cacheLookups - cacheHits));
         }
-        Set<Integer> idsFromCache = fetchFromCache(oldObject.getId());
+        Set<InterMineId> idsFromCache = fetchFromCache(oldObject.getId());
         if (idsFromCache != null) {
             cacheHits++;
             return idsFromCache;
@@ -113,7 +114,7 @@ public class PkQueryIdUpgrader implements IdUpgrader
         if (size == 0) {
             LOG.error("createPKQuery() found no results for old object: " + oldObject.getId()
                       + " executed query: " + query);
-            Set<Integer> emptySet = new HashSet<Integer>();
+            Set<InterMineId> emptySet = new HashSet<InterMineId>();
             cacheNewIds(oldObject.getId(), emptySet);
             return emptySet;
         } else {
@@ -123,7 +124,7 @@ public class PkQueryIdUpgrader implements IdUpgrader
                           + results + ")");
             }
 
-            Set<Integer> returnSet = new HashSet<Integer>();
+            Set<InterMineId> returnSet = new HashSet<InterMineId>();
 
             Iterator<?> iter = results.iterator();
             while (iter.hasNext()) {
@@ -137,9 +138,9 @@ public class PkQueryIdUpgrader implements IdUpgrader
         }
     }
 
-    private void cacheNewIds(Integer oldId, Set<Integer> newIds) {
+    private void cacheNewIds(InterMineId oldId, Set<InterMineId> newIds) {
         if (newIds.size() == 1) {
-            Integer newId = newIds.iterator().next();
+            InterMineId newId = newIds.iterator().next();
             newIdsCacheSingle.put(oldId, newId);
         } else {
             newIdsCacheMultiple.put(oldId, newIds);
@@ -147,10 +148,10 @@ public class PkQueryIdUpgrader implements IdUpgrader
     }
 
 
-    private Set<Integer> fetchFromCache(Integer oldId) {
-        Integer newId = newIdsCacheSingle.get(oldId);
+    private Set<InterMineId> fetchFromCache(InterMineId oldId) {
+        InterMineId newId = newIdsCacheSingle.get(oldId);
         if (newId != null) {
-            return new HashSet<Integer>(Collections.singleton(newId));
+            return new HashSet<InterMineId>(Collections.singleton(newId));
         }
         // return the value or null
         return newIdsCacheMultiple.get(newId);

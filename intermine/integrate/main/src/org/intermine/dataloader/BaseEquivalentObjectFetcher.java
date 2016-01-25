@@ -44,6 +44,7 @@ import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.objectstore.query.SubqueryConstraint;
 import org.intermine.util.DynamicUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.util.IntToIntMap;
 
 /**
@@ -61,10 +62,10 @@ public class BaseEquivalentObjectFetcher implements EquivalentObjectFetcher
     protected ObjectStore lookupOs;
     protected Map<Class<? extends InterMineObject>, Long> summaryTimes =
         new HashMap<Class<? extends InterMineObject>, Long>();
-    protected Map<Class<? extends InterMineObject>, Integer> summaryCounts =
-        new HashMap<Class<? extends InterMineObject>, Integer>();
-    protected Map<Class<? extends InterMineObject>, Integer> summaryCallCounts =
-        new HashMap<Class<? extends InterMineObject>, Integer>();
+    protected Map<Class<? extends InterMineObject>, InterMineId> summaryCounts =
+        new HashMap<Class<? extends InterMineObject>, InterMineId>();
+    protected Map<Class<? extends InterMineObject>, InterMineId> summaryCallCounts =
+        new HashMap<Class<? extends InterMineObject>, InterMineId>();
 
     /**
      * Constructor for this EquivalentObjectFetcher.
@@ -135,8 +136,8 @@ public class BaseEquivalentObjectFetcher implements EquivalentObjectFetcher
         for (String summaryName : summaryNames.keySet()) {
             Class<? extends InterMineObject> summaryClass = summaryNames.get(summaryName);
             Long summaryTime = summaryTimes.get(summaryClass);
-            Integer summaryCount = summaryCounts.get(summaryClass);
-            Integer summaryCallCount = summaryCallCounts.get(summaryClass);
+            InterMineId summaryCount = summaryCounts.get(summaryClass);
+            InterMineId summaryCallCount = summaryCallCounts.get(summaryClass);
             totalObjects += summaryCallCount.intValue();
             totalQueried += summaryCount.intValue();
             retval.append("\nPerformed equivalence query for " + summaryName + " " + summaryCount
@@ -181,12 +182,12 @@ public class BaseEquivalentObjectFetcher implements EquivalentObjectFetcher
             Source source) throws ObjectStoreException {
         Class<? extends InterMineObject> summaryName = obj.getClass();
         Long soFar = summaryTimes.get(summaryName);
-        Integer soFarCount = summaryCounts.get(summaryName);
-        Integer soFarCallCount = summaryCallCounts.get(summaryName);
+        InterMineId soFarCount = summaryCounts.get(summaryName);
+        InterMineId soFarCallCount = summaryCallCounts.get(summaryName);
         if (soFar == null) {
             soFar = new Long(0L);
-            soFarCount = new Integer(0);
-            soFarCallCount = new Integer(0);
+            soFarCount = new InterMineId(0);
+            soFarCallCount = new InterMineId(0);
             summaryTimes.put(summaryName, soFar);
             summaryCounts.put(summaryName, soFarCount);
             summaryCallCounts.put(summaryName, soFarCallCount);
@@ -207,12 +208,12 @@ public class BaseEquivalentObjectFetcher implements EquivalentObjectFetcher
             }
             long time = System.currentTimeMillis() - before;
             summaryTimes.put(summaryName, new Long(time + soFar.longValue()));
-            summaryCounts.put(summaryName, new Integer(soFarCount.intValue() + 1));
-            summaryCallCounts.put(summaryName, new Integer(soFarCallCount.intValue() + 1));
+            summaryCounts.put(summaryName, new InterMineId(soFarCount.intValue() + 1));
+            summaryCallCounts.put(summaryName, new InterMineId(soFarCallCount.intValue() + 1));
             @SuppressWarnings("unchecked") Set<InterMineObject> retval = (Set) result;
             return retval;
         } else {
-            summaryCallCounts.put(summaryName, new Integer(soFarCallCount.intValue() + 1));
+            summaryCallCounts.put(summaryName, new InterMineId(soFarCallCount.intValue() + 1));
             return Collections.emptySet();
         }
     }
@@ -372,7 +373,7 @@ public class BaseEquivalentObjectFetcher implements EquivalentObjectFetcher
                     cs.addConstraint(new ContainsConstraint(queryObjectReference,
                                                             ConstraintOp.IS_NULL));
                 } else {
-                    Integer destId = null;
+                    InterMineId destId = null;
                     if (refObj.getId() != null) {
                         destId = idMap.get(refObj.getId());
                     }

@@ -22,6 +22,7 @@ import org.intermine.util.FormattedTextParser;
 
 import com.mockrunner.jdbc.StatementResultSetHandler;
 import com.mockrunner.mock.jdbc.MockConnection;
+import org.intermine.model.InterMineId;
 import com.mockrunner.mock.jdbc.MockResultSet;
 
 /**
@@ -358,19 +359,19 @@ public class EnsemblSnpDbConverterTest extends ItemsTestCase
             String[] line = lineIter.next();
             List<Object> listOfLine = new ArrayList<Object>();
 
-            listOfLine.add(line[0].equals("NULL")? null : Integer.parseInt(line[0]));
+            listOfLine.add(line[0].equals("NULL")? null : InterMineId.parseInt(line[0]));
             listOfLine.add(line[1].equals("NULL")? null : line[1]);
-            listOfLine.add(line[2].equals("NULL")? null : Integer.parseInt(line[2]));
+            listOfLine.add(line[2].equals("NULL")? null : InterMineId.parseInt(line[2]));
             listOfLine.add(line[3].equals("NULL")? null : line[3]);
             listOfLine.add(line[4].equals("NULL")? null : line[4]);
-            listOfLine.add(line[5].equals("NULL")? null : Integer.parseInt(line[5]));
-            listOfLine.add(line[6].equals("NULL")? null : Integer.parseInt(line[6]));
-            listOfLine.add(line[7].equals("NULL")? null : Integer.parseInt(line[7]));
-            listOfLine.add(line[8].equals("NULL")? null : Integer.parseInt(line[8]));
+            listOfLine.add(line[5].equals("NULL")? null : InterMineId.parseInt(line[5]));
+            listOfLine.add(line[6].equals("NULL")? null : InterMineId.parseInt(line[6]));
+            listOfLine.add(line[7].equals("NULL")? null : InterMineId.parseInt(line[7]));
+            listOfLine.add(line[8].equals("NULL")? null : InterMineId.parseInt(line[8]));
             listOfLine.add(line[9].equals("NULL")? null : line[9]);
             listOfLine.add(line[10].equals("NULL")? null : line[10]);
             listOfLine.add(line[11].equals("NULL")? null : line[11]);
-            listOfLine.add(line[12].equals("NULL")? null : Integer.parseInt(line[12]));
+            listOfLine.add(line[12].equals("NULL")? null : InterMineId.parseInt(line[12]));
             listOfLine.add(line[13].equals("NULL")? null : line[13]);
             listOfLine.add(line[14].equals("NULL")? null : line[14]);
             listOfLine.add(line[15].equals("NULL")? null : line[15]);

@@ -17,6 +17,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.intermine.web.logic.results.PagedTable;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -65,7 +66,7 @@ public class ChangeTableAction extends InterMineDispatchAction
                                     HttpServletResponse response) {
         PagedTable pt = getPagedTable(request);
 
-        int index = Integer.parseInt(request.getParameter("index"));
+        int index = InterMineId.parseInt(request.getParameter("index"));
         pt.getColumns().get(index).setVisible(false);
 
         return makeForward(mapping, request, pt);
@@ -86,7 +87,7 @@ public class ChangeTableAction extends InterMineDispatchAction
                                     HttpServletResponse response) {
         PagedTable pt = getPagedTable(request);
 
-        int index = Integer.parseInt(request.getParameter("index"));
+        int index = InterMineId.parseInt(request.getParameter("index"));
         pt.getColumns().get(index).setVisible(true);
 
         return makeForward(mapping, request, pt);
@@ -107,7 +108,7 @@ public class ChangeTableAction extends InterMineDispatchAction
                                         HttpServletResponse response) {
         PagedTable pt = getPagedTable(request);
 
-        int index = Integer.parseInt(request.getParameter("index"));
+        int index = InterMineId.parseInt(request.getParameter("index"));
         pt.moveColumnLeft(index);
 
         return makeForward(mapping, request, pt);
@@ -127,7 +128,7 @@ public class ChangeTableAction extends InterMineDispatchAction
                                          HttpServletRequest request,
                                          HttpServletResponse response) {
         PagedTable pt = getPagedTable(request);
-        int index = Integer.parseInt(request.getParameter("index"));
+        int index = InterMineId.parseInt(request.getParameter("index"));
         pt.moveColumnRight(index);
         return makeForward(mapping, request, pt);
     }
@@ -146,8 +147,8 @@ public class ChangeTableAction extends InterMineDispatchAction
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
         PagedTable pt = getPagedTable(request);
-        int index1 = Integer.parseInt(request.getParameter("index1"));
-        int index2 = Integer.parseInt(request.getParameter("index2"));
+        int index1 = InterMineId.parseInt(request.getParameter("index1"));
+        int index2 = InterMineId.parseInt(request.getParameter("index2"));
         pt.swapColumns(index1, index2);
         return makeForward(mapping, request, pt);
     }

@@ -37,6 +37,7 @@ import org.intermine.webservice.server.Format;
 import org.intermine.webservice.server.exceptions.ResourceNotFoundException;
 import org.intermine.webservice.server.output.Output;
 import org.intermine.webservice.server.output.StreamedOutput;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.output.XMLFormatter;
 
 /**
@@ -152,7 +153,7 @@ public class EnrichmentWidgetResultService extends WidgetService
             throw new ResourceNotFoundException("Could not find an enrichment widget called \""
                                                + input.getWidgetId() + "\"");
         }
-        addOutputInfo("notAnalysed", Integer.toString(widget.getNotAnalysed()));
+        addOutputInfo("notAnalysed", InterMineId.toString(widget.getNotAnalysed()));
         addOutputPathQuery(widget, widgetConfig);
         addOutputExtraAttribute(input, widget);
 
@@ -318,10 +319,10 @@ public class EnrichmentWidgetResultService extends WidgetService
 
     private boolean verifyPopulationContainsBag(InterMineBag bag, InterMineBag populationBag) {
         //verify the population Bag contains all elements of imBag
-        List<Integer> populationBagContentdIds =
-            new ArrayList<Integer>(populationBag.getContentsAsIds());
-        List<Integer> bagContentdIds =
-            new ArrayList<Integer>(bag.getContentsAsIds());
+        List<InterMineId> populationBagContentdIds =
+            new ArrayList<InterMineId>(populationBag.getContentsAsIds());
+        List<InterMineId> bagContentdIds =
+            new ArrayList<InterMineId>(bag.getContentsAsIds());
         if (populationBagContentdIds.containsAll(bagContentdIds)) {
             return true;
         }

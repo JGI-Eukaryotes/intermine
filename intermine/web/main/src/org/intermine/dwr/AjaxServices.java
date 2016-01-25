@@ -111,6 +111,7 @@ import org.intermine.web.logic.results.WebState;
 import org.intermine.web.logic.session.QueryCountQueryMonitor;
 import org.intermine.web.logic.session.SessionMethods;
 import org.json.JSONException;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -470,7 +471,7 @@ public class AjaxServices
                 }
                 pageSizeResults.add(row);
             }
-            return Arrays.asList(new Object[] {pageSizeResults, qid, new Integer(rowCount)});
+            return Arrays.asList(new Object[] {pageSizeResults, qid, new InterMineId(rowCount)});
         } catch (RuntimeException e) {
             processException(e);
             return null;
@@ -484,7 +485,7 @@ public class AjaxServices
      * @param qid the id
      * @return the row count or null if not yet available
      */
-    public static Integer getResultsSize(String qid) {
+    public static InterMineId getResultsSize(String qid) {
         try {
             WebContext ctx = WebContextFactory.get();
             HttpSession session = ctx.getSession();
@@ -510,10 +511,10 @@ public class AjaxServices
 
                 if (controller instanceof PageTableQueryMonitor) {
                     PagedTable pt = ((PageTableQueryMonitor) controller).getPagedTable();
-                    return new Integer(pt.getExactSize());
+                    return new InterMineId(pt.getExactSize());
                 }
                 if (controller instanceof QueryCountQueryMonitor) {
-                    return new Integer(((QueryCountQueryMonitor) controller).getCount());
+                    return new InterMineId(((QueryCountQueryMonitor) controller).getCount());
                 }
                 LOG.debug("query qid " + qid + " - unknown controller type");
                 return null;
@@ -948,7 +949,7 @@ public class AjaxServices
         HttpSession session = ctx.getSession();
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         PagedTable pt = SessionMethods.getResultsTable(session, tableId);
-        pt.selectId(new Integer(selectedId), (new Integer(columnIndex)).intValue());
+        pt.selectId(new InterMineId(selectedId), (new InterMineId(columnIndex)).intValue());
         Map<String, List<FieldDescriptor>> classKeys = im.getClassKeys();
         ObjectStore os = im.getObjectStore();
         return pt.getFirstSelectedFields(os, classKeys);
@@ -965,7 +966,7 @@ public class AjaxServices
         HttpSession session = ctx.getSession();
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         PagedTable pt = SessionMethods.getResultsTable(session, tableId);
-        pt.deSelectId(new Integer(deSelectId));
+        pt.deSelectId(new InterMineId(deSelectId));
         Map<String, List<FieldDescriptor>> classKeys = im.getClassKeys();
         ObjectStore os = im.getObjectStore();
         return pt.getFirstSelectedFields(os, classKeys);

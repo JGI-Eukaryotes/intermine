@@ -12,6 +12,7 @@ package org.intermine.pathquery;
 
 import java.util.Collection;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 
 /*
@@ -130,7 +131,7 @@ public abstract class PathConstraint
      * @param con The constraint.
      * @return A collection of ids. null if this makes no sense.
      */
-    public static Collection<Integer> getIds(PathConstraint con) {
+    public static Collection<InterMineId> getIds(PathConstraint con) {
         if (con instanceof PathConstraintIds) {
             return ((PathConstraintIds) con).getIds();
         } else {

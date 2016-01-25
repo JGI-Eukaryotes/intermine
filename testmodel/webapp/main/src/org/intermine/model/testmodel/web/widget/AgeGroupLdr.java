@@ -21,6 +21,7 @@ import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.widget.DataSetLdr;
 
 public class AgeGroupLdr implements DataSetLdr
@@ -33,10 +34,10 @@ public class AgeGroupLdr implements DataSetLdr
     private static final String GROUP_3 = "40 to 49";
     private static final String GROUP_4 = "50 to 59";
     private static final String GROUP_5 = "over 60";
-    private static final Map<String, Integer> GROUP_LIMITS;
+    private static final Map<String, InterMineId> GROUP_LIMITS;
 
     static {
-        Map<String, Integer> aMap = new LinkedHashMap<String, Integer>();
+        Map<String, InterMineId> aMap = new LinkedHashMap<String, InterMineId>();
         aMap.put(GROUP_0, 20);
         aMap.put(GROUP_1, 30);
         aMap.put(GROUP_2, 40);
@@ -61,7 +62,7 @@ public class AgeGroupLdr implements DataSetLdr
         };
 
         Map<String, int[]> resultMap
-            = LazyMap.decorate(new HashMap<String, Integer>(), valueFactory);
+            = LazyMap.decorate(new HashMap<String, InterMineId>(), valueFactory);
 
         int total = addExpected(resultMap, bag);
         items = addActual(resultMap, bag);
@@ -120,7 +121,7 @@ public class AgeGroupLdr implements DataSetLdr
             Employee emp = (Employee) row.get(0);
             int age = emp.getAge();
             grandTotal++;
-            for (Entry<String, Integer> pair: GROUP_LIMITS.entrySet()) {
+            for (Entry<String, InterMineId> pair: GROUP_LIMITS.entrySet()) {
                 if (age < pair.getValue()) {
                     int[] vals = resultTable.get(pair.getKey());
                     vals[index]++;

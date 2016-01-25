@@ -28,6 +28,7 @@ import org.intermine.objectstore.ObjectStore;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.web.logic.pathqueryresult.PathQueryResultHelper;
 import org.intermine.web.logic.session.SessionMethods;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.config.WebConfig;
 
 
@@ -61,7 +62,7 @@ public class CollectionTableAction extends Action
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         final ObjectStore os = im.getObjectStore();
         final WebConfig webConfig = SessionMethods.getWebConfig(request);
-        final Integer id = new Integer(request.getParameter("id"));
+        final InterMineId id = new InterMineId(request.getParameter("id"));
         final String field = request.getParameter("field");
 
         InterMineObject o = os.getObjectById(id);

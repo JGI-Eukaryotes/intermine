@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -95,7 +96,7 @@ public final class PrefetchManager
         synchronized (sync) {
             synchronized (result) {
                 // Synchronise on BOTH locks, so we can muck about with anything.
-                if (!result.batches.containsKey(new Integer(batchNo))) {
+                if (!result.batches.containsKey(new InterMineId(batchNo))) {
                     // The request has not been done.
                     if (!serviced.contains(request)) {
                         // And it isn't currently being serviced.
@@ -168,7 +169,7 @@ public final class PrefetchManager
                 // We need both locks, because we need to exclude the possibility that someone
                 // finishes a request between us checking to see if it is already fetched, and
                 // checking if we need to wait for someone to finish fetching it.
-                retval = request.result.batches.get(new Integer(request.batchNo));
+                retval = request.result.batches.get(new InterMineId(request.batchNo));
                 if (retval != null) {
                     // The batch has already been fetched.
                     //LOG.debug("doRequest - the request has already been done:        " + request);

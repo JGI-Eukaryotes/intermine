@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.tracker.track.KeySearchTrack;
 import org.intermine.api.tracker.track.Track;
+import org.intermine.model.InterMineId;
 import org.intermine.api.tracker.util.TrackerUtil;
 
 /**
@@ -102,10 +103,10 @@ public class KeySearchTracker extends AbstractTracker
      * @param con the connection
      * @return map with key the keyword and the number of searches for that keyword
      */
-    protected Map<String, Integer> getKeywordSearches(Connection con) {
+    protected Map<String, InterMineId> getKeywordSearches(Connection con) {
         ResultSet rs = null;
         Statement stm = null;
-        Map<String, Integer> keywordSearches = new HashMap<String, Integer>();
+        Map<String, InterMineId> keywordSearches = new HashMap<String, InterMineId>();
         try {
             stm = con.createStatement();
             String sql = "SELECT keyword, COUNT(keyword) as searchnumbers "

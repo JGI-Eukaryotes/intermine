@@ -23,6 +23,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsInfo;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.SingletonResults;
 
 /**
@@ -85,21 +86,21 @@ public class ObjectStorePassthruImpl implements ObjectStore
      * {@inheritDoc}
      */
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.execute(q, start, limit, optimise, explain, sequence);
     }
 
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id) throws ObjectStoreException {
+    public InterMineObject getObjectById(InterMineId id) throws ObjectStoreException {
         return os.getObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    public InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException {
         return os.getObjectById(id, clazz);
     }
@@ -107,7 +108,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public List<InterMineObject> getObjectsByIds(Collection<Integer> ids)
+    public List<InterMineObject> getObjectsByIds(Collection<InterMineId> ids)
         throws ObjectStoreException {
         return os.getObjectsByIds(ids);
     }
@@ -115,21 +116,21 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public void prefetchObjectById(Integer id) {
+    public void prefetchObjectById(InterMineId id) {
         os.prefetchObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void invalidateObjectById(Integer id) {
+    public void invalidateObjectById(InterMineId id) {
         os.invalidateObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Object cacheObjectById(Integer id, InterMineObject obj2) {
+    public Object cacheObjectById(InterMineId id, InterMineObject obj2) {
         return os.cacheObjectById(id, obj2);
     }
 
@@ -143,7 +144,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public InterMineObject pilferObjectById(Integer id) {
+    public InterMineObject pilferObjectById(InterMineId id) {
         return os.pilferObjectById(id);
     }
 
@@ -157,7 +158,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.count(q, sequence);
     }
 
@@ -201,7 +202,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public Map<Object, Integer> getSequence(Set<Object> tables) {
+    public Map<Object, InterMineId> getSequence(Set<Object> tables) {
         return os.getSequence(tables);
     }
 
@@ -229,7 +230,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public Integer getSerial() throws ObjectStoreException {
+    public InterMineId getSerial() throws ObjectStoreException {
         return os.getSerial();
     }
 

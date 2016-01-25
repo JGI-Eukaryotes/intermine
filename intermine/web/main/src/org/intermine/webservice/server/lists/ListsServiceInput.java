@@ -10,6 +10,7 @@ package org.intermine.webservice.server.lists;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.WebServiceInput;
 
 /**
@@ -20,7 +21,7 @@ public class ListsServiceInput extends WebServiceInput
 {
 
     private String publicId;
-    private Integer mineId;
+    private InterMineId mineId;
     private String type;
     private String extraValue;
 
@@ -58,7 +59,7 @@ public class ListsServiceInput extends WebServiceInput
     /**
      * @return Intermine unique object id
      */
-    public Integer getMineId() {
+    public InterMineId getMineId() {
         return mineId;
     }
 
@@ -66,7 +67,7 @@ public class ListsServiceInput extends WebServiceInput
      * Sets Intermine unique object id
      * @param mineId object id
      */
-    public void setMineId(Integer mineId) {
+    public void setMineId(InterMineId mineId) {
         this.mineId = mineId;
     }
 

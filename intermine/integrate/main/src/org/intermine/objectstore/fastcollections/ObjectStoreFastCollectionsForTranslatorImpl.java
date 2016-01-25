@@ -41,6 +41,7 @@ import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.objectstore.translating.ObjectStoreTranslatingImpl;
 import org.intermine.objectstore.translating.Translator;
+import org.intermine.model.InterMineId;
 import org.intermine.util.IntPresentSet;
 
 /**
@@ -188,7 +189,7 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         try {
             List<ResultsRow<Object>> retval = os.execute(q, start, limit, optimise, explain,
                     sequence);
@@ -202,10 +203,10 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
                     if (node instanceof QueryClass) {
                         Map<FastPathObject, Map<String, Object>> froms =
                             new HashMap<FastPathObject, Map<String, Object>>();
-                        Set<Integer> toIds = new TreeSet<Integer>();
-                        Set<Integer> toAddToDoneAlready = new HashSet<Integer>();
-                        Map<Integer, FastPathObject> idToObj =
-                            new HashMap<Integer, FastPathObject>();
+                        Set<InterMineId> toIds = new TreeSet<InterMineId>();
+                        Set<InterMineId> toAddToDoneAlready = new HashSet<InterMineId>();
+                        Map<InterMineId, FastPathObject> idToObj =
+                            new HashMap<InterMineId, FastPathObject>();
                         for (ResultsRow<Object> row : retval) {
                             FastPathObject o = (FastPathObject) row.get(0);
                             Map<String, Object> fromColls =
@@ -236,7 +237,7 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
                                                     Collection<?> bag = bc.getBag();
                                                     fromColls.put(fieldName, bag);
                                                     for (Object bagItem : bag) {
-                                                        toIds.add((Integer) bagItem);
+                                                        toIds.add((InterMineId) bagItem);
                                                     }
                                                 }
                                             }
@@ -248,7 +249,7 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
                                             .N_ONE_RELATION)) {
                                     Object proxyObj = o.getFieldProxy(fieldName);
                                     if (proxyObj instanceof ProxyReference) {
-                                        Integer id = ((ProxyReference) proxyObj).getId();
+                                        InterMineId id = ((ProxyReference) proxyObj).getId();
                                         fromColls.put(fieldName, id);
                                         toIds.add(id);
                                     }
@@ -271,10 +272,10 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
                         // necessary, leading to lower performance. I am uncommenting them.
                         // Hopefully this will not break anything. Tested on a small build.
 
-                        HashSet<Integer> idsToProxy = new HashSet<Integer>();
-                        Iterator<Integer> toIdIter = toIds.iterator();
+                        HashSet<InterMineId> idsToProxy = new HashSet<InterMineId>();
+                        Iterator<InterMineId> toIdIter = toIds.iterator();
                         while (toIdIter.hasNext()) {
-                            Integer toId = toIdIter.next();
+                            InterMineId toId = toIdIter.next();
                             if (doneAlready.contains(toId)) {
                                 toIdIter.remove();
                                 idsToProxy.add(toId);
@@ -285,7 +286,7 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
 
                         toIdIter = toIds.iterator();
                         while (toIdIter.hasNext()) {
-                            Integer toId = toIdIter.next();
+                            InterMineId toId = toIdIter.next();
                             if (idToObj.containsKey(toId)) {
                                 toIdIter.remove();
                             } else {
@@ -298,10 +299,10 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
                         }
 
                         while (!toIds.isEmpty()) {
-                            Set<Integer> bag = new HashSet<Integer>();
+                            Set<InterMineId> bag = new HashSet<InterMineId>();
                             toIdIter = toIds.iterator();
                             for (int i = 0; (i < limit) && toIdIter.hasNext(); i++) {
-                                Integer toId = toIdIter.next();
+                                InterMineId toId = toIdIter.next();
                                 bag.add(toId);
                                 toIdIter.remove();
                             }
@@ -322,7 +323,7 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
                                 doneAlready.add(o.getId());
                             }
                         }
-                        for (Integer toAdd : toAddToDoneAlready) {
+                        for (InterMineId toAdd : toAddToDoneAlready) {
                             doneAlready.add(toAdd);
                         }
                         // Now we have fetched all the objects in from the database. We now need to
@@ -340,7 +341,7 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
                                     populateCollection(idToObj, idsToProxy, objToPopulate,
                                             collectionEntry, collectionName);
                                 } else {
-                                    Integer id = (Integer) contents;
+                                    InterMineId id = (InterMineId) contents;
                                     InterMineObject objToAdd = (InterMineObject)
                                         idToObj.get(id);
                                     if (objToAdd != null) {
@@ -358,14 +359,14 @@ public class ObjectStoreFastCollectionsForTranslatorImpl extends ObjectStorePass
         }
     }
 
-    private void populateCollection(Map<Integer, FastPathObject> idToObj,
-            HashSet<Integer> idsToProxy, FastPathObject objToPopulate,
+    private void populateCollection(Map<InterMineId, FastPathObject> idToObj,
+            HashSet<InterMineId> idsToProxy, FastPathObject objToPopulate,
             Map.Entry<String, Object> collectionEntry, String collectionName)
         throws ObjectStoreException {
         Collection<?> collectionContents = (Collection<?>) collectionEntry.getValue();
         Collection<InterMineObject> substituteCollection = new HashSet<InterMineObject>();
         for (Object idToAddObj : collectionContents) {
-            Integer idToAdd = (Integer) idToAddObj;
+            InterMineId idToAdd = (InterMineId) idToAddObj;
             InterMineObject objToAdd = (InterMineObject) idToObj.get(idToAdd);
             if (objToAdd == null) {
                 if (idsToProxy.contains(idToAdd)) {

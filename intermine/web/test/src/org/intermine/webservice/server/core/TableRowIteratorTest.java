@@ -42,6 +42,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.intermine.model.InterMineId;
 import org.junit.Test;
 
 public class TableRowIteratorTest
@@ -285,11 +286,11 @@ public class TableRowIteratorTest
         }
     };
     
-    private static final EitherVisitor<ResultCell, SubTable, Integer> deepCounter = new EitherVisitor<ResultCell, SubTable, Integer>() {
+    private static final EitherVisitor<ResultCell, SubTable, InterMineId> deepCounter = new EitherVisitor<ResultCell, SubTable, InterMineId>() {
 
-        @Override public Integer visitLeft(ResultCell a) { return Integer.valueOf(1); }
+        @Override public InterMineId visitLeft(ResultCell a) { return InterMineId.valueOf(1); }
 
-        @Override public Integer visitRight(SubTable b) {
+        @Override public InterMineId visitRight(SubTable b) {
             int c = 0;
             for (List<Either<ResultCell, SubTable>> row: b.getRows()) {
                 for (Either<ResultCell, SubTable> item: row) {
@@ -306,9 +307,9 @@ public class TableRowIteratorTest
         public String visitRight(SubTable b) { fail("No subtables expected"); return null; }
     };
 
-    private static final EitherVisitor<ResultCell, SubTable, Integer> counterNoTables = new EitherVisitor<ResultCell, SubTable, Integer>() {
-        public Integer visitLeft(ResultCell a) { return Integer.valueOf(1);}
-        public Integer visitRight(SubTable b) { fail("No subtables expected"); return null; }
+    private static final EitherVisitor<ResultCell, SubTable, InterMineId> counterNoTables = new EitherVisitor<ResultCell, SubTable, InterMineId>() {
+        public InterMineId visitLeft(ResultCell a) { return InterMineId.valueOf(1);}
+        public InterMineId visitRight(SubTable b) { fail("No subtables expected"); return null; }
     };
 
     

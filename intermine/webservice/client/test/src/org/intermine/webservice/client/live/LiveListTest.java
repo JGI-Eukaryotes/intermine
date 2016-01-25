@@ -32,6 +32,7 @@ import org.intermine.webservice.client.services.ListService.ListCreationInfo;
 import org.intermine.webservice.client.util.TestUtil;
 import org.intermine.webservice.client.exceptions.ServiceException;
 import org.junit.AfterClass;
+import org.intermine.model.InterMineId;
 import org.junit.Test;
 
 public class LiveListTest {
@@ -90,7 +91,7 @@ public class LiveListTest {
         ItemList favs = testmine.getList("My-Favourite-Employees");
         Item timo = favs.get(1);
         assertEquals("Timo Becker", timo.getString("name"));
-        assertEquals(Integer.valueOf(56224), timo.getInt("seniority"));
+        assertEquals(InterMineId.valueOf(56224), timo.getInt("seniority"));
         assertTrue(timo.isa("Manager"));
         assertTrue(timo.isa("Employee"));
         assertTrue(! timo.isa("Department"));
@@ -446,7 +447,7 @@ public class LiveListTest {
         assertNotNull(david);
         assertEquals("David Brent", david.getString("name"));
         assertFalse(david.getBoolean("fullTime"));
-        assertEquals(new Integer(81361), david.getInt("seniority"));
+        assertEquals(new InterMineId(81361), david.getInt("seniority"));
 
         List<Item> hasAnO = favs.find(new HashMap<String, Object>() {{ put("name", "*o*"); }});
         assertEquals(3, hasAnO.size());

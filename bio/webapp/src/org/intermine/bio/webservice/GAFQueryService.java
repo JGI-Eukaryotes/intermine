@@ -19,6 +19,7 @@ import org.intermine.bio.web.export.GAFExporter;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil.InvalidQueryException;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 
 /**
@@ -57,11 +58,11 @@ public class GAFQueryService extends BioQueryService
         return new GAFExporter(getPrintWriter(), indices(viewColumns), orgSet);
     }
 
-    private static List<Integer> indices(List<?> list) {
-        List<Integer> indices = new ArrayList<Integer>();
+    private static List<InterMineId> indices(List<?> list) {
+        List<InterMineId> indices = new ArrayList<InterMineId>();
         int size = list.size();
         for (int i = 0; i < size; i++) {
-            indices.add(Integer.valueOf(i));
+            indices.add(InterMineId.valueOf(i));
         }
         return indices;
     }

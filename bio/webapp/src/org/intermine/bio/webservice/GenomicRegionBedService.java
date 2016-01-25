@@ -20,6 +20,7 @@ import org.intermine.bio.web.logic.SequenceFeatureExportUtil;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil.InvalidQueryException;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.web.logic.export.Exporter;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 
 /**
@@ -53,7 +54,7 @@ public class GenomicRegionBedService extends AbstractRegionExportService
 
         String organisms = StringUtils.join(
             SequenceFeatureExportUtil.getOrganisms(pq, im, getPermission().getProfile()), ",");
-        List<Integer> indexes = Arrays.asList(new Integer(0));
+        List<InterMineId> indexes = Arrays.asList(new InterMineId(0));
 
         return new BEDExporter(getPrintWriter(), indexes, sourceName, organisms, isUcsc,
                 trackDescription);

@@ -24,6 +24,7 @@ import org.intermine.web.context.InterMineContext;
 import org.json.JSONObject;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** @author Alex Kalderimis **/
@@ -245,7 +246,7 @@ public class ServiceListingHandler extends DefaultHandler
         } else if ("description".equals(qName)) {
             currentMethod.put("Description", deIndent(sb.toString()));
         } else if ("minVersion".equals(qName)) {
-            Integer minVersion = Integer.valueOf(content);
+            InterMineId minVersion = InterMineId.valueOf(content);
             currentEndPoint.put("minVersion", minVersion);
         } else if ("returns".equals(qName)) {
             if (returns.size() > 1) {

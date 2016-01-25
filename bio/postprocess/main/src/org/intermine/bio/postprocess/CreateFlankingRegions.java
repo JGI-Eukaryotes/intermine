@@ -30,6 +30,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -44,7 +45,7 @@ public class CreateFlankingRegions
     private ObjectStore os;
     private DataSet dataSet;
     private DataSource dataSource;
-    private Map<Integer, Chromosome> chrs = new HashMap<Integer, Chromosome>();
+    private Map<InterMineId, Chromosome> chrs = new HashMap<InterMineId, Chromosome>();
 
     /**
      * The sizes in kb of flanking regions to create.
@@ -102,7 +103,7 @@ public class CreateFlankingRegions
         osw.beginTransaction();
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
-            Integer chrId = (Integer) rr.get(0);
+            InterMineId chrId = (InterMineId) rr.get(0);
             Gene gene = (Gene) rr.get(1);
             Location loc = (Location) rr.get(2);
             createAndStoreFlankingRegion(getChromosome(chrId), loc, gene);
@@ -200,15 +201,15 @@ public class CreateFlankingRegions
 
                     // if the region hangs off the start or end of a chromosome set it to finish
                     // at the end of the chromosome
-                    location.setStart(new Integer(Math.max(start, 1)));
+                    location.setStart(new InterMineId(Math.max(start, 1)));
                     int e = Math.min(end, chr.getLength().intValue());
-                    location.setEnd(new Integer(e));
+                    location.setEnd(new InterMineId(e));
 
                     location.setStrand(strand);
                     location.setLocatedOn(chr);
                     location.setFeature(region);
 
-                    region.setLength(new Integer((location.getEnd().intValue()
+                    region.setLength(new InterMineId((location.getEnd().intValue()
                             - location.getStart().intValue()) + 1));
 
                     osw.store(location);
@@ -218,7 +219,7 @@ public class CreateFlankingRegions
         }
     }
 
-    private Chromosome getChromosome(Integer chrId) throws ObjectStoreException {
+    private Chromosome getChromosome(InterMineId chrId) throws ObjectStoreException {
         Chromosome chr = chrs.get(chrId);
         if (chr == null) {
             chr = (Chromosome) os.getObjectById(chrId, Chromosome.class);

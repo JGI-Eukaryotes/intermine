@@ -47,6 +47,7 @@ import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.pathquery.Path;
 import org.intermine.pathquery.PathException;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.pathquery.PathQueryBinding;
 
 /**
@@ -61,7 +62,7 @@ public class WebResults
 {
     protected static final Logger LOG = Logger.getLogger(WebResults.class);
     private List<Path> columnPaths;
-    protected LinkedHashMap<String, Integer> pathToIndex;
+    protected LinkedHashMap<String, InterMineId> pathToIndex;
     protected Model model;
     private final List<Column> columns = new ArrayList<Column>();
     private Results osResults;
@@ -134,7 +135,7 @@ public class WebResults
      *
      * @return a map from string paths to the index of QueryNodes
      */
-    protected LinkedHashMap<String, Integer> getPathToIndex() {
+    protected LinkedHashMap<String, InterMineId> getPathToIndex() {
         List<QuerySelectable> select = flatResults.getFlatSelect();
         List<QuerySelectable> convSelect = new ArrayList<QuerySelectable>();
         for (QuerySelectable qs : select) {
@@ -148,7 +149,7 @@ public class WebResults
             convSelect.add(qs);
         }
         select = convSelect;
-        LinkedHashMap<String, Integer> returnMap =  new LinkedHashMap<String, Integer>();
+        LinkedHashMap<String, InterMineId> returnMap =  new LinkedHashMap<String, InterMineId>();
         for (String path : pathToQueryNode.keySet()) {
             QuerySelectable queryNode = pathToQueryNode.get(path);
             if ((queryNode instanceof QueryClass)
@@ -156,14 +157,14 @@ public class WebResults
                     || (queryNode instanceof QueryCollectionPathExpression)) {
                 int index = select.indexOf(queryNode);
                 if (index != -1) {
-                    returnMap.put(path, new Integer(index));
+                    returnMap.put(path, new InterMineId(index));
                 }
             } else if (queryNode instanceof QueryField) {
                 String parentPath = path.substring(0, path.lastIndexOf('.'));
                 queryNode = pathToQueryNode.get(parentPath);
                 int index = select.indexOf(queryNode);
                 if (index != -1) {
-                    returnMap.put(path, new Integer(index));
+                    returnMap.put(path, new InterMineId(index));
                 }
             } else {
                 throw new RuntimeException();
@@ -386,13 +387,13 @@ public class WebResults
                     = new ResultsRow<MultiRowValue<ResultElement>>();
                 for (Path columnPath : columnPaths) {
                     String columnName = columnPath.toStringNoConstraints();
-                    Integer columnIndexInteger = pathToIndex.get(columnName);
+                    InterMineId columnIndexInterMineId = pathToIndex.get(columnName);
                     String parentColumnName = columnPath.getPrefix().toStringNoConstraints();
-                    if (columnIndexInteger == null) {
-                        columnIndexInteger = pathToIndex.get(parentColumnName);
+                    if (columnIndexInterMineId == null) {
+                        columnIndexInterMineId = pathToIndex.get(parentColumnName);
                     }
 
-                    if (columnIndexInteger == null) {
+                    if (columnIndexInterMineId == null) {
                         throw new NullPointerException("Path: \"" + columnName
                                 + "\", pathToIndex: \"" + pathToIndex + "\", prefix: \""
                                 + parentColumnName + "\", query: \""
@@ -400,7 +401,7 @@ public class WebResults
                                     pathQuery.getModel().getName(),
                                     PathQuery.USERPROFILE_VERSION) + "\"");
                     }
-                    int columnIndex = columnIndexInteger.intValue();
+                    int columnIndex = columnIndexInterMineId.intValue();
                     MultiRowValue origO = initialList.get(columnIndex);
                     FastPathObject o = (FastPathObject) (origO == null ? null : origO.getValue());
                     int rowspan = -1;

@@ -22,6 +22,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.widget.config.TableWidgetConfig;
 
 /**
@@ -52,8 +53,8 @@ public class TableWidget extends Widget
     @SuppressWarnings("unchecked")
     private void createBagContent() {
 
-        List<Integer> bagResults = bag.getContentsAsIds();
-        Iterator<Integer> it = bagResults.iterator();
+        List<InterMineId> bagResults = bag.getContentsAsIds();
+        Iterator<InterMineId> it = bagResults.iterator();
 
         while (it.hasNext()) {
             InterMineObject oj = null;

@@ -50,6 +50,7 @@ import org.intermine.web.logic.PortalHelper;
 import org.intermine.web.logic.bag.BagConverter;
 import org.intermine.web.logic.config.WebConfig;
 import org.intermine.web.logic.pathqueryresult.PathQueryResultHelper;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -120,14 +121,14 @@ public class PortalQueryAction extends InterMineAction
                 = bagRunner.searchForBag(defaultClass, Arrays.asList(idList), extraFieldValue,
                         false);
 
-            Map<Integer, List> matches = bqr.getMatches();
+            Map<InterMineId, List> matches = bqr.getMatches();
             Map<String, Map<String, Map<String, List>>> issues = bqr.getIssues();
             if (matches.isEmpty() && issues.isEmpty()) {
                 return new ForwardParameters(mapping.findForward("noResults")).forward();
             }
 
             // check the matches first...
-            for (Map.Entry<Integer, List> entry : matches.entrySet()) {
+            for (Map.Entry<InterMineId, List> entry : matches.entrySet()) {
                 String id = entry.getKey().toString();
                 return new ForwardParameters(mapping.findForward("report"))
                     .addParameter("id", id).forward();
@@ -179,7 +180,7 @@ public class PortalQueryAction extends InterMineAction
         WebResults webResults = executor.execute(pathQuery, returnBagQueryResults);
 
         String bagName = NameUtil.generateNewName(profile.getSavedBags().keySet(), "link");
-        List<Integer> bagList = new ArrayList<Integer>();
+        List<InterMineId> bagList = new ArrayList<InterMineId>();
 
         // There's only one node, get the first value
         BagQueryResult bagQueryResult = returnBagQueryResults.values().iterator().next();
@@ -203,7 +204,7 @@ public class PortalQueryAction extends InterMineAction
                 if (StringUtils.isNotEmpty(extraValue)) {
                     BagConverter bagConverter = PortalHelper.getBagConverter(im, webConfig,
                             additionalConverter.getClassName());
-                    List<Integer> converted = bagConverter.getConvertedObjectIds(profile,
+                    List<InterMineId> converted = bagConverter.getConvertedObjectIds(profile,
                             className, bagList, extraValue);
                     // No matches
                     if (converted.size() <= 0) {
@@ -265,7 +266,7 @@ public class PortalQueryAction extends InterMineAction
     }
 
     private static ActionForward createBagAndGoToBagDetails(ActionMapping mapping,
-            InterMineBag imBag, List<Integer> bagList) throws ObjectStoreException {
+            InterMineBag imBag, List<InterMineId> bagList) throws ObjectStoreException {
         imBag.addIdsToBag(bagList, imBag.getType());
         return new ForwardParameters(mapping.findForward("bagDetails"))
             .addParameter("bagName", imBag.getName()).forward();
@@ -276,15 +277,15 @@ public class PortalQueryAction extends InterMineAction
             int bagListSize, String extId) {
         if (bagListSize == 0 && bagQueryResultSize == 1) {
             ActionMessage msg = new ActionMessage("results.lookup.noresults.one",
-                    new Integer(bagQueryResultSize), className);
+                    new InterMineId(bagQueryResultSize), className);
             actionMessages.add(Constants.PORTAL_MSG, msg);
         } else if (bagListSize == 0 && bagQueryResultSize > 1) {
             ActionMessage msg = new ActionMessage("results.lookup.noresults.many",
-                    new Integer(bagQueryResultSize), className);
+                    new InterMineId(bagQueryResultSize), className);
             actionMessages.add(Constants.PORTAL_MSG, msg);
         } else if (bagListSize > 0) {
             ActionMessage msg = new ActionMessage("results.lookup.matches.many",
-                    new Integer(bagListSize));
+                    new InterMineId(bagListSize));
             actionMessages.add(". " + Constants.PORTAL_MSG, msg);
         } else if (bagListSize == 0) {
             ActionMessage msg = new ActionMessage("portal.nomatches", extId);

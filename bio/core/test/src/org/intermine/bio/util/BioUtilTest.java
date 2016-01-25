@@ -26,6 +26,7 @@ import org.intermine.model.bio.Gene;
 import org.intermine.model.bio.Organism;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.ObjectStoreWriterFactory;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -46,7 +47,7 @@ public class BioUtilTest extends TestCase
     private Gene storedGene2 = null;
     private Organism storedOrganism1 = null;
     private Organism storedOrganism2 = null;
-    List<Integer> bagContents = null;
+    List<InterMineId> bagContents = null;
 
     private void createData() throws Exception {
         osw = ObjectStoreWriterFactory.getObjectStoreWriter("osw.bio-test");
@@ -55,25 +56,25 @@ public class BioUtilTest extends TestCase
         storedOrganism1 = (Organism) DynamicUtil.createObject(Collections.singleton(Organism.class));
         storedOrganism1.setShortName("Homo sapiens");
         storedOrganism1.setTaxonId(9606);
-        storedOrganism1.setId(new Integer(2001));
+        storedOrganism1.setId(new InterMineId(2001));
         toStore.add(storedOrganism1);
 
         storedGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
         storedGene1.setPrimaryIdentifier("gene1");
         storedGene1.setOrganism(storedOrganism1);
-        storedGene1.setId(new Integer(3001));
+        storedGene1.setId(new InterMineId(3001));
         toStore.add(storedGene1);
 
         storedOrganism2 = (Organism) DynamicUtil.createObject(Collections.singleton(Organism.class));
         storedOrganism2.setShortName("Drosophila melanogaster");
         storedOrganism2.setTaxonId(7227);
-        storedOrganism2.setId(new Integer(2002));
+        storedOrganism2.setId(new InterMineId(2002));
         toStore.add(storedOrganism2);
 
         storedGene2 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
         storedGene2.setPrimaryIdentifier("gene2");
         storedGene2.setOrganism(storedOrganism2);
-        storedGene2.setId(new Integer(3002));
+        storedGene2.setId(new InterMineId(3002));
         toStore.add(storedGene2);
 
         Iterator iter = toStore.iterator();
@@ -97,13 +98,13 @@ public class BioUtilTest extends TestCase
     }
 
     public void testReplaceStrain() {
-        Integer taxonId = 9606;
-        Integer expectedTaxon = 9606;
+        InterMineId taxonId = 9606;
+        InterMineId expectedTaxon = 9606;
 
-        Integer actualTaxon = BioUtil.replaceStrain(taxonId);
+        InterMineId actualTaxon = BioUtil.replaceStrain(taxonId);
         assertEquals(expectedTaxon, actualTaxon);
 
-        Integer strainId = 46245;
+        InterMineId strainId = 46245;
         taxonId = 7237;
         actualTaxon = BioUtil.replaceStrain(46245);
         assertEquals(taxonId, actualTaxon);

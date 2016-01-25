@@ -48,6 +48,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.util.CacheMap;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -333,7 +334,7 @@ public class TagManager
      */
     public synchronized Tag getTagById(int id) {
         try {
-            return (Tag) osWriter.getObjectById(new Integer(id), Tag.class);
+            return (Tag) osWriter.getObjectById(new InterMineId(id), Tag.class);
         } catch (ObjectStoreException e) {
             throw new RuntimeException("Getting tag from database failed", e);
         }

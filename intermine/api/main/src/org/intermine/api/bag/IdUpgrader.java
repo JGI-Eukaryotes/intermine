@@ -13,6 +13,7 @@ package org.intermine.api.bag;
 import java.util.Set;
 
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStore;
 
 /**
@@ -29,7 +30,7 @@ public interface IdUpgrader
      * @param os ObjectStore used to resolve objects
      * @return the set of new InterMineObjects
      */
-    Set<Integer> getNewIds(InterMineObject oldObject, ObjectStore os);
+    Set<InterMineId> getNewIds(InterMineObject oldObject, ObjectStore os);
 
     /**
      * Return true if upgrade should be performed
@@ -42,7 +43,7 @@ public interface IdUpgrader
      */
     IdUpgrader ERROR_UPGRADER = new IdUpgrader() {
         @Override
-        public Set<Integer> getNewIds(@SuppressWarnings("unused") InterMineObject oldObject,
+        public Set<InterMineId> getNewIds(@SuppressWarnings("unused") InterMineObject oldObject,
                 @SuppressWarnings("unused") ObjectStore objectStore) {
             throw new RuntimeException("Shouldn't call getNewIds() in a running webapp");
         }

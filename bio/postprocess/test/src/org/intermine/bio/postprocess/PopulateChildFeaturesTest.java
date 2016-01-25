@@ -36,6 +36,7 @@ import org.intermine.objectstore.query.QueryCollectionReference;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SingletonResults;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -104,7 +105,7 @@ public class PopulateChildFeaturesTest extends TestCase {
         
         ObjectStore os = osw.getObjectStore();
         Results res = os.execute(q);
-        HashSet<Integer> actualCollectionIds = new HashSet();
+        HashSet<InterMineId> actualCollectionIds = new HashSet();
         Iterator<Object> resIter = res.iterator();
         while (resIter.hasNext()) {
         	ResultsRow<InterMineObject> row = (ResultsRow<InterMineObject>) resIter.next();
@@ -112,7 +113,7 @@ public class PopulateChildFeaturesTest extends TestCase {
         	Transcript resTranscript = (Transcript) row.get(1);
         	actualCollectionIds.add(resTranscript.getId());
         }
-        HashSet<Integer> expectedCollectionIds = new HashSet(Arrays.asList(new Integer[] {storedTranscript1.getId(), storedTranscript2.getId()}));
+        HashSet<InterMineId> expectedCollectionIds = new HashSet(Arrays.asList(new InterMineId[] {storedTranscript1.getId(), storedTranscript2.getId()}));
         assertEquals(expectedCollectionIds, actualCollectionIds);
     }
 
@@ -134,23 +135,23 @@ public class PopulateChildFeaturesTest extends TestCase {
     	
         storedGene = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
         storedGene.setPrimaryIdentifier("gene1");
-        storedGene.setLength(new Integer(10000));
-        storedGene.setId(new Integer(1002));
+        storedGene.setLength(new InterMineId(10000));
+        storedGene.setId(new InterMineId(1002));
         storedGene.setSequenceOntologyTerm(storedGeneTerm);
         
         toStore.add(storedGene);
 
         storedTranscript1 = (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        storedTranscript1.setLength(new Integer(1050));
-        storedTranscript1.setId(new Integer(11));
+        storedTranscript1.setLength(new InterMineId(1050));
+        storedTranscript1.setId(new InterMineId(11));
         storedTranscript1.setPrimaryIdentifier("transcript1");
         storedTranscript1.setGene(storedGene);
         storedTranscript1.setSequenceOntologyTerm(storedTranscriptTerm);
         toStore.add(storedTranscript1);
        
         storedTranscript2 = (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        storedTranscript2.setLength(new Integer(1051));
-        storedTranscript2.setId(new Integer(12));
+        storedTranscript2.setLength(new InterMineId(1051));
+        storedTranscript2.setId(new InterMineId(12));
         storedTranscript2.setPrimaryIdentifier("transcript2");
         storedTranscript2.setGene(storedGene);
         storedTranscript2.setSequenceOntologyTerm(storedTranscriptTerm);

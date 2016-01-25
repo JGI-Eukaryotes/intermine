@@ -13,6 +13,7 @@ package org.intermine.objectstore.translating;
 import org.intermine.metadata.MetaDataException;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.Query;
 
 /**
@@ -68,5 +69,5 @@ public abstract class Translator
      * @param id the object id
      * @return an object that represents the underlying object's identifier
      */
-    public abstract Object translateIdToIdentifier(Integer id);
+    public abstract Object translateIdToIdentifier(InterMineId id);
 }

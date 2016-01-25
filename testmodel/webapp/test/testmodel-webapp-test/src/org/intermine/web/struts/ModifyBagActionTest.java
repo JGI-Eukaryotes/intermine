@@ -1,5 +1,6 @@
 package org.intermine.web.struts;
 
+import org.intermine.model.InterMineId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,7 +45,7 @@ public class ModifyBagActionTest extends MockStrutsTestCase
     InterMineBag bag2;
     TemplateQuery template;
     ObjectStoreWriter userProfileOSW;
-    Integer userId;
+    InterMineId userId;
     ProfileManager profileManager;
     ObjectStore os;
 
@@ -72,7 +73,7 @@ public class ModifyBagActionTest extends MockStrutsTestCase
             fieldNames.add("username");
             ObjectStore uos = userProfileOSW.getObjectStore();
             UserProfile profile4ID = (UserProfile) uos.getObjectByExample(realProfile, fieldNames);
-            userId = new Integer(profile4ID.getId());
+            userId = new InterMineId(profile4ID.getId());
 
 
             HttpSession session = getSession();

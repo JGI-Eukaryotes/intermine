@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.intermine.objectstore.DataChangedException;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.proxy.LazyCollection;
 
 /**
@@ -70,7 +71,7 @@ public class Results extends AbstractList<Object> implements LazyCollection<Obje
      * @param sequence a number representing the state of the ObjectStore, which should be quoted
      * back to the ObjectStore when requests are made
      */
-    public Results(Query query, ObjectStore os, Map<Object, Integer> sequence) {
+    public Results(Query query, ObjectStore os, Map<Object, InterMineId> sequence) {
         if (query == null) {
             throw new NullPointerException("query must not be null");
         }
@@ -153,7 +154,7 @@ public class Results extends AbstractList<Object> implements LazyCollection<Obje
      *
      * @return the ObjectStore-specific object
      */
-    public Map<Object, Integer> getSequence() {
+    public Map<Object, InterMineId> getSequence() {
         return resultsBatches.getSequence();
     }
 

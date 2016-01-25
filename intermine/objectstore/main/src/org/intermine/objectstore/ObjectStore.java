@@ -24,6 +24,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsInfo;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.SingletonResults;
 
 /**
@@ -36,7 +37,7 @@ public interface ObjectStore
     /**
      * Object representing no fail-fast concurrency checks required.
      */
-    Map<Object, Integer> SEQUENCE_IGNORE = Collections.emptyMap();
+    Map<Object, InterMineId> SEQUENCE_IGNORE = Collections.emptyMap();
 
     /**
      * Create an ObjectStoreWriter that writes into this ObjectStore. Note that the given object
@@ -108,7 +109,7 @@ public interface ObjectStore
      * @throws ObjectStoreException if an error occurs during the running of the Query
      */
     List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException;
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException;
 
     /**
      * Get an object from the ObjectStore by giving an ID.
@@ -117,7 +118,7 @@ public interface ObjectStore
      * @return the object from the ObjectStore or cache, or null if none exists
      * @throws ObjectStoreException if an error occurs during retrieval of the object
      */
-    InterMineObject getObjectById(Integer id) throws ObjectStoreException;
+    InterMineObject getObjectById(InterMineId id) throws ObjectStoreException;
 
     /**
      * Get an object from the ObjectStore by giving an ID and a hint of the Class of the object.
@@ -130,7 +131,7 @@ public interface ObjectStore
      * @return the object from the ObjectStore or the cache, or null if none exists
      * @throws ObjectStoreException if an error occurs during the retrieval of the object
      */
-    InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException;
 
     /**
@@ -140,7 +141,7 @@ public interface ObjectStore
      * @return the objects from the ObjectStore or cache
      * @throws ObjectStoreException if an error occurs during retrieval of the object
      */
-    List<InterMineObject> getObjectsByIds(Collection<Integer> ids)
+    List<InterMineObject> getObjectsByIds(Collection<InterMineId> ids)
         throws ObjectStoreException;
 
     /**
@@ -155,7 +156,7 @@ public interface ObjectStore
      *
      * @param id the ID of the object to prefetch
      */
-    void prefetchObjectById(Integer id);
+    void prefetchObjectById(InterMineId id);
 
     /**
      * Removes an entry from the objectstore getObjectById cache. The objectstore must
@@ -165,7 +166,7 @@ public interface ObjectStore
      *
      * @param id the ID of the object to invalidate
      */
-    void invalidateObjectById(Integer id);
+    void invalidateObjectById(InterMineId id);
 
     /**
      * Places an entry into the objectstore getObjectById cache. This method (like prefetch) is
@@ -180,7 +181,7 @@ public interface ObjectStore
      * for the purpose of ensuring the entry does not expire from the cache. To endure this, the
      * caller merely needs to keep a strong reference to this returned value.
      */
-    Object cacheObjectById(Integer id, InterMineObject obj);
+    Object cacheObjectById(InterMineId id, InterMineObject obj);
 
     /**
      * Completely empties the getObjectById cache. The objectstore must guarantee that the
@@ -196,7 +197,7 @@ public interface ObjectStore
      * @param id the ID of the object
      * @return the object, or null
      */
-    InterMineObject pilferObjectById(Integer id);
+    InterMineObject pilferObjectById(InterMineId id);
 
     /**
      * Explain a Query (give estimate for execution time and number of rows).
@@ -218,7 +219,7 @@ public interface ObjectStore
      * @return the number of rows that will be produced by query
      * @throws ObjectStoreException if an error occurs counting the query
      */
-    int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException;
+    int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException;
 
     /**
      * Return the metadata associated with this ObjectStore
@@ -282,7 +283,7 @@ public interface ObjectStore
      * @param tables a Set of independent database components to get data for
      * @return an object representing the current database state
      */
-    Map<Object, Integer> getSequence(Set<Object> tables);
+    Map<Object, InterMineId> getSequence(Set<Object> tables);
 
     /**
      * Get the maximum LIMIT that can be used in an SQL query without throwing an
@@ -307,10 +308,10 @@ public interface ObjectStore
     /**
      * Gets an ID number which is unique in the database.
      *
-     * @return an Integer
+     * @return an InterMineId
      * @throws ObjectStoreException if a problem occurs
      */
-    Integer getSerial() throws ObjectStoreException;
+    InterMineId getSerial() throws ObjectStoreException;
 
     /**
      * Returns a new empty ObjectStoreBag object that is valid for this ObjectStore.

@@ -10,6 +10,7 @@ package org.intermine.web.logic.widget;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.Map;
 
 /**
@@ -47,7 +48,7 @@ public interface EnrichmentInput
      * contain the department.
      * @return a map from attribute value to the count of items in the sample with that value
      */
-    Map<String, Integer> getAnnotatedCountsInSample();
+    Map<String, InterMineId> getAnnotatedCountsInSample();
 
     /**
      * For each attribute give a count of items in the whole population that have that attribute

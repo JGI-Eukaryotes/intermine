@@ -16,6 +16,7 @@ import org.intermine.model.fulldata.Attribute;
 import org.intermine.model.fulldata.Item;
 import org.intermine.model.fulldata.Reference;
 import org.intermine.model.fulldata.ReferenceList;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -36,7 +37,7 @@ public interface ItemWriter
      * later time
      * @return the database id of the Item - created when storing
      */
-    Integer store(Item item) throws ObjectStoreException;
+    InterMineId store(Item item) throws ObjectStoreException;
 
     /**
      * Stores the given ReferenceList after setting its item id.
@@ -44,7 +45,7 @@ public interface ItemWriter
      * @param itemId the ID of the Item that contains the ReferenceList
      * @throws ObjectStoreException if something goes wrong
      */
-    void store(ReferenceList refList, Integer itemId) throws ObjectStoreException;
+    void store(ReferenceList refList, InterMineId itemId) throws ObjectStoreException;
 
     /**
      * Stores the given Reference after setting its item id.
@@ -52,7 +53,7 @@ public interface ItemWriter
      * @param itemId the ID of the Item that contains the Reference
      * @throws ObjectStoreException if something goes wrong
      */
-    void store(Reference ref, Integer itemId) throws ObjectStoreException;
+    void store(Reference ref, InterMineId itemId) throws ObjectStoreException;
 
     /**
      * Stores the given Attribute after setting its item id.
@@ -60,7 +61,7 @@ public interface ItemWriter
      * @param itemId the ID of the Item that contains the Attribute
      * @throws ObjectStoreException if something goes wrong
      */
-    void store(Attribute att, Integer itemId) throws ObjectStoreException;
+    void store(Attribute att, InterMineId itemId) throws ObjectStoreException;
 
     /**
      * Stores the given Collection of Items and all their associated attributes, references, and

@@ -32,6 +32,7 @@ import org.intermine.objectstore.ObjectStoreFactory;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.ResultsInfo;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.DatabaseConnectionException;
 
 /**
@@ -144,7 +145,7 @@ public class ObjectStoreTranslatingImpl extends ObjectStoreAbstractImpl
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         //if (start == 0) {
         //    LOG.error("Fetching batch 0 for query " + q.toString());
         //}
@@ -203,7 +204,7 @@ public class ObjectStoreTranslatingImpl extends ObjectStoreAbstractImpl
      * {@inheritDoc}
      */
     @Override
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.count(translateQuery(q), sequence);
     }
 
@@ -250,7 +251,7 @@ public class ObjectStoreTranslatingImpl extends ObjectStoreAbstractImpl
      * {@inheritDoc}
      */
     @Override
-    public InterMineObject internalGetObjectById(Integer id,
+    public InterMineObject internalGetObjectById(InterMineId id,
             Class<? extends InterMineObject> clazz) throws ObjectStoreException {
         InterMineObject retval = super.internalGetObjectById(id, clazz);
         //Exception e = new Exception("internalGetObjectById called for "
@@ -281,7 +282,7 @@ public class ObjectStoreTranslatingImpl extends ObjectStoreAbstractImpl
      * {@inheritDoc}
      */
     @Override
-    public Integer getSerial() throws ObjectStoreException {
+    public InterMineId getSerial() throws ObjectStoreException {
         return os.getSerial();
     }
 }

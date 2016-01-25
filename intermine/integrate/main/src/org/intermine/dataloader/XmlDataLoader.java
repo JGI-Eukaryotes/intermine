@@ -19,6 +19,7 @@ import org.intermine.InterMineException;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.util.XmlBinding;
 
 /**
@@ -71,7 +72,7 @@ public class XmlDataLoader extends DataLoader
             for (FastPathObject o : objects) {
                 if (o instanceof InterMineObject) {
                     InterMineObject io = (InterMineObject) o;
-                    io.setId(new Integer(idCounter++));
+                    io.setId(new InterMineId(idCounter++));
                 }
             }
 

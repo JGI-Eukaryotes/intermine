@@ -48,6 +48,7 @@ import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultPosition;
 import psidev.psi.mi.jami.model.impl.DefaultRange;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
+import org.intermine.model.InterMineId;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 
 /**
@@ -165,8 +166,8 @@ public class ExportService extends JSONService
             String properties = (String) row.get(2).getField();
             // String function = (String) row.get(3).getField();
             String primaryIdentifier = (String) row.get(4).getField();
-            Integer stoichiometry = (Integer) row.get(5).getField();
-            Integer taxonId = (Integer) row.get(6).getField();
+            InterMineId stoichiometry = (InterMineId) row.get(5).getField();
+            InterMineId taxonId = (InterMineId) row.get(6).getField();
             String biologicalRole = (String) row.get(7).getField();
             // e.g. protein, SmallMolecule
             String moleculeType = (String) row.get(8).getField();
@@ -212,8 +213,8 @@ public class ExportService extends JSONService
             if (row.get(9).getField() != null) {
                 String featureIdentifier = (String) row.get(9).getField();
                 //String locatedOn = (String) row.get(10).getField();
-                Integer start = (Integer) row.get(11).getField();
-                Integer end = (Integer) row.get(12).getField();
+                InterMineId start = (InterMineId) row.get(11).getField();
+                InterMineId end = (InterMineId) row.get(12).getField();
 
                 // range
                 DefaultPosition startPosition = new DefaultPosition(new Long(start));

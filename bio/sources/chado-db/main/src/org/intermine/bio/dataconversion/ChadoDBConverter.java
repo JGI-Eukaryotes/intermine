@@ -29,6 +29,7 @@ import org.intermine.bio.util.OrganismRepository;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.sql.Database;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.StringUtil;
 
 /**
@@ -40,7 +41,7 @@ public class ChadoDBConverter extends BioDBConverter
     protected static final Logger LOG = Logger.getLogger(ChadoDBConverter.class);
 
     // a Map from chado organism_id to taxonId
-    private final Map<Integer, OrganismData> chadoToOrgData = new HashMap<Integer, OrganismData>();
+    private final Map<InterMineId, OrganismData> chadoToOrgData = new HashMap<InterMineId, OrganismData>();
     private String processors = "";
 
     private final Set<OrganismData> organismsToProcess = new HashSet<OrganismData>();
@@ -84,7 +85,7 @@ public class ChadoDBConverter extends BioDBConverter
         for (String organismIdString: bits) {
             OrganismData od = null;
             try {
-                Integer taxonId = Integer.valueOf(organismIdString);
+                InterMineId taxonId = InterMineId.valueOf(organismIdString);
                 od = organismRepository.getOrganismDataByTaxon(taxonId);
             } catch (NumberFormatException e) {
                 od = organismRepository.getOrganismDataByAbbreviation(organismIdString);
@@ -110,7 +111,7 @@ public class ChadoDBConverter extends BioDBConverter
      * are processing
      * @return the Map
      */
-    public Map<Integer, OrganismData> getChadoIdToOrgDataMap() {
+    public Map<InterMineId, OrganismData> getChadoIdToOrgDataMap() {
         return chadoToOrgData;
     }
 
@@ -133,10 +134,10 @@ public class ChadoDBConverter extends BioDBConverter
             throw new IllegalArgumentException("processors not set in ChadoDBConverter");
         }
 
-        Map<OrganismData, Integer> tempChadoOrgMap = getChadoOrganismIds(getConnection());
+        Map<OrganismData, InterMineId> tempChadoOrgMap = getChadoOrganismIds(getConnection());
 
         for (OrganismData od: organismsToProcess) {
-            Integer chadoId = tempChadoOrgMap.get(od);
+            InterMineId chadoId = tempChadoOrgMap.get(od);
             if (chadoId == null) {
                 throw new RuntimeException("Organism " + od
                                            + " not found in the chado organism table");
@@ -169,14 +170,14 @@ public class ChadoDBConverter extends BioDBConverter
      * @return a Map from abbreviation to chado organism_id
      * @throws SQLException if the is a database problem
      */
-    protected Map<OrganismData, Integer> getChadoOrganismIds(Connection conn)
+    protected Map<OrganismData, InterMineId> getChadoOrganismIds(Connection conn)
         throws SQLException {
         String query = "select organism_id, abbreviation, genus, species from organism";
         LOG.info("executing: " + query);
         Statement stmt = conn.createStatement();
         ResultSet res = stmt.executeQuery(query);
 
-        Map<OrganismData, Integer> retMap = new HashMap<OrganismData, Integer>();
+        Map<OrganismData, InterMineId> retMap = new HashMap<OrganismData, InterMineId>();
 
         OrganismRepository or = OrganismRepository.getOrganismRepository();
 
@@ -203,7 +204,7 @@ public class ChadoDBConverter extends BioDBConverter
                          + " genus: " + genus + " abbreviation: " + abbreviation);
             }
 
-            retMap.put(od, new Integer(organismId));
+            retMap.put(od, new InterMineId(organismId));
         }
 
         return retMap;
@@ -251,7 +252,7 @@ public class ChadoDBConverter extends BioDBConverter
      */
     @Override
     public String getDataSetTitle(int taxonId) {
-        OrganismData od = organismRepository.getOrganismDataByTaxon(new Integer(taxonId));
+        OrganismData od = organismRepository.getOrganismDataByTaxon(new InterMineId(taxonId));
         if (od != null) {
             return getDataSourceName() + " data set for " + od.getGenus() + " " + od.getSpecies();
         }

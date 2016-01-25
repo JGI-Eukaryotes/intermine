@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import org.intermine.metadata.TypeUtil;
 import org.intermine.metadata.Util;
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 
 /**
@@ -143,7 +144,7 @@ public class QueryField implements QueryEvaluable
         this.qc = qcb;
         this.fieldName = "id";
         this.secondFieldName = null;
-        this.type = Integer.class;
+        this.type = InterMineId.class;
     }
 
     /**

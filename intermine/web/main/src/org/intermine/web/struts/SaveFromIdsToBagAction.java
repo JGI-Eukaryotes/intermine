@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.browseengine.bobo.api.BrowseHit;
+import org.intermine.model.InterMineId;
 import com.browseengine.bobo.api.BrowseResult;
 
 /**
@@ -59,7 +60,7 @@ public class SaveFromIdsToBagAction extends InterMineAction
 
         // where the request comes from, e.g. /experiment.do?...
         String source = (String) request.getParameter("source");
-        Set<Integer> idSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> idSet = new LinkedHashSet<InterMineId>();
         try {
             String type = (String) request.getParameter("type");
             String allChecked = (String) request.getParameter("allChecked");
@@ -67,14 +68,14 @@ public class SaveFromIdsToBagAction extends InterMineAction
             if ("true".equals(allChecked)) {
                 // TODO do something more clever than running the search again
                 String totalHits = (String) request.getParameter("totalHits");
-                int listSize = Integer.parseInt(totalHits);
+                int listSize = InterMineId.parseInt(totalHits);
                 String searchTerm = (String) request.getParameter("searchTerm");
                 JSONObject jsonRequest = new JSONObject(request.getParameter("jsonFacets"));
                 Map<String, String> facetMap = jsonToJava(jsonRequest);
                 int offset = 0;
                 boolean pagination = false;
                 BrowseResult result = KeywordSearch.runBrowseSearch(searchTerm, offset, facetMap,
-                        new ArrayList<Integer>(), pagination, listSize);
+                        new ArrayList<InterMineId>(), pagination, listSize);
 
                 if (result != null) {
                     LOG.error("processing result! " + result.getNumHits());
@@ -90,7 +91,7 @@ public class SaveFromIdsToBagAction extends InterMineAction
                 // ids are comma delimited
                 String[] idArray = request.getParameter("ids").split(",");
                 for (String id : idArray) {
-                    idSet.add(Integer.valueOf(id.trim()));
+                    idSet.add(InterMineId.valueOf(id.trim()));
                 }
             }
             String bagName = request.getParameter("newBagName");

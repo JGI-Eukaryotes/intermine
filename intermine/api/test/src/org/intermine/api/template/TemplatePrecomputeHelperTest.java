@@ -18,6 +18,7 @@ import org.intermine.objectstore.query.QuerySelectable;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.pathquery.PathQueryBinding;
 import org.intermine.template.TemplateQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.template.xml.TemplateQueryBinding;
 
 public class TemplatePrecomputeHelperTest extends TestCase {
@@ -56,7 +57,7 @@ public class TemplatePrecomputeHelperTest extends TestCase {
         Reader reader = new StringReader("<template name=\"flibble\" title=\"flobble\" comment=\"wibble\" >"
                 + "<query name=\"flibble\" model=\"testmodel\" view=\"Employee.name\" constraintLogic=\"A and B and C and D\">"
                 + "<node path=\"Employee\" type=\"Employee\"></node>"
-                + "<node path=\"Employee.age\" type=\"Integer\">"
+                + "<node path=\"Employee.age\" type=\"InterMineId\">"
                 + "    <constraint op=\"!=\" value=\"10\" description=\"a\" identifier=\"\" code=\"A\"></constraint>"
                 + "    <constraint op=\"!=\" value=\"20\" description=\"b\" identifier=\"\" code=\"B\" editable=\"true\"></constraint>"
                 + "    <constraint op=\"!=\" value=\"30\" description=\"c\" identifier=\"\" code=\"C\"></constraint>"

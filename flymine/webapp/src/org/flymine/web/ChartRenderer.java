@@ -49,6 +49,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.servlet.ServletUtilities;
+import org.intermine.model.InterMineId;
 import org.jfree.data.category.DefaultCategoryDataset;*/
 
 /**
@@ -133,7 +134,7 @@ public class ChartRenderer extends InterMineAction
                 String series = label.substring(label.indexOf(':'), label.indexOf('-')).trim();
                 // TODO Calculate Log2, should be a flag to set scale
                 xyDataset.addValue((Math.log(result.getValue().floatValue()) / logE2),
-                                   series, (Integer) rr.get(2));
+                                   series, (InterMineId) rr.get(2));
             }
         }
 
@@ -152,8 +153,8 @@ public class ChartRenderer extends InterMineAction
 
         configureChart(chart, request);
 
-        int width = Integer.parseInt(request.getParameter("width"));
-        int height = Integer.parseInt(request.getParameter("height"));
+        int width = InterMineId.parseInt(request.getParameter("width"));
+        int height = InterMineId.parseInt(request.getParameter("height"));
 
         ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
         String filename = ServletUtilities.saveChartAsPNG(chart, width, height, info, session);

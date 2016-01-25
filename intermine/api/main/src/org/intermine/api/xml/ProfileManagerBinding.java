@@ -50,6 +50,7 @@ import org.intermine.util.SAXParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -214,7 +215,7 @@ class ProfileManagerHandler extends DefaultHandler
             if (value == null) {
                 version = 0;
             } else {
-                version = Integer.parseInt(value);
+                version = InterMineId.parseInt(value);
             }
             ObjectStoreWriter userprofileOsw = profileManager.getProfileObjectStoreWriter();
             Connection con = null;

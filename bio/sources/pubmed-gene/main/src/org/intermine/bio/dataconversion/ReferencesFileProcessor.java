@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.intermine.model.InterMineId;
 import java.util.NoSuchElementException;
 
 /**
@@ -30,7 +31,7 @@ public class ReferencesFileProcessor
 
     private BufferedReader reader;
 
-    private Integer processedOrganism = null;
+    private InterMineId processedOrganism = null;
 
     /**
      * Constructor.
@@ -73,7 +74,7 @@ public class ReferencesFileProcessor
                 return null;
             }
             String line;
-            Map<Integer, List<Integer>> references = new HashMap<Integer, List<Integer>>();
+            Map<InterMineId, List<InterMineId>> references = new HashMap<InterMineId, List<InterMineId>>();
             while ((line = getLine()) != null) {
                 line = line.trim();
                 lineCounter++;
@@ -87,11 +88,11 @@ public class ReferencesFileProcessor
                             + " line. It doesn't have"
                             + " format tax_id\tGeneID\tPubMed_ID.");
                 }
-                Integer organismId, geneId, pubId;
+                InterMineId organismId, geneId, pubId;
                 try {
-                    organismId = new Integer(parts[0].trim());
-                    geneId = new Integer(parts[1].trim());
-                    pubId = new Integer(parts[2].trim());
+                    organismId = new InterMineId(parts[0].trim());
+                    geneId = new InterMineId(parts[1].trim());
+                    pubId = new InterMineId(parts[2].trim());
                 } catch (NumberFormatException ex) {
                     throw new ReferencesProcessorException("Invalid identifier at line "
                             + lineCounter + ". Identifier is not integer.");
@@ -103,7 +104,7 @@ public class ReferencesFileProcessor
                     processReference(geneId, pubId, references);
                 } else {
                     lastLine = line;
-                    Integer retOrganism = processedOrganism;
+                    InterMineId retOrganism = processedOrganism;
                     processedOrganism = organismId;
                     return new PubMedReference(retOrganism, references);
                 }
@@ -126,11 +127,11 @@ public class ReferencesFileProcessor
 
         }
 
-        private void processReference(Integer geneId, Integer pubId,
-                Map<Integer, List<Integer>> references) {
-            List<Integer> publications = references.get(geneId);
+        private void processReference(InterMineId geneId, InterMineId pubId,
+                Map<InterMineId, List<InterMineId>> references) {
+            List<InterMineId> publications = references.get(geneId);
             if (publications == null) {
-                publications = new ArrayList<Integer>();
+                publications = new ArrayList<InterMineId>();
                 references.put(geneId, publications);
             }
             publications.add(pubId);

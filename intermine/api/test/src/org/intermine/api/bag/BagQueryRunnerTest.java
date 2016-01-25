@@ -32,6 +32,7 @@ import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.Results;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.template.TemplateQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.template.xml.TemplateQueryBinding;
 
 /*
@@ -279,7 +280,7 @@ public class BagQueryRunnerTest extends StoreDataTestCase {
         List<String> input = Arrays.asList("EmployeeA1", "Mr.", "gibbon");
         BagQueryResult res = runner.searchForBag("Manager", input, null, true);
         assertEquals(1, res.getMatches().size());
-        Set<Integer> ids = new HashSet<Integer>(Arrays.asList(new Integer[] {
+        Set<InterMineId> ids = new HashSet<InterMineId>(Arrays.asList(new InterMineId[] {
             eIds.get("EmployeeB1").getId(),
             eIds.get("EmployeeA1").getId(),
             eIds.get("EmployeeB3").getId()}));
@@ -291,7 +292,7 @@ public class BagQueryRunnerTest extends StoreDataTestCase {
     public void testWildcards() throws Exception {
         List<String> input = Arrays.asList("EmployeeA*", "EmployeeB3");
         BagQueryResult res = runner.searchForBag("Employee", input, null, true);
-        Set<Integer> ids = new HashSet<Integer>(Arrays.asList(eIds.get("EmployeeA3").getId(), eIds.get("EmployeeA2").getId(), eIds.get("EmployeeA1").getId()));
+        Set<InterMineId> ids = new HashSet<InterMineId>(Arrays.asList(eIds.get("EmployeeA3").getId(), eIds.get("EmployeeA2").getId(), eIds.get("EmployeeA1").getId()));
         assertEquals(ids, new HashSet(res.getIssues().get(BagQueryResult.WILDCARD).get("searching key fields").get("EmployeeA*")));
     }
 

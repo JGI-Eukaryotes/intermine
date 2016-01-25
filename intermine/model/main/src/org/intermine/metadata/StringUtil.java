@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import org.intermine.model.InterMineId;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -172,7 +173,7 @@ public final class StringUtil
             throw new IllegalArgumentException("Delimiter can not be zero length");
         }
 
-        List<Integer> l = new ArrayList<Integer>();
+        List<InterMineId> l = new ArrayList<InterMineId>();
 
         int nextStartIndex = 0;
 
@@ -181,19 +182,19 @@ public final class StringUtil
             if (delimIndex == -1) {
                 break;
             }
-            l.add(new Integer(delimIndex));
+            l.add(new InterMineId(delimIndex));
             nextStartIndex = delimIndex + delim.length();
         }
 
         // add list sentinel to avoid the special case for the last token
-        l.add(new Integer(str.length()));
+        l.add(new InterMineId(str.length()));
 
         String [] returnArray = new String[l.size()];
 
         int i = 0;
         int lastDelimStart = -delim.length();
-        for (Integer thisDelimStartInteger : l) {
-            int thisDelimStart = thisDelimStartInteger.intValue();
+        for (InterMineId thisDelimStartInterMineId : l) {
+            int thisDelimStart = thisDelimStartInterMineId.intValue();
             returnArray[i] = str.substring(lastDelimStart + delim.length(), thisDelimStart);
             lastDelimStart = thisDelimStart;
             i++;

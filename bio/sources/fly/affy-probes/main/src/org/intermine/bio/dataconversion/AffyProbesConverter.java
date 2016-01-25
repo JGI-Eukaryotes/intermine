@@ -23,6 +23,7 @@ import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.util.FormattedTextParser;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -93,8 +94,8 @@ public class AffyProbesConverter extends BioFileConverter
                 holder.genes.add(geneRefId);
                 holder.datasets.add(dataSet);
 //                try {
-//                    Integer start = new Integer(startString);
-//                    Integer end = new Integer(endString);
+//                    InterMineId start = new InterMineId(startString);
+//                    InterMineId end = new InterMineId(endString);
 //                    holder.addLocation(chromosomeRefId, start, end, strand);
 //                } catch (NumberFormatException e) {
 //                    LOG.error("bad start/end values " + startString + " and " + endString);
@@ -160,7 +161,7 @@ public class AffyProbesConverter extends BioFileConverter
          * @param end end of location
          * @param strand strand, eg -1 or 1
          */
-        protected void addLocation(String chromosomeRefId, Integer start, Integer end,
+        protected void addLocation(String chromosomeRefId, InterMineId start, InterMineId end,
                                    String strand) {
             String key = chromosomeRefId + "|" + start.toString() + "|"
                 + end.toString() + "|" + strand;
@@ -192,8 +193,8 @@ public class AffyProbesConverter extends BioFileConverter
      */
     public class LocationHolder
     {
-        protected Integer start = new Integer(-1);
-        protected Integer end = new Integer(-1);
+        protected InterMineId start = new InterMineId(-1);
+        protected InterMineId end = new InterMineId(-1);
         protected String strand;
         protected String chromosomeRefID;
 
@@ -203,7 +204,7 @@ public class AffyProbesConverter extends BioFileConverter
          * @param end end of location
          * @param strand strand, eg -1 or 1
          */
-        public LocationHolder(String chromosomeRefId, Integer start, Integer end, String strand) {
+        public LocationHolder(String chromosomeRefId, InterMineId start, InterMineId end, String strand) {
             this.chromosomeRefID = chromosomeRefId;
             this.start = start;
             this.end = end;

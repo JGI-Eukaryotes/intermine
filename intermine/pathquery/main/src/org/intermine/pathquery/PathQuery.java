@@ -37,6 +37,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.TypeUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -2449,10 +2450,10 @@ public class PathQuery implements Cloneable
         // Serialise the Multi-Value list
         Collection<String> values = PathConstraint.getValues(constraint);
         // Serialise the ID list.
-        Collection<Integer> ids = PathConstraint.getIds(constraint);
+        Collection<InterMineId> ids = PathConstraint.getIds(constraint);
         if (ids != null) {
             conb.append(",\"ids\":[");
-            Iterator<Integer> it = ids.iterator();
+            Iterator<InterMineId> it = ids.iterator();
             while (it.hasNext()) {
                 conb.append(String.valueOf(it.next()));
                 if (it.hasNext()) {

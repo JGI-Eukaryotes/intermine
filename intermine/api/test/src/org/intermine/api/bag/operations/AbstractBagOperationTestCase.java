@@ -12,11 +12,12 @@ import org.intermine.model.testmodel.Employee;
 import org.intermine.model.testmodel.Manager;
 import org.intermine.model.testmodel.Secretary;
 import org.intermine.objectstore.ObjectStoreWriter;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 public abstract class AbstractBagOperationTestCase extends InterMineAPITestCase {
 
-    Set<Integer> employees1;
+    Set<InterMineId> employees1;
 
     @Override
     public void setUp() throws Exception {
@@ -25,12 +26,12 @@ public abstract class AbstractBagOperationTestCase extends InterMineAPITestCase 
         setUpBags();
     }
 
-    Set<Integer> employees2;
-    Set<Integer> managers;
-    Set<Integer> ceos;
-    Set<Integer> contractors;
-    Set<Integer> employables;
-    Set<Integer> secretaries;
+    Set<InterMineId> employees2;
+    Set<InterMineId> managers;
+    Set<InterMineId> ceos;
+    Set<InterMineId> contractors;
+    Set<InterMineId> employables;
+    Set<InterMineId> secretaries;
     protected InterMineBag bagA;
     protected InterMineBag bagB;
     protected InterMineBag bagC;
@@ -48,19 +49,19 @@ public abstract class AbstractBagOperationTestCase extends InterMineAPITestCase 
         Long start = System.currentTimeMillis();
         ObjectStoreWriter osw = os.getNewWriter();
     
-        employees1 = new HashSet<Integer>();
-        employees2 = new HashSet<Integer>();
-        employables = new HashSet<Integer>();
-        managers = new HashSet<Integer>();
-        ceos = new HashSet<Integer>();
-        secretaries = new HashSet<Integer>();
+        employees1 = new HashSet<InterMineId>();
+        employees2 = new HashSet<InterMineId>();
+        employables = new HashSet<InterMineId>();
+        managers = new HashSet<InterMineId>();
+        ceos = new HashSet<InterMineId>();
+        secretaries = new HashSet<InterMineId>();
         for (int i = 0; i < 10; i++) {
             Employee emp = new Employee();
             emp.setName("Employee" + Character.toString((char) (i + 65)));
             emp.setAge(i - 40);
             osw.store(emp);
-            Integer id = emp.getId();
-            Set<Integer> set = (i % 2 == 0) ? employees1 : employees2;
+            InterMineId id = emp.getId();
+            Set<InterMineId> set = (i % 2 == 0) ? employees1 : employees2;
             set.add(id); // 5 to each.
             if (i % 3 == 0) employables.add(id); // 4
             // + 2, So that there is an intersection between emps1 & emps2
@@ -85,7 +86,7 @@ public abstract class AbstractBagOperationTestCase extends InterMineAPITestCase 
             if (i % 3 == 0) employees1.add(emp.getId()); // 4
             if (i % 4 == 0) employables.add(emp.getId()); // 3
         }
-        contractors = new HashSet<Integer>();
+        contractors = new HashSet<InterMineId>();
         for (int i = 65; i < 75; i++) {
             Contractor emp = new Contractor();
             emp.setName("Contractor" + Character.toString((char) i));

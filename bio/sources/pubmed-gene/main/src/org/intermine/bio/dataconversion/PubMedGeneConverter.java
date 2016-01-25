@@ -29,6 +29,7 @@ import org.intermine.bio.util.BioUtil;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -49,11 +50,11 @@ public class PubMedGeneConverter extends BioFileConverter
 
     private String referencesFileName;
     private Set<String> taxonIds = new HashSet<String>();
-    private Map<Integer, String> publications = new HashMap<Integer, String>();
+    private Map<InterMineId, String> publications = new HashMap<InterMineId, String>();
     private String datasetRefId;
     private String datasourceRefId;
     protected IdResolver rslv;
-    private Map<Integer, String> organisms = new HashMap<Integer, String>();
+    private Map<InterMineId, String> organisms = new HashMap<InterMineId, String>();
     private Map<String, Item> genes = new HashMap<String, Item>();
     private Set<String> genesToRemove = new TreeSet<String>();
     private Set<String> genesResolved = new HashSet<String>();
@@ -126,12 +127,12 @@ public class PubMedGeneConverter extends BioFileConverter
              */
             while (it.hasNext()) {
                 PubMedReference ref = it.next();
-                Integer organismId = ref.getOrganism();
+                InterMineId organismId = ref.getOrganism();
                 if (!taxonIds.isEmpty() && !taxonIds.contains(organismId.toString())) {
                     continue;
                 }
-                Map<Integer, List<String>> geneToPub = convertAndStorePubs(ref.getReferences());
-                for (Entry<Integer, List<String>> e: geneToPub.entrySet()) {
+                Map<InterMineId, List<String>> geneToPub = convertAndStorePubs(ref.getReferences());
+                for (Entry<InterMineId, List<String>> e: geneToPub.entrySet()) {
                     processGene(e.getKey(), e.getValue(), organismId, createOrganism(organismId));
                 }
                 storeGenes();
@@ -148,13 +149,13 @@ public class PubMedGeneConverter extends BioFileConverter
         }
     }
 
-    private Map<Integer, List<String>> convertAndStorePubs(
-            Map<Integer, List<Integer>> geneToPub) throws ObjectStoreException {
-        Map<Integer, List<String>> ret = new HashMap<Integer, List<String>>();
-        for (Integer geneId : geneToPub.keySet()) {
-            List<Integer> pubs = geneToPub.get(geneId);
+    private Map<InterMineId, List<String>> convertAndStorePubs(
+            Map<InterMineId, List<InterMineId>> geneToPub) throws ObjectStoreException {
+        Map<InterMineId, List<String>> ret = new HashMap<InterMineId, List<String>>();
+        for (InterMineId geneId : geneToPub.keySet()) {
+            List<InterMineId> pubs = geneToPub.get(geneId);
             List<String> list = new ArrayList<String>();
-            for (Integer pubId : pubs) {
+            for (InterMineId pubId : pubs) {
                 String pubRefId = publications.get(pubId);
                 if (pubRefId == null) {
                     Item pub = createPublication(pubId);
@@ -169,7 +170,7 @@ public class PubMedGeneConverter extends BioFileConverter
         return ret;
     }
 
-    private Item createPublication(Integer pubId) {
+    private Item createPublication(InterMineId pubId) {
         Item pub = createItem("Publication");
         pub.setAttribute("pubMedId", pubId.toString());
         return pub;
@@ -190,8 +191,8 @@ public class PubMedGeneConverter extends BioFileConverter
         this.referencesFileName = fileName;
     }
 
-    private String createOrganism(Integer organismId) {
-        Integer taxonId = BioUtil.replaceStrain(organismId);
+    private String createOrganism(InterMineId organismId) {
+        InterMineId taxonId = BioUtil.replaceStrain(organismId);
         String refId = organisms.get(taxonId);
         if (refId != null) {
             return refId;
@@ -262,7 +263,7 @@ public class PubMedGeneConverter extends BioFileConverter
         genes = new HashMap<String, Item>();
     }
 
-    private void processGene(Integer ncbiGeneId, List<String> publications, Integer taxonId,
+    private void processGene(InterMineId ncbiGeneId, List<String> publications, InterMineId taxonId,
             String organismRefId) {
 
         taxonId = BioUtil.replaceStrain(taxonId);

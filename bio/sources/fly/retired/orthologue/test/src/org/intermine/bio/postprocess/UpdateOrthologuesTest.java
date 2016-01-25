@@ -36,14 +36,15 @@ import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.sql.Database;
 import org.intermine.sql.DatabaseUtil;
 import org.intermine.util.DynamicUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.TypeUtil;
 
 /**
  * Tests for the UpdateOrthologues class.
  */
 public class UpdateOrthologuesTest extends XMLTestCase {
-    private static final Integer OBJ_PROTEIN_ID = new Integer(100000001);
-    private static final Integer SUB_PROTEIN_ID = new Integer(100000002);
+    private static final InterMineId OBJ_PROTEIN_ID = new InterMineId(100000001);
+    private static final InterMineId SUB_PROTEIN_ID = new InterMineId(100000002);
     private static final String PKG = "org.intermine.model.bio";
 
     private ObjectStoreWriter osw;
@@ -98,9 +99,9 @@ public class UpdateOrthologuesTest extends XMLTestCase {
 
     public void testOrthologueSingleGenes() throws Exception {
         Gene objGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        objGene1.setId(new Integer(101));
+        objGene1.setId(new InterMineId(101));
         Gene subGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        subGene1.setId(new Integer(102));
+        subGene1.setId(new InterMineId(102));
 
         setUpData(Homologue.class, objGene1, subGene1, false);
 
@@ -119,9 +120,9 @@ public class UpdateOrthologuesTest extends XMLTestCase {
     public void testParalogueSingleGenes() throws Exception {
         osw.getObjectStore().flushObjectById();
         Gene objGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        objGene1.setId(new Integer(101));
+        objGene1.setId(new InterMineId(101));
         Gene subGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        subGene1.setId(new Integer(102));
+        subGene1.setId(new InterMineId(102));
 
         setUpData(Homologue.class, objGene1, subGene1, false);
 
@@ -144,9 +145,9 @@ public class UpdateOrthologuesTest extends XMLTestCase {
     // other as a Protein (currently Genes for worm data)
     public void testOrthologueGeneProtein() throws Exception {
         Gene objGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        objGene1.setId(new Integer(101));
+        objGene1.setId(new InterMineId(101));
         Gene subGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        subGene1.setId(new Integer(102));
+        subGene1.setId(new InterMineId(102));
 
         setUpData(Homologue.class, objGene1, subGene1, true);
 

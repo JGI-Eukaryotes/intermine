@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.intermine.metadata.Util;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -26,7 +27,7 @@ import org.intermine.util.DynamicUtil;
 public class QueryClassBag implements FromElement
 {
     private Class<? extends InterMineObject> type;
-    private Set<Integer> ids;
+    private Set<InterMineId> ids;
     private Collection<?> bag;
     private ObjectStoreBag osb;
 
@@ -106,12 +107,12 @@ public class QueryClassBag implements FromElement
         this.bag = null;
     }
 
-    private static Set<Integer> convertToIds(Collection<?> bag,
+    private static Set<InterMineId> convertToIds(Collection<?> bag,
             Class<? extends InterMineObject> type) {
         if (bag == null) {
             return null;
         }
-        Set<Integer> ids = new HashSet<Integer>();
+        Set<InterMineId> ids = new HashSet<InterMineId>();
         for (Object o : bag) {
             if (type.isInstance(o)) {
                 ids.add(((InterMineObject) o).getId());
@@ -150,9 +151,9 @@ public class QueryClassBag implements FromElement
     /**
      * Returns the Set of object IDs present in the bag that correspond to the type specified.
      *
-     * @return a Set of Integers
+     * @return a Set of InterMineIds
      */
-    public Set<Integer> getIds() {
+    public Set<InterMineId> getIds() {
         return ids;
     }
 

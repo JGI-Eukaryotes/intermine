@@ -53,6 +53,7 @@ import org.intermine.web.logic.config.FieldConfig;
 import org.intermine.web.logic.config.FieldConfigHelper;
 import org.intermine.web.logic.config.WebConfig;
 import org.intermine.web.logic.widget.config.TableWidgetConfig;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.widget.config.WidgetConfig;
 /**
  * @author Xavier Watkins
@@ -169,8 +170,8 @@ public class TableWidgetLdr extends WidgetLdr
                         flattenedRow.add(o.getId());
                     } else if (select instanceof QueryField) {
                         Object queryFieldObj = resRow.get(i);
-                        if (queryFieldObj instanceof Integer) {
-                            flattenedRow.add((Integer) queryFieldObj);
+                        if (queryFieldObj instanceof InterMineId) {
+                            flattenedRow.add((InterMineId) queryFieldObj);
                         } else {
                             flattenedRow.add(String.valueOf(resRow.get(i)));
                         }

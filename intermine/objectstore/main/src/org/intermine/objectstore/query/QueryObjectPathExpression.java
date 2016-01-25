@@ -20,6 +20,7 @@ import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -222,7 +223,7 @@ public class QueryObjectPathExpression implements QueryPathExpressionWithSelect,
      * @param isNoNotXml true if the database is in missingNotXml mode
      * @return a Query
      */
-    public Query getQuery(Collection<Integer> bag, boolean isNoNotXml) {
+    public Query getQuery(Collection<InterMineId> bag, boolean isNoNotXml) {
         if (isNoNotXml && (constraint == null) && selectList.isEmpty() && (subclass == null)) {
             Query q = new Query();
             QueryClass newQc = new QueryClass(InterMineObject.class);

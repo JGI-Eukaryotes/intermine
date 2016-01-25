@@ -49,6 +49,7 @@ import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.sql.DatabaseUtil;
 import org.intermine.sql.precompute.OptimiserCache;
 import org.intermine.sql.precompute.PrecomputedTable;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -85,7 +86,7 @@ public final class ResultsConverter
      * SQL exception occurs
      */
     public static List<ResultsRow<Object>> convert(ResultSet sqlResults, Query q,
-            ObjectStoreInterMineImpl os, Connection c, Map<Object, Integer> sequence,
+            ObjectStoreInterMineImpl os, Connection c, Map<Object, InterMineId> sequence,
             boolean optimise, ExtraQueryTime extra, Set<PrecomputedTable> goFasterTables,
             OptimiserCache goFasterCache) throws ObjectStoreException {
         Object currentColumn = null;
@@ -94,7 +95,7 @@ public final class ResultsConverter
         boolean needPathExpressions = false;
         try {
             List<ResultsRow<Object>> retval = new ArrayList<ResultsRow<Object>>();
-            HashSet<Integer> idsToFetch = new HashSet<Integer>();
+            HashSet<InterMineId> idsToFetch = new HashSet<InterMineId>();
 
             // populate aliases map once - ensure keys are Java object ids not the hashCode
             Map<QuerySelectable, String> aliases = new IdentityHashMap<QuerySelectable, String>();
@@ -107,10 +108,10 @@ public final class ResultsConverter
                 for (QuerySelectable node : q.getSelect()) {
                     String alias = aliases.get(node);
                     if (node instanceof QueryClass) {
-                        Integer idField = null;
+                        InterMineId idField = null;
                         Object obj = null;
                         if (InterMineObject.class.isAssignableFrom(((QueryClass) node).getType())) {
-                            idField = new Integer(sqlResults.getInt(alias + "id"));
+                            idField = new InterMineId(sqlResults.getInt(alias + "id"));
                             obj = os.pilferObjectById(idField);
                         }
                         if (obj == null) {
@@ -186,8 +187,8 @@ public final class ResultsConverter
                                     currentColumn = DynamicUtil.composeClass(classes);
                                 }
                             } else if (Short.class.equals(node.getType())
-                                    && (currentColumn instanceof Integer)) {
-                                int i = ((Integer) currentColumn).intValue();
+                                    && (currentColumn instanceof InterMineId)) {
+                                int i = ((InterMineId) currentColumn).intValue();
                                 currentColumn = new Short((short) i);
                             } else if (ClobAccess.class.equals(node.getType())) {
                                 currentColumn = ClobAccess.decodeDbDescription(os,
@@ -201,13 +202,13 @@ public final class ResultsConverter
             }
             // fetch any objects not found in cache from the intermineobject table
             if (!idsToFetch.isEmpty()) {
-                Map<Integer, InterMineObject> fetched = fetchByIds(os, c, sequence,
+                Map<InterMineId, InterMineObject> fetched = fetchByIds(os, c, sequence,
                         InterMineObject.class, idsToFetch, extra);
                 for (ResultsRow<Object> row : retval) {
                     for (int i = 0; i < row.size(); i++) {
                         Object obj = row.get(i);
                         if (obj instanceof ProxyReference) {
-                            Integer id = ((ProxyReference) obj).getId();
+                            InterMineId id = ((ProxyReference) obj).getId();
                             obj = fetched.get(id);
                             if (obj == null) {
                                 throw new ObjectStoreException("Error - could not fetch object"
@@ -312,9 +313,9 @@ public final class ResultsConverter
                 Class<?> expectedType = retval.getFieldType(fieldName);
                 if ((value instanceof Long) && Date.class.equals(expectedType)) {
                     value = new Date(((Long) value).longValue());
-                } else if ((value instanceof Integer) && (Short.class.equals(expectedType)
+                } else if ((value instanceof InterMineId) && (Short.class.equals(expectedType)
                         || Short.TYPE.equals(expectedType))) {
-                    value = new Short((short) ((Integer) value).intValue());
+                    value = new Short((short) ((InterMineId) value).intValue());
                 }
                 try {
                     retval.setFieldValue(fieldName, value);
@@ -330,7 +331,7 @@ public final class ResultsConverter
             } else if (fd instanceof ReferenceDescriptor) {
                 ReferenceDescriptor rd = (ReferenceDescriptor) fd;
                 //long time3 = System.currentTimeMillis();
-                Integer id = (Integer) sqlResults.getObject(alias + DatabaseUtil.getColumnName(fd));
+                InterMineId id = (InterMineId) sqlResults.getObject(alias + DatabaseUtil.getColumnName(fd));
                 //timeSpentSql += System.currentTimeMillis() - time3;
                 @SuppressWarnings("unchecked") Class<? extends InterMineObject> refType =
                     (Class) rd.getReferencedClassDescriptor().getType();
@@ -367,12 +368,12 @@ public final class ResultsConverter
      * @throws ObjectStoreException if something goes wrong
      */
     protected static void fetchObjectPathExpression(ObjectStoreInterMineImpl os, Connection c,
-            Map<Object, Integer> sequence, Query q, QueryObjectPathExpression qope,
+            Map<Object, InterMineId> sequence, Query q, QueryObjectPathExpression qope,
             List<ResultsRow<Object>> retval, boolean optimise, ExtraQueryTime extra,
             Set<PrecomputedTable> goFasterTables,
             OptimiserCache goFasterCache) throws ObjectStoreException {
         int startingPoint;
-        Set<Integer> idsToFetch = new HashSet<Integer>();
+        Set<InterMineId> idsToFetch = new HashSet<InterMineId>();
         QueryClass qc = qope.getQueryClass();
         // Search for starting point, this is the class on the SELECT of the parent query that
         // contains the reference we are performing the outer join on
@@ -399,18 +400,18 @@ public final class ResultsConverter
         Query qopeQuery = qope.getQuery(idsToFetch, os.getSchema().isMissingNotXml());
         long startTime = System.currentTimeMillis();
         List<ResultsRow<Object>> res = os.executeWithConnection(c, qopeQuery, 0,
-                Integer.MAX_VALUE, optimise, false, sequence, goFasterTables, goFasterCache);
+                InterMineId.MAX_VALUE, optimise, false, sequence, goFasterTables, goFasterCache);
         extra.addTime(System.currentTimeMillis() - startTime);
-        Map<Integer, ResultsRow<Object>> fetched = new HashMap<Integer, ResultsRow<Object>>();
+        Map<InterMineId, ResultsRow<Object>> fetched = new HashMap<InterMineId, ResultsRow<Object>>();
         for (ResultsRow<Object> row : res) {
-            fetched.put((Integer) row.get(0), row);
+            fetched.put((InterMineId) row.get(0), row);
         }
         int columnCount = q.getSelect().size();
         // iterate over main query results again and add the outer join query results in the
         // appropriate column
         for (ResultsRow<Object> row : retval) {
             FastPathObject o = (FastPathObject) row.get(startingPoint);
-            Integer refId = null;
+            InterMineId refId = null;
             try {
                 InterMineObject ref = (InterMineObject) o.getFieldProxy(qope.getFieldName());
                 if (ref != null) {
@@ -460,12 +461,12 @@ public final class ResultsConverter
      * @throws ObjectStoreException if something goes wrong
      */
     protected static void fetchCollectionPathExpression(ObjectStoreInterMineImpl os, Connection c,
-            Map<Object, Integer> sequence, Query q, QueryCollectionPathExpression qcpe,
+            Map<Object, InterMineId> sequence, Query q, QueryCollectionPathExpression qcpe,
             List<ResultsRow<Object>> retval, boolean optimise, ExtraQueryTime extra,
             Set<PrecomputedTable> goFasterTables,
             OptimiserCache goFasterCache) throws ObjectStoreException {
         int startingPoint;
-        Map<Integer, List<Object>> idsToFetch = new HashMap<Integer, List<Object>>();
+        Map<InterMineId, List<Object>> idsToFetch = new HashMap<InterMineId, List<Object>>();
         Set<InterMineObject> objectsToFetch = new HashSet<InterMineObject>();
         int columnToReplace = q.getSelect().indexOf(qcpe);
         QueryClass qc = qcpe.getQueryClass();
@@ -487,12 +488,12 @@ public final class ResultsConverter
             Query subQ = qcpe.getQuery(objectsToFetch);
             long startTime = System.currentTimeMillis();
             List<ResultsRow<Object>> results = os.executeWithConnection(c, subQ, 0,
-                    Integer.MAX_VALUE, optimise, false, sequence, goFasterTables, goFasterCache);
+                    InterMineId.MAX_VALUE, optimise, false, sequence, goFasterTables, goFasterCache);
             extra.addTime(System.currentTimeMillis() - startTime);
             boolean singleton = qcpe.isSingleton();
             // put list of objects returned by outer join query in a map keyed by starting object id
             for (ResultsRow<Object> row : results) {
-                Integer id = (Integer) row.get(0);
+                InterMineId id = (InterMineId) row.get(0);
 
                 List<Object> list = idsToFetch.get(id);
                 if (singleton) {
@@ -518,10 +519,10 @@ public final class ResultsConverter
 
             // first iterate over the main query results and find all referenced ids on which to
             // perform the outer join
-            Map<Integer, Integer> objectIds = new HashMap<Integer, Integer>();
+            Map<InterMineId, InterMineId> objectIds = new HashMap<InterMineId, InterMineId>();
             for (ResultsRow<Object> row : retval) {
                 InterMineObject o = (InterMineObject) row.get(startingPoint);
-                Integer refId = null;
+                InterMineId refId = null;
                 try {
                     InterMineObject ref = (InterMineObject) o.getFieldProxy(qcpe.getFieldName());
                     if (ref != null) {
@@ -538,11 +539,11 @@ public final class ResultsConverter
             Query subQ = qcpe.getQuery(objectsToFetch);
             long startTime = System.currentTimeMillis();
             List<ResultsRow<Object>> results = os.executeWithConnection(c, subQ, 0,
-                    Integer.MAX_VALUE, optimise, false, sequence, goFasterTables, goFasterCache);
+                    InterMineId.MAX_VALUE, optimise, false, sequence, goFasterTables, goFasterCache);
             extra.addTime(System.currentTimeMillis() - startTime);
             boolean singleton = qcpe.isSingleton();
             for (ResultsRow<Object> row : results) {
-                Integer id = (Integer) row.get(0);
+                InterMineId id = (InterMineId) row.get(0);
                 List<Object> list = idsToFetch.get(id);
                 if (singleton) {
                     list.add(row.get(1));
@@ -560,7 +561,7 @@ public final class ResultsConverter
             // appropriate column
             for (ResultsRow<Object> row : retval) {
                 InterMineObject o = (InterMineObject) row.get(startingPoint);
-                Integer referenceId = objectIds.get(o.getId());
+                InterMineId referenceId = objectIds.get(o.getId());
                 row.set(columnToReplace, idsToFetch.get(referenceId));
             }
         }
@@ -578,9 +579,9 @@ public final class ResultsConverter
      * @return a Map from ID to object
      * @throws ObjectStoreException if an error occurs
      */
-    protected static Map<Integer, InterMineObject> fetchByIds(ObjectStoreInterMineImpl os,
-            Connection c, Map<Object, Integer> sequence, Class<?> clazz,
-            Collection<Integer> idsToFetch, ExtraQueryTime extra) throws ObjectStoreException {
+    protected static Map<InterMineId, InterMineObject> fetchByIds(ObjectStoreInterMineImpl os,
+            Connection c, Map<Object, InterMineId> sequence, Class<?> clazz,
+            Collection<InterMineId> idsToFetch, ExtraQueryTime extra) throws ObjectStoreException {
         try {
             if (idsToFetch.isEmpty()) {
                 return Collections.emptyMap();
@@ -598,13 +599,13 @@ public final class ResultsConverter
                 bttr = os.createTempBagTable(c, bc, false, null);
             }
             long startTime = System.currentTimeMillis();
-            Iterator<ResultsRow<Object>> iter = os.executeWithConnection(c, q, 0, Integer.MAX_VALUE,
+            Iterator<ResultsRow<Object>> iter = os.executeWithConnection(c, q, 0, InterMineId.MAX_VALUE,
                     false, false, sequence).iterator();
             extra.addTime(System.currentTimeMillis() - startTime);
             if (bttr != null) {
                 os.removeTempBagTable(c, bttr);
             }
-            Map<Integer, InterMineObject> fetched = new HashMap<Integer, InterMineObject>();
+            Map<InterMineId, InterMineObject> fetched = new HashMap<InterMineId, InterMineObject>();
             while (iter.hasNext()) {
                 ResultsRow<Object> fetchedObjectRow = iter.next();
                 InterMineObject fetchedObject = (InterMineObject) fetchedObjectRow.get(0);

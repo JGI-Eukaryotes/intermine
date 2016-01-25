@@ -36,6 +36,7 @@ import org.intermine.metadata.Model;
 import org.intermine.model.testmodel.CEO;
 import org.intermine.model.testmodel.Department;
 import org.intermine.objectstore.StoreDataTestCase;
+import org.intermine.model.InterMineId;
 import org.intermine.pathquery.PathQuery;
 
 /**
@@ -75,7 +76,7 @@ public class ProfileManagerTest extends InterMineAPITestCase
 
     private void setUpBob() throws Exception {
         bobProfile = pm.createBasicLocalProfile(bobName, bobPass, bobKey);
-        Integer bobId = bobProfile.getUserId();
+        InterMineId bobId = bobProfile.getUserId();
 
         PathQuery query = new PathQuery(Model.getInstanceByName("testmodel"));
         SavedQuery sq = new SavedQuery("query1", new Date(), query);
@@ -110,7 +111,7 @@ public class ProfileManagerTest extends InterMineAPITestCase
     private void setUpSally() throws Exception {
 
         sallyProfile = pm.createBasicLocalProfile(sallyName, sallyPass, null);
-        Integer sallyId = sallyProfile.getUserId();
+        InterMineId sallyId = sallyProfile.getUserId();
 
         PathQuery query = new PathQuery(Model.getInstanceByName("testmodel"));
         SavedQuery sq = new SavedQuery("query1", new Date(), query);

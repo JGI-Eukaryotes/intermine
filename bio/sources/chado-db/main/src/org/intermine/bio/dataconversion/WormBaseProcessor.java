@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.intermine.bio.chado.config.ConfigAction;
 import org.intermine.bio.chado.config.SetFieldConfigAction;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -44,16 +45,16 @@ public class WormBaseProcessor extends SequenceProcessor
      * {@inheritDoc}
      */
     @Override
-    protected Integer store(Item feature, int taxonId) throws ObjectStoreException {
-        processItem(feature, new Integer(taxonId));
-        Integer itemId = super.store(feature, taxonId);
+    protected InterMineId store(Item feature, int taxonId) throws ObjectStoreException {
+        processItem(feature, new InterMineId(taxonId));
+        InterMineId itemId = super.store(feature, taxonId);
         return itemId;
     }
 
     /**
      * Method to add dataSets and DataSources to items before storing
      */
-    private void processItem(Item item, Integer taxonId) {
+    private void processItem(Item item, InterMineId taxonId) {
         if ("DataSource".equals(item.getClassName())
                 || "DataSet".equals(item.getClassName())
                 || "Organism".equals(item.getClassName())
@@ -153,11 +154,11 @@ public class WormBaseProcessor extends SequenceProcessor
      * @param pubmedStr id fetched from databaase
      * @return the pubmed id
      */
-    protected Integer fixPubMedId(String pubmedStr) {
+    protected InterMineId fixPubMedId(String pubmedStr) {
         String prefix = "pmid";
         if (pubmedStr.startsWith(prefix)) {
             pubmedStr = pubmedStr.substring(prefix.length());
         }
-        return Integer.parseInt(pubmedStr);
+        return InterMineId.parseInt(pubmedStr);
     }
 }

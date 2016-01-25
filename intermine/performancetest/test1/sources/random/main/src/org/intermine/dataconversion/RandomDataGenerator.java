@@ -32,6 +32,7 @@ import org.intermine.xml.full.Item;
 import org.intermine.xml.full.ItemHelper;
 import org.intermine.xml.full.ItemFactory;
 
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 /**
@@ -72,7 +73,7 @@ public class RandomDataGenerator extends FileConverter
      * @param count the number of objects to create
      */
     public void setCount(String count) {
-        this.count = Integer.parseInt(count);
+        this.count = InterMineId.parseInt(count);
     }
 
     /**
@@ -81,7 +82,7 @@ public class RandomDataGenerator extends FileConverter
      * @param stringSize the size of generated strings
      */
     public void setStringSize(String stringSize) {
-        this.stringSize = Integer.parseInt(stringSize);
+        this.stringSize = InterMineId.parseInt(stringSize);
     }
 
     /**
@@ -90,7 +91,7 @@ public class RandomDataGenerator extends FileConverter
      * @param collectionSize the size of the generated collections
      */
     public void setCollectionSize(String collectionSize) {
-        this.collectionSize = Integer.parseInt(collectionSize);
+        this.collectionSize = InterMineId.parseInt(collectionSize);
     }
 
     /**
@@ -121,7 +122,7 @@ public class RandomDataGenerator extends FileConverter
                  TypeUtil.getFieldInfos(clazz).entrySet()) {
             if ("id".equals(entry.getKey())) {
                 // Do nothing
-            } else if (Integer.TYPE.equals(entry.getValue().getType())) {
+            } else if (InterMineId.TYPE.equals(entry.getValue().getType())) {
                 intFieldNames.add(entry.getKey());
             } else if (String.class.equals(entry.getValue().getType())) {
                 stringFieldNames.add(entry.getKey());
@@ -145,14 +146,14 @@ public class RandomDataGenerator extends FileConverter
         for (int i = 0; i < count; i++) {
             Item item = createItem(className);
             Random itemRandom;
-            Integer firstInt;
+            InterMineId firstInt;
             String firstString;
             Date firstDate;
             BigDecimal firstBigDecimal;
             Long firstLong;
             do {
                 itemRandom = new Random(random.nextLong());
-                firstInt = new Integer(itemRandom.nextInt());
+                firstInt = new InterMineId(itemRandom.nextInt());
                 firstString = generateString(itemRandom);
                 firstDate = new Date(itemRandom.nextLong());
                 firstBigDecimal = generateBigDecimal(itemRandom);
@@ -250,12 +251,12 @@ public class RandomDataGenerator extends FileConverter
     }
 
     protected String newId(String className) {
-        Integer id = (Integer) ids.get(className);
+        InterMineId id = (InterMineId) ids.get(className);
         if (id == null) {
-            id = new Integer(0);
+            id = new InterMineId(0);
             ids.put(className, id);
         }
-        ids.put(className, new Integer(id.intValue() + 1));
+        ids.put(className, new InterMineId(id.intValue() + 1));
         return id.toString();
     }
 

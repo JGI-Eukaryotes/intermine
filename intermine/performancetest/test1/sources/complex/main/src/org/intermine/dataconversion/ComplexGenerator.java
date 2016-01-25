@@ -33,6 +33,7 @@ import org.intermine.xml.full.Item;
 import org.intermine.xml.full.ItemHelper;
 import org.intermine.xml.full.ItemFactory;
 
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 /**
@@ -68,7 +69,7 @@ public class ComplexGenerator extends FileConverter
      * @param count the number of objects to create
      */
     public void setCount(String count) {
-        this.count = Integer.parseInt(count);
+        this.count = InterMineId.parseInt(count);
     }
 
     /**
@@ -82,18 +83,18 @@ public class ComplexGenerator extends FileConverter
         for (int i = 0; i < count / 10; i++) {
             Item master = createItem("ComplexMaster");
             Item ref1 = createItem("ComplexAttribute");
-            ref1.setAttribute("att", "" + getInteger());
+            ref1.setAttribute("att", "" + getInterMineId());
             attributes.add(ref1);
             master.setReference("ref1", ref1.getIdentifier());
             Item ref2 = createItem("ComplexAttribute");
-            ref2.setAttribute("att", "" + getInteger());
+            ref2.setAttribute("att", "" + getInterMineId());
             attributes.add(ref2);
             master.setReference("ref2", ref2.getIdentifier());
             List<String> idsToUse = new ArrayList();
             for (int o = 0; o < 7; o++) {
                 Item col = createItem("ComplexAttribute");
                 attributes.add(col);
-                col.setAttribute("att", "" + getInteger());
+                col.setAttribute("att", "" + getInterMineId());
                 idsToUse.add(col.getIdentifier());
             }
             master.setCollection("col", idsToUse);
@@ -111,22 +112,22 @@ public class ComplexGenerator extends FileConverter
     private Random random = new Random();
     private Set doneValues = new HashSet();
 
-    private Integer getInteger() {
-        Integer retval;
+    private InterMineId getInterMineId() {
+        InterMineId retval;
         do {
-            retval = new Integer(random.nextInt());
+            retval = new InterMineId(random.nextInt());
         } while (doneValues.contains(retval));
         doneValues.add(retval);
         return retval;
     }
 
     private String newId(String className) {
-        Integer id = (Integer) ids.get(className);
+        InterMineId id = (InterMineId) ids.get(className);
         if (id == null) {
-            id = new Integer(0);
+            id = new InterMineId(0);
             ids.put(className, id);
         }
-        ids.put(className, new Integer(id.intValue() + 1));
+        ids.put(className, new InterMineId(id.intValue() + 1));
         return id.toString();
     }
 

@@ -11,6 +11,7 @@ package org.intermine.web.logic.results;
  */
 
 import java.util.ArrayList;
+import org.intermine.model.InterMineId;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class InlineResultsTableRow
     @SuppressWarnings("rawtypes")
     List columnList = new ArrayList<Object>();
     String className = null;
-    Integer imObjId;
+    InterMineId imObjId;
 
     /**
      * Add an InlineTableResultElement or an empty String
@@ -64,7 +65,7 @@ public class InlineResultsTableRow
      * Set imObj ID for the object (taken from the first valid imObj id for this row)
      * @param id imObj id
      */
-    public void setObjectId(Integer id) {
+    public void setObjectId(InterMineId id) {
         this.imObjId  = id;
     }
 

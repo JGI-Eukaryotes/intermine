@@ -25,6 +25,7 @@ import org.intermine.web.logic.widget.config.WidgetConfig;
 import org.intermine.webservice.server.exceptions.ResourceNotFoundException;
 import org.intermine.webservice.server.output.Output;
 import org.intermine.webservice.server.output.StreamedOutput;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.output.XMLFormatter;
 
 /** @author Alex Kalderimis **/
@@ -87,7 +88,7 @@ public class GraphService extends WidgetService
                     "Could not find a graph widget called \""
                     + input.getWidgetId() + "\"", e);
         }
-        addOutputInfo("notAnalysed", Integer.toString(widget.getNotAnalysed()));
+        addOutputInfo("notAnalysed", InterMineId.toString(widget.getNotAnalysed()));
         addOutputInfo("simplePathQuery", widget.getSimplePathQuery().toJson());
         addOutputInfo("pathQuery", widget.getPathQuery().toJson());
 

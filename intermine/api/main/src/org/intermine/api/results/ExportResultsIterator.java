@@ -29,6 +29,7 @@ import org.intermine.objectstore.query.QuerySelectable;
 import org.intermine.objectstore.query.Results;
 import org.intermine.pathquery.Path;
 import org.intermine.pathquery.PathException;
+import org.intermine.model.InterMineId;
 import org.intermine.pathquery.PathQuery;
 
 /**
@@ -244,7 +245,7 @@ public class ExportResultsIterator implements Iterator<List<ResultElement>>
                     retval.add(convertColumnTypes(subSelect, pq, pathToQueryNode));
                 }
             } else {
-                Map<Path, Integer> fieldToColumnNumber = new HashMap<Path, Integer>();
+                Map<Path, InterMineId> fieldToColumnNumber = new HashMap<Path, InterMineId>();
                 int columnNo = 0;
                 for (Path path : paths) {
                     Path parent = path.getPrefix();
@@ -255,7 +256,7 @@ public class ExportResultsIterator implements Iterator<List<ResultElement>>
                             .getDefaultClass();
                     }
                     if (qs.equals(selectableForPath)) {
-                        fieldToColumnNumber.put(path, new Integer(columnNo));
+                        fieldToColumnNumber.put(path, new InterMineId(columnNo));
                     }
                     columnNo++;
                 }
@@ -295,8 +296,8 @@ public class ExportResultsIterator implements Iterator<List<ResultElement>>
         boolean multiRow = false;
         for (Object column : cols) {
             if (column instanceof Map) {
-                Map<Path, Integer> desc = (Map<Path, Integer>) column;
-                for (Map.Entry<Path, Integer> descEntry : desc.entrySet()) {
+                Map<Path, InterMineId> desc = (Map<Path, InterMineId>) column;
+                for (Map.Entry<Path, InterMineId> descEntry : desc.entrySet()) {
                     templateResults.set(descEntry.getValue().intValue(),
                             new ResultElement((FastPathObject) row.get(columnNo),
                                 descEntry.getKey(), false));
@@ -349,8 +350,8 @@ public class ExportResultsIterator implements Iterator<List<ResultElement>>
         int columnNo = 0;
         for (Object column : cols) {
             if (column instanceof Map) {
-                Map<Path, Integer> desc = (Map<Path, Integer>) column;
-                for (Map.Entry<Path, Integer> descEntry : desc.entrySet()) {
+                Map<Path, InterMineId> desc = (Map<Path, InterMineId>) column;
+                for (Map.Entry<Path, InterMineId> descEntry : desc.entrySet()) {
                     template.set(descEntry.getValue().intValue(),
                             new ResultElement((FastPathObject) row.get(columnNo),
                                 descEntry.getKey(), false));

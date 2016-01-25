@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 
 
@@ -66,7 +67,7 @@ public class BagQueryResult
         = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
                 DUPLICATE, OTHER, TYPE_CONVERTED, WILDCARD)));
 
-    private Map<Integer, List> matches = new LinkedHashMap<Integer, List>();
+    private Map<InterMineId, List> matches = new LinkedHashMap<InterMineId, List>();
 
     /**
      * A map from issueType -> Query -> Identifier -> FoundThing[]
@@ -125,7 +126,7 @@ public class BagQueryResult
      * appear twice in the list of inputs matching the InterMineObject id.
      * @return a map from InterMineObject id to list of input strings
      */
-    public Map<Integer, List> getMatches() {
+    public Map<InterMineId, List> getMatches() {
         return matches;
     }
 
@@ -134,8 +135,8 @@ public class BagQueryResult
      * bag query lookup.
      * @return the set of all ids that were matches or issues
      */
-    public Set<Integer> getMatchAndIssueIds() {
-        Set<Integer> ids = new HashSet<Integer>();
+    public Set<InterMineId> getMatchAndIssueIds() {
+        Set<InterMineId> ids = new HashSet<InterMineId>();
         ids.addAll(matches.keySet());
         ids.addAll(getIssueIds());
         return ids;
@@ -146,8 +147,8 @@ public class BagQueryResult
      * bag query lookup.
      * @return the set of all ids that were issues
      */
-    public Set<Integer> getIssueIds() {
-        Set<Integer> ids = new HashSet<Integer>();
+    public Set<InterMineId> getIssueIds() {
+        Set<InterMineId> ids = new HashSet<InterMineId>();
         for (String issueKey: issues.keySet()) {
             ids.addAll(getIssueIds(issueKey));
         }
@@ -160,8 +161,8 @@ public class BagQueryResult
      * @param issueKey The type of issue we want (eg "DUPLICATE").
      * @return the set of all ids that were issues
      */
-    public Set<Integer> getIssueIds(String issueKey) {
-        Set<Integer> ids = new HashSet<Integer>();
+    public Set<InterMineId> getIssueIds(String issueKey) {
+        Set<InterMineId> ids = new HashSet<InterMineId>();
         for (IssueResult issue : getIssueResults(issueKey)) {
             // Don't care about the input identifier itself, just the matches.
             for (Object obj : issue.results) {
@@ -169,8 +170,8 @@ public class BagQueryResult
                     ids.add(((InterMineObject) obj).getId());
                 } else if (obj instanceof ConvertedObjectPair) {
                     ids.add(((ConvertedObjectPair) obj).getNewObject().getId());
-                } else if (obj instanceof Integer) {
-                    ids.add((Integer) obj);
+                } else if (obj instanceof InterMineId) {
+                    ids.add((InterMineId) obj);
                 }
             }
         }
@@ -291,7 +292,7 @@ public class BagQueryResult
      * @param input the original input string entered
      * @param id the id of an InterMineObject
      */
-    public void addMatch(String input, Integer id) {
+    public void addMatch(String input, InterMineId id) {
         List<String> inputs = matches.get(id);
         if (inputs == null) {
             inputs = new ArrayList<String>();

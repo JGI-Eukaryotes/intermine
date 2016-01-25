@@ -13,6 +13,7 @@ package org.intermine.util;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.intermine.model.InterMineId;
 import java.util.TreeSet;
 
 /**
@@ -30,7 +31,7 @@ public class IntToIntMap
     private static final int OUTER_MASK = ~INNER_MASK;
     private static final int PAGE_SIZE = INNER_MASK + 1;
 
-    private Map<Integer, int[]> pages = new HashMap<Integer, int[]>();
+    private Map<InterMineId, int[]> pages = new HashMap<InterMineId, int[]>();
     private int size = 0;
 
     /**
@@ -46,7 +47,7 @@ public class IntToIntMap
      * @param to any int - or -1 to effectively remove the mapping
      */
     public synchronized void put(int from, int to) {
-        Integer pageNo = new Integer(from & OUTER_MASK);
+        InterMineId pageNo = new InterMineId(from & OUTER_MASK);
         int[] page = pages.get(pageNo);
         if (page == null) {
             page = new int[PAGE_SIZE + 1];
@@ -78,7 +79,7 @@ public class IntToIntMap
      * @return an int - -1 if there is no mapping present that matches
      */
     public synchronized int get(int from) {
-        Integer pageNo = new Integer(from & OUTER_MASK);
+        InterMineId pageNo = new InterMineId(from & OUTER_MASK);
         int[] page = pages.get(pageNo);
         if (page == null) {
             return -1;
@@ -89,10 +90,10 @@ public class IntToIntMap
     /**
      * Puts a mapping in the object.
      *
-     * @param from an Integer
-     * @param to any Integer other than -1, or null to remove a mapping
+     * @param from an InterMineId
+     * @param to any InterMineId other than -1, or null to remove a mapping
      */
-    public void put(Integer from, Integer to) {
+    public void put(InterMineId from, InterMineId to) {
         if (from == null) {
             throw new NullPointerException("from is null");
         }
@@ -110,10 +111,10 @@ public class IntToIntMap
     /**
      * Retrieves a mapping from the object.
      *
-     * @param from any Integer
-     * @return an Integer other than -1, or null if there is no mapping that matches
+     * @param from any InterMineId
+     * @return an InterMineId other than -1, or null if there is no mapping that matches
      */
-    public Integer get(Integer from) {
+    public InterMineId get(InterMineId from) {
         if (from == null) {
             throw new NullPointerException("from is null");
         }
@@ -122,7 +123,7 @@ public class IntToIntMap
         if (to == -1) {
             return null;
         }
-        return new Integer(to);
+        return new InterMineId(to);
     }
 
     /**
@@ -149,10 +150,10 @@ public class IntToIntMap
     public synchronized String toString() {
         StringBuffer retval = new StringBuffer("{");
         boolean needComma = false;
-        TreeSet<Integer> sortedKeys = new TreeSet<Integer>(pages.keySet());
-        Iterator<Integer> keyIter = sortedKeys.iterator();
+        TreeSet<InterMineId> sortedKeys = new TreeSet<InterMineId>(pages.keySet());
+        Iterator<InterMineId> keyIter = sortedKeys.iterator();
         while (keyIter.hasNext()) {
-            Integer pageNo = keyIter.next();
+            InterMineId pageNo = keyIter.next();
             int pageNoInt = pageNo.intValue();
             int[] page = pages.get(pageNo);
             for (int i = 0; i < PAGE_SIZE; i++) {

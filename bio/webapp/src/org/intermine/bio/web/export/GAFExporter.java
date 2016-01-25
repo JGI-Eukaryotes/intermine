@@ -19,6 +19,7 @@ import org.intermine.api.results.ResultElement;
 import org.intermine.model.bio.SequenceFeature;
 import org.intermine.pathquery.Path;
 import org.intermine.web.logic.export.ExportHelper;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.export.Exporter;
 
 /**
@@ -32,7 +33,7 @@ public class GAFExporter implements Exporter
 
     PrintWriter out;
     private int writtenCount = 0;
-    private List<Integer> featureIndexes;
+    private List<InterMineId> featureIndexes;
     private Collection<String> taxonIds;
 
     private static final String HEADER = "!gaf-version: 2.0";
@@ -43,7 +44,7 @@ public class GAFExporter implements Exporter
      * @param featureIndexes index of column with exported sequence
      * @param taxonIds taxonIDs to export
      */
-    public GAFExporter(PrintWriter out, List<Integer> featureIndexes, Collection<String> taxonIds) {
+    public GAFExporter(PrintWriter out, List<InterMineId> featureIndexes, Collection<String> taxonIds) {
         this.out = out;
         this.featureIndexes = featureIndexes;
         this.taxonIds = taxonIds;

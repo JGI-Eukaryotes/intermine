@@ -27,6 +27,7 @@ import org.intermine.objectstore.query.QuerySelectable;
 import org.intermine.objectstore.query.Results;
 import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.util.CacheMap;
 
 /**
@@ -206,7 +207,7 @@ public abstract class QueryExecutor
         return os.count(q, ObjectStore.SEQUENCE_IGNORE);
     }
 
-    private static final Map<String, Integer> COUNT_CACHE = new CacheMap<String, Integer>();
+    private static final Map<String, InterMineId> COUNT_CACHE = new CacheMap<String, InterMineId>();
     /**
      * Get the the total number of unique column values for a given path in the
      * context of a given query.

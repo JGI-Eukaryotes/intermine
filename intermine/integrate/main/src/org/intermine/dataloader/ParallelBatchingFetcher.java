@@ -26,6 +26,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.util.ObjectPipe;
 
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 /**
@@ -138,7 +139,7 @@ public class ParallelBatchingFetcher extends BatchingFetcher
 
         public void fetch() {
             try {
-                Set<Integer> fetchedObjectIds = new HashSet<Integer>();
+                Set<InterMineId> fetchedObjectIds = new HashSet<InterMineId>();
                 doPk(pk, cld, results, objectsForCld, fetchedObjectIds);
                 dataTracker.prefetchIds(fetchedObjectIds);
             } catch (Exception e) {

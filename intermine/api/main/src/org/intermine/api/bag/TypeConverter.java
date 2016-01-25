@@ -33,6 +33,7 @@ import org.intermine.pathquery.Path;
 import org.intermine.pathquery.PathConstraint;
 import org.intermine.pathquery.PathException;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.template.TemplateQuery;
 
 /**
@@ -56,7 +57,7 @@ public final class TypeConverter
      * @param conversionTemplates a list of templates to be used for conversion
      * @param typeA the type to convert from
      * @param typeB the type to convert to
-     * @param bagOrIds an InterMineBag or Collection of Integer object ids
+     * @param bagOrIds an InterMineBag or Collection of InterMineId object ids
      * @param os the ObjectStore to execute queries in
      * @return a Map from original object to a List of converted objects, or null if conversion is
      * possible (because no suitable template is available)
@@ -115,7 +116,7 @@ public final class TypeConverter
      * @param conversionTemplates a list of templates to be used for conversion
      * @param typeA the type to convert from
      * @param typeB the type to convert to
-     * @param bagOrIds an InterMineBag or Collection of Integer object ids
+     * @param bagOrIds an InterMineBag or Collection of InterMineId object ids
      * @return a PathQuery that finds a conversion mapping for the given bag
      */
     public static PathQuery getConversionMapQuery(List<ApiTemplate> conversionTemplates,
@@ -139,7 +140,7 @@ public final class TypeConverter
                 tq.replaceConstraint(c, Constraints.in(parent, bag.getName()));
             } else if (bagOrIds instanceof Collection) {
                 @SuppressWarnings("unchecked")
-                Collection<Integer> ids = (Collection<Integer>) bagOrIds;
+                Collection<InterMineId> ids = (Collection<InterMineId>) bagOrIds;
                 tq.replaceConstraint(c, Constraints.inIds(parent, ids));
             }
             return tq;
@@ -157,7 +158,7 @@ public final class TypeConverter
      * @param conversionTemplates a list of templates to be used for conversion
      * @param typeA the type to convert from
      * @param typeB the type to convert to
-     * @param bagOrIds an InterMineBag or Collection of Integer object identifiers
+     * @param bagOrIds an InterMineBag or Collection of InterMineId object identifiers
      * @return a PathQuery that finds converted objects for the given bag
      */
     public static PathQuery getConversionQuery(List<ApiTemplate> conversionTemplates,

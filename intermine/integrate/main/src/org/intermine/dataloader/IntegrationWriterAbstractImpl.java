@@ -39,6 +39,7 @@ import org.intermine.objectstore.query.ResultsInfo;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.util.IntPresentSet;
+import org.intermine.model.InterMineId;
 import org.intermine.util.IntToIntMap;
 
 /**
@@ -144,7 +145,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
         if (obj == null) {
             throw new NullPointerException("obj should not be null");
         }
-        Integer destId = null;
+        InterMineId destId = null;
         if (obj.getId() != null) {
             destId = idMap.get(obj.getId());
         }
@@ -381,9 +382,9 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @param dest the ID of the object from the destination
      * @throws ObjectStoreException if an attempt is made to change an existing mapping
      */
-    public void assignMapping(Integer source, Integer dest) throws ObjectStoreException {
+    public void assignMapping(InterMineId source, InterMineId dest) throws ObjectStoreException {
         if ((source != null) && (dest != null)) {
-            Integer existingValue = idMap.get(source);
+            InterMineId existingValue = idMap.get(source);
             if ((existingValue != null) && (!existingValue.equals(dest))) {
                 throw new ObjectStoreException("Error: Attempt to put " + source + " -> "
                         + dest + " into ID Map, but " + source + " -> " + existingValue
@@ -413,7 +414,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @return the retrieved object
      * @throws ObjectStoreException if an error occurs retieving the object
      */
-    public InterMineObject getObjectById(Integer id) throws ObjectStoreException {
+    public InterMineObject getObjectById(InterMineId id) throws ObjectStoreException {
         return osw.getObjectById(id);
     }
 
@@ -425,7 +426,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @return the retrieved object
      * @throws ObjectStoreException if an error occurs retrieving the object
      */
-    public InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    public InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException {
         return osw.getObjectById(id, clazz);
     }
@@ -433,7 +434,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
     /**
      * {@inheritDoc}
      */
-    public List<InterMineObject> getObjectsByIds(Collection<Integer> ids)
+    public List<InterMineObject> getObjectsByIds(Collection<InterMineId> ids)
         throws ObjectStoreException {
         return osw.getObjectsByIds(ids);
     }
@@ -457,7 +458,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @param hadId the ID of the object to be placed in the collection
      * @throws ObjectStoreException if something goes wrong
      */
-    public void addToCollection(Integer hasId, Class<?> clazz, String fieldName, Integer hadId)
+    public void addToCollection(InterMineId hasId, Class<?> clazz, String fieldName, InterMineId hadId)
         throws ObjectStoreException {
         osw.addToCollection(hasId, clazz, fieldName, hadId);
     }
@@ -494,10 +495,10 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * Adds an element to an ObjectStoreBag, delegate to internal ObjectStoreWriter.
      *
      * @param osb an ObjectStoreBag
-     * @param element an Integer to add to the bag
+     * @param element an InterMineId to add to the bag
      * @throws ObjectStoreException if an error occurs
      */
-    public void addToBag(ObjectStoreBag osb, Integer element) throws ObjectStoreException {
+    public void addToBag(ObjectStoreBag osb, InterMineId element) throws ObjectStoreException {
         osw.addToBag(osb, element);
     }
 
@@ -505,11 +506,11 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * Adds a collection of elements to an ObjectStoreBag, delegate to internal ObjectStoreWriter.
      *
      * @param osb an ObjectStoreBag
-     * @param coll a Collection of Integers
+     * @param coll a Collection of InterMineIds
      * @throws ObjectStoreException if an error occurs
      */
     public void addAllToBag(ObjectStoreBag osb,
-            Collection<Integer> coll) throws ObjectStoreException {
+            Collection<InterMineId> coll) throws ObjectStoreException {
         osw.addAllToBag(osb, coll);
     }
 
@@ -517,10 +518,10 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * Removes an element from an ObjectStoreBag, delegate to internal ObjectStoreWriter.
      *
      * @param osb an ObjectStoreBag
-     * @param element an Integer to add to the bag
+     * @param element an InterMineId to add to the bag
      * @throws ObjectStoreException if an error occurs
      */
-    public void removeFromBag(ObjectStoreBag osb, Integer element) throws ObjectStoreException {
+    public void removeFromBag(ObjectStoreBag osb, InterMineId element) throws ObjectStoreException {
         osw.removeFromBag(osb, element);
     }
 
@@ -529,11 +530,11 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * ObjectStoreWriter.
      *
      * @param osb an ObjectStoreBag
-     * @param coll a Collection of Integers
+     * @param coll a Collection of InterMineIds
      * @throws ObjectStoreException if an error occurs
      */
     public void removeAllFromBag(ObjectStoreBag osb,
-            Collection<Integer> coll) throws ObjectStoreException {
+            Collection<InterMineId> coll) throws ObjectStoreException {
         osw.removeAllFromBag(osb, coll);
     }
 
@@ -568,10 +569,10 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
     /**
      * Gets an ID number which is unique in the database.
      *
-     * @return an Integer
+     * @return an InterMineId
      * @throws ObjectStoreException if a problem occurs
      */
-    public Integer getSerial() throws ObjectStoreException {
+    public InterMineId getSerial() throws ObjectStoreException {
         return osw.getSerial();
     }
 
@@ -664,28 +665,28 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * {@inheritDoc}
      */
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return osw.execute(q, start, limit, optimise, explain, sequence);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void prefetchObjectById(Integer id) {
+    public void prefetchObjectById(InterMineId id) {
         osw.prefetchObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void invalidateObjectById(Integer id) {
+    public void invalidateObjectById(InterMineId id) {
         osw.invalidateObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Object cacheObjectById(Integer id, InterMineObject obj) {
+    public Object cacheObjectById(InterMineId id, InterMineObject obj) {
         return osw.cacheObjectById(id, obj);
     }
 
@@ -699,7 +700,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
     /**
      * {@inheritDoc}
      */
-    public InterMineObject pilferObjectById(Integer id) {
+    public InterMineObject pilferObjectById(InterMineId id) {
         return osw.pilferObjectById(id);
     }
 
@@ -713,7 +714,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
     /**
      * {@inheritDoc}
      */
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return osw.count(q, sequence);
     }
 
@@ -763,7 +764,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
     /**
      * {@inheritDoc}
      */
-    public Map<Object, Integer> getSequence(Set<Object> tables) {
+    public Map<Object, InterMineId> getSequence(Set<Object> tables) {
         return osw.getSequence(tables);
     }
 

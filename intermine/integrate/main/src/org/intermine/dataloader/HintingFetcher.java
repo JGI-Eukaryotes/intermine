@@ -29,6 +29,7 @@ import org.intermine.metadata.Util;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriter;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.Query;
 
 /**
@@ -46,8 +47,8 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
     long savedDatabaseEmptyFetch = -1;
     protected Map<String, Long> savedTimes = Collections.synchronizedMap(
             new TreeMap<String, Long>());
-    protected Map<String, Integer> savedCounts = Collections.synchronizedMap(
-            new TreeMap<String, Integer>());
+    protected Map<String, InterMineId> savedCounts = Collections.synchronizedMap(
+            new TreeMap<String, InterMineId>());
     protected Map<Class<?>, Boolean> allPkClassesEmptyForClass = new HashMap<Class<?>, Boolean>();
 
     /**
@@ -89,7 +90,7 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
         long totalFetchTime = savedDatabaseEmptyFetch;
         for (String summaryName : savedTimes.keySet()) {
             long savedTime = savedTimes.get(summaryName).longValue();
-            Integer savedCount = savedCounts.get(summaryName);
+            InterMineId savedCount = savedCounts.get(summaryName);
             if (savedCount == null) {
                 retval.append("\nHints for " + summaryName + " took " + savedTime + " ms to fetch");
             } else if (savedCount.intValue() == 0) {
@@ -118,17 +119,17 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
     public Set<InterMineObject> queryEquivalentObjects(InterMineObject obj, Source source)
         throws ObjectStoreException {
         Class<? extends InterMineObject> summaryName = obj.getClass();
-        Integer soFarCallCount = summaryCallCounts.get(summaryName);
+        InterMineId soFarCallCount = summaryCallCounts.get(summaryName);
         if (soFarCallCount == null) {
-            soFarCallCount = new Integer(0);
+            soFarCallCount = new InterMineId(0);
             summaryTimes.put(summaryName, new Long(0));
-            summaryCounts.put(summaryName, new Integer(0));
+            summaryCounts.put(summaryName, new InterMineId(0));
             summaryCallCounts.put(summaryName, soFarCallCount);
         }
         long time = System.currentTimeMillis();
         if (hints.databaseEmpty()) {
             savedDatabaseEmpty++;
-            summaryCallCounts.put(summaryName, new Integer(soFarCallCount.intValue() + 1));
+            summaryCallCounts.put(summaryName, new InterMineId(soFarCallCount.intValue() + 1));
             if (savedDatabaseEmptyFetch == -1) {
                 savedDatabaseEmptyFetch = System.currentTimeMillis() - time;
             }
@@ -162,7 +163,7 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
             allPkClassesEmptyForClass.put(obj.getClass(), allPkClassesEmpty);
         }
         if (allPkClassesEmpty.booleanValue()) {
-            summaryCallCounts.put(summaryName, new Integer(soFarCallCount.intValue() + 1));
+            summaryCallCounts.put(summaryName, new InterMineId(soFarCallCount.intValue() + 1));
             return Collections.emptySet();
         }
         return super.queryEquivalentObjects(obj, source);
@@ -202,10 +203,10 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
                     + fieldName;
                 if (!savedTimes.containsKey(summaryName)) {
                     savedTimes.put(summaryName, new Long(System.currentTimeMillis() - time));
-                    savedCounts.put(summaryName, new Integer(0));
+                    savedCounts.put(summaryName, new InterMineId(0));
                 }
                 if (pkQueryFruitless) {
-                    savedCounts.put(summaryName, new Integer(savedCounts.get(summaryName).intValue()
+                    savedCounts.put(summaryName, new InterMineId(savedCounts.get(summaryName).intValue()
                                 + 1));
                     return;
                 }
@@ -220,7 +221,7 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
                             + fieldName + " in " + obj, e);
                 }
                 if (refObj != null) {
-                    Integer destId = null;
+                    InterMineId destId = null;
                     if (refObj.getId() != null) {
                         destId = idMap.get(refObj.getId());
                     }
@@ -233,10 +234,10 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
                         if (!savedTimes.containsKey(summaryName)) {
                             savedTimes.put(summaryName, new Long(System.currentTimeMillis()
                                         - time));
-                            savedCounts.put(summaryName, new Integer(0));
+                            savedCounts.put(summaryName, new InterMineId(0));
                         }
                         if (pkQueryFruitless) {
-                            savedCounts.put(summaryName, new Integer(savedCounts.get(summaryName)
+                            savedCounts.put(summaryName, new InterMineId(savedCounts.get(summaryName)
                                         .intValue() + 1));
                             return;
                         }

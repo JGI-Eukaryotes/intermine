@@ -36,6 +36,7 @@ import org.intermine.webservice.client.results.Page;
 import org.intermine.webservice.client.results.RowResultSet;
 import org.intermine.webservice.client.results.XMLTableResult;
 import org.json.JSONException;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -88,7 +89,7 @@ public class QueryService extends AbstractQueryService<PathQuery>
     private static final Set<String> NUMERIC_TYPES
         = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
             "int", "float", "double", "short", "long",
-            "java.util.Integer", "java.util.Float", "java.util.Double",
+            "java.util.InterMineId", "java.util.Float", "java.util.Double",
             "java.util.Short", "java.util.Long", "java.util.BegDecimal")));
 
     /**
@@ -459,7 +460,7 @@ public class QueryService extends AbstractQueryService<PathQuery>
      * @param summaryPath The column to summarise.
      * @return A summary.
      */
-    public Map<String, Integer> getSummary(PathQuery query, String summaryPath) {
+    public Map<String, InterMineId> getSummary(PathQuery query, String summaryPath) {
         return getSummary(query, summaryPath, Page.DEFAULT);
     }
 
@@ -476,7 +477,7 @@ public class QueryService extends AbstractQueryService<PathQuery>
      * @param page The subsection of the summary to retrieve.
      * @return A summary.
      */
-    public Map<String, Integer> getSummary(PathQuery query, String path, Page page) {
+    public Map<String, InterMineId> getSummary(PathQuery query, String path, Page page) {
         String summaryPath = path;
         try {
             if (!summaryPath.startsWith(query.getRootClass())) {
@@ -506,7 +507,7 @@ public class QueryService extends AbstractQueryService<PathQuery>
         request.setPage(page);
         request.setParameter("summaryPath", summaryPath);
         JSONResult response = getJSONResponse(request);
-        Map<String, Integer> ret = new LinkedHashMap<String, Integer>();
+        Map<String, InterMineId> ret = new LinkedHashMap<String, InterMineId>();
         try {
             Iterator<JSONObject> it = response.getIterator();
             while (it.hasNext()) {

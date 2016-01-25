@@ -49,6 +49,7 @@ import org.intermine.web.logic.config.HeaderConfigTitle;
 import org.intermine.web.logic.config.InlineListConfig;
 import org.intermine.web.logic.config.Type;
 import org.intermine.web.logic.config.WebConfig;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.pathqueryresult.PathQueryResultHelper;
 
 /**
@@ -178,7 +179,7 @@ public class ReportObject
     }
 
     private String stripTail(String input) {
-        Integer dot = input.indexOf(".");
+        InterMineId dot = input.indexOf(".");
         if (dot > 0) {
             return input.substring(0, dot);
         }
@@ -587,13 +588,13 @@ public class ReportObject
     /**
      * The said function will resolve the maximum number of rows to show (in Collections)
      *  from webProperties.
-     * @return Integer duh
+     * @return InterMineId duh
      */
-    public Integer getNumberOfTableRowsToShow() {
+    public InterMineId getNumberOfTableRowsToShow() {
         String maxInlineTableSizeString =
             (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
         try {
-            return Integer.parseInt(maxInlineTableSizeString);
+            return InterMineId.parseInt(maxInlineTableSizeString);
         } catch (NumberFormatException e) {
             LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                      + maxInlineTableSizeString);

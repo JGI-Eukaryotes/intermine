@@ -23,6 +23,7 @@ import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.Gene;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -42,7 +43,7 @@ public class GeneModel
     List<InterMineObject> exons;
     List<InterMineObject> introns;
     List<InterMineObject> cdss;
-    Set<Integer> ids = null;
+    Set<InterMineId> ids = null;
 
     private static String[] types = new String[] {"Gene", "Transcript", "Exon", "UTR", "CDS"};
     /**
@@ -207,9 +208,9 @@ public class GeneModel
      * Return the ids of all objects represented in this gene model including the gene itself.
      * @return the ids of all objects represented in this gene model
      */
-    public Set<Integer> getIds() {
+    public Set<InterMineId> getIds() {
         if (ids == null) {
-            ids = new HashSet<Integer>();
+            ids = new HashSet<InterMineId>();
             ids.add(gene.getId());
             ids.add(transcript.getId());
             addCollectionIds(ids, exons);
@@ -225,7 +226,7 @@ public class GeneModel
         return ids;
     }
 
-    private void addCollectionIds(Set<Integer> ids, Collection<InterMineObject> col) {
+    private void addCollectionIds(Set<InterMineId> ids, Collection<InterMineObject> col) {
         if (col != null) {
             for (InterMineObject obj : col) {
                 ids.add(obj.getId());

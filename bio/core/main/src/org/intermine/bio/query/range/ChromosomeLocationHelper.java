@@ -30,6 +30,7 @@ import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Queryable;
 import org.intermine.objectstore.query.SimpleConstraint;
+import org.intermine.model.InterMineId;
 import org.intermine.pathquery.PathConstraintRange;
 
 /**
@@ -119,7 +120,7 @@ public class ChromosomeLocationHelper implements RangeHelper
             if (taxonIdsAreStrings) {
                 taxon = new QueryValue(taxonId);
             } else {
-                taxon = new QueryValue(Integer.valueOf(taxonId));
+                taxon = new QueryValue(InterMineId.valueOf(taxonId));
             }
             QueryObjectReference orgref = new QueryObjectReference(chromosome, "organism");
             addFrom(q, organism);
@@ -173,7 +174,7 @@ public class ChromosomeLocationHelper implements RangeHelper
     static class GenomicInterval
     {
 
-        private final Integer start, end;
+        private final InterMineId start, end;
         private final String chr, taxonId;
         private final String parsedAs;
 
@@ -199,35 +200,35 @@ public class ChromosomeLocationHelper implements RangeHelper
             if (GFF3.matcher(range).find()) {
                 String[] parts = range.split("\\t");
                 chr = parts[0].trim();
-                start = Integer.valueOf(parts[3].trim());
-                end = Integer.valueOf(parts[4].trim());
+                start = InterMineId.valueOf(parts[3].trim());
+                end = InterMineId.valueOf(parts[4].trim());
                 taxonId = null;
                 parsedAs = "GFF3";
             } else if (BED.matcher(range).find()) {
                 String[] parts = range.split("\\t");
                 chr = parts[0].trim();
-                start = Integer.valueOf(parts[1].trim());
-                end = Integer.valueOf(parts[2].trim());
+                start = InterMineId.valueOf(parts[1].trim());
+                end = InterMineId.valueOf(parts[2].trim());
                 taxonId = null;
                 parsedAs = "BED";
             } else if (COLON_DASH.matcher(range).matches()) {
                 String[] partsA = range.split(":");
                 chr = partsA[0];
                 String[] partsB = partsA[1].split("-");
-                start = Integer.valueOf(partsB[0].trim());
-                end = Integer.valueOf(partsB[1].trim());
+                start = InterMineId.valueOf(partsB[0].trim());
+                end = InterMineId.valueOf(partsB[1].trim());
                 taxonId = null;
                 parsedAs = "COLON_DASH";
             } else if (COLON_DOTS.matcher(range).matches()) {
                 String[] partsA = range.split(":");
                 chr = partsA[0];
                 String[] partsB = partsA[1].split("\\.\\.");
-                start = Integer.valueOf(partsB[0].trim());
+                start = InterMineId.valueOf(partsB[0].trim());
                 String rawEnd = partsB[1].trim();
                 if (rawEnd.startsWith(".")) {
                     rawEnd = rawEnd.substring(1);
                 }
-                end = Integer.valueOf(rawEnd);
+                end = InterMineId.valueOf(rawEnd);
                 taxonId = null;
                 parsedAs = "COLON_DOTS";
             } else if (COLON_DOTS_WITH_TAXON.matcher(range).matches()) {
@@ -235,25 +236,25 @@ public class ChromosomeLocationHelper implements RangeHelper
                 taxonId = partsA[0];
                 chr = partsA[1];
                 String[] partsB = partsA[2].split("\\.\\.");
-                start = Integer.valueOf(partsB[0].trim());
+                start = InterMineId.valueOf(partsB[0].trim());
                 String rawEnd = partsB[1].trim();
                 if (rawEnd.startsWith(".")) {
                     rawEnd = rawEnd.substring(1);
                 }
-                end = Integer.valueOf(rawEnd);
+                end = InterMineId.valueOf(rawEnd);
                 parsedAs = "COLON_DOTS_WITH_TAXON";
             } else if (COLON_DASH_WITH_TAXON.matcher(range).matches()) {
                 String[] partsA = range.split(":");
                 taxonId = partsA[0];
                 chr = partsA[1];
                 String[] partsB = partsA[2].split("-");
-                start = Integer.valueOf(partsB[0].trim());
-                end = Integer.valueOf(partsB[1].trim());
+                start = InterMineId.valueOf(partsB[0].trim());
+                end = InterMineId.valueOf(partsB[1].trim());
                 parsedAs = "COLON_DASH_WITH_TAXON";
             } else if (COLON_START.matcher(range).matches()) {
                 String[] partsA = range.split(":");
                 chr = partsA[0];
-                start = Integer.valueOf(partsA[1].trim());
+                start = InterMineId.valueOf(partsA[1].trim());
                 end = start;
                 taxonId = null;
                 parsedAs = "POINT";
@@ -275,14 +276,14 @@ public class ChromosomeLocationHelper implements RangeHelper
         /**
          * @return start of range
          */
-        public Integer getStart() {
+        public InterMineId getStart() {
             return start;
         }
 
         /**
          * @return end of range
          */
-        public Integer getEnd() {
+        public InterMineId getEnd() {
             return end;
         }
 

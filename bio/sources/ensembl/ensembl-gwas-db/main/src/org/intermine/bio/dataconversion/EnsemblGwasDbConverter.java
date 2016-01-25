@@ -27,6 +27,7 @@ import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.sql.Database;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -45,7 +46,7 @@ public class EnsemblGwasDbConverter extends BioDBConverter
     // private EntrezGeneIdResolverFactory resolverFactory;
 
     // take value set by parser
-    Integer taxonId = null;
+    InterMineId taxonId = null;
 
     // approximately the minimum permitted double value in postgres
     private static final double MIN_POSTGRES_DOUBLE = 1.0E-307;
@@ -68,7 +69,7 @@ public class EnsemblGwasDbConverter extends BioDBConverter
      * @param taxonId the organism to load
      */
     public void setOrganism(String taxonId) {
-        this.taxonId = Integer.valueOf(taxonId);
+        this.taxonId = InterMineId.valueOf(taxonId);
     }
 
     /**

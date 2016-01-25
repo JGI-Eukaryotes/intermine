@@ -21,6 +21,7 @@ import org.intermine.dataconversion.FileConverter;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -258,8 +259,8 @@ public abstract class BioFileConverter extends FileConverter
     protected Item makeLocation(String chromosomeId, String sequenceFeatureId, String startString,
             String endString, String strand, boolean store) {
         Item location = createItem("Location");
-        Integer start = new Integer(Integer.parseInt(startString));
-        Integer end = new Integer(Integer.parseInt(endString));
+        InterMineId start = new InterMineId(InterMineId.parseInt(startString));
+        InterMineId end = new InterMineId(InterMineId.parseInt(endString));
 
         if (start.compareTo(end) <= 0) {
             location.setAttribute("start", startString);

@@ -49,6 +49,7 @@ import org.intermine.sql.query.SubQueryConstraint;
 import org.intermine.sql.query.Table;
 import org.intermine.util.ConsistentSet;
 import org.intermine.util.IdentityMap;
+import org.intermine.model.InterMineId;
 import org.intermine.util.MappingUtil;
 
 /**

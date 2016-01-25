@@ -9,6 +9,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 
 /*
@@ -78,7 +79,7 @@ public class PathQueryUnmarshalTest extends  TestCase
         PathQuery query = createQuery("IncompleteConstraintLogic.xml");
         assertEquals(Arrays.asList(
                 "Value in constraint Employee.age > bad is not in correct format for " +
-                "type of Integer"), query.verifyQuery());
+                "type of InterMineId"), query.verifyQuery());
     }
 
     /* ? */

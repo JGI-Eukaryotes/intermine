@@ -10,6 +10,7 @@ package org.intermine.model;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStore;
 
 /**
@@ -23,16 +24,16 @@ public interface InterMineObject extends InterMineFastPathObject
     /**
      * Getter for the ID field - ensures that every object in the database has an ID.
      *
-     * @return an Integer
+     * @return an InterMineId
      */
-    java.lang.Integer getId();
+    InterMineId getId();
 
     /**
      * Setter for the ID field.
      *
-     * @param id an Integer
+     * @param id an InterMineId
      */
-    void setId(java.lang.Integer id);
+    void setId(InterMineId id);
 
     /**
      * Returns the NotXml serialised version of this object.

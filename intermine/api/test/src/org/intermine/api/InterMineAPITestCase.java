@@ -49,6 +49,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.sql.DatabaseUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.util.PropertiesUtil;
 
 
@@ -99,7 +100,7 @@ public class InterMineAPITestCase extends TestCase {
         pmTmp.createSuperUser("superUser", "password", null);
 
         String apiKey = "abcdef012345";
-        Integer userId = null;
+        InterMineId userId = null;
         Map<String, InvalidBag> invalidBags = new HashMap<String, InvalidBag>();
         Map<String, InterMineBag> validBags = new HashMap<String, InterMineBag>();
 

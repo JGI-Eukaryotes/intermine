@@ -25,6 +25,7 @@ import org.intermine.api.profile.Profile;
 import org.intermine.api.util.NameUtil;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.metadata.StringUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -84,7 +85,7 @@ public class ImportQueriesAction extends InterMineAction
                 SessionMethods.saveQuery(session, queryName, query);
                 imported++;
             }
-            recordMessage(new ActionMessage("query.imported", new Integer(imported)), request);
+            recordMessage(new ActionMessage("query.imported", new InterMineId(imported)), request);
             if (!validNameQuery) {
                 recordError(new ActionMessage("query.imported.invalidname"), request);
             }

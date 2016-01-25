@@ -61,6 +61,7 @@ import org.intermine.webservice.server.output.FilteringResultIterator;
 import org.intermine.webservice.server.output.StreamedOutput;
 import org.intermine.webservice.server.query.AbstractQueryService;
 
+import org.intermine.model.InterMineId;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
@@ -143,7 +144,7 @@ public class QueryResultService extends AbstractQueryService
      * @param start The beginning of this set of results
      * @param size The size of this set of results
      */
-    protected void setHeaderAttributes(PathQuery pq, Integer start, Integer size) {
+    protected void setHeaderAttributes(PathQuery pq, InterMineId start, InterMineId size) {
 
         if (formatIsJSON()) {
             // These attributes are always needed
@@ -227,7 +228,7 @@ public class QueryResultService extends AbstractQueryService
                 AttributeDescriptor ad = (AttributeDescriptor) p.getEndFieldDescriptor();
                 String type = ad.getType();
                 List<String> colHeaders = new ArrayList<String>();
-                if ("int".equals(type) || "Integer".equals(type) || "Float".equals(type)
+                if ("int".equals(type) || "InterMineId".equals(type) || "Float".equals(type)
                         || "float".equals(type) || "Double".equals(type)
                         || "double".equals(type) || "long".equals(type)
                         || "Long".equals(type) || "Math.BigDecimal".equals(type)) {
@@ -308,7 +309,7 @@ public class QueryResultService extends AbstractQueryService
         final Iterator<List<ResultElement>> it;
         final String summaryPath = getOptionalParameter("summaryPath");
         if (isNotBlank(summaryPath)) {
-            Integer uniqs = (Integer) attributes.get("uniqueValues");
+            InterMineId uniqs = (InterMineId) attributes.get("uniqueValues");
             boolean occurancesOnly = (uniqs == null) || (uniqs < 2);
             try {
                 String filterTerm = getOptionalParameter("filterTerm");

@@ -50,6 +50,7 @@ import org.intermine.pathquery.PathException;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.template.SwitchOffAbility;
 import org.intermine.web.autocompletion.AutoCompleter;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.querybuilder.DisplayPath;
 
 
@@ -412,7 +413,7 @@ public class DisplayConstraint
 
     /**
      * Given the path being constrained return the valid constraint operations.  If constraining an
-     * attribute the valid ops depend on the type being constraint - String, Integer, Boolean, etc.
+     * attribute the valid ops depend on the type being constraint - String, InterMineId, Boolean, etc.
      * @return the valid constraint operations
      */
     public List<DisplayConstraintOption> getValidOps() {
@@ -899,14 +900,14 @@ public class DisplayConstraint
     public class DisplayConstraintOption
     {
         private String label;
-        private Integer property;
+        private InterMineId property;
 
         /**
          * Construct with the constraint lable and index
          * @param label the value to be shown in dropdown
          * @param property the constraint index to be added to form on selection
          */
-        public DisplayConstraintOption(String label, Integer property) {
+        public DisplayConstraintOption(String label, InterMineId property) {
             this.label = label;
             this.property = property;
         }
@@ -923,7 +924,7 @@ public class DisplayConstraint
          * Get the constraint index to be put in form when this op is selected.
          * @return the constraint index
          */
-        public Integer getProperty() {
+        public InterMineId getProperty() {
             return property;
         }
     }

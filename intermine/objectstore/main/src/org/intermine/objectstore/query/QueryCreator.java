@@ -21,6 +21,7 @@ import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.ReferenceDescriptor;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -40,7 +41,7 @@ public final class QueryCreator
      * @param clazz a Class in the object
      * @return a Query
      */
-    public static Query createQueryForId(Integer id, Class<? extends InterMineObject> clazz) {
+    public static Query createQueryForId(InterMineId id, Class<? extends InterMineObject> clazz) {
         Query q = new Query();
         QueryClass qc = new QueryClass(clazz);
         q.addFrom(qc);
@@ -57,7 +58,7 @@ public final class QueryCreator
      * @param clazz a Class in the object
      * @return a Query
      */
-    public static Query createQueryForIds(Collection<Integer> ids,
+    public static Query createQueryForIds(Collection<InterMineId> ids,
             Class<? extends InterMineObject> clazz) {
         Query q = new Query();
 

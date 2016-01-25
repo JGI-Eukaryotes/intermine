@@ -26,6 +26,7 @@ import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.Model;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -49,7 +50,7 @@ public class PathQueryHandler extends DefaultHandler
     /** This is a list of String type descriptions that are attribute types */
     public static final Set<String> ATTRIBUTE_TYPES = new HashSet<String>(
             Arrays.asList("boolean", "float", "double", "short", "int", "long",
-                    "Boolean", "Float", "Double", "Short", "Integer", "Long",
+                    "Boolean", "Float", "Double", "Short", "InterMineId", "Long",
                     "BigDecimal", "Date", "String"));
     private StringBuilder valueBuffer = null;
     protected String constraintPath = null;
@@ -344,10 +345,10 @@ public class PathQueryHandler extends DefaultHandler
                 return new PathConstraintBag(path, constraintOp, bag);
             } else if (ids != null) {
                 String[] idArray = ids.split(",");
-                Collection<Integer> idsCollection = new LinkedHashSet<Integer>();
+                Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                 for (String id : idArray) {
                     try {
-                        idsCollection.add(Integer.valueOf(id.trim()));
+                        idsCollection.add(InterMineId.valueOf(id.trim()));
                     } catch (NumberFormatException e) {
                         throw new SAXException(
                                 "List of IDs contains invalid integer: " + id,

@@ -24,6 +24,7 @@ import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.util.FormattedTextParser;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 /**
@@ -119,9 +120,9 @@ public class BDGPInsituConverter extends BioFileConverter
             String resultKey = geneCG + stage;
             Item result = getResult(resultKey, gene.getIdentifier(), pub.getIdentifier(), stage);
 
-            Integer stageNumber = null;
+            InterMineId stageNumber = null;
             try {
-                stageNumber = new Integer(stage);
+                stageNumber = new InterMineId(stage);
             } catch (NumberFormatException e) {
                 // bad line in file, just keep going
                 continue;

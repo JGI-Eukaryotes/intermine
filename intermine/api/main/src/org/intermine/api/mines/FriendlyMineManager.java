@@ -25,6 +25,7 @@ import org.intermine.api.InterMineAPI;
 import org.intermine.api.beans.PartnerLink;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.util.CacheMap;
+import org.intermine.model.InterMineId;
 import org.intermine.util.PropertiesUtil;
 
 /**
@@ -171,7 +172,7 @@ public class FriendlyMineManager
 
     private int getIntProperty(String propName, int defaultValue) {
         if (webProperties.containsKey(propName)) {
-            return Integer.parseInt(getProperty(propName), 10);
+            return InterMineId.parseInt(getProperty(propName), 10);
         } else {
             return defaultValue;
         }

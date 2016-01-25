@@ -27,6 +27,7 @@ import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.ProxyReference;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -242,7 +243,7 @@ public class DirectDataLoader extends DataLoader
      */
     public <C extends InterMineObject> C createObject(Class<C> c) {
         C o = DynamicUtil.simpleCreateObject(c);
-        o.setId(new Integer(idCounter));
+        o.setId(new InterMineId(idCounter));
         idCounter++;
         return o;
     }

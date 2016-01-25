@@ -21,6 +21,7 @@ import junit.framework.TestCase;
 import org.intermine.model.bio.Chromosome;
 import org.intermine.model.bio.Gene;
 import org.intermine.model.bio.Transcript;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -49,13 +50,13 @@ public class PostProcessUtilTest extends TestCase {
 
     private Gene createExampleGene() {
         Gene gene = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        gene.setId(new Integer(101));
+        gene.setId(new InterMineId(101));
         Transcript tran1 = (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        tran1.setId(new Integer(102));
+        tran1.setId(new InterMineId(102));
         Transcript tran2 = (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        tran2.setId(new Integer(103));
+        tran2.setId(new InterMineId(103));
         Chromosome chr = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
-        chr.setId(new Integer(104));
+        chr.setId(new InterMineId(104));
 
         gene.setPrimaryIdentifier("gene1");
         gene.setChromosome(chr);

@@ -19,6 +19,7 @@ import java.io.StringReader;
 import junit.framework.TestCase;
 
 import org.intermine.metadata.InterMineModelParser;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 
 /**
@@ -33,7 +34,7 @@ public class ModelMergerTaskTest extends TestCase
             + "<class name=\"A\" extends=\"C\" is-interface=\"false\">"
                 + "<reference name=\"ref1\" referenced-type=\"C\"/>"
                 + "<collection name=\"col1\" referenced-type=\"C\"/>"
-                + "<attribute name=\"attrib1\" type=\"java.lang.Integer\"/>"
+                + "<attribute name=\"attrib1\" type=\"InterMineId\"/>"
             + "</class>"
             + "<class name=\"C\" is-interface=\"false\"></class>"
             + "<class name=\"D\" is-interface=\"true\"></class>"
@@ -53,7 +54,7 @@ public class ModelMergerTaskTest extends TestCase
             + "<reference name=\"ref1\" referenced-type=\"C\"/>"
             + "<collection name=\"col1\" referenced-type=\"C\"/>"
             + "<collection name=\"col2\" referenced-type=\"C\"/>"
-            + "<attribute name=\"attrib1\" type=\"java.lang.Integer\"/>"
+            + "<attribute name=\"attrib1\" type=\"InterMineId\"/>"
             + "<attribute name=\"attrib2\" type=\"java.lang.String\"/>"
         + "</class>"
         + "<class name=\"C\" is-interface=\"false\"></class>"

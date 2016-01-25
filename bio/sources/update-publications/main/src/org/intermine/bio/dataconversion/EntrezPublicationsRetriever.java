@@ -62,6 +62,7 @@ import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.OperationStatus;
+import org.intermine.model.InterMineId;
 import com.sleepycat.je.Transaction;
 
 /**
@@ -85,7 +86,7 @@ public class EntrezPublicationsRetriever
     // number of times to try the same batch from the server
     private static final int MAX_TRIES = 5;
     private String osAlias = null, outputFile = null;
-    private Set<Integer> seenPubMeds = new HashSet<Integer>();
+    private Set<InterMineId> seenPubMeds = new HashSet<InterMineId>();
     private Map<String, Item> authorMap = new HashMap<String, Item>();
     private String cacheDirName = "build/";
     private ItemFactory itemFactory;
@@ -173,21 +174,21 @@ public class EntrezPublicationsRetriever
             Writer writer = new FileWriter(outputFile); // write to cache file
             ObjectStore os = ObjectStoreFactory.getObjectStore(osAlias);
 
-            Set<Integer> idsToFetch = new HashSet<Integer>();
+            Set<InterMineId> idsToFetch = new HashSet<InterMineId>();
             itemFactory = new ItemFactory(os.getModel(), "-1_");
             writer.write(FullRenderer.getHeader() + ENDL);
 
             // Get publications from objectstore by IQL
             for (Iterator<Publication> iter = getPublications(os).iterator(); iter.hasNext();) {
                 String pubMedId = iter.next().getPubMedId();
-                Integer pubMedIdInteger;
+                InterMineId pubMedIdInterMineId;
                 try {
-                    pubMedIdInteger = Integer.valueOf(pubMedId);
+                    pubMedIdInterMineId = InterMineId.valueOf(pubMedId);
                 } catch (NumberFormatException e) {
                     // not a pubmed id
                     continue;
                 }
-                if (seenPubMeds.contains(pubMedIdInteger)) {
+                if (seenPubMeds.contains(pubMedIdInterMineId)) {
                     continue;
                 }
                 DatabaseEntry key = new DatabaseEntry(pubMedId.getBytes());
@@ -201,24 +202,24 @@ public class EntrezPublicationsRetriever
                         ObjectInputStream deserializer = new ObjectInputStream(mapInputStream);
                         Map<String, Object> pubMap = (Map) deserializer.readObject();
                         writeItems(writer, mapToItems(itemFactory, pubMap));
-                        seenPubMeds.add(pubMedIdInteger);
+                        seenPubMeds.add(pubMedIdInterMineId);
                     } catch (EOFException e) {
                         // ignore and fetch it again
                         System.err .println("found in cache, but igored due to cache problem: "
-                                            + pubMedIdInteger);
+                                            + pubMedIdInterMineId);
                     }
                 } else {
                     // berkeleydb cached pubs will be written to cache file, the rest will be
                     // fetched from NCBI
-                    idsToFetch.add(pubMedIdInteger);
+                    idsToFetch.add(pubMedIdInterMineId);
                 }
             }
 
-            Iterator<Integer> idIter = idsToFetch.iterator();
-            Set<Integer> thisBatch = new HashSet<Integer>();
+            Iterator<InterMineId> idIter = idsToFetch.iterator();
+            Set<InterMineId> thisBatch = new HashSet<InterMineId>();
             while (idIter.hasNext()) {
-                Integer pubMedIdInteger = idIter.next();
-                thisBatch.add(pubMedIdInteger);
+                InterMineId pubMedIdInterMineId = idIter.next();
+                thisBatch.add(pubMedIdInterMineId);
                 if (thisBatch.size() == BATCH_SIZE || !idIter.hasNext() && thisBatch.size() > 0) {
                     try {
                         // the server may return less publications than we ask for, so keep a Map
@@ -355,7 +356,7 @@ public class EntrezPublicationsRetriever
      * @return a Reader for the information
      * @throws Exception if an error occurs
      */
-    protected Reader getReader(Set<Integer> ids) throws Exception {
+    protected Reader getReader(Set<InterMineId> ids) throws Exception {
         String urlString = ESUMMARY_URL + StringUtil.join(ids, ",");
         if (loadFullRecord) {
             urlString = EFETCH_URL + StringUtil.join(ids, ",");
@@ -524,16 +525,16 @@ public class EntrezPublicationsRetriever
                 LOG.error("Unable to retrieve pubmed record: " + characters);
             } else if ("PMID".equals(qName) && "MedlineCitation".equals(stack.peek())) {
                 String pubMedId = characters.toString();
-                Integer pubMedIdInteger;
+                InterMineId pubMedIdInterMineId;
                 try {
-                    pubMedIdInteger = Integer.valueOf(pubMedId);
+                    pubMedIdInterMineId = InterMineId.valueOf(pubMedId);
                     if (seenPubMeds.contains(pubMedId)) {
                         duplicateEntry = true;
                         return;
                     }
                     pubMap = new HashMap<String, Object>();
                     pubMap.put("id", pubMedId);
-                    seenPubMeds.add(pubMedIdInteger);
+                    seenPubMeds.add(pubMedIdInterMineId);
                     cache.put(pubMedId, pubMap);
 
                 } catch (NumberFormatException e) {
@@ -543,7 +544,7 @@ public class EntrezPublicationsRetriever
                     && "PubDate".equals(stack.peek())) {
                 String year = characters.toString();
                 try {
-                    Integer.parseInt(year);
+                    InterMineId.parseInt(year);
                     pubMap.put("year", year);
                 } catch (NumberFormatException e) {
                     LOG.warn("Cannot parse year from publication: " + characters.toString());
@@ -676,10 +677,10 @@ public class EntrezPublicationsRetriever
             } else if ("Id".equals(name)) {
                 String pubMedId = characters.toString();
 
-                Integer pubMedIdInteger;
+                InterMineId pubMedIdInterMineId;
 
                 try {
-                    pubMedIdInteger = Integer.valueOf(pubMedId);
+                    pubMedIdInterMineId = InterMineId.valueOf(pubMedId);
 
                     if (seenPubMeds.contains(pubMedId)) {
                         duplicateEntry = true;
@@ -687,7 +688,7 @@ public class EntrezPublicationsRetriever
                     }
                     pubMap = new HashMap<String, Object>();
                     pubMap.put("id", pubMedId);
-                    seenPubMeds.add(pubMedIdInteger);
+                    seenPubMeds.add(pubMedIdInterMineId);
                     cache.put(pubMedId, pubMap);
 
                 } catch (NumberFormatException e) {
@@ -696,7 +697,7 @@ public class EntrezPublicationsRetriever
             } else if ("PubDate".equals(name)) {
                 String year = characters.toString().split(" ")[0];
                 try {
-                    Integer.parseInt(year);
+                    InterMineId.parseInt(year);
                     pubMap.put("year", year);
                 } catch (NumberFormatException e) {
                     LOG.warn("Cannot parse year from publication: " + year);

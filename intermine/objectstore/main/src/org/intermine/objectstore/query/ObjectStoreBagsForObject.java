@@ -12,6 +12,7 @@ package org.intermine.objectstore.query;
 
 import java.util.Collection;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -22,7 +23,7 @@ import org.intermine.metadata.Util;
  */
 public class ObjectStoreBagsForObject implements QuerySelectable
 {
-    private final Integer value;
+    private final InterMineId value;
     private final Collection<ObjectStoreBag> bags;
 
     /**
@@ -30,7 +31,7 @@ public class ObjectStoreBagsForObject implements QuerySelectable
      *
      * @param value the value to look for in the bags
      */
-    public ObjectStoreBagsForObject(Integer value) {
+    public ObjectStoreBagsForObject(InterMineId value) {
         this.value = value;
         this.bags = null;
     }
@@ -42,7 +43,7 @@ public class ObjectStoreBagsForObject implements QuerySelectable
      * @param value the value to look for in the bags
      * @param bags a Collection of ObjectStoreBag objects which may be present in the results
      */
-    public ObjectStoreBagsForObject(Integer value, Collection<ObjectStoreBag> bags) {
+    public ObjectStoreBagsForObject(InterMineId value, Collection<ObjectStoreBag> bags) {
         this.value = value;
         this.bags = bags;
     }
@@ -50,9 +51,9 @@ public class ObjectStoreBagsForObject implements QuerySelectable
     /**
      * Returns the value.
      *
-     * @return an Integer
+     * @return an InterMineId
      */
-    public Integer getValue() {
+    public InterMineId getValue() {
         return value;
     }
 
@@ -69,7 +70,7 @@ public class ObjectStoreBagsForObject implements QuerySelectable
      * {@inheritDoc}
      */
     public Class<?> getType() {
-        return Integer.class;
+        return InterMineId.class;
     }
 
     /**

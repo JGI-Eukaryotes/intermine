@@ -36,6 +36,7 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
 import org.intermine.web.logic.results.ReportObject;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -65,7 +66,7 @@ public class CytoscapeNetworkDisplayer extends ReportDisplayer
         Profile profile = SessionMethods.getProfile(request.getSession()); // Get Profile
         PathQueryExecutor executor = im.getPathQueryExecutor(profile); // Get PathQueryExecutor
 
-        Set<Integer> startingFeatureSet = new LinkedHashSet<Integer>(); // feature: gene or protein
+        Set<InterMineId> startingFeatureSet = new LinkedHashSet<InterMineId>(); // feature: gene or protein
         String featureType = "";
 
         //=== Get Interaction information ===
@@ -111,7 +112,7 @@ public class CytoscapeNetworkDisplayer extends ReportDisplayer
 
         try {
             if (bag != null) {
-                hubNode = (BioEntity) os.getObjectById((Integer) startingFeatureSet.toArray()[0]);
+                hubNode = (BioEntity) os.getObjectById((InterMineId) startingFeatureSet.toArray()[0]);
             } else {
                 hubNode = (BioEntity) object;
             }
@@ -131,7 +132,7 @@ public class CytoscapeNetworkDisplayer extends ReportDisplayer
 
         //=== Query a full set of interacting genes ===
         CytoscapeNetworkDBQueryRunner queryRunner = new CytoscapeNetworkDBQueryRunner();
-        Set<Integer> fullInteractingGeneSet;
+        Set<InterMineId> fullInteractingGeneSet;
         try {
             fullInteractingGeneSet = queryRunner.getInteractingGenes(featureType,
                     startingFeatureSet, model, executor);

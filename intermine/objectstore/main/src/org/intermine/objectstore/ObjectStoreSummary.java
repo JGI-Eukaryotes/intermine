@@ -44,6 +44,7 @@ import org.intermine.objectstore.query.QueryReference;
 import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.SubqueryExistsConstraint;
 
 /**
@@ -57,7 +58,7 @@ public class ObjectStoreSummary
 {
     private static final Logger LOG = Logger.getLogger(ObjectStoreSummary.class);
 
-    private final Map<String, Integer> classCountsMap = new HashMap<String, Integer>();
+    private final Map<String, InterMineId> classCountsMap = new HashMap<String, InterMineId>();
     private final Map<String, List<Object>> fieldValuesMap = new HashMap<String, List<Object>>();
     protected final Map<String, Set<String>> emptyFieldsMap = new HashMap<String, Set<String>>();
     protected final Map<String, Set<String>> emptyAttributesMap =
@@ -112,7 +113,7 @@ public class ObjectStoreSummary
         LOG.info("Summarising field values...");
         String maxValuesString = (String) configuration.get(MAX_FIELD_VALUES);
         maxValues =
-            (maxValuesString == null ? DEFAULT_MAX_VALUES : Integer.parseInt(maxValuesString));
+            (maxValuesString == null ? DEFAULT_MAX_VALUES : InterMineId.parseInt(maxValuesString));
 
         // always empty references and collections
         LOG.info("Looking for empty collections and references...");
@@ -254,13 +255,13 @@ public class ObjectStoreSummary
         if (!classCountsMap.containsKey(cld.getName())) {
             int classCount = countClass(os, cld.getType());
             LOG.info("Adding class count: " + cld.getUnqualifiedName() + " = " + classCount);
-            classCountsMap.put(cld.getName(), new Integer(classCount));
+            classCountsMap.put(cld.getName(), new InterMineId(classCount));
 
             // if this class is empty all subclasses MUST be empty as well
             if (classCount == 0) {
                 for (ClassDescriptor subCld : model.getAllSubs(cld)) {
                     if (!classCountsMap.containsKey(subCld.getName())) {
-                        classCountsMap.put(subCld.getName(), new Integer(classCount));
+                        classCountsMap.put(subCld.getName(), new InterMineId(classCount));
                     }
                 }
             }
@@ -279,7 +280,7 @@ public class ObjectStoreSummary
             String value = ((String) entry.getValue()).trim();
             if (key.endsWith(CLASS_COUNTS_SUFFIX)) {
                 String className = key.substring(0, key.lastIndexOf("."));
-                classCountsMap.put(className, Integer.valueOf(value));
+                classCountsMap.put(className, InterMineId.valueOf(value));
             } else if (key.endsWith(FIELDS_SUFFIX)) {
                 String classAndFieldName = key.substring(0, key.lastIndexOf("."));
                 List<Object> fieldValues =
@@ -299,7 +300,7 @@ public class ObjectStoreSummary
                 List<String> attributeNames = Arrays.asList(StringUtil.split(value, FIELD_DELIM));
                 emptyAttributesMap.put(className, new TreeSet<String>(attributeNames));
             } else if (key.equals(MAX_FIELD_VALUES)) {
-                this.maxValues = Integer.parseInt(value);
+                this.maxValues = InterMineId.parseInt(value);
             }
         }
     }
@@ -319,11 +320,11 @@ public class ObjectStoreSummary
      * @return the count of the instances of the class
      */
     public int getClassCount(String className) {
-        Integer countInteger = classCountsMap.get(className);
-        if (countInteger == null) {
+        InterMineId countInterMineId = classCountsMap.get(className);
+        if (countInterMineId == null) {
             throw new RuntimeException("cannot find class count for: " + className);
         }
-        return countInteger.intValue();
+        return countInterMineId.intValue();
     }
 
     /**
@@ -390,9 +391,9 @@ public class ObjectStoreSummary
     public Properties toProperties() {
         Properties properties = new Properties();
         properties.put(MAX_FIELD_VALUES, "" + maxValues);
-        for (Map.Entry<String, Integer> entry: classCountsMap.entrySet()) {
+        for (Map.Entry<String, InterMineId> entry: classCountsMap.entrySet()) {
             String key = entry.getKey();
-            Integer value = entry.getValue();
+            InterMineId value = entry.getValue();
             properties.put(key + CLASS_COUNTS_SUFFIX, value.toString());
         }
         for (Map.Entry<String, List<Object>> entry: fieldValuesMap.entrySet()) {
@@ -498,7 +499,7 @@ public class ObjectStoreSummary
 
         Query q2 = new Query();
         q2.setDistinct(false);
-        q2.addToSelect(new QueryValue(new Integer(1)));
+        q2.addToSelect(new QueryValue(new InterMineId(1)));
 
         ConstraintSet cs2 = new ConstraintSet(ConstraintOp.AND);
         cs2.addConstraint(new SubqueryExistsConstraint(ConstraintOp.EXISTS, q));

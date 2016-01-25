@@ -27,6 +27,7 @@ import org.intermine.pathquery.ParseValueException;
 import org.intermine.pathquery.Path;
 import org.intermine.pathquery.PathException;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -428,7 +429,7 @@ public class QueryBuilderConstraintForm extends ActionForm
                 } else {
                     fieldClass = String.class;
                 }
-                int attributeOperator = Integer.parseInt(attributeOp);
+                int attributeOperator = InterMineId.parseInt(attributeOp);
                 if (attributeOperator == ConstraintOp.NONE_OF.getIndex()
                     || attributeOperator == ConstraintOp.ONE_OF.getIndex()) {
                     if ("".equals(multiValueAttribute)) {

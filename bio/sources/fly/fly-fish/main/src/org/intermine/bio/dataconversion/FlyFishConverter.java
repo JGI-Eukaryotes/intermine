@@ -23,6 +23,7 @@ import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.xml.full.Attribute;
 import org.intermine.xml.full.Item;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.ReferenceList;
 
 /**
@@ -111,7 +112,7 @@ public class FlyFishConverter extends BioFileConverter
             }
             String expression = thisHeader.substring(2);
             config[i] = new HeaderConfig();
-            config[i].stage = Integer.parseInt(String.valueOf(stageTag));
+            config[i].stage = InterMineId.parseInt(String.valueOf(stageTag));
             config[i].expression = expression;
         }
         while ((line = br.readLine()) != null) {

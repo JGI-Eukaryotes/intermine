@@ -19,6 +19,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 /**
@@ -96,7 +97,7 @@ public class InterMineModelParser implements ModelParser
                 String versionString = attrs.getValue("version");
                 if (versionString != null) {
                     try {
-                        version = Integer.parseInt(versionString);
+                        version = InterMineId.parseInt(versionString);
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException("Error - version = "
                                 + versionString + " is not a valid version");

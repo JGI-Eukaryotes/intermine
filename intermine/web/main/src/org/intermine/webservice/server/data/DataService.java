@@ -35,6 +35,7 @@ import org.intermine.pathquery.PathException;
 import org.intermine.webservice.server.core.JSONService;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.intermine.webservice.server.exceptions.ResourceNotFoundException;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.ServiceException;
 
 /** @author Alex Kalderimis **/
@@ -63,8 +64,8 @@ public class DataService extends JSONService
         int start = -1, end = -1;
         if (StringUtils.isNotBlank(rangeHeader)) {
             String[] parts = rangeHeader.replace("records=", "").split("-");
-            start = (StringUtils.isBlank(parts[0]) ? 0 : Integer.parseInt(parts[0], 10));
-            end = (StringUtils.isBlank(parts[1]) ? -1 : Integer.parseInt(parts[1], 10));
+            start = (StringUtils.isBlank(parts[0]) ? 0 : InterMineId.parseInt(parts[0], 10));
+            end = (StringUtils.isBlank(parts[1]) ? -1 : InterMineId.parseInt(parts[1], 10));
         }
         if (StringUtils.isBlank(pathInfo)) {
             throw new ResourceNotFoundException(pathInfo + " not found.");

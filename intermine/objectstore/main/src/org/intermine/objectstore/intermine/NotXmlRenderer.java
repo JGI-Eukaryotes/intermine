@@ -22,6 +22,7 @@ import org.intermine.metadata.TypeUtil.FieldInfo;
 import org.intermine.metadata.Util;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.StringConstructor;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.ClobAccess;
 
 /**
@@ -65,7 +66,7 @@ public final class NotXmlRenderer
                     // It is not null or a collection.
                     if (value instanceof InterMineObject) {
                         // Dereference ID of reference, and use that instead.
-                        Integer id = ((InterMineObject) value).getId();
+                        InterMineId id = ((InterMineObject) value).getId();
                         sb.append(DELIM);
                         sb.append("r");
                         sb.append(fieldName);

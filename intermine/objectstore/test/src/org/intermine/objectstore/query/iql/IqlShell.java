@@ -41,6 +41,7 @@ import org.intermine.model.testmodel.Address;
 import org.intermine.model.testmodel.CEO;
 import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Department;
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Employee;
 
 /**
@@ -319,7 +320,7 @@ public class IqlShell
                     out.println("Called goFaster in " + (System.currentTimeMillis() - startTime)
                             + " ms");
                 }
-                String sqlString = SqlGenerator.generate(q, 0, Integer.MAX_VALUE, osii.getSchema(),
+                String sqlString = SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, osii.getSchema(),
                         osii.getDatabase(), (Map) null);
                 out.println("SQL: " + sqlString);
                 QueryOptimiserContext context = new QueryOptimiserContext();

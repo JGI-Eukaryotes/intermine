@@ -40,6 +40,7 @@ import org.intermine.xml.full.Item;
 import org.intermine.xml.full.ItemFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -101,15 +102,15 @@ public class EntrezOrganismRetriever extends Task
 
             ObjectStore os = ObjectStoreFactory.getObjectStore(osAlias);
 
-            Map<Integer, Organism> orgMap = getOrganisms(os);
+            Map<InterMineId, Organism> orgMap = getOrganisms(os);
 
-            Set<Integer> taxonIds = new HashSet<Integer>();
+            Set<InterMineId> taxonIds = new HashSet<InterMineId>();
             Set<Item> toStore = new HashSet<Item>();
 
             ItemFactory itemFactory = new ItemFactory(os.getModel(), "-1_");
             writer.write(FullRenderer.getHeader() + "\n");
-            for (Iterator<Integer> i = orgMap.keySet().iterator(); i.hasNext();) {
-                Integer taxonId = i.next();
+            for (Iterator<InterMineId> i = orgMap.keySet().iterator(); i.hasNext();) {
+                InterMineId taxonId = i.next();
                 taxonIds.add(taxonId);
                 if (taxonIds.size() == BATCH_SIZE || !i.hasNext()) {
                     SAXParser.parse(new InputSource(getReader(taxonIds)),
@@ -142,14 +143,14 @@ public class EntrezOrganismRetriever extends Task
      * @param os the ObjectStore to read from
      * @return a Map from taxonid to Organism object
      */
-    protected Map<Integer, Organism> getOrganisms(ObjectStore os) {
+    protected Map<InterMineId, Organism> getOrganisms(ObjectStore os) {
         Query q = new Query();
         QueryClass qc = new QueryClass(Organism.class);
         q.addFrom(qc);
         q.addToSelect(qc);
         List<?> results = os.executeSingleton(q);
 
-        Map<Integer, Organism> retMap = new HashMap<Integer, Organism>();
+        Map<InterMineId, Organism> retMap = new HashMap<InterMineId, Organism>();
 
         Iterator<?> resIter = results.iterator();
 
@@ -167,7 +168,7 @@ public class EntrezOrganismRetriever extends Task
      * @return a Reader for the information
      * @throws Exception if an error occurs
      */
-    protected Reader getReader(Set<Integer> ids) throws Exception {
+    protected Reader getReader(Set<InterMineId> ids) throws Exception {
         URL url = new URL(ESUMMARY_URL + StringUtil.join(ids, ","));
         return new BufferedReader(new InputStreamReader(url.openStream()));
     }
@@ -178,7 +179,7 @@ public class EntrezOrganismRetriever extends Task
      * @return reader
      * @throws Exception if something goes wrong
      */
-    protected static Reader getReader(Integer id) throws Exception {
+    protected static Reader getReader(InterMineId id) throws Exception {
         URL url = new URL(ESUMMARY_URL + id);
         return new BufferedReader(new InputStreamReader(url.openStream()));
     }
@@ -194,8 +195,8 @@ Example
             <Item Name="Division" Type="String">flies</Item>
             <Item Name="ScientificName" Type="String">Drosophila melanogaster</Item>
             <Item Name="CommonName" Type="String">fruit fly</Item>
-            <Item Name="TaxId" Type="Integer">7227</Item>
-            <Item Name="AkaTaxId" Type="Integer">0</Item>
+            <Item Name="TaxId" Type="InterMineId">7227</Item>
+            <Item Name="AkaTaxId" Type="InterMineId">0</Item>
             <Item Name="Genus" Type="String">Drosophila</Item>
             <Item Name="Species" Type="String">melanogaster</Item>
             <Item Name="Subsp" Type="String"/>
@@ -213,8 +214,8 @@ Example
             <Item Name="Division" Type="String"/>
             <Item Name="ScientificName" Type="String"/>
             <Item Name="CommonName" Type="String"/>
-            <Item Name="TaxId" Type="Integer">71853</Item>
-            <Item Name="AkaTaxId" Type="Integer">109296</Item>
+            <Item Name="TaxId" Type="InterMineId">71853</Item>
+            <Item Name="AkaTaxId" Type="InterMineId">109296</Item>
             <Item Name="Genus" Type="String"/>
             <Item Name="Species" Type="String"/>
             <Item Name="Subsp" Type="String"/>

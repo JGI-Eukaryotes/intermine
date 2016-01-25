@@ -93,6 +93,7 @@ import org.intermine.pathquery.PathConstraintRange;
 import org.intermine.pathquery.PathConstraintSubclass;
 import org.intermine.pathquery.PathException;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.util.PropertiesUtil;
 
 /**
@@ -1358,7 +1359,7 @@ public final class MainHelper
                 && (!SummaryConfig.summariseAsOccurrences(className + "." + fieldName))) {
             return getHistogram(subQ, qf, pathToQueryNode);
         } else if ((summaryType == String.class) || (summaryType == Boolean.class)
-                || (summaryType == Long.class) || (summaryType == Integer.class)
+                || (summaryType == Long.class) || (summaryType == InterMineId.class)
                 || (summaryType == Short.class) || (summaryType == Byte.class)
                 || (summaryType == Float.class) || (summaryType == Double.class)
                 || (summaryType == BigDecimal.class)) {
@@ -1377,7 +1378,7 @@ public final class MainHelper
     }
 
     private static boolean isNumeric(Class<?> summaryType) {
-        return (summaryType == Long.class) || (summaryType == Integer.class)
+        return (summaryType == Long.class) || (summaryType == InterMineId.class)
                 || (summaryType == Short.class) || (summaryType == Byte.class)
                 || (summaryType == Float.class) || (summaryType == Double.class)
                 || (summaryType == BigDecimal.class);
@@ -1433,7 +1434,7 @@ public final class MainHelper
         QueryEvaluable bins = new QueryValue(SummaryConfig.getNumberOfBins());
 
         Class<?> summaryType = qf.getType();
-        if (summaryType == Long.class || summaryType == Integer.class) {
+        if (summaryType == Long.class || summaryType == InterMineId.class) {
             bins = new QueryExpression(
                 bins, QueryExpression.LEAST,
                 new QueryExpression(max, QueryExpression.SUBTRACT, min)
@@ -1564,7 +1565,7 @@ public final class MainHelper
             rangeHelpers = new HashMap<Class<?>, RangeHelper>();
             // Default basic helpers.
 //            rangeHelpers.put(int.class, new IntHelper());
-//            rangeHelpers.put(Integer.class, new IntHelper());
+//            rangeHelpers.put(InterMineId.class, new IntHelper());
 //            rangeHelpers.put(String.class, new StringHelper());
             loadHelpers(PropertiesUtil.getProperties());
         }
@@ -1687,8 +1688,8 @@ public final class MainHelper
          * Returns the number of bins to split a histogram into.
          * @return The number of bins.
          */
-        public static Integer getNumberOfBins() {
-            return Integer.valueOf(
+        public static InterMineId getNumberOfBins() {
+            return InterMineId.valueOf(
                     PropertiesUtil.getProperties().getProperty("querySummary.no-of-bins", "20"));
         }
     }

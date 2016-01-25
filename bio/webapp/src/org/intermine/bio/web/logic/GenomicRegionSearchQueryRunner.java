@@ -46,6 +46,7 @@ import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 
@@ -138,20 +139,20 @@ public class GenomicRegionSearchQueryRunner implements Runnable
         }
 
         // map of sequence feature statistics: key - class name. value - count of feature
-        Map<String, Map<GenomicRegion, Map<String, Integer>>> spanOverlapFullStatMap =
-             (Map<String, Map<GenomicRegion, Map<String, Integer>>>) request
+        Map<String, Map<GenomicRegion, Map<String, InterMineId>>> spanOverlapFullStatMap =
+             (Map<String, Map<GenomicRegion, Map<String, InterMineId>>>) request
                             .getSession().getAttribute("spanOverlapFullStatMap");
 
         if (spanOverlapFullStatMap == null) {
             spanOverlapFullStatMap =
-                new HashMap<String, Map<GenomicRegion, Map<String, Integer>>>();
+                new HashMap<String, Map<GenomicRegion, Map<String, InterMineId>>>();
         }
 
         Map<GenomicRegion, List<List<String>>> spanOverlapResultDisplayMap = Collections
                 .synchronizedMap(new LinkedHashMap<GenomicRegion, List<List<String>>>());
 
-        Map<GenomicRegion, Map<String, Integer>> spanOverlapResultStatMap = Collections
-        .synchronizedMap(new LinkedHashMap<GenomicRegion, Map<String, Integer>>());
+        Map<GenomicRegion, Map<String, InterMineId>> spanOverlapResultStatMap = Collections
+        .synchronizedMap(new LinkedHashMap<GenomicRegion, Map<String, InterMineId>>());
 
         if (!spanOverlapFullResultMap.containsKey(spanUUIDString)
                 && !spanOverlapFullStatMap.containsKey(spanUUIDString)) {
@@ -171,10 +172,10 @@ public class GenomicRegionSearchQueryRunner implements Runnable
 
                     List<List<String>> spanResults = new ArrayList<List<String>>();
 
-                    Map<String, Integer> spanStatMap = new HashMap<String, Integer>();
+                    Map<String, InterMineId> spanStatMap = new HashMap<String, InterMineId>();
                     ValueComparator bvc =  new ValueComparator(spanStatMap);
                     @SuppressWarnings("unchecked")
-                    TreeMap<String, Integer> sortedStatMap = new TreeMap<String, Integer>(bvc);
+                    TreeMap<String, InterMineId> sortedStatMap = new TreeMap<String, InterMineId>(bvc);
 
                     if (results == null || results.isEmpty()) {
                         spanOverlapResultDisplayMap.put(e.getKey(), null);
@@ -289,7 +290,7 @@ public class GenomicRegionSearchQueryRunner implements Runnable
 
                 String orgName = (String) row.get(0);
                 String chrIdentifier = (String) row.get(1);
-                Integer chrLength = (Integer) row.get(2);
+                InterMineId chrLength = (InterMineId) row.get(2);
 
                 // Add orgName to HashSet to filter out duplication
                 orgSet.add(orgName);
@@ -412,10 +413,10 @@ public class GenomicRegionSearchQueryRunner implements Runnable
      * @param batchSize the query batch size
      * @return orgTaxonIdMap - a HashMap with organism  as key and its taxonId as value
      */
-    public static Map<String, Integer> getTaxonInfo(InterMineAPI im, int batchSize) {
+    public static Map<String, InterMineId> getTaxonInfo(InterMineAPI im, int batchSize) {
         long startTime = System.currentTimeMillis();
 
-        Map<String, Integer> orgTaxonIdMap = new HashMap<String, Integer>();
+        Map<String, InterMineId> orgTaxonIdMap = new HashMap<String, InterMineId>();
         Query q = new Query();
         QueryClass organisms = new QueryClass(org.intermine.model.bio.Organism.class);
         q.addFrom(organisms);
@@ -467,12 +468,12 @@ public class GenomicRegionSearchQueryRunner implements Runnable
  */
 class ValueComparator implements Comparator
 {
-    Map<String, Integer> base;
+    Map<String, InterMineId> base;
 
     /**
      * @param base the map itself
      */
-    public ValueComparator(Map<String, Integer> base) {
+    public ValueComparator(Map<String, InterMineId> base) {
         this.base = base;
     }
 

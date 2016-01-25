@@ -25,6 +25,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryNode;
 import org.intermine.objectstore.query.ResultsInfo;
+import org.intermine.model.InterMineId;
 import org.intermine.util.SynchronisedIterator;
 
 /**
@@ -87,13 +88,13 @@ public class ParallelPrecomputer
         }
 
         Iterator<Job> jobIter = new SynchronisedIterator<Job>(todo.iterator());
-        Map<Integer, String> threads = new TreeMap<Integer, String>();
+        Map<InterMineId, String> threads = new TreeMap<InterMineId, String>();
         List<Exception> exceptions = Collections.synchronizedList(new ArrayList<Exception>());
 
         synchronized (threads) {
             for (int i = 1; i < threadCount; i++) {
                 Thread worker = new Thread(new Worker(threads, jobIter, i, exceptions));
-                threads.put(new Integer(i), "");
+                threads.put(new InterMineId(i), "");
                 worker.setName("PrecomputeTask extra thread " + i);
                 worker.start();
             }
@@ -103,7 +104,7 @@ public class ParallelPrecomputer
             while (jobIter.hasNext()) {
                 Job job = jobIter.next();
                 synchronized (threads) {
-                    threads.put(new Integer(0), job.getKey());
+                    threads.put(new InterMineId(0), job.getKey());
                     LOG.info("Threads doing: " + threads);
                 }
                 executeJob(job, 0);
@@ -118,7 +119,7 @@ public class ParallelPrecomputer
         }
         LOG.info("Thread 0 finished");
         synchronized (threads) {
-            threads.remove(new Integer(0));
+            threads.remove(new InterMineId(0));
             LOG.info("Threads doing: " + threads);
             while (threads.size() != 0) {
                 LOG.info(threads.size() + " threads left");
@@ -224,12 +225,12 @@ public class ParallelPrecomputer
 
     private class Worker implements Runnable
     {
-        private Map<Integer, String> threads;
+        private Map<InterMineId, String> threads;
         private Iterator<Job> jobIter;
         private int threadNo;
         private List<Exception> exceptions;
 
-        public Worker(Map<Integer, String> threads, Iterator<Job> jobIter, int threadNo,
+        public Worker(Map<InterMineId, String> threads, Iterator<Job> jobIter, int threadNo,
                 List<Exception> exceptions) {
             this.threads = threads;
             this.jobIter = jobIter;
@@ -242,7 +243,7 @@ public class ParallelPrecomputer
                 while (jobIter.hasNext()) {
                     Job job = jobIter.next();
                     synchronized (threads) {
-                        threads.put(new Integer(threadNo), job.getKey());
+                        threads.put(new InterMineId(threadNo), job.getKey());
                         LOG.info("Threads doing: " + threads);
                     }
                     try {
@@ -257,7 +258,7 @@ public class ParallelPrecomputer
             } finally {
                 LOG.info("Thread " + threadNo + " finished");
                 synchronized (threads) {
-                    threads.remove(new Integer(threadNo));
+                    threads.remove(new InterMineId(threadNo));
                     LOG.info("Threads doing: " + threads);
                     threads.notify();
                 }

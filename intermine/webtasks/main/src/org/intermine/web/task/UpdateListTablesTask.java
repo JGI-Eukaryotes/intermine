@@ -38,6 +38,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.DatabaseUtil;
 
 /**
@@ -127,13 +128,13 @@ public class UpdateListTablesTask extends Task
         stm.executeUpdate(sql1);
         String sql2 = "SELECT id, intermine_current FROM savedbag";
         ResultSet rs = stm.executeQuery(sql2);
-        Map<Integer, Boolean> intermineCurrentMap = new HashMap<Integer, Boolean>();
+        Map<InterMineId, Boolean> intermineCurrentMap = new HashMap<InterMineId, Boolean>();
         while (rs.next()) {
             intermineCurrentMap.put(rs.getInt(1), rs.getBoolean(2));
         }
         Boolean intermineCurrentBoolean;
         String intermineCurrent = "";
-        for (Entry<Integer, Boolean> entry : intermineCurrentMap.entrySet()) {
+        for (Entry<InterMineId, Boolean> entry : intermineCurrentMap.entrySet()) {
             intermineCurrentBoolean = entry.getValue();
             intermineCurrent = (intermineCurrentBoolean)
                                ? BagState.CURRENT.toString()

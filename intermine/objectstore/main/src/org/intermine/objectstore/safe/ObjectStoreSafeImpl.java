@@ -21,6 +21,7 @@ import org.intermine.objectstore.query.QueryCloner;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsInfo;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.SingletonResults;
 
 /**
@@ -108,7 +109,7 @@ public class ObjectStoreSafeImpl extends ObjectStorePassthruImpl
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.execute(QueryCloner.cloneQuery(q), start, limit, optimise, explain, sequence);
     }
 
@@ -124,7 +125,7 @@ public class ObjectStoreSafeImpl extends ObjectStorePassthruImpl
      * {@inheritDoc}
      */
     @Override
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.count(QueryCloner.cloneQuery(q), sequence);
     }
 

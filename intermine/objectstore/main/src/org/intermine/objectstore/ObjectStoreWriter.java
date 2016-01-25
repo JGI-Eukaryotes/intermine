@@ -17,6 +17,7 @@ import org.intermine.objectstore.query.Clob;
 import org.intermine.objectstore.query.Constraint;
 import org.intermine.objectstore.query.ObjectStoreBag;
 import org.intermine.objectstore.query.Query;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.QueryClass;
 
 /**
@@ -93,45 +94,45 @@ public interface ObjectStoreWriter extends ObjectStore
      * @param hadId the ID of the object to place in the collection
      * @throws ObjectStoreException if a problem occurs
      */
-    void addToCollection(Integer hasId, Class<?> clazz, String fieldName, Integer hadId)
+    void addToCollection(InterMineId hasId, Class<?> clazz, String fieldName, InterMineId hadId)
         throws ObjectStoreException;
 
     /**
      * Adds an element to an ObjectStoreBag.
      *
      * @param osb an ObjectStoreBag
-     * @param element an Integer to add to the bag
+     * @param element an InterMineId to add to the bag
      * @throws ObjectStoreException if an error occurs
      */
-    void addToBag(ObjectStoreBag osb, Integer element) throws ObjectStoreException;
+    void addToBag(ObjectStoreBag osb, InterMineId element) throws ObjectStoreException;
 
     /**
      * Adds a collection of elements to an ObjectStoreBag.
      *
      * @param osb an ObjectStoreBag
-     * @param coll a Collection of Integers
+     * @param coll a Collection of InterMineIds
      * @throws ObjectStoreException if an error occurs
      */
     void addAllToBag(ObjectStoreBag osb,
-            Collection<Integer> coll) throws ObjectStoreException;
+            Collection<InterMineId> coll) throws ObjectStoreException;
 
     /**
      * Removes an element from an ObjectStoreBag.
      *
      * @param osb an ObjectStoreBag
-     * @param element an Integer to add to the bag
+     * @param element an InterMineId to add to the bag
      * @throws ObjectStoreException if an error occurs
      */
-    void removeFromBag(ObjectStoreBag osb, Integer element) throws ObjectStoreException;
+    void removeFromBag(ObjectStoreBag osb, InterMineId element) throws ObjectStoreException;
 
     /**
      * Removes a collection of elements from an ObjectStoreBag.
      *
      * @param osb an ObjectStoreBag
-     * @param coll a Collection of Integers
+     * @param coll a Collection of InterMineIds
      * @throws ObjectStoreException if an error occurs
      */
-    void removeAllFromBag(ObjectStoreBag osb, Collection<Integer> coll) throws ObjectStoreException;
+    void removeAllFromBag(ObjectStoreBag osb, Collection<InterMineId> coll) throws ObjectStoreException;
 
     /**
      * Adds elements to an ObjectStoreBag from the results of a Query. The data may not be loaded

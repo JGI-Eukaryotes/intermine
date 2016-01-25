@@ -29,6 +29,7 @@ import org.intermine.model.testmodel.HasSecretarys;
 import org.intermine.model.testmodel.ImportantPerson;
 import org.intermine.model.testmodel.Manager;
 import org.intermine.model.testmodel.RandomInterface;
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Thing;
 
 public class DynamicUtilTest extends TestCase
@@ -217,6 +218,6 @@ public class DynamicUtilTest extends TestCase
     public void testGetNullPrimitives() throws Exception {
         Company c = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
         assertEquals(0, c.getVatNumber());
-        assertEquals(new Integer(0), c.getFieldValue("vatNumber"));
+        assertEquals(new InterMineId(0), c.getFieldValue("vatNumber"));
     }
 }

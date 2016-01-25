@@ -27,6 +27,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreFactory;
 import org.intermine.sql.DatabaseFactory;
 import org.intermine.testing.OneTimeTestCase;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.TypeUtil;
 
 public class FlatModeSqlGeneratorTest extends SqlGeneratorTest
@@ -302,7 +303,7 @@ public class FlatModeSqlGeneratorTest extends SqlGeneratorTest
 
     public void testInvalidClassForGetById() throws Exception {
         try {
-            SqlGenerator.generateQueryForId(new Integer(5), SqlGeneratorTest.class, getSchema());
+            SqlGenerator.generateQueryForId(new InterMineId(5), SqlGeneratorTest.class, getSchema());
             fail("Expected: ObjectStoreException");
         } catch (ObjectStoreException e) {
             assertEquals("class org.intermine.objectstore.intermine.SqlGeneratorTest is not in the model", e.getMessage());

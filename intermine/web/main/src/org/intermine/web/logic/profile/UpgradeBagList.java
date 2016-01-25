@@ -25,6 +25,7 @@ import org.intermine.api.profile.BagState;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -62,7 +63,7 @@ public class UpgradeBagList implements Runnable
                         && (result.getIssues().isEmpty()
                             || onlyOtherIssuesAlreadyContained(result))) {
                         @SuppressWarnings("rawtypes")
-                        Map<Integer, List> matches = result.getMatches();
+                        Map<InterMineId, List> matches = result.getMatches();
                         //we don't need to update the extra field added later
                         bag.upgradeOsb(matches.keySet(), false);
                     } else {
@@ -105,7 +106,7 @@ public class UpgradeBagList implements Runnable
             @SuppressWarnings("rawtypes")
             Map<String, Map<String, List>> otherMatchMap = result.getIssues()
                 .get(BagQueryResult.OTHER);
-            Set<Integer> matchesIds = result.getMatches().keySet();
+            Set<InterMineId> matchesIds = result.getMatches().keySet();
             if (otherMatchMap != null) {
                 @SuppressWarnings("rawtypes")
                 Map<String, List> lowQualityMatches = new LinkedHashMap<String, List>();

@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import org.intermine.metadata.StringUtil;
 import org.intermine.util.XmlUtil;
+import org.intermine.model.InterMineId;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -67,7 +68,7 @@ public class GFF3Record
             if (".".equals(startString)) {
                 start = -1;
             } else {
-                start = Integer.parseInt(startString);
+                start = InterMineId.parseInt(startString);
             }
         } catch (NumberFormatException nfe) {
             throw new IOException("can not parse integer for start position: " + startString
@@ -79,7 +80,7 @@ public class GFF3Record
             if (".".equals(endString)) {
                 end = -1;
             } else {
-                end = Integer.parseInt(endString);
+                end = InterMineId.parseInt(endString);
             }
         } catch (NumberFormatException nfe) {
             throw new IOException("can not parse integer for end position: " + endString

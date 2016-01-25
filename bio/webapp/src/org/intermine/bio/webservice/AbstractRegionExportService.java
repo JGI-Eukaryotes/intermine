@@ -42,6 +42,7 @@ import org.intermine.webservice.server.lists.ListInput;
 import org.intermine.webservice.server.output.Formatter;
 import org.intermine.webservice.server.output.Output;
 import org.intermine.webservice.server.output.PlainFormatter;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.output.StreamedOutput;
 
 /**
@@ -76,7 +77,7 @@ public abstract class AbstractRegionExportService extends GenomicRegionSearchSer
 
         GenomicRegionSearchListInput searchInput = (GenomicRegionSearchListInput) input;
 
-        Set<Integer> objectIds = new HashSet<Integer>();
+        Set<InterMineId> objectIds = new HashSet<InterMineId>();
         Map<GenomicRegion, Query> queries = createQueries(searchInput.getSearchInfo());
         for (Entry<GenomicRegion, Query> e: queries.entrySet()) {
             Query q = e.getValue();
@@ -85,7 +86,7 @@ public abstract class AbstractRegionExportService extends GenomicRegionSearchSer
             Iterator<Object> it = rs.iterator();
             while (it.hasNext()) {
                 ResultsRow rr = (ResultsRow) it.next();
-                Integer id = (Integer) rr.get(0);
+                InterMineId id = (InterMineId) rr.get(0);
                 objectIds.add(id);
             }
         }
@@ -102,7 +103,7 @@ public abstract class AbstractRegionExportService extends GenomicRegionSearchSer
      * @return A path-query.
      * @throws Exception if something goes wrong
      */
-    protected PathQuery makePathQuery(String type, Collection<Integer> ids) throws Exception {
+    protected PathQuery makePathQuery(String type, Collection<InterMineId> ids) throws Exception {
         PathQuery pq = new PathQuery(im.getModel());
         pq.addView(type + ".primaryIdentifier");
         pq.addConstraint(Constraints.inIds(type, ids));

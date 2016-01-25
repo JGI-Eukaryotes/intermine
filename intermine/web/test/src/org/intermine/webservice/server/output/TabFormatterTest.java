@@ -23,6 +23,7 @@ import org.intermine.objectstore.query.QuerySelectable;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.core.ResultProcessor;
 
 public class TabFormatterTest extends TestCase {
@@ -58,31 +59,31 @@ public class TabFormatterTest extends TestCase {
         attributes.put(TabFormatter.COLUMN_HEADERS, view);
 
         tim = new Employee();
-        tim.setId(new Integer(5));
+        tim.setId(new InterMineId(5));
         tim.setName("Tim Canterbury");
         tim.setAge(30);
         tim.setEnd("a");
 
         gareth = new Employee();
-        gareth.setId(new Integer(6));
+        gareth.setId(new InterMineId(6));
         gareth.setName("Gareth Keenan");
         gareth.setAge(32);
         gareth.setEnd("b");
 
         dawn = new Employee();
-        dawn.setId(new Integer(7));
+        dawn.setId(new InterMineId(7));
         dawn.setName("Dawn Tinsley");
         dawn.setAge(26);
         dawn.setEnd(null);
 
         keith = new Employee();
-        keith.setId(new Integer(8));
+        keith.setId(new InterMineId(8));
         keith.setName("Keith Bishop");
         keith.setAge(41);
         keith.setEnd("quote here -> \" <- there");
 
         lee = new Employee();
-        lee.setId(new Integer(9));
+        lee.setId(new InterMineId(9));
         lee.setName("Lee");
         lee.setAge(28);
         lee.setEnd("tab here -> \t <- there");
@@ -114,7 +115,7 @@ public class TabFormatterTest extends TestCase {
         q = MainHelper
                 .makeQuery(pq, new HashMap<String, InterMineBag>(), pathToQueryNode, null, null);
         @SuppressWarnings("unchecked")
-        List<Object> resultList = os.execute(q, 0, 5, true, true, new HashMap<Object, Integer>());
+        List<Object> resultList = os.execute(q, 0, 5, true, true, new HashMap<Object, InterMineId>());
         Results results = new DummyResults(q, resultList);
         iterator = new ExportResultsIterator(pq, q, results, pathToQueryNode);
         processor =  new ResultProcessor();

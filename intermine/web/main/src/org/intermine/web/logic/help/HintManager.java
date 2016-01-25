@@ -17,6 +17,7 @@ import java.util.Properties;
 import java.util.TreeMap;
 
 import org.intermine.util.PropertiesUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.results.WebState;
 
 /**
@@ -92,11 +93,11 @@ public class HintManager
         String hint = null;
         Map<String, String> pageHints = hintsMap.get(page);
         if (pageHints != null) {
-            TreeMap<Integer, String> availableHints = new TreeMap<Integer, String>();
+            TreeMap<InterMineId, String> availableHints = new TreeMap<InterMineId, String>();
             for (String hintId : pageHints.keySet()) {
                 int hintCount = webState.getHintCount(hintId);
                 if (hintCount < MAX_HINT_DISPLAY) {
-                    availableHints.put(new Integer(hintCount), hintId);
+                    availableHints.put(new InterMineId(hintCount), hintId);
                 }
             }
             if (!availableHints.isEmpty()) {

@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.intermine.api.results.ResultElement;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.Results;
 
 /**
@@ -33,7 +34,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
 
     private int counter = 0;
     private int start = 0;
-    private Integer end = null;
+    private InterMineId end = null;
     private String filterTerm = null;
     private List<ResultElement> nextRow = null;
 

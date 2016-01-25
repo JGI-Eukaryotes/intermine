@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineFastPathObject;
 
 /**
@@ -145,7 +146,7 @@ public class Model
         Set<CollectionDescriptor> emptyCols = Collections.emptySet();
         ClassDescriptor intermineObject = new ClassDescriptor(
                 "org.intermine.model.InterMineObject", null, true,
-                Collections.singleton(new AttributeDescriptor("id", "java.lang.Integer")),
+                Collections.singleton(new AttributeDescriptor("id", "java.lang.InterMineId")),
                 emptyRefs, emptyCols);
         orderedClds.add(intermineObject);
         rootCld = intermineObject;

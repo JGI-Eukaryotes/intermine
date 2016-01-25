@@ -39,6 +39,7 @@ import org.intermine.web.logic.export.http.TableExporterFactory;
 import org.intermine.web.logic.export.http.TableHttpExporter;
 import org.intermine.web.logic.results.PagedTable;
 import org.intermine.web.logic.session.SessionMethods;
+import org.intermine.model.InterMineId;
 import org.intermine.web.struts.TableExportForm;
 
 /**
@@ -145,10 +146,10 @@ public class CytoscapeNetworkExportAction extends Action
         Profile profile = SessionMethods.getProfile(session);
 
         //=== Parse string to a set of integer of ids ===
-        Set<Integer> fullInteractingGeneSet = new HashSet<Integer>();
+        Set<InterMineId> fullInteractingGeneSet = new HashSet<InterMineId>();
         String[] fullInteractingGeneSetStrArr = StringUtil.split(fullInteractingGeneSetStr, ",");
         for (String s : fullInteractingGeneSetStrArr) {
-            fullInteractingGeneSet.add(Integer.valueOf(s));
+            fullInteractingGeneSet.add(InterMineId.valueOf(s));
         }
 
         //=== Create and run a query ===

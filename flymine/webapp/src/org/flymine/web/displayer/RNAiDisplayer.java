@@ -32,6 +32,7 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
 import org.intermine.web.logic.results.ReportObject;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -98,7 +99,7 @@ RNAiScreen.publication.pubMedId RNAiScreen.rnaiScreenHits.gene.primaryIdentifier
 sortOrder="RNAiScreen.name asc">
 </query>
     */
-    private static PathQuery getQuery(InterMineAPI im, Integer geneId) {
+    private static PathQuery getQuery(InterMineAPI im, InterMineId geneId) {
         PathQuery q = new PathQuery(im.getModel());
         q.addViews("RNAiScreen.rnaiScreenHits.result", "RNAiScreen.name",
                 "RNAiScreen.publication.pubMedId");

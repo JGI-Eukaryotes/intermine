@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
+import org.intermine.model.InterMineId;
 import org.junit.Test;
 
 public class LiveQueryTest {
@@ -158,7 +159,7 @@ public class LiveQueryTest {
         List<List<Object>> results = unauthorised.getRowsAsLists(test1);
         assertEquals(EXP_COUNT_1, results.size());
         assertEquals(EMP_NAME_1, (String) results.get(0).get(1));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_1 - 1).get(2));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_1 - 1).get(2));
     }
 
     @Test
@@ -167,7 +168,7 @@ public class LiveQueryTest {
         List<List<Object>> results = unauthorised.getRowsAsLists(test1.toXml());
         assertEquals(EXP_COUNT_1, results.size());
         assertEquals(EMP_NAME_1, (String) results.get(0).get(1));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_1 - 1).get(2));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_1 - 1).get(2));
     }
 
     @Test
@@ -176,7 +177,7 @@ public class LiveQueryTest {
         List<List<Object>> results = unauthorised.getRowsAsLists(test1, middle);
         assertEquals(EXP_COUNT_2, results.size());
         assertEquals(EMP_NAME_2, (String) results.get(0).get(1));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_2 - 1).get(2));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_2 - 1).get(2));
     }
 
     @Test
@@ -185,7 +186,7 @@ public class LiveQueryTest {
         List<List<Object>> results = unauthorised.getRowsAsLists(test1.toXml(), middle);
         assertEquals(EXP_COUNT_2, results.size());
         assertEquals(EMP_NAME_2, (String) results.get(0).get(1));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_2 - 1).get(2));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_2 - 1).get(2));
     }
 
     @Test
@@ -194,7 +195,7 @@ public class LiveQueryTest {
         List<Map<String, Object>> results = unauthorised.getRowsAsMaps(test1);
         assertEquals(EXP_COUNT_1, results.size());
         assertEquals(EMP_NAME_1, (String) results.get(0).get("name"));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_1 - 1).get("age"));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_1 - 1).get("age"));
     }
 
     @Test
@@ -203,7 +204,7 @@ public class LiveQueryTest {
         List<Map<String, Object>> results = unauthorised.getRowsAsMaps(test1.toXml());
         assertEquals(EXP_COUNT_1, results.size());
         assertEquals(EMP_NAME_1, (String) results.get(0).get("name"));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_1 - 1).get("age"));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_1 - 1).get("age"));
     }
 
     @Test
@@ -212,7 +213,7 @@ public class LiveQueryTest {
         List<Map<String, Object>> results = unauthorised.getRowsAsMaps(test1, middle);
         assertEquals(EXP_COUNT_2, results.size());
         assertEquals(EMP_NAME_2, (String) results.get(0).get("name"));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_2 - 1).get("age"));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_2 - 1).get("age"));
     }
 
     @Test
@@ -221,7 +222,7 @@ public class LiveQueryTest {
         List<Map<String, Object>> results = unauthorised.getRowsAsMaps(test1.toXml(), middle);
         assertEquals(EXP_COUNT_2, results.size());
         assertEquals(EMP_NAME_2, (String) results.get(0).get("name"));
-        assertEquals(new Integer(EXP_AGE), (Integer) results.get(EXP_COUNT_2 - 1).get("age"));
+        assertEquals(new InterMineId(EXP_AGE), (InterMineId) results.get(EXP_COUNT_2 - 1).get("age"));
     }
 
     @Test
@@ -238,10 +239,10 @@ public class LiveQueryTest {
     @Test
     public void nonNumericSummary() {
         PathQuery test1 = queries.get("test1");
-        Map<String, Integer> summary = unauthorised.getSummary(test1, "department.name");
-        assertEquals(new Integer(3), summary.get("Warehouse"));
+        Map<String, InterMineId> summary = unauthorised.getSummary(test1, "department.name");
+        assertEquals(new InterMineId(3), summary.get("Warehouse"));
         int sum = 0;
-        for (Integer i: summary.values()) {
+        for (InterMineId i: summary.values()) {
             sum += i;
         }
         assertEquals(sum, unauthorised.getCount(test1));

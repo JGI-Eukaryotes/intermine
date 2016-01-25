@@ -11,6 +11,7 @@ package org.intermine.model;
  */
 
 import java.util.Collection;
+import org.intermine.model.InterMineId;
 import java.util.TreeMap;
 
 /**
@@ -22,7 +23,7 @@ import java.util.TreeMap;
  */
 public class StringConstructor implements CharSequence
 {
-    private TreeMap<Integer, String> strings = new TreeMap<Integer, String>();
+    private TreeMap<InterMineId, String> strings = new TreeMap<InterMineId, String>();
     private int length = 0;
 
     /**
@@ -38,7 +39,7 @@ public class StringConstructor implements CharSequence
      * @return this
      */
     public StringConstructor append(String string) {
-        strings.put(new Integer(length), string);
+        strings.put(new InterMineId(length), string);
         length += string.length();
         return this;
     }
@@ -133,10 +134,10 @@ public class StringConstructor implements CharSequence
     @Override
     public char charAt(int index) {
         // If we were using Java 1.6, I could do floorEntry(). Instead, I have to do:
-        String component = strings.get(new Integer(index));
+        String component = strings.get(new InterMineId(index));
         int componentIndex = index;
         if (component == null) {
-            Integer key = strings.headMap(new Integer(index)).lastKey();
+            InterMineId key = strings.headMap(new InterMineId(index)).lastKey();
             if (key != null) {
                 component = strings.get(key);
                 componentIndex = key.intValue();

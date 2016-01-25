@@ -11,6 +11,7 @@ package org.intermine.metadata;
  */
 
 import java.util.ArrayList;
+import org.intermine.model.InterMineId;
 import java.util.Iterator;
 
 /**
@@ -24,7 +25,7 @@ public class TextTable
     public static final String[] ROW_SEPARATOR = new String[0];
 
     private ArrayList<String[]> rows = new ArrayList<String[]>();
-    private ArrayList<Integer> columnWidths = new ArrayList<Integer>();
+    private ArrayList<InterMineId> columnWidths = new ArrayList<InterMineId>();
     private boolean leftBound;
     private boolean columnSeparators;
     private boolean rightBound;
@@ -51,11 +52,11 @@ public class TextTable
         for (int i = 0; i < row.length; i++) {
             int width = row[i].length();
             if (i >= columnWidths.size()) {
-                columnWidths.add(i, new Integer(width));
+                columnWidths.add(i, new InterMineId(width));
             } else {
                 int previousWidth = columnWidths.get(i).intValue();
                 if (width > previousWidth) {
-                    columnWidths.set(i, new Integer(width));
+                    columnWidths.set(i, new InterMineId(width));
                 }
             }
         }

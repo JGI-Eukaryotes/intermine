@@ -34,6 +34,7 @@ import org.intermine.metadata.TypeUtil;
 import org.intermine.web.logic.config.WebConfig;
 import org.intermine.web.logic.results.BagUploadConfirmInlineResultsTable;
 import org.intermine.web.logic.results.BagUploadConfirmInlineResultsTableRow;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -91,7 +92,7 @@ public class BagUploadConfirmIssueController extends TilesAction
                 }
                 List objectListForIdentifierList =
                     (List) identifierResultElementMap.get(identifier);
-                objectListForIdentifierList.add(new Integer(objectListIndex));
+                objectListForIdentifierList.add(new InterMineId(objectListIndex));
                 objectListIndex++;
             }
         }
@@ -136,7 +137,7 @@ public class BagUploadConfirmIssueController extends TilesAction
             for (Object rowNumber : value) {
                 // fetch the actual row in the table
                 BagUploadConfirmInlineResultsTableRow tableRow =
-                    (BagUploadConfirmInlineResultsTableRow) tableRows.get((Integer) rowNumber);
+                    (BagUploadConfirmInlineResultsTableRow) tableRows.get((InterMineId) rowNumber);
                 // set the new values
                 if (first) {
                     tableRow.setRowSpan(value.size());
@@ -144,7 +145,7 @@ public class BagUploadConfirmIssueController extends TilesAction
                 }
                 tableRow.setIdentifier((String) identifierKey);
                 // save the row back
-                tableRows.set((Integer) rowNumber, tableRow);
+                tableRows.set((InterMineId) rowNumber, tableRow);
                 // switch
                 first = false;
             }

@@ -42,6 +42,7 @@ import org.intermine.objectstore.intermine.ObjectStoreWriterInterMineImpl;
 import org.intermine.objectstore.intermine.SQLOperation;
 import org.intermine.sql.DatabaseUtil;
 
+import org.intermine.model.InterMineId;
 import static java.lang.String.format;
 
 /**
@@ -362,9 +363,9 @@ public final class SharedBagManager
         throws UserAlreadyShareBagException {
         final String userName = sharedWith.getUsername();
         try {
-            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, bag.getSavedBagId());
                     stm.setInt(2, sharedWith.getId());
                     return stm.executeUpdate();
@@ -419,9 +420,9 @@ public final class SharedBagManager
             throw new BagDoesNotExistException("There is not bag named '" + bagName + "'");
         }
         try {
-            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, bag.getId());
                     stm.setInt(2, sharedWith.getId());
                     return stm.executeUpdate();
@@ -453,11 +454,11 @@ public final class SharedBagManager
             return;
         }
         try {
-            Integer deleted = uosw.performUnsafeOperation(
+            InterMineId deleted = uosw.performUnsafeOperation(
                     DELETE_SHARE_SQL,
-                    new SQLOperation<Integer>() {
+                    new SQLOperation<InterMineId>() {
                         @Override
-                        public Integer run(PreparedStatement stm) throws SQLException {
+                        public InterMineId run(PreparedStatement stm) throws SQLException {
                             stm.setInt(1, userProfile.getId());
                             stm.setInt(2, bag.getSavedBagId());
                             return stm.executeUpdate();
@@ -499,9 +500,9 @@ public final class SharedBagManager
             return;
         }
         try {
-            uosw.performUnsafeOperation(UNSHARE_BAG_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(UNSHARE_BAG_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, bag.getSavedBagId());
                     return stm.executeUpdate();
                 }
@@ -528,15 +529,15 @@ public final class SharedBagManager
      *
      * @param userId An id of a user.
      */
-    public void removeAllInvitesBy(final Integer userId) {
+    public void removeAllInvitesBy(final InterMineId userId) {
         if (userId == null) {
             LOG.warn("I can't remove invites when the user-id is null");
             return;
         }
         try {
-            uosw.performUnsafeOperation(REMOVE_USERS_INVITES_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(REMOVE_USERS_INVITES_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, userId.intValue());
                     return stm.executeUpdate();
                 }
@@ -555,14 +556,14 @@ public final class SharedBagManager
      *
      * @param userId A user id.
      */
-    public void removeAllSharesInvolving(final Integer userId) {
+    public void removeAllSharesInvolving(final InterMineId userId) {
         if (userId == null) {
             return;
         }
         try {
-            uosw.performUnsafeOperation(DELETE_SHARES_WITH, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(DELETE_SHARES_WITH, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, userId.intValue());
                     return stm.executeUpdate();
                 }
@@ -590,9 +591,9 @@ public final class SharedBagManager
             throw new IllegalArgumentException("recipient must not be null");
         }
         try {
-            uosw.performUnsafeOperation(DELETE_USERS_SHARES_WITH, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(DELETE_USERS_SHARES_WITH, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, recipient.getUserId());
                     stm.setInt(2, owner.getUserId());
                     return stm.executeUpdate();

@@ -24,6 +24,7 @@ import org.intermine.api.profile.BagValue;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.util.SAXParser;
+import org.intermine.model.InterMineId;
 import org.xml.sax.InputSource;
 
 /**
@@ -88,11 +89,11 @@ public class InterMineBagBinding
      * @param reader the saved bags
      * @param uosw UserProfile ObjectStoreWriter
      * @param osw ObjectStoreWriter used to resolve object id's and write to ObjectStoreBags
-     * @param userId an Integer
+     * @param userId an InterMineId
      * @return map of queries read from XML
      */
     public static Map unmarshal(final Reader reader, final ObjectStoreWriter uosw,
-            final ObjectStoreWriter osw, Integer userId) {
+            final ObjectStoreWriter osw, InterMineId userId) {
         final Map bags = new LinkedHashMap();
         final Map bagsValues = new LinkedHashMap();
         final Map invalidBags = new LinkedHashMap();

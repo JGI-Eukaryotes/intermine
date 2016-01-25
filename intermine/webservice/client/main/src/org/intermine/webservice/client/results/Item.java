@@ -25,6 +25,7 @@ import org.intermine.metadata.ReferenceDescriptor;
 import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.webservice.client.core.ServiceFactory;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.client.util.PQUtil;
 
 /**
@@ -98,8 +99,8 @@ public class Item
      * @param key The name of the property (eg: "length")
      * @return The property's value.
      */
-    public Integer getInt(String key) {
-        return (Integer) properties.get(key);
+    public InterMineId getInt(String key) {
+        return (InterMineId) properties.get(key);
     }
 
     /**
@@ -214,7 +215,7 @@ public class Item
     private List<Map<String, Object>> getReferenceData(FieldDescriptor fd) {
         PathQuery query = new PathQuery(model);
         query.addViews(PQUtil.getStar(model, this.type + "." + fd.getName()));
-        query.addConstraint(Constraints.eq(this.type + ".id", Integer.toString(getId())));
+        query.addConstraint(Constraints.eq(this.type + ".id", InterMineId.toString(getId())));
         return factory.getQueryService().getRowsAsMaps(query);
     }
 

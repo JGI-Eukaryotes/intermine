@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.intermine.sql.Database;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.DatabaseFactory;
 
 /**
@@ -240,9 +241,9 @@ public class AcceptanceTestTask extends Task
             count++;
         }
 
-        List<Integer> allTrackerIds = new ArrayList<Integer>();
+        List<InterMineId> allTrackerIds = new ArrayList<InterMineId>();
         for (AcceptanceTestResult atr : testResults) {
-            for (Integer id : atr.getTrackerMap().keySet()) {
+            for (InterMineId id : atr.getTrackerMap().keySet()) {
                 // to avoid repeating trackers entries
                 if (allTrackerIds.contains(id)) {
                     continue;
@@ -279,8 +280,8 @@ public class AcceptanceTestTask extends Task
             for (Object o : row) {
                 pw.println("<td>");
                 if (o != null) {
-                    if (o instanceof Integer) {
-                        Integer id = (Integer) o;
+                    if (o instanceof InterMineId) {
+                        InterMineId id = (InterMineId) o;
                         List<List<Object>> trackerRows = atr.getTrackerMap().get(id);
                         if (trackerRows == null) {
                             pw.println(id);
@@ -321,7 +322,7 @@ public class AcceptanceTestTask extends Task
         String sql = null;
         String note = null;
         String type = null;
-        Integer maxResults = null;
+        InterMineId maxResults = null;
         String line;
         while ((line = (configReader.readLine())) != null) {
             if (line.matches("\\s*#.*|\\s*")) {
@@ -358,7 +359,7 @@ public class AcceptanceTestTask extends Task
                     continue;
                 } else if ("max-results".equals(lineMatcher.group(1))) {
                     try {
-                        maxResults = Integer.valueOf(lineMatcher.group(2));
+                        maxResults = InterMineId.valueOf(lineMatcher.group(2));
                     } catch (NumberFormatException e) {
                         throw new IOException("cannot parse number: " + lineMatcher.group(2)
                                               + " at line " + configReader.getLineNumber());
@@ -437,7 +438,7 @@ class AcceptanceTest
 
     private String type = null;
     private String sql = null;
-    private Integer maxResults;
+    private InterMineId maxResults;
     private String note;
 
     /**
@@ -468,7 +469,7 @@ class AcceptanceTest
      * @param maxResults the maximum number of row to report for type RESULTS_REPORT and the
      * maximum to show when NO_RESULTS_TEST fails
      */
-    public AcceptanceTest(String type, String sql, String note, Integer maxResults) {
+    public AcceptanceTest(String type, String sql, String note, InterMineId maxResults) {
         if (!type.equals(AcceptanceTest.ASSERT_TEST)
             && !type.equals(AcceptanceTest.NO_RESULTS_TEST)
             && !type.equals(AcceptanceTest.SOME_RESULTS_TEST)
@@ -481,7 +482,7 @@ class AcceptanceTest
         this.note = note;
 
         if (maxResults == null) {
-            this.maxResults = new Integer(DEFAULT_MAX_RESULTS);
+            this.maxResults = new InterMineId(DEFAULT_MAX_RESULTS);
         } else {
             this.maxResults = maxResults;
         }
@@ -522,7 +523,7 @@ class AcceptanceTest
      * Return the maxResults parameter that was passed to the constructor.
      * @return the maxResults parameter that was passed to the constructor.
      */
-    public Integer getMaxResults() {
+    public InterMineId getMaxResults() {
         return maxResults;
     }
 }
@@ -539,8 +540,8 @@ class AcceptanceTestResult
     private List<String> columnLabels = null;
     private int resultCount = -1;
     // a Map from InterMine ID to the corresponding entries in the tracker table
-    private Map<Integer, List<List<Object>>> trackerMap
-        = new HashMap<Integer, List<List<Object>>>();
+    private Map<InterMineId, List<List<Object>>> trackerMap
+        = new HashMap<InterMineId, List<List<Object>>>();
     private final long time;
 
     /**
@@ -579,7 +580,7 @@ class AcceptanceTestResult
                         && "id".equals(metadata.getColumnLabel(i))) {
                         // look up each ID in the tracker table and save the results
                         for (List<Object> row : results) {
-                            Integer id = (Integer) row.get(i - 1);
+                            InterMineId id = (InterMineId) row.get(i - 1);
                             List<List<Object>> trackerRows = getTrackerRows(id, con);
 
                             trackerMap.put(id, trackerRows);
@@ -597,7 +598,7 @@ class AcceptanceTestResult
      * IDs seen in query results will appear in the keySet of the Map.
      * @return the tracker Map
      */
-    public Map<Integer, List<List<Object>>> getTrackerMap() {
+    public Map<InterMineId, List<List<Object>>> getTrackerMap() {
         return trackerMap;
     }
 
@@ -622,7 +623,7 @@ class AcceptanceTestResult
      * @return the results as a List of Lists or null if there is an SQLException (which is stored
      * in sqlException)
      */
-    private List<List<Object>> getTrackerRows(Integer id, Connection con) {
+    private List<List<Object>> getTrackerRows(InterMineId id, Connection con) {
         Statement sm = null;
         ResultSet rs = null;
         try {

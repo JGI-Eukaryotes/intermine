@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -76,7 +77,7 @@ public class QueryBuilderViewChange extends DispatchAction
                                   HttpServletResponse response)
         throws Exception {
         HttpSession session = request.getSession();
-        int index = Integer.parseInt(request.getParameter("index"));
+        int index = InterMineId.parseInt(request.getParameter("index"));
 
         PathQuery query = SessionMethods.getQuery(session);
         List<String> view = query.getView();
@@ -105,7 +106,7 @@ public class QueryBuilderViewChange extends DispatchAction
                                    HttpServletResponse response)
         throws Exception {
         HttpSession session = request.getSession();
-        int index = Integer.parseInt(request.getParameter("index"));
+        int index = InterMineId.parseInt(request.getParameter("index"));
 
         PathQuery query = SessionMethods.getQuery(session);
         List<String> view = query.getView();

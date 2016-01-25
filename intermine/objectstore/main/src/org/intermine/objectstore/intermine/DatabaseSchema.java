@@ -26,6 +26,7 @@ import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.ReferenceDescriptor;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -304,8 +305,8 @@ public class DatabaseSchema
     }
 
     private static boolean compatible(String type1, String type2) {
-        if ("int".equals(type1) || "java.lang.Integer".equals(type1) || "reference".equals(type1)) {
-            if ("int".equals(type2) || "java.lang.Integer".equals(type2)
+        if ("int".equals(type1) || "InterMineId".equals(type1) || "reference".equals(type1)) {
+            if ("int".equals(type2) || "InterMineId".equals(type2)
                     || "reference".equals(type2)) {
                 return true;
             }

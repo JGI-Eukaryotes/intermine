@@ -32,6 +32,7 @@ import org.intermine.webservice.client.core.ServiceFactory;
 import org.intermine.webservice.client.results.Item;
 import org.intermine.webservice.client.services.ListService.ListCreationInfo;
 import org.intermine.webservice.client.services.ListService.ListOperationInfo;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.client.util.PQUtil;
 
 /**
@@ -310,7 +311,7 @@ public class ItemList extends AbstractSet<Item>
         pq.addViews(getType() + ".id");
         Set<String> values = new HashSet<String>();
         for (Item i: newItems) {
-            values.add(Integer.toString(i.getId()));
+            values.add(InterMineId.toString(i.getId()));
         }
         pq.addConstraint(Constraints.oneOfValues(getType() + ".id", values));
         update(services.getListService().append(this, pq));
@@ -326,7 +327,7 @@ public class ItemList extends AbstractSet<Item>
             String path = item.getType() + ".id";
             PathQuery pq = new PathQuery(services.getModel());
             pq.addView(path);
-            pq.addConstraint(Constraints.eq(path, Integer.toString(item.getId())));
+            pq.addConstraint(Constraints.eq(path, InterMineId.toString(item.getId())));
             createListAndSubtract(pq);
         }
         return priorSize != getSize();

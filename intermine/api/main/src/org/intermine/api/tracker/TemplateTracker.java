@@ -31,6 +31,7 @@ import org.intermine.api.tag.TagTypes;
 import org.intermine.api.tracker.track.TemplateTrack;
 import org.intermine.api.tracker.track.Track;
 import org.intermine.api.tracker.util.TrackerUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.api.template.TemplateManager;
 
 /**
@@ -127,10 +128,10 @@ public class TemplateTracker extends AbstractTracker
      * @param con db connection
      * @return map with key the template name and executions number
      */
-    protected Map<String, Integer> getAccessCounter(Connection con) {
+    protected Map<String, InterMineId> getAccessCounter(Connection con) {
         ResultSet rs = null;
         Statement stm = null;
-        Map<String, Integer> templateRank = new HashMap<String, Integer>();
+        Map<String, InterMineId> templateRank = new HashMap<String, InterMineId>();
         try {
             stm = con.createStatement();
             String sql = "SELECT tt.templatename, COUNT(tt.templatename) as accessnumbers "
@@ -161,8 +162,8 @@ public class TemplateTracker extends AbstractTracker
      * @param templateManager the template manager used to retrieve the global templates
      * @return map with key the template name and rank
      */
-    protected Map<String, Integer> getRank(TemplateManager templateManager) {
-        Map<String, Integer> templateRank = new HashMap<String, Integer>();
+    protected Map<String, InterMineId> getRank(TemplateManager templateManager) {
+        Map<String, InterMineId> templateRank = new HashMap<String, InterMineId>();
         Map<String, Double> templateMergedRank = templatesExecutionCache.getLogarithmMap(null,
                                                                               templateManager);
 

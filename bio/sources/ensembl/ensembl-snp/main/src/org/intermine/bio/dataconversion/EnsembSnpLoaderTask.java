@@ -36,6 +36,7 @@ import org.intermine.model.bio.SequenceAlteration;
 import org.intermine.model.bio.Transcript;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.ProxyReference;
+import org.intermine.model.InterMineId;
 import org.intermine.task.FileDirectDataLoaderTask;
 
 /**
@@ -313,7 +314,7 @@ public class EnsembSnpLoaderTask extends FileDirectDataLoaderTask
     protected Organism getOrganism() throws ObjectStoreException {
         if (org == null) {
             org = getDirectDataLoader().createObject(Organism.class);
-            org.setTaxonId(new Integer(TAXON_ID));
+            org.setTaxonId(new InterMineId(TAXON_ID));
             getDirectDataLoader().store(org);
         }
         return org;

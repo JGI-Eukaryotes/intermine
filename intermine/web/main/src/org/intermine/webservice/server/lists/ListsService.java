@@ -32,6 +32,7 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.webservice.server.core.ListManager;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.intermine.webservice.server.exceptions.ResourceNotFoundException;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.ServiceException;
 
 
@@ -71,7 +72,7 @@ public class ListsService extends AvailableListsService
 
         final ListsServiceInput input = getInput();
 
-        Integer objectId = null;
+        InterMineId objectId = null;
         if (input.getMineId() == null) {
             objectId = resolveMineId(request, input);
             if (objectId == null) {
@@ -88,7 +89,7 @@ public class ListsService extends AvailableListsService
                 .getListsContaining(objectId);
     }
 
-    private boolean objectExists(final HttpServletRequest request, final Integer objectId) {
+    private boolean objectExists(final HttpServletRequest request, final InterMineId objectId) {
         final ObjectStore os = im.getObjectStore();
         try {
             final InterMineObject objectById = os.getObjectById(objectId);
@@ -98,7 +99,7 @@ public class ListsService extends AvailableListsService
         }
     }
 
-    private Integer resolveMineId(final HttpServletRequest request,
+    private InterMineId resolveMineId(final HttpServletRequest request,
             final ListsServiceInput input) {
         final Model model = im.getModel();
 

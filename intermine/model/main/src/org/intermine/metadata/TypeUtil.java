@@ -34,6 +34,7 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.FastPathObject;
 
 
@@ -458,8 +459,8 @@ public final class TypeUtil
      * @return the corresponding Class
      */
     public static Class<?> getTypeByName(String name) {
-        if (name.equals(Integer.TYPE.toString())) {
-            return Integer.class;
+        if (name.equals(InterMineId.TYPE.toString())) {
+            return InterMineId.class;
         }
         if (name.equals(Boolean.TYPE.toString())) {
             return Boolean.class;
@@ -664,7 +665,7 @@ public final class TypeUtil
 
     /**
      * Instantiate a class by unqualified name
-     * The name should be "Date" or that of a primitive container class such as "Integer"
+     * The name should be "Date" or that of a primitive container class such as "InterMineId"
      * @param className the name of the class
      * @return the relevant Class
      */
@@ -749,8 +750,8 @@ public final class TypeUtil
      * @return the corresponding Class
      */
     public static Object stringToObject(Class<?> clazz, String value) {
-        if (clazz.equals(Integer.class) || clazz.equals(Integer.TYPE)) {
-            return Integer.valueOf(value.replace(",", ""));
+        if (clazz.equals(InterMineId.class) || clazz.equals(InterMineId.TYPE)) {
+            return InterMineId.valueOf(value.replace(",", ""));
         }
         if (clazz.equals(Boolean.class) || clazz.equals(Boolean.TYPE)) {
             if ("NULL".equals(value)) {

@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 
+import org.intermine.model.InterMineId;
 import junit.framework.Test;
 
 /**
@@ -112,7 +113,7 @@ public class AcceptanceTestTaskTest extends StoreDataTestCase
 
         assertEquals(expSql, test.getSql());
         assertEquals(expNote, test.getNote());
-        assertEquals(new Integer(10), test.getMaxResults());
+        assertEquals(new InterMineId(10), test.getMaxResults());
     }
 
     public void testHyperlinking() throws Exception {

@@ -37,6 +37,7 @@ import org.intermine.xml.full.ReferenceList;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -497,7 +498,7 @@ public class UniprotConverter extends BioDirectoryConverter
                     }
                     String refId = item.getIdentifier();
                     try {
-                        Integer objectId = store(item);
+                        InterMineId objectId = store(item);
                         entry.addCommentRefId(refId, objectId);
                     } catch (ObjectStoreException e) {
                         throw new SAXException(e);
@@ -717,9 +718,9 @@ public class UniprotConverter extends BioDirectoryConverter
 
         private void processCommentEvidence(UniprotEntry uniprotEntry)
             throws ObjectStoreException {
-            Map<Integer, List<String>> commentEvidence = uniprotEntry.getCommentEvidence();
-            for (Map.Entry<Integer, List<String>> e : commentEvidence.entrySet()) {
-                Integer intermineObjectId = e.getKey();
+            Map<InterMineId, List<String>> commentEvidence = uniprotEntry.getCommentEvidence();
+            for (Map.Entry<InterMineId, List<String>> e : commentEvidence.entrySet()) {
+                InterMineId intermineObjectId = e.getKey();
                 List<String> evidenceCodes = e.getValue();
                 List<String> pubRefIds = new ArrayList<String>();
                 for (String code : evidenceCodes) {

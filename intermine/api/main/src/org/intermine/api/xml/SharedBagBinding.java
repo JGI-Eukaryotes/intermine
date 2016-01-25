@@ -24,6 +24,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
 import org.intermine.util.SAXParser;
+import org.intermine.model.InterMineId;
 import org.xml.sax.InputSource;
 
 /**
@@ -84,10 +85,10 @@ public class SharedBagBinding
      * Parse saved queries from a Reader.
      *
      * @param reader the saved bags
-     * @param userId an Integer
+     * @param userId an InterMineId
      * @return list of queries
      */
-    public static List<Map<String, String>> unmarshal(final Reader reader, Integer userId) {
+    public static List<Map<String, String>> unmarshal(final Reader reader, InterMineId userId) {
         final List<Map<String, String>> sharedBags = new ArrayList<Map<String, String>>();
         try {
             SAXParser.parse(new InputSource(reader), new SharedBagHandler(sharedBags));

@@ -27,6 +27,7 @@ import org.intermine.model.testmodel.CEO;
 import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Department;
 import org.intermine.objectstore.query.iql.IqlQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.iql.IqlQueryParser;
 
 
@@ -59,10 +60,10 @@ public class ConstraintHelperTest extends TestCase
         QueryCollectionReference qcr1 = new QueryCollectionReference(qc1, "departments");
 
         QueryValue value1 = new QueryValue("Company1");
-        QueryValue value2 = new QueryValue(new Integer(1001));
+        QueryValue value2 = new QueryValue(new InterMineId(1001));
 
-        QueryExpression expr1 = new QueryExpression(qf1, new QueryValue(new Integer(1)), new QueryValue(new Integer(1)));
-        QueryExpression expr2 = new QueryExpression(qf2, new QueryValue(new Integer(1)), new QueryValue(new Integer(1)));
+        QueryExpression expr1 = new QueryExpression(qf1, new QueryValue(new InterMineId(1)), new QueryValue(new InterMineId(1)));
+        QueryExpression expr2 = new QueryExpression(qf2, new QueryValue(new InterMineId(1)), new QueryValue(new InterMineId(1)));
         QueryFunction func1 = new QueryFunction(qf4, QueryFunction.SUM);
 
         subquery1 = new Query();
@@ -309,8 +310,8 @@ public class ConstraintHelperTest extends TestCase
     }
 
     public void testIsRelatedToNothing() throws Exception {
-        QueryValue qv1 = new QueryValue(new Integer(101));
-        QueryValue qv2 = new QueryValue(new Integer(202));
+        QueryValue qv1 = new QueryValue(new InterMineId(101));
+        QueryValue qv2 = new QueryValue(new InterMineId(202));
         QueryExpression qe1 = new QueryExpression (qv1, QueryExpression.ADD, qv2);
 
         SimpleConstraint sc1 = new SimpleConstraint(qv1, ConstraintOp.EQUALS, qv2);
@@ -366,12 +367,12 @@ public class ConstraintHelperTest extends TestCase
         q.alias(subQ, "c");
         q.addFrom(subQ);
 
-        Constraint c1 = new SimpleConstraint(new QueryField(qcA, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new Integer(5)));
+        Constraint c1 = new SimpleConstraint(new QueryField(qcA, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new InterMineId(5)));
         Constraint c2 = new ContainsConstraint(new QueryCollectionReference(qcA, "departments"), ConstraintOp.CONTAINS, qcB);
         Constraint c3 = new SimpleConstraint(new QueryField(subQ, subQC, "name"), ConstraintOp.EQUALS, new QueryField(qcA, "name"));
         ConstraintSet c4 = new ConstraintSet(ConstraintOp.OR);
         c4.addConstraint(new SimpleConstraint(new QueryField(qcA, "vatNumber"), ConstraintOp.EQUALS, new QueryField(subQ, subQC, "vatNumber")));
-        c4.addConstraint(new SimpleConstraint(new QueryField(subQ, subQC, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new Integer(3))));
+        c4.addConstraint(new SimpleConstraint(new QueryField(subQ, subQC, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new InterMineId(3))));
         Constraint c5 = new SimpleConstraint(new QueryField(qcB, "name"), ConstraintOp.EQUALS, new QueryValue("hello"));
         ConstraintSet c = new ConstraintSet(ConstraintOp.AND);
         c.addConstraint(c1);
@@ -428,7 +429,7 @@ public class ConstraintHelperTest extends TestCase
         QueryField qf2 = new QueryField(qc2, "salary");
         QueryExpression expr1 = new QueryExpression(qf1, QueryExpression.ADD, qf2);
         QueryFunction func1 = new QueryFunction(qf1, QueryFunction.SUM);
-        QueryValue qv1 = new QueryValue(new Integer(100));
+        QueryValue qv1 = new QueryValue(new InterMineId(100));
 
         assertFalse(ConstraintHelper.isCrossReference(simpleConstraint1));
         assertTrue(ConstraintHelper.isCrossReference(simpleConstraint2));
@@ -456,7 +457,7 @@ public class ConstraintHelperTest extends TestCase
         QueryField qf1 = new QueryField(qc1, "vatNumber");
         QueryField qf2 = new QueryField(qc1, "vatNumber");
         QueryField qf3 = new QueryField(qc1, "vatNumber");
-        QueryValue qv1 = new QueryValue(new Integer(100));
+        QueryValue qv1 = new QueryValue(new InterMineId(100));
 
         QueryExpression expr1 = new QueryExpression(qf1, QueryExpression.ADD, qf2);
         QueryExpression expr2 = new QueryExpression(expr1, QueryExpression.ADD, qf3);

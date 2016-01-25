@@ -28,6 +28,7 @@ import org.intermine.sql.writebatch.Batch;
 import org.intermine.sql.writebatch.BatchWriterPostgresCopyImpl;
 import org.intermine.metadata.StringUtil;
 
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 public class QueryOptimiserFunctionalTest extends DatabaseTestCase
@@ -110,20 +111,20 @@ public class QueryOptimiserFunctionalTest extends DatabaseTestCase
         stmt.clearBatch();
         String colnames[] = new String[] {"col1", "col2"};
         for (int i = 1; i<=DATA_SIZE; i++) {
-            batch.addRow(con, "table1", null, colnames, new Object[] {new Integer(i), new Integer(DATA_SIZE + 1 - i)});
+            batch.addRow(con, "table1", null, colnames, new Object[] {new InterMineId(i), new InterMineId(DATA_SIZE + 1 - i)});
             //stmt.addBatch("INSERT INTO table1 VALUES(" + i + ", " + (DATA_SIZE + 1 - i) + ")" );
         }
         for (int i = 1; i<DATA_SIZE; i++) {
-            batch.addRow(con, "table2", null, colnames, new Object[] {new Integer(i), new Integer(random.nextInt(DATA_SIZE/10))});
+            batch.addRow(con, "table2", null, colnames, new Object[] {new InterMineId(i), new InterMineId(random.nextInt(DATA_SIZE/10))});
             //stmt.addBatch("INSERT INTO table2 VALUES(" + i + ", " + random.nextInt(DATA_SIZE/10) + ")" );
         }
         for (int i = 1; i<DATA_SIZE; i++) {
-            batch.addRow(con, "table3", null, colnames, new Object[] {new Integer(i), new Integer(random.nextInt(DATA_SIZE/10))});
+            batch.addRow(con, "table3", null, colnames, new Object[] {new InterMineId(i), new InterMineId(random.nextInt(DATA_SIZE/10))});
             //stmt.addBatch("INSERT INTO table3 VALUES(" + i + ", " + random.nextInt(DATA_SIZE/10) + ")" );
         }
         colnames = new String[] {"col1", "col2", "col3"};
         for (int i = 0; i < 50000; i++) {
-            batch.addRow(con, "table4", null, colnames, new Object[] {new Integer(random.nextInt(10)), new Integer(random.nextInt(10)), new Integer(random.nextInt(10))});
+            batch.addRow(con, "table4", null, colnames, new Object[] {new InterMineId(random.nextInt(10)), new InterMineId(random.nextInt(10)), new InterMineId(random.nextInt(10))});
             //String sql = "INSERT INTO table4 VALUES(" + random.nextInt(10) + ", " + random.nextInt(10) + ", " + random.nextInt(10) + ")";
             //stmt.addBatch(sql);
         }

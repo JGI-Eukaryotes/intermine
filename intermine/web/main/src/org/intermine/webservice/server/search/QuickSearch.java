@@ -46,6 +46,7 @@ import org.intermine.webservice.server.output.Output;
 import org.intermine.webservice.server.output.StreamedOutput;
 import org.intermine.webservice.server.output.XMLFormatter;
 
+import org.intermine.model.InterMineId;
 import com.browseengine.bobo.api.BrowseFacet;
 
 /**
@@ -94,7 +95,7 @@ public class QuickSearch extends JSONService
         if (input.getIncludeFacets()) {
             Map<String, Object> facetData = new HashMap<String, Object>();
             for (KeywordSearchFacet kwsf: results.getFacets()) {
-                Map<String, Integer> sfData = new HashMap<String, Integer>();
+                Map<String, InterMineId> sfData = new HashMap<String, InterMineId>();
                 for (BrowseFacet bf: kwsf.getItems()) {
                     sfData.put(bf.getValue(), bf.getFacetValueHitCount());
                 }
@@ -154,7 +155,7 @@ public class QuickSearch extends JSONService
 
         private final String searchTerm;
         private final int offset;
-        private final Integer limit;
+        private final InterMineId limit;
         private final String searchBag;
         private final boolean includeFacets;
 
@@ -171,10 +172,10 @@ public class QuickSearch extends JSONService
             includeFacets = !Boolean.valueOf(request.getParameter("nofacets"));
 
             String limitParam = request.getParameter("size");
-            Integer lim = null;
+            InterMineId lim = null;
             if (!StringUtils.isBlank(limitParam)) {
                 try {
-                    lim = Integer.valueOf(limitParam);
+                    lim = InterMineId.valueOf(limitParam);
                 } catch (NumberFormatException e) {
                     throw new BadRequestException("Expected a number for size: got " + limitParam);
                 }
@@ -185,7 +186,7 @@ public class QuickSearch extends JSONService
             int parsed = 0;
             if (!StringUtils.isBlank(offsetP)) {
                 try {
-                    parsed = Integer.valueOf(offsetP);
+                    parsed = InterMineId.valueOf(offsetP);
                 } catch (NumberFormatException e) {
                     throw new BadRequestException("Expected a number for start: got " + offsetP);
                 }
@@ -211,8 +212,8 @@ public class QuickSearch extends JSONService
                     getClass().getName(), searchTerm, offset);
         }
 
-        public List<Integer> getListIds() {
-            List<Integer> ids = new ArrayList<Integer>();
+        public List<InterMineId> getListIds() {
+            List<InterMineId> ids = new ArrayList<InterMineId>();
             if (!StringUtils.isBlank(searchBag)) {
                 LOG.debug("SEARCH BAG: '" + searchBag + "'");
                 final BagManager bm = im.getBagManager();

@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import junit.framework.TestCase;
 
 public class ClassDescriptorTest extends TestCase
@@ -267,7 +268,7 @@ public class ClassDescriptorTest extends TestCase
     private Set<AttributeDescriptor> getAttributes() {
         Set<AttributeDescriptor> attributes = new HashSet<AttributeDescriptor>();
         AttributeDescriptor atd1 = new AttributeDescriptor("atd1", "java.lang.String");
-        AttributeDescriptor atd2 = new AttributeDescriptor("atd2", "java.lang.Integer");
+        AttributeDescriptor atd2 = new AttributeDescriptor("atd2", "java.lang.InterMineId");
         attributes.add(atd1);
         attributes.add(atd2);
         return attributes;
@@ -276,7 +277,7 @@ public class ClassDescriptorTest extends TestCase
     private Set<ReferenceDescriptor> getReferences() {
         Set<ReferenceDescriptor> references = new HashSet<ReferenceDescriptor>();
         ReferenceDescriptor rfd1 = new ReferenceDescriptor("rfd1", "String", "reverse1");
-        ReferenceDescriptor rfd2 = new ReferenceDescriptor("rfd2", "Integer", "reverse2");
+        ReferenceDescriptor rfd2 = new ReferenceDescriptor("rfd2", "InterMineId", "reverse2");
         references.add(rfd1);
         references.add(rfd2);
         return references;
@@ -285,7 +286,7 @@ public class ClassDescriptorTest extends TestCase
     private Set<CollectionDescriptor> getCollections() {
         Set<CollectionDescriptor> collections = new HashSet<CollectionDescriptor>();
         CollectionDescriptor cld1 = new CollectionDescriptor("cld1", "String", "reverse1");
-        CollectionDescriptor cld2 = new CollectionDescriptor("cld2", "Integer", "reverse2");
+        CollectionDescriptor cld2 = new CollectionDescriptor("cld2", "InterMineId", "reverse2");
         collections.add(cld1);
         collections.add(cld2);
         return collections;

@@ -11,6 +11,7 @@ package org.intermine.metadata;
  */
 
 import java.util.ArrayList;
+import org.intermine.model.InterMineId;
 import java.util.List;
 
 /**
@@ -129,8 +130,8 @@ public final class ConstraintOp
      * (Only for use in webapp)
      * @return the index
      */
-    public Integer getIndex() {
-        return new Integer(values.indexOf(this));
+    public InterMineId getIndex() {
+        return new InterMineId(values.indexOf(this));
     }
 
     /**
@@ -139,7 +140,7 @@ public final class ConstraintOp
      * @param index the index
      * @return the ConstraintOp
      */
-    public static ConstraintOp getOpForIndex(Integer index) {
+    public static ConstraintOp getOpForIndex(InterMineId index) {
         return values.get(index.intValue());
     }
 

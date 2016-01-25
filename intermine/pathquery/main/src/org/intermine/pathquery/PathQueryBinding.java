@@ -23,6 +23,7 @@ import org.intermine.metadata.Model;
 import org.intermine.metadata.SAXParser;
 import org.intermine.metadata.StringUtil;
 import org.xml.sax.InputSource;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -187,7 +188,7 @@ public class PathQueryBinding
                 writer.writeAttribute("op", "" + constraint.getKey().getOp());
                 StringBuilder sb = new StringBuilder();
                 boolean needComma = false;
-                for (Integer id : ((PathConstraintIds) constraint.getKey()).getIds()) {
+                for (InterMineId id : ((PathConstraintIds) constraint.getKey()).getIds()) {
                     if (needComma) {
                         sb.append(", ");
                     }

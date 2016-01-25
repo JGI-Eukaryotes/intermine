@@ -46,6 +46,7 @@ import org.intermine.web.logic.Constants;
 import org.intermine.web.logic.results.WebState;
 import org.intermine.web.logic.session.SessionMethods;
 
+import org.intermine.model.InterMineId;
 import static org.intermine.util.PropertiesUtil.getPropertiesStartingWith;
 
 /**
@@ -80,11 +81,11 @@ public class MyMineController extends TilesAction
 
         if (SessionMethods.isSuperUser(session)) {
             TrackerDelegate td = im.getTrackerDelegate();
-            Map<String, Integer> templateCounter = td.getAccessCounter();
+            Map<String, InterMineId> templateCounter = td.getAccessCounter();
             if (templateCounter != null) {
                 request.setAttribute("templateCounter", templateCounter);
             }
-            Map<String, Integer> templateRank = td.getRank(im.getTemplateManager());
+            Map<String, InterMineId> templateRank = td.getRank(im.getTemplateManager());
             if (templateRank != null) {
                 request.setAttribute("templateRank", templateRank);
             }

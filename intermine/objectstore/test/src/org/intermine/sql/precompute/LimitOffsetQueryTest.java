@@ -10,6 +10,7 @@ package org.intermine.sql.precompute;
  *
  */
 
+import org.intermine.model.InterMineId;
 import junit.framework.*;
 
 public class LimitOffsetQueryTest extends TestCase
@@ -25,15 +26,15 @@ public class LimitOffsetQueryTest extends TestCase
         assertEquals(28742, q1.getOffset());
         q1 = new LimitOffsetQuery("blarp blip blob");
         assertEquals("blarp blip blob", q1.getQuery());
-        assertEquals(Integer.MAX_VALUE, q1.getLimit());
+        assertEquals(InterMineId.MAX_VALUE, q1.getLimit());
         assertEquals(0, q1.getOffset());
         q1 = new LimitOffsetQuery("blarp blip blob OFFSET 342");
         assertEquals("blarp blip blob OFFSET 342", q1.getQuery());
-        assertEquals(Integer.MAX_VALUE, q1.getLimit());
+        assertEquals(InterMineId.MAX_VALUE, q1.getLimit());
         assertEquals(0, q1.getOffset());
         q1 = new LimitOffsetQuery("blarp blip blob IT 4002 OFFSET 23");
         assertEquals("blarp blip blob IT 4002 OFFSET 23", q1.getQuery());
-        assertEquals(Integer.MAX_VALUE, q1.getLimit());
+        assertEquals(InterMineId.MAX_VALUE, q1.getLimit());
         assertEquals(0, q1.getOffset());
     }
 }

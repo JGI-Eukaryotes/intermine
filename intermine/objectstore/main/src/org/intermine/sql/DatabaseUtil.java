@@ -37,6 +37,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.sql.writebatch.BatchWriterPostgresCopyImpl;
 import org.intermine.sql.writebatch.FlushJob;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.writebatch.TableBatch;
 
 /**
@@ -870,8 +871,8 @@ public final class DatabaseUtil
     /**
      * Create a new table the holds the contents of the given Collection (bag).  The "Class c"
      * parameter selects which objects from the bag are put in the new table.  eg. if the bag
-     * contains Integers and Strings and the parameter is Integer.class then the table will contain
-     * only the Integers from the bag.  A Class of InterMineObject is handled specially: the new
+     * contains InterMineIds and Strings and the parameter is InterMineId.class then the table will contain
+     * only the InterMineIds from the bag.  A Class of InterMineObject is handled specially: the new
      * table will contain the IDs of the objects, not the objects themselves.  The table will have
      * one column ("value").
      *
@@ -889,7 +890,7 @@ public final class DatabaseUtil
         String typeString;
 
         if (InterMineObject.class.isAssignableFrom(c)) {
-            typeString = db.getColumnTypeString(Integer.class);
+            typeString = db.getColumnTypeString(InterMineId.class);
         } else {
             typeString = db.getColumnTypeString(c);
 
@@ -1126,7 +1127,7 @@ public final class DatabaseUtil
             sb.append(" ");
             sb.append(DatabaseUtil.getColumnName(rd));
             sb.append(" ");
-            sb.append(db.getColumnTypeString(Integer.class));
+            sb.append(db.getColumnTypeString(InterMineId.class));
             needsComma = true;
         }
         sb.append(")");

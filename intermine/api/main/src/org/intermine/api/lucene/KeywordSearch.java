@@ -88,6 +88,7 @@ import com.browseengine.bobo.api.FacetSpec.FacetSortSpec;
 import com.browseengine.bobo.facets.FacetHandler;
 import com.browseengine.bobo.facets.impl.MultiValueFacetHandler;
 import com.browseengine.bobo.facets.impl.PathFacetHandler;
+import org.intermine.model.InterMineId;
 import com.browseengine.bobo.facets.impl.SimpleFacetHandler;
 
 /**
@@ -519,8 +520,8 @@ public final class KeywordSearch
      * @deprecated Use runBrowseSearch instead.
      */
     @Deprecated
-    public static Map<Integer, Float> runLuceneSearch(String searchString) {
-        LinkedHashMap<Integer, Float> matches = new LinkedHashMap<Integer, Float>();
+    public static Map<InterMineId, Float> runLuceneSearch(String searchString) {
+        LinkedHashMap<InterMineId, Float> matches = new LinkedHashMap<InterMineId, Float>();
 
         String queryString = parseQueryString(searchString);
 
@@ -555,7 +556,7 @@ public final class KeywordSearch
 
             for (int i = 0; (i < MAX_HITS && i < topDocs.totalHits); i++) {
                 Document doc = searcher.doc(topDocs.scoreDocs[i].doc);
-                Integer id = Integer.valueOf(doc.get("id"));
+                InterMineId id = InterMineId.valueOf(doc.get("id"));
 
                 matches.put(id, new Float(topDocs.scoreDocs[i].score));
             }
@@ -609,7 +610,7 @@ public final class KeywordSearch
      * @return matching object
      */
     public static Vector<KeywordSearchHit> getSearchHits(BrowseHit[] browseHits,
-            Map<Integer, InterMineObject> objMap) {
+            Map<InterMineId, InterMineObject> objMap) {
         long time = System.currentTimeMillis();
         Vector<KeywordSearchHit> searchHits = new Vector<KeywordSearchHit>();
         for (BrowseHit browseHit : browseHits) {
@@ -618,7 +619,7 @@ public final class KeywordSearch
                 if (doc == null) {
                     LOG.error("doc is null for browseHit " + browseHit);
                 } else {
-                    Integer id          = Integer.valueOf(doc.getFieldable("id").stringValue());
+                    InterMineId id          = InterMineId.valueOf(doc.getFieldable("id").stringValue());
                     InterMineObject obj = objMap.get(id);
                     searchHits.add(new KeywordSearchHit(browseHit.getScore(), doc, obj));
                 }
@@ -636,14 +637,14 @@ public final class KeywordSearch
      *
      * @return set of IDs found in the search results
      */
-    public static Set<Integer> getObjectIds(BrowseHit[] browseHits) {
+    public static Set<InterMineId> getObjectIds(BrowseHit[] browseHits) {
         long time = System.currentTimeMillis();
-        Set<Integer> objectIds = new HashSet<Integer>();
+        Set<InterMineId> objectIds = new HashSet<InterMineId>();
         for (BrowseHit browseHit : browseHits) {
             try {
                 Document doc = browseHit.getStoredFields();
                 if (doc != null) {
-                    objectIds.add(Integer.valueOf(doc.getFieldable("id").stringValue()));
+                    objectIds.add(InterMineId.valueOf(doc.getFieldable("id").stringValue()));
                 }
             } catch (NumberFormatException e) {
                 LOG.info("Invalid id '" + browseHit.getField("id") + "' for hit '"
@@ -669,7 +670,7 @@ public final class KeywordSearch
             String searchString,
             int offset,
             Map<String, String> facetValues,
-            List<Integer> ids)
+            List<InterMineId> ids)
         throws ObjectStoreException {
         // last parameter used only when creating lists
         BrowseResult results = runBrowseSearch(searchString, offset, facetValues, ids, 0);
@@ -680,8 +681,8 @@ public final class KeywordSearch
             totalHits = results.getNumHits();
             LOG.debug("Browse found " + totalHits + " hits");
             BrowseHit[] browseHits = results.getHits();
-            Set<Integer> objectIds = getObjectIds(browseHits);
-            Map<Integer, InterMineObject> objMap = Objects.getObjects(im, objectIds);
+            Set<InterMineId> objectIds = getObjectIds(browseHits);
+            Map<InterMineId, InterMineObject> objMap = Objects.getObjects(im, objectIds);
             searchHits = getSearchHits(browseHits, objMap);
             searchResultsFacets = parseFacets(results, facets, facetValues);
             results.close();
@@ -699,7 +700,7 @@ public final class KeywordSearch
      * @return bobo browse result or null if failed
      */
     public static BrowseResult runBrowseSearch(String searchString, int offset,
-            Map<String, String> facetValues, List<Integer> ids, int listSize) {
+            Map<String, String> facetValues, List<InterMineId> ids, int listSize) {
         return runBrowseSearch(searchString, offset, facetValues, ids, true, 0);
     }
 
@@ -714,7 +715,7 @@ public final class KeywordSearch
      * @return bobo browse result or null if failed
      */
     public static BrowseResult runBrowseSearch(String searchString, int offset,
-            Map<String, String> facetValues, List<Integer> ids, boolean pagination, int listSize) {
+            Map<String, String> facetValues, List<InterMineId> ids, boolean pagination, int listSize) {
         BrowseResult result = null;
         if (index == null) {
             return result;
@@ -755,7 +756,7 @@ public final class KeywordSearch
                 TermsFilter idFilter = new TermsFilter(); //we may want fieldcachetermsfilter
 
                 for (int id : ids) {
-                    idFilter.addTerm(new Term("id", Integer.toString(id)));
+                    idFilter.addTerm(new Term("id", InterMineId.toString(id)));
                 }
 
                 browseRequest.setFilter(idFilter);

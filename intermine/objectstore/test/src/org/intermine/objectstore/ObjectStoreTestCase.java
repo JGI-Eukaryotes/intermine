@@ -52,6 +52,7 @@ import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.objectstore.query.iql.IqlQuery;
 import org.intermine.objectstore.query.iql.IqlQueryParser;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -83,8 +84,8 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
                              { data.get("CompanyB") } };
         results.put("SelectSimpleObject", toList(r));
 
-        r = new Object[][] { { "CompanyA", new Integer(5) },
-                             { "CompanyB", new Integer(5) } };
+        r = new Object[][] { { "CompanyA", new InterMineId(5) },
+                             { "CompanyB", new InterMineId(5) } };
         results.put("SubQuery", toList(r));
 
         r = new Object[][] { { "CompanyA" } };
@@ -215,8 +216,8 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
                              { data.get("EmployeeB3") } };
         results.put("SelectInterfaceAndSubClasses3", toList(r));
 
-        r = new Object[][] { { new Integer(5), "CompanyA" },
-                             { new Integer(5), "CompanyB" } };
+        r = new Object[][] { { new InterMineId(5), "CompanyA" },
+                             { new InterMineId(5), "CompanyB" } };
         results.put("OrderByAnomaly", toList(r));
 
         r = new Object[][] { { data.get("Secretary1") },
@@ -253,7 +254,7 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
                              { data.get("CompanyB") } };
         results.put("InterfaceCollection", toList(r));
 
-        r = new Object[][] { { data.get("EmployeeB1"), new Integer(340), new Integer(40) } };
+        r = new Object[][] { { data.get("EmployeeB1"), new InterMineId(340), new InterMineId(40) } };
         results.put("DynamicInterfacesAttribute", toList(r));
 
         r = new Object[][] { { data.get("ContractorA") },
@@ -330,12 +331,12 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
             { "60" } };
         results.put("TypeCast", toList(r));
 
-        r = new Object[][] { { new Integer(5) },
-            { new Integer(5) },
-            { new Integer(5) },
-            { new Integer(5) },
-            { new Integer(5) },
-            { new Integer(5) } };
+        r = new Object[][] { { new InterMineId(5) },
+            { new InterMineId(5) },
+            { new InterMineId(5) },
+            { new InterMineId(5) },
+            { new InterMineId(5) },
+            { new InterMineId(5) } };
         results.put("IndexOf", toList(r));
 
         r = new Object[][] { { "mp" },
@@ -613,7 +614,7 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
         minId = Math.min(minId, ((Employee) data.get("EmployeeB1")).getId().intValue());
         minId = Math.min(minId, ((Employee) data.get("EmployeeB2")).getId().intValue());
         minId = Math.min(minId, ((Employee) data.get("EmployeeB3")).getId().intValue());
-        r = new Object[][] { { new Integer(minId) } };
+        r = new Object[][] { { new InterMineId(minId) } };
         results.put("SelectFunctionNoGroup", toList(r));
         r = new Object[][] { { Address.class, new Long(8) },
                              { DynamicUtil.composeClass(Broke.class, CEO.class), new Long(1) },
@@ -935,13 +936,13 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
         cs.addConstraint(new SimpleConstraint(floatType, ConstraintOp.EQUALS, new QueryValue(new Float(0.6F))));
         cs.addConstraint(new SimpleConstraint(doubleType, ConstraintOp.EQUALS, new QueryValue(new Double(0.88D))));
         cs.addConstraint(new SimpleConstraint(shortType, ConstraintOp.EQUALS, new QueryValue(new Short((short) 675))));
-        cs.addConstraint(new SimpleConstraint(intType, ConstraintOp.EQUALS, new QueryValue(new Integer(267))));
+        cs.addConstraint(new SimpleConstraint(intType, ConstraintOp.EQUALS, new QueryValue(new InterMineId(267))));
         cs.addConstraint(new SimpleConstraint(longType, ConstraintOp.EQUALS, new QueryValue(new Long(98729353495843l))));
         cs.addConstraint(new SimpleConstraint(booleanObjType, ConstraintOp.EQUALS, new QueryValue(Boolean.TRUE)));
         cs.addConstraint(new SimpleConstraint(floatObjType, ConstraintOp.EQUALS, new QueryValue(new Float(1.6F))));
         cs.addConstraint(new SimpleConstraint(doubleObjType, ConstraintOp.EQUALS, new QueryValue(new Double(1.88D))));
         cs.addConstraint(new SimpleConstraint(shortObjType, ConstraintOp.EQUALS, new QueryValue(new Short((short) 1982))));
-        cs.addConstraint(new SimpleConstraint(intObjType, ConstraintOp.EQUALS, new QueryValue(new Integer(369))));
+        cs.addConstraint(new SimpleConstraint(intObjType, ConstraintOp.EQUALS, new QueryValue(new InterMineId(369))));
         cs.addConstraint(new SimpleConstraint(longObjType, ConstraintOp.EQUALS, new QueryValue(new Long(38762874323212l))));
         cs.addConstraint(new SimpleConstraint(bigDecimalObjType, ConstraintOp.EQUALS, new QueryValue(new BigDecimal("876323428764587621764532432.8768173432887324123645"))));
         cs.addConstraint(new SimpleConstraint(stringObjType, ConstraintOp.EQUALS, new QueryValue("A test String")));
@@ -970,8 +971,8 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
         assertEquals(Short.class, row1.get(5).getClass());
         assertEquals(d1.getShortType(), ((Short) row1.get(5)).shortValue());
         assertEquals(d1.getIntType(), d.getIntType());
-        assertEquals(Integer.class, row1.get(6).getClass());
-        assertEquals(d1.getIntType(), ((Integer) row1.get(6)).intValue());
+        assertEquals(InterMineId.class, row1.get(6).getClass());
+        assertEquals(d1.getIntType(), ((InterMineId) row1.get(6)).intValue());
         assertEquals(d1.getLongType(), d.getLongType());
         assertEquals(Long.class, row1.get(7).getClass());
         assertEquals(d1.getLongType(), ((Long) row1.get(7)).longValue());
@@ -1005,7 +1006,7 @@ public abstract class ObjectStoreTestCase extends StoreDataTestCase
     }
 
     public void testGetObjectById() throws Exception {
-        Integer id = ((Employee) data.get("EmployeeA1")).getId();
+        InterMineId id = ((Employee) data.get("EmployeeA1")).getId();
         Employee e = (Employee) os.getObjectById(id, Employee.class);
         assertEquals(data.get("EmployeeA1"), e);
         assertTrue(e == os.getObjectById(id, Employee.class));

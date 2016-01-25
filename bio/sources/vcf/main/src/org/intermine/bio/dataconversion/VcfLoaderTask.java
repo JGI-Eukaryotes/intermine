@@ -32,6 +32,7 @@ import org.intermine.model.bio.SequenceAlteration;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.task.FileDirectDataLoaderTask;
+import org.intermine.model.InterMineId;
 import org.intermine.util.FormattedTextParser;
 
 /**
@@ -227,7 +228,7 @@ public class VcfLoaderTask extends FileDirectDataLoaderTask
         final int length = 1;
         Location location = getDirectDataLoader().createObject(
                 org.intermine.model.bio.Location.class);
-        int start = new Integer(pos);
+        int start = new InterMineId(pos);
         int end = start + length;
         if (start < end) {
             location.setStart(start);
@@ -256,7 +257,7 @@ public class VcfLoaderTask extends FileDirectDataLoaderTask
                 throw new RuntimeException("Taxon ID not found. Please set a valid taxon Id"
                         + " in your project XML file");
             }
-            org.setTaxonId(new Integer(taxonId));
+            org.setTaxonId(new InterMineId(taxonId));
             getDirectDataLoader().store(org);
         }
         return org;

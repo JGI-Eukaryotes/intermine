@@ -40,6 +40,7 @@ import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.pathquery.PathConstraint;
 import org.intermine.web.logic.widget.config.GraphWidgetConfig;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.widget.config.WidgetConfigUtil;
 
 /**
@@ -281,7 +282,7 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
                 try {
                     category = (String) row.get(0);
                 } catch (ClassCastException cce) {
-                    category = Integer.toString((Integer) row.get(0));
+                    category = InterMineId.toString((InterMineId) row.get(0));
                 }
                 long count = (Long) row.get(1);
                 long[] counts = {count};

@@ -39,6 +39,7 @@ import org.intermine.util.IntPresentSet;
 import org.intermine.util.XmlUtil;
 import org.intermine.xml.full.Item;
 import org.intermine.xml.full.Reference;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.ReferenceList;
 
 /**
@@ -118,7 +119,7 @@ public class FlyBaseProcessor extends SequenceProcessor
     private static final Logger LOG = Logger.getLogger(FlyBaseProcessor.class);
 
     // the configuration for this processor, set when getConfig() is called the first time
-    private final Map<Integer, MultiKeyMap> config = new HashMap<Integer, MultiKeyMap>();
+    private final Map<InterMineId, MultiKeyMap> config = new HashMap<InterMineId, MultiKeyMap>();
 
     // a set of feature_ids for those genes that have a location in the featureloc table, set by
     // the constructor
@@ -140,9 +141,9 @@ public class FlyBaseProcessor extends SequenceProcessor
     private Map<String, String> mutagensMap = new HashMap<String, String>();
 
     // a map from featureId to seqlen
-//    private Map<Integer, Integer> cdnaLengths = null;
+//    private Map<InterMineId, InterMineId> cdnaLengths = null;
 
-    private final Map<Integer, Integer> chromosomeStructureVariationTypes;
+    private final Map<InterMineId, InterMineId> chromosomeStructureVariationTypes;
 
     private Map<String, String> interactionExperiments = new HashMap<String, String>();
 
@@ -219,7 +220,7 @@ public class FlyBaseProcessor extends SequenceProcessor
      * @param connection database connection
      * @return map of feature_id to seqlen
      */
-//    protected Map<Integer, Integer> getLengths(Connection connection) {
+//    protected Map<InterMineId, InterMineId> getLengths(Connection connection) {
 //        if (cdnaLengths == null) {
 //            try {
 //                cdnaLengths = makeCDNALengthMap(connection);
@@ -237,8 +238,8 @@ public class FlyBaseProcessor extends SequenceProcessor
      * chromosome_structure_variation objects is not used as the type_id of the feature, instead
      * it's stored in the cvtermprop table.
      */
-    private  Map<Integer, Integer> getChromosomeStructureVariationTypes(Connection connection) {
-        Map<Integer, Integer> retVal = new HashMap<Integer, Integer>();
+    private  Map<InterMineId, InterMineId> getChromosomeStructureVariationTypes(Connection connection) {
+        Map<InterMineId, InterMineId> retVal = new HashMap<InterMineId, InterMineId>();
         ResultSet res;
         try {
             res = getChromosomeStructureVariationResultSet(connection);
@@ -251,7 +252,7 @@ public class FlyBaseProcessor extends SequenceProcessor
             while (res.next()) {
                 int featureId = res.getInt("feature_id");
                 int cvtermId = res.getInt("cvterm_id");
-                retVal.put(new Integer(featureId), new Integer(cvtermId));
+                retVal.put(new InterMineId(featureId), new InterMineId(cvtermId));
             }
         } catch (SQLException e) {
             throw new RuntimeException("problem while reading chromosome_structure_variation "
@@ -457,9 +458,9 @@ public class FlyBaseProcessor extends SequenceProcessor
      * {@inheritDoc}
      */
     @Override
-    protected Integer store(Item feature, int taxonId) throws ObjectStoreException {
-        processItem(feature, new Integer(taxonId));
-        Integer itemId = super.store(feature, taxonId);
+    protected InterMineId store(Item feature, int taxonId) throws ObjectStoreException {
+        processItem(feature, new InterMineId(taxonId));
+        InterMineId itemId = super.store(feature, taxonId);
         return itemId;
     }
 
@@ -473,7 +474,7 @@ public class FlyBaseProcessor extends SequenceProcessor
         throws ObjectStoreException {
         Item location =
             super.makeLocation(start, end, strand, srcFeatureData, featureData, taxonId, 0);
-        processItem(location, new Integer(taxonId));
+        processItem(location, new InterMineId(taxonId));
         return location;
     }
 
@@ -488,7 +489,7 @@ public class FlyBaseProcessor extends SequenceProcessor
          * the synonym was created when another protein was created in favour of this one.  */
         if (synonym != null) {
             OrganismData od = fdat.getOrganismData();
-            processItem(synonym, new Integer(od.getTaxonId()));
+            processItem(synonym, new InterMineId(od.getTaxonId()));
         }
         return synonym;
     }
@@ -519,10 +520,10 @@ public class FlyBaseProcessor extends SequenceProcessor
      */
     @Override
     protected Map<MultiKey, List<ConfigAction>> getConfig(int taxonId) {
-        MultiKeyMap map = config.get(new Integer(taxonId));
+        MultiKeyMap map = config.get(new InterMineId(taxonId));
         if (map == null) {
             map = new MultiKeyMap();
-            config.put(new Integer(taxonId), map);
+            config.put(new InterMineId(taxonId), map);
 
             // synomym configuration example: for features of class "Gene", if the type name of
             // the synonym is "fullname" and "is_current" is true, set the "name" attribute of
@@ -731,7 +732,7 @@ public class FlyBaseProcessor extends SequenceProcessor
      * {@inheritDoc}
      */
     @Override
-    protected Item makeFeature(Integer featureId, String chadoFeatureType, String interMineType,
+    protected Item makeFeature(InterMineId featureId, String chadoFeatureType, String interMineType,
                                String name, String uniqueName,
                                int seqlen, int taxonId) {
         String realInterMineType = interMineType;
@@ -787,7 +788,7 @@ public class FlyBaseProcessor extends SequenceProcessor
         }
 
         if (chadoFeatureType.equals(CHROMOSOME_STRUCTURE_VARIATION_SO_NAME)) {
-            Integer cvtermId = chromosomeStructureVariationTypes.get(featureId);
+            InterMineId cvtermId = chromosomeStructureVariationTypes.get(featureId);
 
             if (cvtermId != null) {
                 ChadoCVTerm term = sequenceOntologyCV.getByChadoId(cvtermId);
@@ -870,7 +871,7 @@ public class FlyBaseProcessor extends SequenceProcessor
      * {@inheritDoc}
      */
     @Override
-    protected void extraProcessing(Connection connection, Map<Integer, FeatureData> features)
+    protected void extraProcessing(Connection connection, Map<InterMineId, FeatureData> features)
         throws ObjectStoreException, SQLException {
 
         createAllelesTempTable(connection);
@@ -885,8 +886,8 @@ public class FlyBaseProcessor extends SequenceProcessor
         if (FEATURES.contains("gene")) {
             processAlleleProps(connection, features);
 
-            Map<Integer, List<String>> mutagenMap = makeMutagenMap(connection);
-            for (Integer alleleFeatureId: mutagenMap.keySet()) {
+            Map<InterMineId, List<String>> mutagenMap = makeMutagenMap(connection);
+            for (InterMineId alleleFeatureId: mutagenMap.keySet()) {
                 FeatureData alleleDat = features.get(alleleFeatureId);
                 List<String> mutagenRefIds = new ArrayList<String>();
                 for (String mutagenDescription: mutagenMap.get(alleleFeatureId)) {
@@ -930,10 +931,10 @@ public class FlyBaseProcessor extends SequenceProcessor
         ResultSet res = getInteractionResultSet(connection);
 
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
-            Integer otherFeatureId = new Integer(res.getInt("other_feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
+            InterMineId otherFeatureId = new InterMineId(res.getInt("other_feature_id"));
             String pubTitle = res.getString("pub_title");
-            Integer pubmedId = new Integer(res.getInt("pubmed_id"));
+            InterMineId pubmedId = new InterMineId(res.getInt("pubmed_id"));
             FeatureData featureData = getFeatureMap().get(featureId);
             FeatureData otherFeatureData = getFeatureMap().get(otherFeatureId);
 
@@ -1007,7 +1008,7 @@ public class FlyBaseProcessor extends SequenceProcessor
         throws SQLException, ObjectStoreException {
         ResultSet res = getDeletionLocationResultSet(connection);
         while (res.next()) {
-            Integer delId = new Integer(res.getInt("deletion_feature_id"));
+            InterMineId delId = new InterMineId(res.getInt("deletion_feature_id"));
 
             FeatureData delFeatureData = getFeatureMap().get(delId);
             if (delFeatureData == null) {
@@ -1027,10 +1028,10 @@ public class FlyBaseProcessor extends SequenceProcessor
             if (StringUtils.isEmpty(startString) || StringUtils.isEmpty(endString)) {
                 continue;
             }
-            Integer organismId = new Integer(res.getInt("deletion_organism_id"));
-            int start = Integer.parseInt(startString);
-            int end = Integer.parseInt(endString);
-            int strand = Integer.parseInt(strandString);
+            InterMineId organismId = new InterMineId(res.getInt("deletion_organism_id"));
+            int start = InterMineId.parseInt(startString);
+            int end = InterMineId.parseInt(endString);
+            int strand = InterMineId.parseInt(strandString);
             if (start > end) {
                 int tmp = start;
                 start = end;
@@ -1038,7 +1039,7 @@ public class FlyBaseProcessor extends SequenceProcessor
             }
             int taxonId = delFeatureData.getOrganismData().getTaxonId();
 
-            Integer chrFeatureId = getChromosomeFeatureMap(organismId).get(chromosomeName);
+            InterMineId chrFeatureId = getChromosomeFeatureMap(organismId).get(chromosomeName);
             if (chrFeatureId == null) {
                 String msg = "Can't find chromosome " + chromosomeName + " in feature map";
                 LOG.warn(msg);
@@ -1054,7 +1055,7 @@ public class FlyBaseProcessor extends SequenceProcessor
         }
     }
 
-    private void makeAndStoreLocation(Integer chrFeatureId, FeatureData subjectFeatureData,
+    private void makeAndStoreLocation(InterMineId chrFeatureId, FeatureData subjectFeatureData,
             int start, int end, int strand, int taxonId)
         throws ObjectStoreException {
         FeatureData chrFeatureData = getFeatureMap().get(chrFeatureId);
@@ -1083,8 +1084,8 @@ public class FlyBaseProcessor extends SequenceProcessor
         ResultSet res = getIndelResultSet(connection);
         int featureWarnings = 0;
         while (res.next()) {
-            Integer delId = new Integer(res.getInt("deletion_feature_id"));
-            Integer insId = new Integer(res.getInt("insertion_feature_id"));
+            InterMineId delId = new InterMineId(res.getInt("deletion_feature_id"));
+            InterMineId insId = new InterMineId(res.getInt("insertion_feature_id"));
             String breakType = res.getString("breakpoint_type");
             Reference reference = new Reference();
             if ("bk1".equals(breakType)) {
@@ -1149,13 +1150,13 @@ public class FlyBaseProcessor extends SequenceProcessor
             int start = fmin + 1;
             int end = fmax;
 
-            FeatureData subFeatureData = getFeatureMap().get(new Integer(subId));
+            FeatureData subFeatureData = getFeatureMap().get(new InterMineId(subId));
             if (subFeatureData != null) {
                 // this is a hack - we should make sure that we only query for features that are in
                 // the feature map, ie. those for the current organism
                 int taxonId = subFeatureData.getOrganismData().getTaxonId();
 
-                makeAndStoreLocation(new Integer(chrId), subFeatureData, start, end, 1, taxonId);
+                makeAndStoreLocation(new InterMineId(chrId), subFeatureData, start, end, 1, taxonId);
             }
         }
     }
@@ -1172,15 +1173,15 @@ public class FlyBaseProcessor extends SequenceProcessor
     private Map<String, String> cvTermMap = new HashMap<String, String>();
 
     private void processAlleleProps(Connection connection,
-                                    Map<Integer, FeatureData> features)
+                                    Map<InterMineId, FeatureData> features)
         throws SQLException, ObjectStoreException {
-        Map<Integer, List<String>> annotationPubMap = makeAnnotationPubMap(connection);
+        Map<InterMineId, List<String>> annotationPubMap = makeAnnotationPubMap(connection);
         ResultSet res = getAllelePropResultSet(connection);
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String value = res.getString("value");
             String propType = res.getString("type_name");
-            Integer featurePropId = new Integer(res.getInt("featureprop_id"));
+            InterMineId featurePropId = new InterMineId(res.getInt("featureprop_id"));
 
             FeatureData alleleFeatureData = features.get(featureId);
             OrganismData od = alleleFeatureData.getOrganismData();
@@ -1214,15 +1215,15 @@ public class FlyBaseProcessor extends SequenceProcessor
      * that are associated with each feature and saving those terms that have "origin of mutation"
      * as a parent term.
      */
-    private Map<Integer, List<String>> makeMutagenMap(Connection connection)
+    private Map<InterMineId, List<String>> makeMutagenMap(Connection connection)
         throws SQLException {
-        Map<Integer, List<String>> retMap = new HashMap<Integer, List<String>>();
+        Map<InterMineId, List<String>> retMap = new HashMap<InterMineId, List<String>>();
 
         ResultSet res = getAlleleCVTermsResultSet(connection);
     RESULTS:
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
-            Integer cvtermId = new Integer(res.getInt("cvterm_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
+            InterMineId cvtermId = new InterMineId(res.getInt("cvterm_id"));
 
             ChadoCVTerm cvterm = flyBaseMiscCv.getByChadoId(cvtermId);
             if (cvterm == null) {
@@ -1274,16 +1275,16 @@ public class FlyBaseProcessor extends SequenceProcessor
     /**
      * Return a map from featureprop_id for alleles to publication item identifier
      */
-    private Map<Integer, List<String>> makeAnnotationPubMap(Connection connection)
+    private Map<InterMineId, List<String>> makeAnnotationPubMap(Connection connection)
         throws SQLException, ObjectStoreException {
-        Map<Integer, List<String>> retMap = new HashMap<Integer, List<String>>();
+        Map<InterMineId, List<String>> retMap = new HashMap<InterMineId, List<String>>();
 
         ResultSet res = getAllelePropPubResultSet(connection);
         while (res.next()) {
-            Integer featurePropId = new Integer(res.getInt("featureprop_id"));
+            InterMineId featurePropId = new InterMineId(res.getInt("featureprop_id"));
             String pubDbId = res.getString("pub_db_identifier");
 
-            Integer n = new Integer(Integer.parseInt(pubDbId));
+            InterMineId n = new InterMineId(InterMineId.parseInt(pubDbId));
             String pubicationItemIdentifier = makePublication(n);
 
             if (!retMap.containsKey(featurePropId)) {
@@ -1299,14 +1300,14 @@ public class FlyBaseProcessor extends SequenceProcessor
      * Return a map from feature_id to seqlen
      * @throws SQLException if somethign goes wrong
      */
-//    private Map<Integer, Integer> makeCDNALengthMap(Connection connection)
+//    private Map<InterMineId, InterMineId> makeCDNALengthMap(Connection connection)
 //    throws SQLException {
-//        Map<Integer, Integer> retMap = new HashMap();
+//        Map<InterMineId, InterMineId> retMap = new HashMap();
 //
 //        ResultSet res = getCDNALengthResultSet(connection);
 //        while (res.next()) {
-//            Integer featureId = new Integer(res.getInt("feature_id"));
-//            Integer seqlen = new Integer(res.getInt("seqlen"));
+//            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
+//            InterMineId seqlen = new InterMineId(res.getInt("seqlen"));
 //            retMap.put(featureId, seqlen);
 //        }
 //        return retMap;
@@ -1769,7 +1770,7 @@ public class FlyBaseProcessor extends SequenceProcessor
     /**
      * Method to add dataSets and DataSources to items before storing
      */
-    private void processItem(Item item, Integer taxonId) {
+    private void processItem(Item item, InterMineId taxonId) {
         String className = item.getClassName();
         if ("DataSource".equals(className)
             || "DataSet".equals(className)

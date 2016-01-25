@@ -30,6 +30,7 @@ import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.util.DynamicUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -117,7 +118,7 @@ public class ObjectTrailController extends TilesAction
                      * sometimes you need to re-add "results." to the tablename in the trail
                      */
                     try {
-                        Integer.parseInt(resultsTableId);
+                        InterMineId.parseInt(resultsTableId);
                         prepend = "results.";
                     } catch (Exception e)  {
                         // nothing to do
@@ -141,7 +142,7 @@ public class ObjectTrailController extends TilesAction
             } else {
                 InterMineObject o = null;
                 try {
-                    o = os.getObjectById(new Integer(breadcrumbs[0]));
+                    o = os.getObjectById(new InterMineId(breadcrumbs[0]));
                 } catch (NumberFormatException err) {
                     LOG.warn("bad object id " + breadcrumbs[0]);
                     continue;

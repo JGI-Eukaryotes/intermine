@@ -11,6 +11,7 @@ package org.intermine.objectstore.query;
  */
 
 import java.util.ArrayList;
+import org.intermine.model.InterMineId;
 import java.util.List;
 
 /**
@@ -83,7 +84,7 @@ public class ObjectStoreBagCombination implements QuerySelectable
      */
     @Override
     public Class<?> getType() {
-        return Integer.class;
+        return InterMineId.class;
     }
 
     /**

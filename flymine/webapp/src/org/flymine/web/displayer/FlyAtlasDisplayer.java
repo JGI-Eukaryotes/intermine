@@ -23,6 +23,7 @@ import org.intermine.model.bio.MicroArrayResult;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
 import org.intermine.web.logic.results.ReportObject;
+import org.intermine.model.InterMineId;
 import org.json.JSONArray;
 
 /**
@@ -49,7 +50,7 @@ public class FlyAtlasDisplayer extends ReportDisplayer
         List<String> names = new ArrayList<String>();
         List<String> affyCalls = new ArrayList<String>();
         List<Double> enrichments = new ArrayList<Double>();
-        List<Integer> presentCalls = new ArrayList<Integer>();
+        List<InterMineId> presentCalls = new ArrayList<InterMineId>();
         List<String> objectIds = new ArrayList<String>();
 
         for (MicroArrayResult mar: gene.getMicroArrayResults()) {

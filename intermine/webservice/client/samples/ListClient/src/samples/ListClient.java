@@ -18,6 +18,7 @@ import java.util.List;
 import org.intermine.webservice.client.core.ServiceFactory;
 import org.intermine.webservice.client.lists.ItemList;
 import org.intermine.webservice.client.results.Item;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.client.services.ListService;
 
 
@@ -59,7 +60,7 @@ public class ListClient
 
         Collections.sort(result, new Comparator<ItemList>() {
             public int compare(ItemList arg0, ItemList arg1) {
-                return new Integer(arg0.size()).compareTo(new Integer(arg1.size()));
+                return new InterMineId(arg0.size()).compareTo(new InterMineId(arg1.size()));
             }
         });
 

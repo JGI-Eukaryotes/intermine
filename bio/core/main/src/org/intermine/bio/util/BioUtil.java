@@ -27,6 +27,7 @@ import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryField;
 import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.Results;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.ResultsRow;
 
 /**
@@ -51,7 +52,7 @@ public final class BioUtil
      * @return collection of organism names
      */
     public static Collection<String> getOrganisms(ObjectStore os, String type,
-            List<Integer> bagContents, boolean lowercase) {
+            List<InterMineId> bagContents, boolean lowercase) {
         return getOrganisms(os, type, bagContents, lowercase, "name");
     }
 
@@ -65,7 +66,7 @@ public final class BioUtil
      * @return collection of organism names
      */
     public static Collection<String> getOrganisms(ObjectStore os, String type,
-            List<Integer> bagContentsAsIds,
+            List<InterMineId> bagContentsAsIds,
             boolean lowercase, String organismFieldName) {
 
         Query q = new Query();
@@ -135,12 +136,12 @@ public final class BioUtil
      * @param taxonId original taxon ID
      * @return taxonId for organism, not the strain
      */
-    public static Integer replaceStrain(Integer taxonId) {
+    public static InterMineId replaceStrain(InterMineId taxonId) {
         OrganismData od = OR.getOrganismDataByTaxon(taxonId);
         if (od == null) {
             return taxonId;
         }
-        return new Integer(od.getTaxonId());
+        return new InterMineId(od.getTaxonId());
     }
 
 }

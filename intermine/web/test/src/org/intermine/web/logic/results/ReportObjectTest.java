@@ -18,6 +18,7 @@ import org.intermine.model.testmodel.Company;
 import org.intermine.util.DynamicUtil;
 import org.intermine.web.logic.config.FieldConfig;
 import org.intermine.web.logic.config.Type;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.config.WebConfig;
 
 /**
@@ -38,12 +39,12 @@ public class ReportObjectTest extends InterMineAPITestCase
 
         // InterMine Objects
         company = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
-        company.setId(new Integer(1));
+        company.setId(new InterMineId(1));
         company.setName("Weyland Yutani");
         company.setVatNumber(101);
 
         address = (Address) DynamicUtil.createObject(Collections.singleton(Address.class));
-        address.setId(new Integer(1));
+        address.setId(new InterMineId(1));
         address.setAddress("Space");
 
         company.setAddress(address);

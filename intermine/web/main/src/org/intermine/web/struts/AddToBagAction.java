@@ -25,6 +25,7 @@ import org.intermine.api.profile.Profile;
 import org.intermine.metadata.Util;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 
@@ -48,7 +49,7 @@ public class AddToBagAction extends InterMineAction
     public ActionForward execute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("object"));
+        int id = InterMineId.parseInt(request.getParameter("object"));
         HttpSession session = request.getSession();
 
         final InterMineAPI im = SessionMethods.getInterMineAPI(request.getSession());

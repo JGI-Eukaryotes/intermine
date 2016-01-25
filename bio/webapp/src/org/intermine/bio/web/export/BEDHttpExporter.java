@@ -38,6 +38,7 @@ import org.intermine.web.logic.export.http.HttpExportUtil;
 import org.intermine.web.logic.export.http.HttpExporterBase;
 import org.intermine.web.logic.export.http.TableHttpExporter;
 import org.intermine.web.logic.results.PagedTable;
+import org.intermine.model.InterMineId;
 import org.intermine.web.struts.TableExportForm;
 
 /**
@@ -87,7 +88,7 @@ public class BEDHttpExporter extends HttpExporterBase implements TableHttpExport
             setBEDHeader(response);
         }
 
-        List<Integer> indexes = ExportHelper.getClassIndexes(ExportHelper.getColumnClasses(pt),
+        List<InterMineId> indexes = ExportHelper.getClassIndexes(ExportHelper.getColumnClasses(pt),
                 SequenceFeature.class);
 
         // get the project title to be written in BED records

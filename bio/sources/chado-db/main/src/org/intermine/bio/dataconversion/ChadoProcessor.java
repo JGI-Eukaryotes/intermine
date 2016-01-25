@@ -16,6 +16,7 @@ import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.sql.Database;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Attribute;
 
 /**
@@ -81,7 +82,7 @@ public abstract class ChadoProcessor
      * @param value the value to set
      * @throws ObjectStoreException if there is a problem while storing
      */
-    protected void setAttribute(Integer intermineObjectId, String attributeName, String value)
+    protected void setAttribute(InterMineId intermineObjectId, String attributeName, String value)
         throws ObjectStoreException {
         Attribute att = new Attribute();
         att.setName(attributeName);

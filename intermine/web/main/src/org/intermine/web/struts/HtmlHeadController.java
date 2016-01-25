@@ -31,6 +31,7 @@ import org.intermine.objectstore.ObjectStore;
 import org.intermine.template.TemplateQuery;
 import org.intermine.web.logic.results.ReportObject;
 import org.intermine.web.logic.results.ReportObjectFactory;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -120,9 +121,9 @@ public class HtmlHeadController extends TilesAction
                 request.setAttribute("htmlPageTitle", htmlPageTitle);
                 return null;
             }
-            Integer id = null;
+            InterMineId id = null;
             try {
-                id = new Integer(Integer.parseInt(objectId));
+                id = new InterMineId(InterMineId.parseInt(objectId));
 
                 InterMineObject object = os.getObjectById(id);
                 if (object == null) {
@@ -156,7 +157,7 @@ public class HtmlHeadController extends TilesAction
     /**
      * Determine if we can employ user tracking
      * @param request HTTP Servlet Request
-     * @return Integer 0/1/2 - "[no]/[yes]/[not yet]"
+     * @return InterMineId 0/1/2 - "[no]/[yes]/[not yet]"
      */
     private String canWeUserTrack(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

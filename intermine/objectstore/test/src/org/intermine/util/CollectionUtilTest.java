@@ -16,6 +16,7 @@ import java.util.*;
 import junit.framework.TestCase;
 
 import org.intermine.model.InterMineObject;
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.*;
 
 /**
@@ -151,16 +152,16 @@ public class CollectionUtilTest extends TestCase
 
     public void testGroupByClass() throws Exception {
         Collection<Object> c = new ArrayList<Object>();
-        c.add(new Integer(5));
-        c.add(new Integer(6));
-        c.add(new Integer(7));
+        c.add(new InterMineId(5));
+        c.add(new InterMineId(6));
+        c.add(new InterMineId(7));
         c.add(new Float(3.5F));
         c.add("hello");
 
         List<Object> lInts = new ArrayList<Object>();
-        lInts.add(new Integer(5));
-        lInts.add(new Integer(6));
-        lInts.add(new Integer(7));
+        lInts.add(new InterMineId(5));
+        lInts.add(new InterMineId(6));
+        lInts.add(new InterMineId(7));
         List<Object> lFloat = new ArrayList<Object>();
         lFloat.add(new Float(3.5F));
         List<Object> lString = new ArrayList<Object>();
@@ -173,7 +174,7 @@ public class CollectionUtilTest extends TestCase
         lSerialisables.addAll(lString);
 
         Map<Class<?>, List<Object>> expected = new HashMap<Class<?>, List<Object>>();
-        expected.put(Integer.class, lInts);
+        expected.put(InterMineId.class, lInts);
         expected.put(Float.class, lFloat);
         expected.put(String.class, lString);
 

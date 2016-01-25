@@ -38,6 +38,7 @@ import org.intermine.util.IntPresentSet;
 import org.intermine.util.PropertiesUtil;
 import org.intermine.web.logic.export.ExportException;
 import org.intermine.web.logic.export.ExportHelper;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.export.Exporter;
 
 /**
@@ -66,14 +67,14 @@ public class GFF3Exporter implements Exporter
         "http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=7227";
 
     PrintWriter out;
-    private List<Integer> featureIndexes;
+    private List<InterMineId> featureIndexes;
     private Map<String, String> soClassNames;
     private int writtenResultsCount = 0;
     private boolean headerPrinted = false;
     private IntPresentSet exportedIds = new IntPresentSet();
     private List<String> attributesNames;
     private String sourceName;
-    private Set<Integer> organisms;
+    private Set<InterMineId> organisms;
     // this one to store the lower case class names of  soClassNames,
     // for comparison with path elements classes.
     private Set<String> cNames = new HashSet<String>();
@@ -92,8 +93,8 @@ public class GFF3Exporter implements Exporter
      * @param organisms taxon id of the organisms
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      */
-    public GFF3Exporter(PrintWriter out, List<Integer> indexes, Map<String, String> soClassNames,
-            List<String> attributesNames, String sourceName, Set<Integer> organisms,
+    public GFF3Exporter(PrintWriter out, List<InterMineId> indexes, Map<String, String> soClassNames,
+            List<String> attributesNames, String sourceName, Set<InterMineId> organisms,
             boolean makeUcscCompatible) {
         this.out = out;
         this.featureIndexes = indexes;
@@ -121,8 +122,8 @@ public class GFF3Exporter implements Exporter
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      * @param paths paths
      */
-    public GFF3Exporter(PrintWriter out, List<Integer> indexes, Map<String, String> soClassNames,
-            List<String> attributesNames, String sourceName, Set<Integer> organisms,
+    public GFF3Exporter(PrintWriter out, List<InterMineId> indexes, Map<String, String> soClassNames,
+            List<String> attributesNames, String sourceName, Set<InterMineId> organisms,
             boolean makeUcscCompatible, List<Path> paths) {
         this.out = out;
         this.featureIndexes = indexes;
@@ -147,7 +148,7 @@ public class GFF3Exporter implements Exporter
         Properties props = PropertiesUtil.getProperties();
 
         if (organisms != null && !organisms.isEmpty()) {
-            for (Integer taxId : organisms) {
+            for (InterMineId taxId : organisms) {
                 if (taxId == 7227) {
                     String fV = props.getProperty("genomeVersion.fly");
                     if (fV != null && fV.length() > 0) {
@@ -156,7 +157,7 @@ public class GFF3Exporter implements Exporter
                     }
                 }
             }
-            for (Integer taxId : organisms) {
+            for (InterMineId taxId : organisms) {
                 if (taxId == 6239) {
                     String wV = props.getProperty("genomeVersion.worm");
                     if (wV != null && wV.length() > 0) {
@@ -215,11 +216,11 @@ public class GFF3Exporter implements Exporter
     }
 
     /* State for the exportRow method, to allow several rows to be merged. */
-    private Map<String, Integer> attributeVersions = new HashMap<String, Integer>();
-    private Integer lastLsfId = null;
+    private Map<String, InterMineId> attributeVersions = new HashMap<String, InterMineId>();
+    private InterMineId lastLsfId = null;
     private SequenceFeature lastLsf = null;
     private Map<String, List<String>> attributes = null;
-    private Map<String, Set<Integer>> seenAttributes = new HashMap<String, Set<Integer>>();
+    private Map<String, Set<InterMineId>> seenAttributes = new HashMap<String, Set<InterMineId>>();
 
     private void exportRow(List<ResultElement> row,
             Collection<Path> unionPathCollection, Collection<Path> newPathCollection) {
@@ -234,9 +235,9 @@ public class GFF3Exporter implements Exporter
         // feature's parents have unique path, e.g. transcript's parents paths
         // are interactingGene.exons and interactingGene, but exon is not a
         // parent of transcript, correct this by using SO.
-        Map<String, Integer> pathToIdMap = new HashMap<String, Integer>();
-        Map<Integer, List<String>> idToParentPathMap = new HashMap<Integer, List<String>>();
-        Map<Integer, ResultElement> idToResultElementMap = new HashMap<Integer, ResultElement>();
+        Map<String, InterMineId> pathToIdMap = new HashMap<String, InterMineId>();
+        Map<InterMineId, List<String>> idToParentPathMap = new HashMap<InterMineId, List<String>>();
+        Map<InterMineId, ResultElement> idToResultElementMap = new HashMap<InterMineId, ResultElement>();
         for (ResultElement el : elWithObject) {
             if (el == null) {
                 continue;
@@ -247,7 +248,7 @@ public class GFF3Exporter implements Exporter
             pathList.remove(pathList.size() - 1);
             String lastClassPath = pathList.get(pathList.size() - 1).toStringNoConstraints();
 
-            Integer id = null;
+            InterMineId id = null;
             try {
                 id = ((SequenceFeature) el.getObject()).getId();
             } catch (Exception e) {
@@ -377,15 +378,15 @@ public class GFF3Exporter implements Exporter
         }
     }
 
-    private void processParent(Map<String, Integer> pathToIdMap,
-            Map<Integer, List<String>> idToParentPathMap,
-            Map<Integer, ResultElement> idToResultElementMap, SequenceOntology so) {
+    private void processParent(Map<String, InterMineId> pathToIdMap,
+            Map<InterMineId, List<String>> idToParentPathMap,
+            Map<InterMineId, ResultElement> idToResultElementMap, SequenceOntology so) {
 
         Set<String> addPar = new LinkedHashSet<String>();
         List<String> parentPaths = idToParentPathMap.get(lastLsfId);
         if (!parentPaths.isEmpty()) {
             for (String parentPath : parentPaths) {
-                Integer parentId = pathToIdMap.get(parentPath);
+                InterMineId parentId = pathToIdMap.get(parentPath);
                 // parents not in view, e.g. Gene.transcripts.exons, gene or/and
                 // transcripts not display, thus Gene or/and Gene.transcripts
                 // will not be in pathToIdMap
@@ -462,21 +463,21 @@ public class GFF3Exporter implements Exporter
      */
     private void checkAttribute(ResultElement el, String attributeName) {
         if (!GFF_FIELDS.contains(attributeName)) {
-            Set<Integer> seenAttributeValues = seenAttributes.get(attributeName);
+            Set<InterMineId> seenAttributeValues = seenAttributes.get(attributeName);
             if (seenAttributeValues == null) {
-                seenAttributeValues = new HashSet<Integer>();
+                seenAttributeValues = new HashSet<InterMineId>();
                 seenAttributes.put(attributeName, seenAttributeValues);
             }
             if (!seenAttributeValues.contains(el.getId())) {
                 seenAttributeValues.add(el.getId());
-                Integer version = attributeVersions.get(attributeName);
+                InterMineId version = attributeVersions.get(attributeName);
                 if (version == null) {
-                    version = new Integer(1);
+                    version = new InterMineId(1);
                     attributes.put(attributeName, formatElementValue(el));
                 } else {
                     attributes.put(attributeName + version, formatElementValue(el));
                 }
-                attributeVersions.put(attributeName, new Integer(version.intValue() + 1));
+                attributeVersions.put(attributeName, new InterMineId(version.intValue() + 1));
             }
         }
     }
@@ -500,7 +501,7 @@ public class GFF3Exporter implements Exporter
 
     private List<ResultElement> getResultElements(List<ResultElement> row) {
         List<ResultElement> els = new ArrayList<ResultElement>();
-        for (Integer index : featureIndexes) {
+        for (InterMineId index : featureIndexes) {
             if (row.get(index) != null) {
                 els.add(row.get(index));
             }

@@ -27,6 +27,7 @@ import org.intermine.objectstore.ObjectStore;
 import org.intermine.util.DynamicUtil;
 import org.intermine.web.logic.config.FieldConfig;
 import org.intermine.web.logic.config.WebConfig;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -62,7 +63,7 @@ public class ObjectViewController extends TilesAction
         String fieldName = (String) context.getAttribute("fieldName");
         fieldName = fieldName.trim();
 
-        Integer id = new Integer(Integer.parseInt(idString));
+        InterMineId id = new InterMineId(InterMineId.parseInt(idString));
         InterMineObject object = os.getObjectById(id);
         if (object == null) {
             return null;

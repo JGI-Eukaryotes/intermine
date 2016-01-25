@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 
 /**
@@ -27,7 +28,7 @@ public class PathConstraintIds extends PathConstraint
     /** List of valid ops for this type of constraint */
     public static final Set<ConstraintOp> VALID_OPS = new HashSet<ConstraintOp>(Arrays.asList(
                 ConstraintOp.IN, ConstraintOp.NOT_IN));
-    private Collection<Integer> ids;
+    private Collection<InterMineId> ids;
 
     /**
      * Constructs a new PathConstraintIds. The path should be a normal path expression
@@ -43,7 +44,7 @@ public class PathConstraintIds extends PathConstraint
      * @throws IllegalArgumentException if the path contains colons or square brackets, or is
      * otherwise in a bad format, or if the op is invalid for this constraint type
      */
-    public PathConstraintIds(String path, ConstraintOp op, Collection<Integer> ids) {
+    public PathConstraintIds(String path, ConstraintOp op, Collection<InterMineId> ids) {
         super(path, op);
         if (op == null) {
             throw new NullPointerException("Cannot construct a PathConstraintIds with a null op");
@@ -61,9 +62,9 @@ public class PathConstraintIds extends PathConstraint
     /**
      * Returns the id collection that the constraint is constraining to.
      *
-     * @return a Collection of Integers
+     * @return a Collection of InterMineIds
      */
-    public Collection<Integer> getIds() {
+    public Collection<InterMineId> getIds() {
         return ids;
     }
 

@@ -36,6 +36,7 @@ import org.intermine.objectstore.ObjectStoreWriterFactory;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.SingletonResults;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -173,21 +174,21 @@ public class IntronTest extends TestCase{
 
         Chromosome chr = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("X");
-        chr.setLength(new Integer(10000));
-        chr.setId(new Integer(101));
+        chr.setLength(new InterMineId(10000));
+        chr.setId(new InterMineId(101));
         chr.setOrganism(organism);
         toStore.add(chr);
 
         Gene gene = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
         gene.setPrimaryIdentifier("FBgn00001");
-        gene.setLength(new Integer(10000));
-        gene.setId(new Integer(1001));
+        gene.setLength(new InterMineId(10000));
+        gene.setId(new InterMineId(1001));
         gene.setOrganism(organism);
         toStore.add(gene);
 
         Transcript t1 = (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        t1.setLength(new Integer(1000));
-        t1.setId(new Integer(10));
+        t1.setLength(new InterMineId(1000));
+        t1.setId(new InterMineId(10));
         t1.setPrimaryIdentifier("ENST00000306601");
         t1.setOrganism(organism);
         t1.setChromosome(chr);
@@ -210,11 +211,11 @@ public class IntronTest extends TestCase{
             int exonId = exonInfo[i][0] + idStart;
             int start = exonInfo[i][1];
             int end = exonInfo[i][2];
-            exons[i].setId(new Integer(exonId));
-            exons[i].setLength(new Integer(end - start + 1));
+            exons[i].setId(new InterMineId(exonId));
+            exons[i].setLength(new InterMineId(end - start + 1));
             exons[i].setChromosome(chr);
             exonLocs[i] = createLocation(chr, exons[i], "1", start, end);
-            exonLocs[i].setId(new Integer(exonId + 100));
+            exonLocs[i].setId(new InterMineId(exonId + 100));
             exons[i].setChromosomeLocation(exonLocs[i]);
             // System.out.println("exonLocs[" + i + "]" + exonLocs[i]);
             locationSet1.add(exonLocs[i]);
@@ -241,21 +242,21 @@ public class IntronTest extends TestCase{
 
         Chromosome chr = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("X");
-        chr.setLength(new Integer(10000));
-        chr.setId(new Integer(101));
+        chr.setLength(new InterMineId(10000));
+        chr.setId(new InterMineId(101));
         chr.setOrganism(organism);
         toStore.add(chr);
 
         Gene gene = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
         gene.setPrimaryIdentifier("FBgn00002");
-        gene.setLength(new Integer(10000));
-        gene.setId(new Integer(1002));
+        gene.setLength(new InterMineId(10000));
+        gene.setId(new InterMineId(1002));
         gene.setOrganism(organism);
         toStore.add(gene);
 
         Transcript t2 = (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        t2.setLength(new Integer(1050));
-        t2.setId(new Integer(11));
+        t2.setLength(new InterMineId(1050));
+        t2.setId(new InterMineId(11));
         t2.setPrimaryIdentifier("ENST00000306610");
         t2.setOrganism(organism);
         t2.setChromosome(chr);
@@ -278,11 +279,11 @@ public class IntronTest extends TestCase{
             int exonId = exonInfo[i][0] + idStart;
             int start = exonInfo[i][1];
             int end = exonInfo[i][2];
-            exons[i].setId(new Integer(exonId));
-            exons[i].setLength(new Integer(end - start + 1));
+            exons[i].setId(new InterMineId(exonId));
+            exons[i].setLength(new InterMineId(end - start + 1));
             exons[i].setChromosome(chr);
             exonLocs[i] = createLocation(chr, exons[i], "1", start, end);
-            exonLocs[i].setId(new Integer(exonId + 100));
+            exonLocs[i].setId(new InterMineId(exonId + 100));
             //System.out.println("exonLocs[" + i + "]" + exonLocs[i]);
             exons[i].setChromosomeLocation(exonLocs[i]);
             locationSet2.add(exonLocs[i]);
@@ -310,14 +311,14 @@ public class IntronTest extends TestCase{
 
         Chromosome chr = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("X");
-        chr.setLength(new Integer(10000));
-        chr.setId(new Integer(101));
+        chr.setLength(new InterMineId(10000));
+        chr.setId(new InterMineId(101));
         chr.setOrganism(organism);
         toStore.add(chr);
 
         Transcript t3 = (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        t3.setLength(new Integer(1000));
-        t3.setId(new Integer(10));
+        t3.setLength(new InterMineId(1000));
+        t3.setId(new InterMineId(10));
         t3.setPrimaryIdentifier("ENST00000306001");
         t3.setOrganism(organism);
         t3.setChromosome(chr);
@@ -327,8 +328,8 @@ public class IntronTest extends TestCase{
         toStore.add(t3);
 
         Exon exon = (Exon) DynamicUtil.createObject(Collections.singleton(Exon.class));
-        exon.setLength(new Integer(1000));
-        exon.setId(new Integer(140));
+        exon.setLength(new InterMineId(1000));
+        exon.setId(new InterMineId(140));
         exon.setOrganism(organism);
         exon.setChromosome(chr);
         Location exonLoc = createLocation(chr, exon, "1", 1, 1000);
@@ -357,8 +358,8 @@ public class IntronTest extends TestCase{
         loc.setLocatedOn(object);
         loc.setFeature(subject);
         loc.setStrand(strand);
-        loc.setStart(new Integer(start));
-        loc.setEnd(new Integer(end));
+        loc.setStart(new InterMineId(start));
+        loc.setEnd(new InterMineId(end));
         return loc;
     }
 }

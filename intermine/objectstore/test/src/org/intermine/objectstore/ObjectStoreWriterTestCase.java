@@ -35,6 +35,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SimpleConstraint;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 public class ObjectStoreWriterTestCase extends ObjectStoreAbstractImplTestCase
@@ -543,7 +544,7 @@ public class ObjectStoreWriterTestCase extends ObjectStoreAbstractImplTestCase
 
         try {
             writer.store(address1);
-            Integer id = address1.getId();
+            InterMineId id = address1.getId();
             address2.setId(id);
 
             assertNull(realOs.pilferObjectById(id));

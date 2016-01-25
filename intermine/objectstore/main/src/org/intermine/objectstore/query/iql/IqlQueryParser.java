@@ -57,6 +57,7 @@ import org.intermine.objectstore.query.SubqueryConstraint;
 import org.intermine.objectstore.query.SubqueryExistsConstraint;
 import org.intermine.objectstore.query.UnknownTypeValue;
 
+import org.intermine.model.InterMineId;
 import antlr.collections.AST;
 
 /**
@@ -347,7 +348,7 @@ public final class IqlQueryParser
             Iterator<?> iterator) {
         AST subquery = null;
         String tableAlias = null;
-        int limit = Integer.MAX_VALUE;
+        int limit = InterMineId.MAX_VALUE;
         do {
             switch (ast.getType()) {
                 case IqlTokenTypes.IQL_STATEMENT:
@@ -359,7 +360,7 @@ public final class IqlQueryParser
                     tableAlias = unescape(ast.getFirstChild().getText());
                     break;
                 case IqlTokenTypes.SUBQUERY_LIMIT:
-                    limit = Integer.parseInt(ast.getFirstChild().getText());
+                    limit = InterMineId.parseInt(ast.getFirstChild().getText());
                     break;
                 default:
                     throw (new IllegalArgumentException("Unknown AST node: " + ast.getText() + " ["
@@ -595,7 +596,7 @@ public final class IqlQueryParser
      */
     private static ObjectStoreBag processNewObjectStoreBag(AST ast) {
         String value = unescape(ast.getText());
-        return new ObjectStoreBag(Integer.parseInt(value));
+        return new ObjectStoreBag(InterMineId.parseInt(value));
     }
 
     /**
@@ -612,12 +613,12 @@ public final class IqlQueryParser
             if (IqlTokenTypes.QUESTION_MARK == sibling.getType()) {
                 @SuppressWarnings("unchecked") Collection<ObjectStoreBag> param =
                     (Collection) iterator.next();
-                return new ObjectStoreBagsForObject(new Integer(Integer.parseInt(value)), param);
+                return new ObjectStoreBagsForObject(new InterMineId(InterMineId.parseInt(value)), param);
             }
             throw new IllegalArgumentException("Unknown AST node: " + sibling.getText() + " ["
                     + sibling.getType() + "]");
         }
-        return new ObjectStoreBagsForObject(new Integer(Integer.parseInt(value)));
+        return new ObjectStoreBagsForObject(new InterMineId(InterMineId.parseInt(value)));
     }
 
     /**
@@ -691,7 +692,7 @@ public final class IqlQueryParser
                                     .getFieldName());
                         } else {
                             QueryObjectPathExpression ref = (QueryObjectPathExpression) obj;
-                            Collection<Integer> empty = Collections.emptySet();
+                            Collection<InterMineId> empty = Collections.emptySet();
                             switch(ast.getType()) {
                                 case IqlTokenTypes.IDENTIFIER:
                                     throw new IllegalArgumentException("Path expression " + text
@@ -755,7 +756,7 @@ public final class IqlQueryParser
                         Collection<InterMineObject> empty = Collections.emptySet();
                         colQuery = ((QueryCollectionPathExpression) col).getQuery(empty);
                     } else {
-                        Collection<Integer> empty = Collections.emptySet();
+                        Collection<InterMineId> empty = Collections.emptySet();
                         colQuery = ((QueryObjectPathExpression) col).getQuery(empty, false);
                     }
                     do {
@@ -1072,8 +1073,8 @@ public final class IqlQueryParser
             typeClass = Boolean.class;
         } else if ("Short".equals(type)) {
             typeClass = Short.class;
-        } else if ("Integer".equals(type)) {
-            typeClass = Integer.class;
+        } else if ("InterMineId".equals(type)) {
+            typeClass = InterMineId.class;
         } else if ("Long".equals(type)) {
             typeClass = Long.class;
         } else if ("Float".equals(type)) {

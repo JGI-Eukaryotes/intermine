@@ -43,6 +43,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.testing.OneTimeTestCase;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
@@ -171,8 +172,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         c.setVatNumber(100);
 
         if (doIds) {
-            c.setId(new Integer(1));
-            a.setId(new Integer(2));
+            c.setId(new InterMineId(1));
+            a.setId(new InterMineId(2));
         }
         Source source = iw.getMainSource("testsource", "testsource");
         Source skelSource = iw.getSkeletonSource("testsource", "testsource");
@@ -207,9 +208,9 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         c.setVatNumber(1234);
 
         if (doIds) {
-            e.setId(new Integer(1));
-            d.setId(new Integer(2));
-            c.setId(new Integer(3));
+            e.setId(new InterMineId(1));
+            d.setId(new InterMineId(2));
+            c.setId(new InterMineId(3));
         }
         Source source = iw.getMainSource("testsource3", "testsource3");
         Source skelSource = iw.getSkeletonSource("testsource3", "testsource3");
@@ -239,7 +240,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         c.setcEO(ceo);
         a2.setAddress("Employee Street, BVille");
         ceo.setName("EmployeeB1");
-        ceo.setSeniority(new Integer(76321));
+        ceo.setSeniority(new InterMineId(76321));
         ceo.setFullTime(true);
         ceo.setSalary(45000);
         ceo.setAge(40);
@@ -247,10 +248,10 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         ceo.setAddress(a2);
 
         if (doIds) {
-            c.setId(new Integer(1));
-            a.setId(new Integer(2));
-            a2.setId(new Integer(3));
-            ceo.setId(new Integer(4));
+            c.setId(new InterMineId(1));
+            a.setId(new InterMineId(2));
+            a2.setId(new InterMineId(3));
+            ceo.setId(new InterMineId(4));
         }
         Source source = iw.getMainSource("testsource", "testsource");
         Source skelSource = iw.getSkeletonSource("testsource", "testsource");
@@ -294,7 +295,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
             companyA.setcEO(ceoA);
             ceoAAddress.setAddress("Employee Street, AVille");
             ceoA.setAddress(ceoAAddress);
-            ceoA.setSeniority(new Integer(876234));
+            ceoA.setSeniority(new InterMineId(876234));
             ceoA.setName("Fred");
             ceoA.setFullTime(false);
             ceoA.setSalary(1);
@@ -302,10 +303,10 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
             ceoA.setCompany(companyA);
 
             if (doIds) {
-                companyA.setId(new Integer(1));
-                ceoA.setId(new Integer(2));
-                companyAAddress.setId(new Integer(3));
-                ceoAAddress.setId(new Integer(4));
+                companyA.setId(new InterMineId(1));
+                ceoA.setId(new InterMineId(2));
+                companyAAddress.setId(new InterMineId(3));
+                ceoAAddress.setId(new InterMineId(4));
             }
 
             iw.store(companyA, source, skelSource);
@@ -351,7 +352,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
             c.setcEO(ceo);
             a2.setAddress("Employee Street, BVille");
             ceo.setName("EmployeeB1");
-            ceo.setSeniority(new Integer(76321));
+            ceo.setSeniority(new InterMineId(76321));
             ceo.setFullTime(true);
             ceo.setSalary(45000);
             ceo.setAge(40);
@@ -359,10 +360,10 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
             ceo.setAddress(a2);
 
             if (doIds) {
-                c.setId(new Integer(1));
-                a.setId(new Integer(2));
-                a2.setId(new Integer(3));
-                ceo.setId(new Integer(4));
+                c.setId(new InterMineId(1));
+                a.setId(new InterMineId(2));
+                a2.setId(new InterMineId(3));
+                ceo.setId(new InterMineId(4));
             }
 
             iw.commitTransaction();
@@ -401,8 +402,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         c.setVatNumber(100);
 
         if (doIds) {
-            c.setId(new Integer(1));
-            a.setId(new Integer(2));
+            c.setId(new InterMineId(1));
+            a.setId(new InterMineId(2));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -440,16 +441,16 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         d.addEmployees(e);
         e.setAge(10);
         e.setFullTime(true);
-        e.setSeniority(new Integer(876123));
+        e.setSeniority(new InterMineId(876123));
         a2.setAddress("Employee Street, AVille");
         e.setAddress(a2);
 
         if (doIds) {
-            e.setId(new Integer(1));
-            d.setId(new Integer(2));
-            c.setId(new Integer(3));
-            a.setId(new Integer(4));
-            a2.setId(new Integer(5));
+            e.setId(new InterMineId(1));
+            d.setId(new InterMineId(2));
+            c.setId(new InterMineId(3));
+            a.setId(new InterMineId(4));
+            a2.setId(new InterMineId(5));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -482,13 +483,13 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         e.setDepartment(null);
         e.setAge(10);
         e.setFullTime(true);
-        e.setSeniority(new Integer(876123));
+        e.setSeniority(new InterMineId(876123));
         a2.setAddress("Employee Street, AVille");
         e.setAddress(a2);
 
         if (doIds) {
-            e.setId(new Integer(1));
-            a2.setId(new Integer(2));
+            e.setId(new InterMineId(1));
+            a2.setId(new InterMineId(2));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -526,16 +527,16 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         e.setName("EmployeeA1");
         e.setAge(10);
         e.setFullTime(true);
-        e.setSeniority(new Integer(876123));
+        e.setSeniority(new InterMineId(876123));
         a2.setAddress("Employee Street, AVille");
         e.setAddress(a2);
 
         if (doIds) {
-            e.setId(new Integer(1));
-            d.setId(new Integer(2));
-            c.setId(new Integer(3));
-            a.setId(new Integer(4));
-            a2.setId(new Integer(5));
+            e.setId(new InterMineId(1));
+            d.setId(new InterMineId(2));
+            c.setId(new InterMineId(3));
+            a.setId(new InterMineId(4));
+            a2.setId(new InterMineId(5));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -575,9 +576,9 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         companyA.addContractors(con);
 
         if (doIds) {
-            con.setId(new Integer(1));
-            companyAAddress.setId(new Integer(2));
-            companyA.setId(new Integer(3));
+            con.setId(new InterMineId(1));
+            companyAAddress.setId(new InterMineId(2));
+            companyA.setId(new InterMineId(3));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -605,9 +606,9 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         companyB.addContractors(con);
 
         if (doIds) {
-            con.setId(new Integer(1));
-            companyBAddress.setId(new Integer(4));
-            companyB.setId(new Integer(5));
+            con.setId(new InterMineId(1));
+            companyBAddress.setId(new InterMineId(4));
+            companyB.setId(new InterMineId(5));
         }
 
         iw.commitTransaction();
@@ -648,7 +649,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         Contractor conA = new Contractor();
         ca.addContractors(conA);
         conA.setName("ContractorA");
-        conA.setSeniority(new Integer(128764));
+        conA.setSeniority(new InterMineId(128764));
         conA.addCompanys(ca);
         Company exampleCA = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
         exampleCA.setName("CompanyA");
@@ -661,19 +662,19 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
 
         Contractor conC = new Contractor();
         conC.setName("ContractorC");
-        conC.setSeniority(new Integer(2784112));
+        conC.setSeniority(new InterMineId(2784112));
         conC.addCompanys(dbCA);
 
         Contractor conD = new Contractor();
         conD.setName("ContractorD");
-        conD.setSeniority(new Integer(276423341));
+        conD.setSeniority(new InterMineId(276423341));
         conD.addCompanys(ca);
 
         if (doIds) {
-            ca.setId(new Integer(1));
-            conA.setId(new Integer(2));
-            conC.setId(new Integer(3));
-            conD.setId(new Integer(4));
+            ca.setId(new InterMineId(1));
+            conA.setId(new InterMineId(2));
+            conC.setId(new InterMineId(3));
+            conD.setId(new InterMineId(4));
         }
 
         iw.store(ca);
@@ -717,9 +718,9 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         companyA.addContractors(con);
 
         if (doIds) {
-            con.setId(new Integer(5));
-            companyAAddress.setId(new Integer(6));
-            companyA.setId(new Integer(7));
+            con.setId(new InterMineId(5));
+            companyAAddress.setId(new InterMineId(6));
+            companyA.setId(new InterMineId(7));
         }
         Source source2 = iw.getMainSource("testsource2", "testsource2");
         Source skelSource2 = iw.getSkeletonSource("testsource2", "testsource2");
@@ -782,7 +783,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         ((Broke) e).setDebt(8762);
 
         if (doIds) {
-            e.setId(new Integer(1));
+            e.setId(new InterMineId(1));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -796,7 +797,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         assertTrue(re instanceof Employee);
         assertTrue(re instanceof Manager);
         assertEquals(8762, ((Broke) re).getDebt());
-        assertEquals(new Integer(876123), ((Manager) re).getSeniority());
+        assertEquals(new InterMineId(876123), ((Manager) re).getSeniority());
     }
 
     public void testSourceWithMultipleCopies() throws Exception {
@@ -806,8 +807,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         e2.setName("EmployeeA1");
 
         if (doIds) {
-            e1.setId(new Integer(1));
-            e2.setId(new Integer(2));
+            e1.setId(new InterMineId(1));
+            e2.setId(new InterMineId(2));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -828,7 +829,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         e1.setTitle("Mr.");
 
         if (doIds) {
-            e1.setId(new Integer(1));
+            e1.setId(new InterMineId(1));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -850,7 +851,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         q.addToSelect(qc);
         ConstraintSet cs = new ConstraintSet(ConstraintOp.OR);
         cs.addConstraint(new SimpleConstraint(new QueryField(qc, "name"), ConstraintOp.EQUALS, new QueryValue("CompanyZ")));
-        cs.addConstraint(new SimpleConstraint(new QueryField(qc, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new Integer(876213))));
+        cs.addConstraint(new SimpleConstraint(new QueryField(qc, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new InterMineId(876213))));
         q.setConstraint(cs);
 
         Company c2 = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
@@ -869,11 +870,11 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         c4.setVatNumber(876213);
 
         if (doIds) {
-            c2.setId(new Integer(1));
-            a2.setId(new Integer(2));
-            c3.setId(new Integer(1));
-            c4.setId(new Integer(1));
-            a4.setId(new Integer(2));
+            c2.setId(new InterMineId(1));
+            a2.setId(new InterMineId(2));
+            c3.setId(new InterMineId(1));
+            c4.setId(new InterMineId(1));
+            a4.setId(new InterMineId(2));
         }
 
         assertEquals(0, iw.executeSingleton(q).size());
@@ -926,8 +927,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         d.setName("new_department");
 
         if (doIds) {
-            c.setId(new Integer(1));
-            d.setId(new Integer(3));
+            c.setId(new InterMineId(1));
+            d.setId(new InterMineId(3));
         }
         Source source = iw.getMainSource("testsource3", "testsource3");
         Source skelSource = iw.getSkeletonSource("testsource3", "testsource3");
@@ -967,7 +968,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         Address a = (Address) DynamicUtil.createObject(Collections.singleton(Address.class));
         a.setAddress("address1");
         if (doIds) {
-            a.setId(new Integer(1));
+            a.setId(new InterMineId(1));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -983,7 +984,7 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         Address a = (Address) DynamicUtil.createObject(Collections.singleton(Address.class));
         a.setAddress("address1");
         if (doIds) {
-            a.setId(new Integer(1));
+            a.setId(new InterMineId(1));
         }
 
         IntegrationWriterDataTrackingImpl iw2 = (IntegrationWriterDataTrackingImpl) IntegrationWriterFactory.getIntegrationWriter("integration.unittestmulti");
@@ -1018,8 +1019,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         m.setName("Fred");
 
         if (doIds) {
-            d.setId(new Integer(1));
-            m.setId(new Integer(2));
+            d.setId(new InterMineId(1));
+            m.setId(new InterMineId(2));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -1060,8 +1061,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         // The company will clash with CompanyA if address gets mistakenly missed off the primary key query.
 
         if (doIds) {
-            c.setId(new Integer(1));
-            a.setId(new Integer(2));
+            c.setId(new InterMineId(1));
+            a.setId(new InterMineId(2));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -1088,8 +1089,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         // The company will clash with CompanyA if address gets mistakenly missed off the primary key query.
 
         if (doIds) {
-            c.setId(new Integer(1));
-            a.setId(new Integer(2));
+            c.setId(new InterMineId(1));
+            a.setId(new InterMineId(2));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");
@@ -1114,8 +1115,8 @@ public class IntegrationWriterDataTrackingImplTest extends SetupDataTestCase
         a.setAddress("abc");
 
         if (doIds) {
-            e.setId(new Integer(1));
-            a.setId(new Integer(2));
+            e.setId(new InterMineId(1));
+            a.setId(new InterMineId(2));
         }
 
         Source source = iw.getMainSource("testsource", "testsource");

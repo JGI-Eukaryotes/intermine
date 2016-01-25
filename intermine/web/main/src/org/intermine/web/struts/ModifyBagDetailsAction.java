@@ -37,6 +37,7 @@ import org.intermine.web.logic.PortalHelper;
 import org.intermine.web.logic.bag.BagConversionHelper;
 import org.intermine.web.logic.bag.BagConverter;
 import org.intermine.web.logic.results.PagedTable;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -118,7 +119,7 @@ public class ModifyBagDetailsAction extends InterMineAction
                     BagConverter bagConverter = PortalHelper.getBagConverter(im,
                             SessionMethods.getWebConfig(request),
                             additionalConverter.getClassName());
-                    List<Integer> converted = bagConverter.getConvertedObjectIds(profile,
+                    List<InterMineId> converted = bagConverter.getConvertedObjectIds(profile,
                             imBag.getType(), imBag.getContentsAsIds(), mbdf.getExtraFieldValue());
 
                     if (converted.size() == 1) {
@@ -170,7 +171,7 @@ public class ModifyBagDetailsAction extends InterMineAction
     }
 
     private ActionForward createBagAndGoToBagDetails(ActionMapping mapping, InterMineBag imBag,
-            List<Integer> bagList) throws ObjectStoreException {
+            List<InterMineId> bagList) throws ObjectStoreException {
         imBag.addIdsToBag(bagList, imBag.getType());
         return new ForwardParameters(mapping.findForward("bagDetails"))
             .addParameter("bagName", imBag.getName()).forward();

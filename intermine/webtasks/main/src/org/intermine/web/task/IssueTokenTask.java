@@ -31,6 +31,7 @@ import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.SavedQuery;
 import org.intermine.api.template.ApiTemplate;
 import org.intermine.api.util.DevNullMap;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.JWTBuilder;
 
 /**
@@ -63,7 +64,7 @@ public class IssueTokenTask extends KeyStoreTask
      * @param expiry The number of seconds the token will be valid for.
      */
     public void setExpiry(String expiry) {
-        this.expiry = Integer.parseInt(expiry, 10);
+        this.expiry = InterMineId.parseInt(expiry, 10);
     }
 
     /**

@@ -33,6 +33,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.web.logic.session.SessionMethods;
 import org.intermine.web.struts.InterMineAction;
 import org.json.JSONArray;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -130,8 +131,8 @@ public class GenomicRegionSearchAction extends InterMineAction
                         gr.setExtendedRegionSize(grsService.getConstraint()
                                 .getExtendedRegionSize());
                         gr.setChr(coord.split("\t")[0].trim());
-                        gr.setStart(Integer.valueOf(coord.split("\t")[1].trim()));
-                        gr.setEnd(Integer.valueOf(coord.split("\t")[2].trim()));
+                        gr.setStart(InterMineId.valueOf(coord.split("\t")[1].trim()));
+                        gr.setEnd(InterMineId.valueOf(coord.split("\t")[2].trim()));
                         liftedList.add(gr);
                     }
 

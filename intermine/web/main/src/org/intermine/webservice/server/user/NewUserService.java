@@ -29,6 +29,7 @@ import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.intermine.webservice.server.exceptions.ServiceException;
 import org.intermine.webservice.server.exceptions.RateLimitException;
 import org.intermine.webservice.server.output.JSONFormatter;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -57,7 +58,7 @@ public class NewUserService extends JSONService
             String rateLimit = webProperties.getProperty("webservice.newuser.ratelimit");
             if (rateLimit != null) {
                 try {
-                    maxNewUsersPerAddressPerHour = Integer.valueOf(rateLimit.trim()).intValue();
+                    maxNewUsersPerAddressPerHour = InterMineId.valueOf(rateLimit.trim()).intValue();
                 } catch (NumberFormatException e) {
                     LOG.error(DEFAULTING_TO_1000PH, e);
                     maxNewUsersPerAddressPerHour = 1000;

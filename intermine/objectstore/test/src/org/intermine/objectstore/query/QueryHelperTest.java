@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.Model;
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Employee;
 
 public class QueryHelperTest extends TestCase
@@ -84,7 +85,7 @@ public class QueryHelperTest extends TestCase
                                  ConstraintOp.EQUALS, new QueryValue("Bob"));
         SimpleConstraint sc2 =
             new SimpleConstraint(new QueryField(qc, "age"),
-                                 ConstraintOp.EQUALS, new QueryValue(new Integer(54)));
+                                 ConstraintOp.EQUALS, new QueryValue(new InterMineId(54)));
         ConstraintSet cs2 = new ConstraintSet(ConstraintOp.AND);
         cs2.addConstraint(sc2);
 
@@ -108,7 +109,7 @@ public class QueryHelperTest extends TestCase
                                  ConstraintOp.EQUALS, new QueryValue("Bob"));
         SimpleConstraint sc2 =
             new SimpleConstraint(new QueryField(qc, "age"),
-                                 ConstraintOp.EQUALS, new QueryValue(new Integer(54)));
+                                 ConstraintOp.EQUALS, new QueryValue(new InterMineId(54)));
         ConstraintSet cs1 = new ConstraintSet(ConstraintOp.AND);
         cs1.addConstraint(sc1);
         ConstraintSet cs2 = new ConstraintSet(ConstraintOp.AND);
@@ -131,7 +132,7 @@ public class QueryHelperTest extends TestCase
                                  ConstraintOp.EQUALS, new QueryValue("Bob"));
         SimpleConstraint sc2 =
             new SimpleConstraint(new QueryField(qc, "age"),
-                                 ConstraintOp.EQUALS, new QueryValue(new Integer(54)));
+                                 ConstraintOp.EQUALS, new QueryValue(new InterMineId(54)));
         ConstraintSet cs1 = new ConstraintSet(ConstraintOp.OR);
         cs1.addConstraint(sc1);
         ConstraintSet cs2 = new ConstraintSet(ConstraintOp.AND);
@@ -154,7 +155,7 @@ public class QueryHelperTest extends TestCase
                                  ConstraintOp.EQUALS, new QueryValue("Bob"));
         SimpleConstraint sc2 =
             new SimpleConstraint(new QueryField(qc, "age"),
-                                 ConstraintOp.EQUALS, new QueryValue(new Integer(54)));
+                                 ConstraintOp.EQUALS, new QueryValue(new InterMineId(54)));
         ConstraintSet cs1 = new ConstraintSet(ConstraintOp.AND);
         cs1.addConstraint(sc1);
         ConstraintSet cs2 = new ConstraintSet(ConstraintOp.OR);

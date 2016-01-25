@@ -15,6 +15,7 @@ import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
 import org.intermine.pathquery.Path;
 import org.intermine.util.DynamicUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.TypeUtil;
 
 /**
@@ -89,7 +90,7 @@ public final class TableCell implements ResultCell
     }
 
     @Override
-    public Integer getId() {
+    public InterMineId getId() {
         if (fpo instanceof InterMineObject) {
             return ((InterMineObject) fpo).getId();
         }

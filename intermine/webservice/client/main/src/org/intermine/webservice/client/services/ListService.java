@@ -45,6 +45,7 @@ import org.intermine.webservice.client.results.Item;
 import org.intermine.webservice.client.util.HttpConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -166,7 +167,7 @@ public class ListService extends Service
     public List<ItemList> getListsWithObject(int id) {
         ListRequest request = new ListRequest(RequestType.POST, getUrl(),
                 ContentType.APPLICATION_JSON);
-        request.setDatabaseId(Integer.toString(id));
+        request.setDatabaseId(InterMineId.toString(id));
         return processListsRequest(request);
     }
 
@@ -577,7 +578,7 @@ public class ListService extends Service
         pq.addView(list.getType() + ".id");
         Set<String> ids = new HashSet<String>();
         for (Item i: items) {
-            ids.add(Integer.toString(i.getId()));
+            ids.add(InterMineId.toString(i.getId()));
         }
         pq.addConstraint(Constraints.oneOfValues(list.getType() + ".id", ids));
         pq.addConstraint(Constraints.in(list.getType(), list.getName()));

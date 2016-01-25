@@ -22,6 +22,7 @@ import org.intermine.bio.web.logic.SequenceFeatureExportUtil;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil.InvalidQueryException;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.web.context.InterMineContext;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 
 /**
@@ -56,11 +57,11 @@ public class GFFQueryService extends BioQueryService
     @Override
     protected GFF3Exporter getExporter(PathQuery pq) {
         String sourceName = webProperties.getProperty("project.title");
-        Set<Integer> organisms = null;
-        List<Integer> indexes = new ArrayList<Integer>();
+        Set<InterMineId> organisms = null;
+        List<InterMineId> indexes = new ArrayList<InterMineId>();
         List<String> viewColumns = new ArrayList<String>(pq.getView());
         for (int i = 0; i < viewColumns.size(); i++) {
-            indexes.add(Integer.valueOf(i));
+            indexes.add(InterMineId.valueOf(i));
         }
         removeFirstItemInPaths(viewColumns);
         return new GFF3Exporter(

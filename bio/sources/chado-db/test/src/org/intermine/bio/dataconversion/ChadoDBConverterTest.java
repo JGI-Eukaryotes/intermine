@@ -26,6 +26,7 @@ import org.intermine.xml.full.Item;
 
 import java.io.IOException;
 import java.sql.Connection;
+import org.intermine.model.InterMineId;
 import java.sql.SQLException;
 
 public class ChadoDBConverterTest extends ItemsTestCase
@@ -105,9 +106,9 @@ public class ChadoDBConverterTest extends ItemsTestCase
         }
 
         @Override
-        protected Map<OrganismData, Integer> getChadoOrganismIds(@SuppressWarnings("unused")
+        protected Map<OrganismData, InterMineId> getChadoOrganismIds(@SuppressWarnings("unused")
                                                                     Connection connection) {
-            Map<OrganismData, Integer> retMap = new HashMap<OrganismData, Integer>();
+            Map<OrganismData, InterMineId> retMap = new HashMap<OrganismData, InterMineId>();
             retMap.put(OrganismRepository.getOrganismRepository().getOrganismDataByTaxon(7227), 1);
             return retMap;
         }

@@ -49,6 +49,7 @@ import org.intermine.web.logic.config.FieldConfigHelper;
 import org.intermine.web.logic.config.Type;
 import org.intermine.web.logic.config.WebConfig;
 import org.intermine.web.logic.results.WebState;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -67,7 +68,7 @@ public abstract class WebUtil
     }
 
     /**
-     * Lookup an Integer property from the SessionContext and return it.
+     * Lookup an InterMineId property from the SessionContext and return it.
      *
      * @param session
      *            the current session
@@ -86,7 +87,7 @@ public abstract class WebUtil
         int intVal = defaultValue;
 
         try {
-            intVal = Integer.parseInt(n);
+            intVal = InterMineId.parseInt(n);
         } catch (final NumberFormatException e) {
             LOG.warn("Failed to parse " + propertyName + " property: " + n);
         }

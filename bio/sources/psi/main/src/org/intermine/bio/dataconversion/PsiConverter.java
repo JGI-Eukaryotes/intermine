@@ -37,6 +37,7 @@ import org.intermine.xml.full.ReferenceList;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -602,8 +603,8 @@ public class PsiConverter extends BioFileConverter
 
                 int c;
                 try {
-                    Integer a = new Integer(start);
-                    Integer b = new Integer(end);
+                    InterMineId a = new InterMineId(start);
+                    InterMineId b = new InterMineId(end);
                     c = a.compareTo(b);
                 } catch (NumberFormatException e) {
                     return false;

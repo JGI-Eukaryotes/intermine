@@ -72,6 +72,7 @@ import org.intermine.template.TemplateQuery;
 import org.intermine.template.xml.TemplateQueryBinding;
 import org.intermine.util.CacheMap;
 import org.intermine.util.PasswordHasher;
+import org.intermine.model.InterMineId;
 import org.intermine.util.PropertiesUtil;
 
 /**
@@ -137,7 +138,7 @@ public class ProfileManager
             LOG.info("Database has userprofile version \"" + versionString + "\"");
             if (versionString != null) {
                 try {
-                    v = Integer.parseInt(versionString);
+                    v = InterMineId.parseInt(versionString);
                 } catch (NumberFormatException e) {
                     throw new IllegalStateException(message);
                 }
@@ -368,7 +369,7 @@ public class ProfileManager
      * @throws ObjectStoreException If it cannot be removed.
      */
     public void deleteProfile(Profile profile) throws ObjectStoreException {
-        Integer userId = profile.getUserId();
+        InterMineId userId = profile.getUserId();
         removeTokensForProfile(profile);
         evictFromCache(profile);
         try {
@@ -436,7 +437,7 @@ public class ProfileManager
 
         if (userProfile == null) {
             // See if we can resolve the user by an alias.
-            Integer trueId;
+            InterMineId trueId;
             try {
                 // See if this is one of the unique mappings.
                 for (String pref: UserPreferences.UNIQUE_KEYS) {
@@ -481,7 +482,7 @@ public class ProfileManager
                     Results bags = uosw.execute(q, 1000, false, false, true);
                     for (Iterator<?> i = bags.iterator(); i.hasNext();) {
                         ResultsRow<?> row = (ResultsRow<?>) i.next();
-                        Integer bagId = (Integer) row.get(0);
+                        InterMineId bagId = (InterMineId) row.get(0);
                         SavedBag savedBag = (SavedBag) row.get(1);
                         String bagName = savedBag.getName();
                         if (StringUtils.isBlank(bagName)) {
@@ -588,7 +589,7 @@ public class ProfileManager
      * @param profile the Profile
      */
     public synchronized void saveProfile(Profile profile) {
-        Integer userId = profile.getUserId();
+        InterMineId userId = profile.getUserId();
         try {
             UserProfile userProfile = getUserProfile(userId);
 
@@ -676,7 +677,7 @@ public class ProfileManager
      */
     public Profile createAnonymousProfile() {
         String username = null;
-        Integer id = null;
+        InterMineId id = null;
         String password = null;
         String token = null;
         boolean isLocal = true;
@@ -921,7 +922,7 @@ public class ProfileManager
      * @param userId the id of the user
      * @return the relevant UserProfile
      */
-    public synchronized UserProfile getUserProfile(Integer userId) {
+    public synchronized UserProfile getUserProfile(InterMineId userId) {
         if (userId == null) {
             return null;
         }

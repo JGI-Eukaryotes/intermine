@@ -22,6 +22,7 @@ import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.util.DynamicUtil;
 import org.intermine.objectstore.*;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.*;
 
 /**
@@ -101,7 +102,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
      */
     
     public List execute(Query q, int start, int limit, boolean optimise, boolean explain,
-            Map<Object, Integer> sequence) throws ObjectStoreException {
+            Map<Object, InterMineId> sequence) throws ObjectStoreException {
         checkStartLimit(start, limit, q);
         if (executeTime > maxTime) {
             throw new ObjectStoreException("Query will take longer than " + maxTime);
@@ -132,7 +133,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
     /**
      * @see ObjectStore#cacheObjectById
      */
-    public Object cacheObjectById(Integer id, InterMineObject o) {
+    public Object cacheObjectById(InterMineId id, InterMineObject o) {
         objects.put(id, o);
         return o;
     }
@@ -140,7 +141,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
     /**
      * @see ObjectStore#getObjectById
      */
-    public InterMineObject getObjectById(Integer id) throws ObjectStoreException {
+    public InterMineObject getObjectById(InterMineId id) throws ObjectStoreException {
         return (InterMineObject) objects.get(id);
     }
 
@@ -221,7 +222,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
                 }
             } else {
                 // Either a function, expression or Field
-                obj = new Integer(1);
+                obj = new InterMineId(1);
             }
             row.add(obj);
         }
@@ -255,7 +256,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
      * @return the number of rows to be produced by query
      * @throws ObjectStoreException if an error occurs counting the query
      */
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return this.resultsSize;
     }
 
@@ -281,7 +282,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
         return 0;
     }
 
-    public Integer getSerial() throws ObjectStoreException {
+    public InterMineId getSerial() throws ObjectStoreException {
         throw new ObjectStoreException();
     }
 }

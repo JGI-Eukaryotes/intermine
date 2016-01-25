@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpUpgradeHandler;
+import org.intermine.model.InterMineId;
 import javax.servlet.http.Part;
 
 //import com.sun.net.httpserver.HttpHandler;
@@ -100,7 +101,7 @@ public class MockHttpRequest implements HttpServletRequest
 
     @Override
     public int getIntHeader(String name) {
-        return Integer.valueOf(getHeader(name));
+        return InterMineId.valueOf(getHeader(name));
     }
 
     @Override

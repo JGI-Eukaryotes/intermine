@@ -26,6 +26,7 @@ import org.intermine.objectstore.query.QueryObjectPathExpression;
 import org.intermine.objectstore.query.QuerySelectable;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -229,7 +230,7 @@ public class ResultsFlatOuterJoinsImpl extends AbstractList<MultiRow<ResultsRow<
                     }
                 }
             } else {
-                retval.add(new Integer(columnCount++));
+                retval.add(new InterMineId(columnCount++));
             }
         }
         return retval;
@@ -287,8 +288,8 @@ public class ResultsFlatOuterJoinsImpl extends AbstractList<MultiRow<ResultsRow<
         }
         columnNo = 0;
         for (Object column : columns) {
-            if (column instanceof Integer) {
-                int outColumnNo = ((Integer) column).intValue();
+            if (column instanceof InterMineId) {
+                int outColumnNo = ((InterMineId) column).intValue();
                 MultiRowFirstValue firstValue = new MultiRowFirstValue(row.get(columnNo),
                         maxRowNo - startRow);
                 retval.get(startRow).set(outColumnNo, firstValue);

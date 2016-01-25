@@ -24,6 +24,7 @@ import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.util.FormattedTextParser;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 
 
@@ -119,9 +120,9 @@ public class FlybaseExpressionConverter extends BioFileConverter
                 String rpkm = line[7];
 
                 if (StringUtils.isNotEmpty(rpkm)) {
-                    Integer expressionScore = new Integer(0);
+                    InterMineId expressionScore = new InterMineId(0);
                     try {
-                        expressionScore = Integer.valueOf(rpkm);
+                        expressionScore = InterMineId.valueOf(rpkm);
                         result.setAttribute("expressionScore", rpkm);
                         result.setAttribute("expressionLevel", getLabel(expressionScore));
                     } catch (NumberFormatException e) {
@@ -146,7 +147,7 @@ public class FlybaseExpressionConverter extends BioFileConverter
   //> Very high expression (101 - 1000)
   //> Extremely high expression (>1000)
 
-    private static String getLabel(Integer score) {
+    private static String getLabel(InterMineId score) {
         String label = "No / Extremely low expression";
         if (score > 1000) {
             label = "Extremely high expression";

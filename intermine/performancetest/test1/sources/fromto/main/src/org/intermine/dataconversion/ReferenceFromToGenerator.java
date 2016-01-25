@@ -24,6 +24,7 @@ import org.intermine.xml.full.Item;
 import org.intermine.xml.full.ItemHelper;
 import org.intermine.xml.full.ItemFactory;
 
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 /**
@@ -59,7 +60,7 @@ public class ReferenceFromToGenerator extends FileConverter
      * @param count the number of objects to create
      */
     public void setCount(String count) {
-        this.count = Integer.parseInt(count);
+        this.count = InterMineId.parseInt(count);
     }
 
     /**
@@ -74,9 +75,9 @@ public class ReferenceFromToGenerator extends FileConverter
         for (int i = 0; i < count / 2; i++) {
             Item itemTo = createItem("ReferenceTo2");
             Item itemFrom = createItem("ReferenceFrom2");
-            Integer firstInt;
+            InterMineId firstInt;
             do {
-                firstInt = new Integer(random.nextInt());
+                firstInt = new InterMineId(random.nextInt());
             } while (doneValues.contains(firstInt));
             doneValues.add(firstInt);
             itemTo.setAttribute("att", "" + firstInt);
@@ -91,12 +92,12 @@ public class ReferenceFromToGenerator extends FileConverter
     }
 
     private String newId(String className) {
-        Integer id = (Integer) ids.get(className);
+        InterMineId id = (InterMineId) ids.get(className);
         if (id == null) {
-            id = new Integer(0);
+            id = new InterMineId(0);
             ids.put(className, id);
         }
-        ids.put(className, new Integer(id.intValue() + 1));
+        ids.put(className, new InterMineId(id.intValue() + 1));
         return id.toString();
     }
 

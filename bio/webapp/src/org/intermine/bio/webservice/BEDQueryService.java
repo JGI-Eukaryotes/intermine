@@ -20,6 +20,7 @@ import org.intermine.bio.web.export.BEDExporter;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil.InvalidQueryException;
 import org.intermine.pathquery.PathQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 
 /**
@@ -62,10 +63,10 @@ public class BEDQueryService extends BioQueryService
                 sourceName + " " + sourceReleaseVersion + " Custom Track");
         Set<String> orgs = SequenceFeatureExportUtil.getOrganisms(pq, im,
                 getPermission().getProfile());
-        List<Integer> indexes = new ArrayList<Integer>();
+        List<InterMineId> indexes = new ArrayList<InterMineId>();
         List<String> viewColumns = new ArrayList<String>(pq.getView());
         for (int i = 0; i < viewColumns.size(); i++) {
-            indexes.add(Integer.valueOf(i));
+            indexes.add(InterMineId.valueOf(i));
         }
 
         return new BEDExporter(getPrintWriter(), indexes, sourceName,

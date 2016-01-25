@@ -19,6 +19,7 @@ import java.net.URLConnection;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 /**
@@ -81,7 +82,7 @@ public class HttpRequester implements MineRequester
     @Override
     public void configure(Properties requesterConfig) {
         if (requesterConfig.containsKey("timeout")) {
-            this.timeout = Integer.parseInt(requesterConfig.getProperty("timeout"), 10);
+            this.timeout = InterMineId.parseInt(requesterConfig.getProperty("timeout"), 10);
         }
     }
 

@@ -41,6 +41,7 @@ import org.intermine.model.userprofile.UserProfile;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriter;
+import org.intermine.model.InterMineId;
 import org.intermine.pathquery.PathQuery;
 
 /**
@@ -64,7 +65,7 @@ public class Profile
     public static final Map<String, ApiTemplate> NO_TEMPLATES = Collections.emptyMap();
     protected ProfileManager manager;
     protected String username;
-    protected Integer userId;
+    protected InterMineId userId;
     protected String password;
     protected boolean isSuperUser;
     protected Map<String, SavedQuery> savedQueries = new TreeMap<String, SavedQuery>();
@@ -101,7 +102,7 @@ public class Profile
      * @param isLocal true if the account is local
      * @param isSuperUser true if the user is a super user
      */
-    public Profile(ProfileManager manager, String username, Integer userId, String password,
+    public Profile(ProfileManager manager, String username, InterMineId userId, String password,
                    Map<String, SavedQuery> savedQueries, Map<String, InterMineBag> savedBags,
                    Map<String, ApiTemplate> savedTemplates, String token, boolean isLocal,
                    boolean isSuperUser) {
@@ -145,7 +146,7 @@ public class Profile
      * @param isLocal true if the account is local
      * @param isSuperUser the flag identifying the super user
      */
-    public Profile(ProfileManager manager, String username, Integer userId, String password,
+    public Profile(ProfileManager manager, String username, InterMineId userId, String password,
                    Map<String, SavedQuery> savedQueries, Map<String, InterMineBag> savedBags,
                    Map<String, InterMineBag> savedInvalidBags,
                    Map<String, ApiTemplate> savedTemplates, String token, boolean isLocal,
@@ -170,7 +171,7 @@ public class Profile
      * @param isLocal true if the account is local
      * @param isSuperUser the flag identifying the super user
      */
-    public Profile(ProfileManager manager, String username, Integer userId, String password,
+    public Profile(ProfileManager manager, String username, InterMineId userId, String password,
             Map<String, SavedQuery> savedQueries, BagSet bagset,
             Map<String, ApiTemplate> savedTemplates, String token, boolean isLocal,
             boolean isSuperUser) {
@@ -191,7 +192,7 @@ public class Profile
      * @param isLocal true if the account is local
      * @param isSuperUser the flag identifying the super user
      */
-    public Profile(ProfileManager manager, String username, Integer userId, String password,
+    public Profile(ProfileManager manager, String username, InterMineId userId, String password,
             Map<String, SavedQuery> savedQueries, Map<String, InterMineBag> savedBags,
             Map<String, ApiTemplate> savedTemplates, boolean isLocal, boolean isSuperUser) {
         this(manager, username, userId, password, savedQueries, savedBags, savedTemplates,
@@ -291,19 +292,19 @@ public class Profile
 
     /**
      * Get the value of userId
-     * @return an Integer
+     * @return an InterMineId
      */
-    public Integer getUserId() {
+    public InterMineId getUserId() {
         return userId;
     }
 
     /**
      * Set the userId
      *
-     * @param userId an Integer
+     * @param userId an InterMineId
      */
-    public void setUserId(Integer userId) {
-        Integer oldId = getUserId();
+    public void setUserId(InterMineId userId) {
+        InterMineId oldId = getUserId();
         this.userId = userId;
         if (this.userId != null && !this.userId.equals(oldId)) { // Need to update the preferences
             Map<String, String> oldPrefs = preferences;

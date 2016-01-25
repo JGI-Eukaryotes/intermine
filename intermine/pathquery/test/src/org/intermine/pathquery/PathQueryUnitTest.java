@@ -16,6 +16,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.intermine.metadata.Model;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 
 public class PathQueryUnitTest extends TestCase
@@ -777,7 +778,7 @@ public class PathQueryUnitTest extends TestCase
         q.clearOuterJoinStatus();
         q.addConstraint(new PathConstraintAttribute("Department", ConstraintOp.EQUALS, "Fred"));
         q.addConstraint(new PathConstraintAttribute("Department.company.vatNumber", ConstraintOp.EQUALS, "Albert"));
-        assertEquals(Arrays.asList("Constraint Department = Fred must be on an attribute", "Value in constraint Department.company.vatNumber = Albert is not in correct format for type of Integer"), q.verifyQuery());
+        assertEquals(Arrays.asList("Constraint Department = Fred must be on an attribute", "Value in constraint Department.company.vatNumber = Albert is not in correct format for type of InterMineId"), q.verifyQuery());
         q.clearConstraints();
         q.addConstraint(new PathConstraintNull("Department", ConstraintOp.IS_NOT_NULL));
         q.addConstraint(new PathConstraintNull("Department.employees", ConstraintOp.IS_NULL));
@@ -795,7 +796,7 @@ public class PathQueryUnitTest extends TestCase
                 "Constraint Department.name IN bagname must not be on an attribute",
                 "Constraint Department.name IN [1, 2, 3] must not be on an attribute",
                 "Constraint Department ONE OF [Albert, Charlie] must be on an attribute",
-                "Value (Fred) in list in constraint Department.employees.age ONE OF [5, Fred] is not in correct format for type of Integer",
+                "Value (Fred) in list in constraint Department.employees.age ONE OF [5, Fred] is not in correct format for type of InterMineId",
                 "Unrecognised constraint type org.intermine.pathquery.PathQueryUnitTest$PathConstraintInvalid"
         );
         List<String> errors = q.verifyQuery();

@@ -24,6 +24,7 @@ import org.intermine.model.testmodel.Department;
 import org.intermine.model.testmodel.Employee;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.ObjectStoreWriterFactory;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.widget.config.WidgetConfig;
 
 public class WidgetConfigTest extends WidgetConfigTestCase
@@ -44,7 +45,7 @@ public class WidgetConfigTest extends WidgetConfigTestCase
         osw.store(e1);
         osw.store(e2);
         InterMineBag list = superUser.createBag("employeeList", "Employee", "", im.getClassKeys());
-        Collection<Integer> ids = new ArrayList<Integer>();
+        Collection<InterMineId> ids = new ArrayList<InterMineId>();
         ids.add(e1.getId()); ids.add(e2.getId());
         list.addIdsToBag(ids, "Employee");
 

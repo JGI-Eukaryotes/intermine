@@ -16,6 +16,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.intermine.metadata.InterMineModelParser;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 
 

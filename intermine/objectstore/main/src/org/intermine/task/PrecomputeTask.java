@@ -34,6 +34,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryCloner;
 import org.intermine.objectstore.query.iql.IqlQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.querygen.QueryGenUtil;
 
 /**
@@ -66,7 +67,7 @@ public class PrecomputeTask extends Task
      *
      * @param minRows the minimum row count
      */
-    public void setMinRows(Integer minRows) {
+    public void setMinRows(InterMineId minRows) {
         this.minRows = minRows.intValue();
     }
 

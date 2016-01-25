@@ -10,6 +10,7 @@ package org.intermine.bio.io.gaf;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.List;
 
 /**
@@ -80,8 +81,8 @@ public class GAFRecord
     private int thickEnd = -1;
     private int itemRgb = -1;
     private int blockCount = -1;
-    private List<Integer> blockSizes;
-    private List<Integer> blockStarts;
+    private List<InterMineId> blockSizes;
+    private List<InterMineId> blockStarts;
 
     /**
      * Constructor
@@ -246,25 +247,25 @@ public class GAFRecord
     /**
      * @return the blockSizes
      */
-    public List<Integer> getBlockSizes() {
+    public List<InterMineId> getBlockSizes() {
         return blockSizes;
     }
     /**
      * @param blockSizes the blockSizes to set
      */
-    public void setBlockSizes(List<Integer> blockSizes) {
+    public void setBlockSizes(List<InterMineId> blockSizes) {
         this.blockSizes = blockSizes;
     }
     /**
      * @return the blockStarts
      */
-    public List<Integer> getBlockStarts() {
+    public List<InterMineId> getBlockStarts() {
         return blockStarts;
     }
     /**
      * @param blockStarts the blockStarts to set
      */
-    public void setBlockStarts(List<Integer> blockStarts) {
+    public void setBlockStarts(List<InterMineId> blockStarts) {
         this.blockStarts = blockStarts;
     }
 }

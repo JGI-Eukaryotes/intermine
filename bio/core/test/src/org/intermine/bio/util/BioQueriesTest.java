@@ -40,6 +40,7 @@ import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SingletonResults;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -83,21 +84,21 @@ public class BioQueriesTest extends TestCase
             fail("Unexpected ObjectStoreException. The model is wrong.");
         }
         Iterator<Object> resIter = res.iterator();
-        HashSet<Integer> actualLocationIds = new HashSet();
-        HashSet<Integer> actualGeneIds = new HashSet();
-        Integer objectId = null;
+        HashSet<InterMineId> actualLocationIds = new HashSet();
+        HashSet<InterMineId> actualGeneIds = new HashSet();
+        InterMineId objectId = null;
         while (resIter.hasNext()) {
             ResultsRow row = (ResultsRow) resIter.next();
-            objectId = (Integer) row.get(0);
+            objectId = (InterMineId) row.get(0);
             Gene resGene = (Gene) row.get(1);
             actualGeneIds.add(resGene.getId());
             Location resLocation = (Location) row.get(2);
             actualLocationIds.add(resLocation.getId());
         }
-        HashSet<Integer> expectedLocationIds = new HashSet(Arrays.asList(new Integer[] {storedLocation1.getId(), storedLocation2.getId()}));
+        HashSet<InterMineId> expectedLocationIds = new HashSet(Arrays.asList(new InterMineId[] {storedLocation1.getId(), storedLocation2.getId()}));
         assertEquals(expectedLocationIds, actualLocationIds);
 
-        HashSet<Integer> expectedGeneIds = new HashSet(Arrays.asList(new Integer[] {storedGene1.getId(), storedGene2.getId()}));
+        HashSet<InterMineId> expectedGeneIds = new HashSet(Arrays.asList(new InterMineId[] {storedGene1.getId(), storedGene2.getId()}));
         assertEquals(expectedGeneIds, actualGeneIds);
 
         assertTrue(objectId == 1001);
@@ -130,12 +131,12 @@ public class BioQueriesTest extends TestCase
 
         storedChromosome = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         storedChromosome.setPrimaryIdentifier("X");
-        storedChromosome.setId(new Integer(1001));
+        storedChromosome.setId(new InterMineId(1001));
         toStore.add(storedChromosome);
 
         storedGene1 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
         storedGene1.setPrimaryIdentifier("gene1");
-        storedGene1.setId(new Integer(2001));
+        storedGene1.setId(new InterMineId(2001));
         toStore.add(storedGene1);
 
         storedLocation1 = createLocation(storedChromosome, storedGene1, "1", 1, 2001, 3001);
@@ -143,7 +144,7 @@ public class BioQueriesTest extends TestCase
 
         storedGene2 = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
         storedGene2.setPrimaryIdentifier("gene2");
-        storedGene2.setId(new Integer(2002));
+        storedGene2.setId(new InterMineId(2002));
         toStore.add(storedGene2);
 
         storedLocation2 = createLocation(storedChromosome, storedGene2, "0", 2, 2002, 3002);
@@ -161,8 +162,8 @@ public class BioQueriesTest extends TestCase
         loc.setLocatedOn(object);
         loc.setFeature(subject);
         loc.setStrand(strand);
-        loc.setStart(new Integer(start));
-        loc.setEnd(new Integer(end));
+        loc.setStart(new InterMineId(start));
+        loc.setEnd(new InterMineId(end));
         loc.setId(id);
         return loc;
     }

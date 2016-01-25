@@ -10,6 +10,8 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Object representing a large String that has been stored in the database. This object can be used
  * to retrieve the String in bits or as a stream, and to alter the object.
@@ -21,7 +23,7 @@ public class Clob implements QuerySelectable
     /** Page size for clob data */
     public static final int CLOB_PAGE_SIZE = 7000;
 
-    private final int clobId;
+    private final InterMineId clobId;
 
     /**
      * Constructs a new Clob. This method should only be called from an ObjectStore which can
@@ -30,7 +32,7 @@ public class Clob implements QuerySelectable
      *
      * @param clobId the identifier of the Clob
      */
-    public Clob(int clobId) {
+    public Clob(InterMineId clobId) {
         this.clobId = clobId;
     }
 
@@ -38,9 +40,9 @@ public class Clob implements QuerySelectable
      * Returns the identifier of the Clob. This number will probably only be of use to the internals
      * of an ObjectStore.
      *
-     * @return an int
+     * @return an InterMineId
      */
-    public int getClobId() {
+    public InterMineId getClobId() {
         return clobId;
     }
 

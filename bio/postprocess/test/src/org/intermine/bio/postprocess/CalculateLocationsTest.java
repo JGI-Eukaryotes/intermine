@@ -36,6 +36,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.util.DynamicUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.ItemFactory;
 
 public class CalculateLocationsTest extends TestCase
@@ -83,8 +84,8 @@ public class CalculateLocationsTest extends TestCase
         Chromosome chr =
             (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("X");
-        chr.setLength(new Integer(1000));
-        chr.setId(new Integer(101));
+        chr.setLength(new InterMineId(1000));
+        chr.setId(new InterMineId(101));
 
         Set<InterMineObject> toStore = new HashSet<InterMineObject>();
 
@@ -122,21 +123,21 @@ public class CalculateLocationsTest extends TestCase
             int exonId = exonInfo[i][0];
             int start = exonInfo[i][1];
             int end = exonInfo[i][2];
-            exons[i].setId(new Integer(exonId));
-            exons[i].setLength(new Integer(end - start + 1));
+            exons[i].setId(new InterMineId(exonId));
+            exons[i].setLength(new InterMineId(end - start + 1));
             exons[i].setChromosome(chr);
             exonLocs[i] = createLocation(chr, exons[i], "1", start, end, Location.class);
-            exonLocs[i].setId(new Integer(1000 + exonId));
+            exonLocs[i].setId(new InterMineId(1000 + exonId));
         }
 
         ReversePrimer rp =
             (ReversePrimer) DynamicUtil.createObject(Collections.singleton(ReversePrimer.class));
-        rp.setId(new Integer(3000));
-        rp.setLength(new Integer(100));
+        rp.setId(new InterMineId(3000));
+        rp.setLength(new InterMineId(100));
         rp.setChromosome(chr);
 
         Location rpLoc = createLocation(chr, rp, "1", 1, 100, Location.class);
-        rpLoc.setId(new Integer(3001));
+        rpLoc.setId(new InterMineId(3001));
 
         toStore.add(rp);
         toStore.add(rpLoc);
@@ -273,31 +274,31 @@ public class CalculateLocationsTest extends TestCase
 
     public void testCreateSpanningLocations() throws Exception {
         Exon exon1 = (Exon) DynamicUtil.createObject(Collections.singleton(Exon.class));
-        exon1.setId(new Integer(107));
+        exon1.setId(new InterMineId(107));
         Exon exon2 = (Exon) DynamicUtil.createObject(Collections.singleton(Exon.class));
-        exon2.setId(new Integer(108));
+        exon2.setId(new InterMineId(108));
         Exon exon3 = (Exon) DynamicUtil.createObject(Collections.singleton(Exon.class));
-        exon3.setId(new Integer(109));
+        exon3.setId(new InterMineId(109));
 
         Location exon1OnChr = createLocation(getChromosome(), exon1, "1", 51, 100, Location.class);
-        exon1OnChr.setId(new Integer(1010));
+        exon1OnChr.setId(new InterMineId(1010));
         Location exon2OnChr = createLocation(getChromosome(), exon2, "1", 201, 250, Location.class);
-        exon2OnChr.setId(new Integer(1011));
+        exon2OnChr.setId(new InterMineId(1011));
         Location exon3OnChr = createLocation(getChromosome(), exon3, "1", 201, 400, Location.class);
-        exon3OnChr.setId(new Integer(1012));
+        exon3OnChr.setId(new InterMineId(1012));
 
         Transcript trans1 =
             (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        trans1.setId(new Integer(201));
+        trans1.setId(new InterMineId(201));
 
         Transcript trans2 =
             (Transcript) DynamicUtil.createObject(Collections.singleton(Transcript.class));
-        trans2.setId(new Integer(202));
+        trans2.setId(new InterMineId(202));
 
         Location trans2OnChr = createLocation(getChromosome(), trans2, "1", 61, 300, Location.class);
 
         Gene gene = (Gene) DynamicUtil.createObject(Collections.singleton(Gene.class));
-        gene.setId(new Integer(301));
+        gene.setId(new InterMineId(301));
 
         exon1.setTranscripts(new HashSet<Transcript>(Arrays.asList(new Transcript [] {trans1})));
         exon2.setTranscripts(new HashSet<Transcript>(Arrays.asList(new Transcript [] {trans1})));
@@ -325,21 +326,21 @@ public class CalculateLocationsTest extends TestCase
         cl.createSpanningLocations("Gene", "Transcript", "transcripts");
 
         ObjectStore os = osw.getObjectStore();
-        Transcript resTrans1 = (Transcript) os.getObjectById(new Integer(201));
+        Transcript resTrans1 = (Transcript) os.getObjectById(new InterMineId(201));
 
         Assert.assertEquals(1, resTrans1.getLocations().size());
         Location resTrans1Location = (Location) resTrans1.getLocations().iterator().next();
         Assert.assertEquals(51, resTrans1Location.getStart().intValue());
         Assert.assertEquals(250, resTrans1Location.getEnd().intValue());
 
-        Transcript resTrans2 = (Transcript) os.getObjectById(new Integer(202));
+        Transcript resTrans2 = (Transcript) os.getObjectById(new InterMineId(202));
 
         Assert.assertEquals(1, resTrans2.getLocations().size());
         Location resTrans2Location = (Location) resTrans2.getLocations().iterator().next();
         Assert.assertEquals(61, resTrans2Location.getStart().intValue());
         Assert.assertEquals(300, resTrans2Location.getEnd().intValue());
 
-        Gene resGene = (Gene) os.getObjectById(new Integer(301));
+        Gene resGene = (Gene) os.getObjectById(new InterMineId(301));
         Assert.assertEquals(1, resGene.getLocations().size());
         Location resGeneLocation = (Location) resGene.getLocations().iterator().next();
         Assert.assertEquals(51, resGeneLocation.getStart().intValue());
@@ -398,28 +399,28 @@ public class CalculateLocationsTest extends TestCase
     public void testSetChromosomeLocationsAndLengths() throws Exception {
         Chromosome chr1 = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr1.setPrimaryIdentifier("1");
-        chr1.setId(new Integer(101));
+        chr1.setId(new InterMineId(101));
         Chromosome chr2 = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr1.setPrimaryIdentifier("2");
-        chr1.setId(new Integer(102));
+        chr1.setId(new InterMineId(102));
 
         Exon exon1 = (Exon) DynamicUtil.createObject(Collections.singleton(Exon.class));
-        exon1.setId(new Integer(107));
-        exon1.setLength(new Integer(1000));
+        exon1.setId(new InterMineId(107));
+        exon1.setLength(new InterMineId(1000));
         Exon exon2 = (Exon) DynamicUtil.createObject(Collections.singleton(Exon.class));
-        exon2.setId(new Integer(108));
+        exon2.setId(new InterMineId(108));
         Exon exon3 = (Exon) DynamicUtil.createObject(Collections.singleton(Exon.class));
-        exon3.setId(new Integer(109));
+        exon3.setId(new InterMineId(109));
 
         // exon 2 has two chromosome locations, shouldn't get chromosome[Location] references
         Location exon1OnChr = createLocation(chr1, exon1, "1", 51, 100, Location.class);
-        exon1OnChr.setId(new Integer(1010));
+        exon1OnChr.setId(new InterMineId(1010));
         Location exon2OnChr = createLocation(chr2, exon2, "1", 201, 250, Location.class);
-        exon2OnChr.setId(new Integer(1011));
+        exon2OnChr.setId(new InterMineId(1011));
         Location exon2OnChrDup = createLocation(chr1, exon2, "1", 501, 550, Location.class);
-        exon2OnChrDup.setId(new Integer(1012));
+        exon2OnChrDup.setId(new InterMineId(1012));
         Location exon3OnChr = createLocation(chr2, exon3, "1", 601, 650, Location.class);
-        exon3OnChr.setId(new Integer(1013));
+        exon3OnChr.setId(new InterMineId(1013));
 
         Set<InterMineObject> toStore =
             new HashSet<InterMineObject>(Arrays.asList(new InterMineObject[] {
@@ -435,9 +436,9 @@ public class CalculateLocationsTest extends TestCase
         cl.setChromosomeLocationsAndLengths();
 
         ObjectStore os = osw.getObjectStore();
-        Exon resExon1 = (Exon) os.getObjectById(new Integer(107));
-        Exon resExon2 = (Exon) os.getObjectById(new Integer(108));
-        Exon resExon3 = (Exon) os.getObjectById(new Integer(109));
+        Exon resExon1 = (Exon) os.getObjectById(new InterMineId(107));
+        Exon resExon2 = (Exon) os.getObjectById(new InterMineId(108));
+        Exon resExon3 = (Exon) os.getObjectById(new InterMineId(109));
 
         assertEquals(chr1.getId(), resExon1.getChromosome().getId());
         assertEquals(exon1OnChr.getId(), resExon1.getChromosomeLocation().getId());
@@ -449,8 +450,8 @@ public class CalculateLocationsTest extends TestCase
         assertEquals(exon3OnChr.getId(), resExon3.getChromosomeLocation().getId());
 
         // exon1 has length set so should stay as 1000, exon3 should get length 50 set from location
-        assertEquals(new Integer(1000), resExon1.getLength());
-        assertEquals(new Integer(50), resExon3.getLength());
+        assertEquals(new InterMineId(1000), resExon1.getLength());
+        assertEquals(new InterMineId(50), resExon3.getLength());
         // nothing done to exon2
         assertNull(resExon2.getLength());
     }
@@ -462,8 +463,8 @@ public class CalculateLocationsTest extends TestCase
         loc.setLocatedOn(object);
         loc.setFeature(subject);
         loc.setStrand(strand);
-        loc.setStart(new Integer(start));
-        loc.setEnd(new Integer(end));
+        loc.setStart(new InterMineId(start));
+        loc.setEnd(new InterMineId(end));
         loc.setStrand(strand);
         return loc;
     }
@@ -472,8 +473,8 @@ public class CalculateLocationsTest extends TestCase
         if (chromosome == null) {
             chromosome = (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
             chromosome.setPrimaryIdentifier("X");
-            chromosome.setLength(new Integer(10000));
-            chromosome.setId(new Integer(101));
+            chromosome.setLength(new InterMineId(10000));
+            chromosome.setId(new InterMineId(101));
         }
         return chromosome;
     }

@@ -39,6 +39,7 @@ import java.io.InputStreamReader;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.apache.log4j.Logger;
 
 public class FastaLoaderTaskTest extends TestCase {
@@ -161,7 +162,7 @@ public class FastaLoaderTaskTest extends TestCase {
                      + "PVASSKENYPDNHMHSKHISKLPIASPIPRGLDRSGELSYKDNNHWSDRSSTGSPRWENG"
                      + "SMNLSVEEMEKVVQPKVKRMATICQM", protein.getSequence().getResidues().toString());
         // TODO FIXME XXX - uncomment when Protein has a length field
-        //        assertEquals(new Integer(146), protein.getLength());
+        //        assertEquals(new InterMineId(146), protein.getLength());
     }
 
     @Override

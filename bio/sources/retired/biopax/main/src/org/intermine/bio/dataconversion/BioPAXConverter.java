@@ -40,6 +40,7 @@ import org.intermine.bio.util.OrganismData;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.Item;
 /**
  * Converts BioPAX files into InterMine objects.
@@ -373,7 +374,7 @@ public class BioPAXConverter extends BioFileConverter implements Visitor
 
         if (m.find()) {
             // Good file name: 83333.owl
-            taxonId = Integer.valueOf(filename.split("\\.")[0]);
+            taxonId = InterMineId.valueOf(filename.split("\\.")[0]);
         } else {
             // underscore or space
             String[] bits = filename.split("[_\\s]");

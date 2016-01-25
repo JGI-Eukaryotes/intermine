@@ -30,6 +30,7 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.sql.Database;
 import org.intermine.metadata.StringUtil;
 import org.intermine.xml.full.Item;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.ReferenceList;
 
 /**
@@ -46,20 +47,20 @@ public class EnsemblSnpDbConverter extends BioDBConverter
     private static final String DATA_SOURCE_NAME = "Ensembl";
     // pendingSnpConsequences: key - rs number, value- a collection of consequences
     // The snp has been stored but it will appear multiple times, so hang consequences over
-    private final Map<Integer, Set<String>> pendingSnpVariationIdToConsequencesMap =
-        new HashMap<Integer, Set<String>>();
+    private final Map<InterMineId, Set<String>> pendingSnpVariationIdToConsequencesMap =
+        new HashMap<InterMineId, Set<String>>();
 
     // storedSnpIds: key - rs number, value - IM object id
-    private final Map<Integer, Integer> storedSnpVariationIdToInterMineIdMap =
-        new HashMap<Integer, Integer>();
+    private final Map<InterMineId, InterMineId> storedSnpVariationIdToInterMineIdMap =
+        new HashMap<InterMineId, InterMineId>();
 
     private Set<String> snpSourceIds = null;
 
     // store a mapping from variation_id in ensembl database to stored SNP item id
-    private Map<Integer, String> snpVariationIdToItemIdMap = new HashMap<Integer, String>();
+    private Map<InterMineId, String> snpVariationIdToItemIdMap = new HashMap<InterMineId, String>();
 
     // default to human or take value set by parser
-    Integer taxonId = null;
+    InterMineId taxonId = null;
     private static final int PLANT = 3702;
 
     // There may be SNPs from multiple sources in the database, optionally restrict them
@@ -74,8 +75,8 @@ public class EnsemblSnpDbConverter extends BioDBConverter
     private Map<String, String> transcripts = new HashMap<String, String>();
     private Map<String, String> consequenceTypes = new HashMap<String, String>();
 
-    private Map<Integer, Integer> strainIds = new HashMap<Integer, Integer>();
-    private Map<Integer, String> popIdentifiers = new HashMap<Integer, String>();
+    private Map<InterMineId, InterMineId> strainIds = new HashMap<InterMineId, InterMineId>();
+    private Map<InterMineId, String> popIdentifiers = new HashMap<InterMineId, String>();
 
     private boolean isEmptyResultSet = false;
 
@@ -96,7 +97,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
      * @param taxonId the organism to load
      */
     public void setOrganism(String taxonId) {
-        this.taxonId = Integer.valueOf(taxonId);
+        this.taxonId = InterMineId.valueOf(taxonId);
     }
 
     /**
@@ -159,8 +160,8 @@ public class EnsemblSnpDbConverter extends BioDBConverter
                 + pendingSnpVariationIdToConsequencesMap.size());
         LOG.info("storeFinalSnps() storedSnpRsNumberToInterMineIdMap.size(): "
                 + storedSnpVariationIdToInterMineIdMap.size());
-        for (Integer variationId : pendingSnpVariationIdToConsequencesMap.keySet()) {
-            Integer storedSnpInterMineId = storedSnpVariationIdToInterMineIdMap.get(variationId);
+        for (InterMineId variationId : pendingSnpVariationIdToConsequencesMap.keySet()) {
+            InterMineId storedSnpInterMineId = storedSnpVariationIdToInterMineIdMap.get(variationId);
             Set<String> consequenceItemIdSet = pendingSnpVariationIdToConsequencesMap
                     .get(variationId);
             storeSnpConsequenceCollections(storedSnpInterMineId, consequenceItemIdSet);
@@ -193,11 +194,11 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         String previousTranscriptStableId = null;
         Set<String> consequenceItemIdSet = new HashSet<String>();
         boolean storeSnp = false;
-        Integer previousVariationId = null;
-        Integer currentVariationId = null;
+        InterMineId previousVariationId = null;
+        InterMineId currentVariationId = null;
         Item currentSnpItem = null; // the snp item to be stored
         String currentSnpItemId = null;
-        Map<String, Integer> nonTranscriptConsequences = new HashMap<String, Integer>();
+        Map<String, InterMineId> nonTranscriptConsequences = new HashMap<String, InterMineId>();
 
         // This code is complicated because not all SNPs map to a unique location and often have
         // locations on multiple chromosomes - we're processing one chromosome at a time for faster
@@ -223,7 +224,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
                 // starting a new SNP, store the one just finished - previousRsNumber
 
                 {
-                    Integer storedSnpInterMineId = storedSnpVariationIdToInterMineIdMap
+                    InterMineId storedSnpInterMineId = storedSnpVariationIdToInterMineIdMap
                             .get(previousVariationId);
 
                     // if we didn't get back a storedSnpId this was the first time we found this
@@ -318,15 +319,15 @@ public class EnsemblSnpDbConverter extends BioDBConverter
                 // variation_feature_consequence_types is full list of consequence types which
                 // should include transcript_variation_consequence_types
                 String variationConsequences = res.getString("variation_feature_consequence_types");
-                Integer consequenceCount = nonTranscriptConsequences.get(variationConsequences);
+                InterMineId consequenceCount = nonTranscriptConsequences.get(variationConsequences);
 
                 if (consequenceCount == null) {
-                    consequenceCount = new Integer(0);
+                    consequenceCount = new InterMineId(0);
                 }
 
                 // nonTranscriptConsequences is for log message only
                 nonTranscriptConsequences.put(variationConsequences,
-                        new Integer(consequenceCount + 1));
+                        new InterMineId(consequenceCount + 1));
             }
 
             if (counter % 100000 == 0) {
@@ -336,7 +337,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         }
 
         // The last record to store on the chromosome
-        Integer storedSnpInterMineId;
+        InterMineId storedSnpInterMineId;
 
         if (previousUniqueLocation) {
             storedSnpInterMineId = store(currentSnpItem);
@@ -373,7 +374,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
 
 
     private Item storeSnp(ResultSet res, String chrName,
-            Set<String> seenLocsForSnp, Integer currentVariationId,
+            Set<String> seenLocsForSnp, InterMineId currentVariationId,
             boolean currentUniqueLocation) throws SQLException,
             ObjectStoreException {
         Item currentSnpItem;
@@ -513,7 +514,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
 
         int synonymCounter = 0;
         while (res.next()) {
-            Integer variationId = res.getInt("variation_id");
+            InterMineId variationId = res.getInt("variation_id");
             String synonym = res.getString("name");
 
             if (!StringUtils.isBlank(synonym)) {
@@ -528,12 +529,12 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         // query for strains
         ResultSet res = queryStrains(connection);
         while (res.next()) {
-            Integer strainId = res.getInt("sample_id");
+            InterMineId strainId = res.getInt("sample_id");
             String strainName = res.getString("name");
 
             Item strain = createItem("Strain");
             strain.setAttribute("name", strainName);
-            Integer storedStrainId = store(strain);
+            InterMineId storedStrainId = store(strain);
             strainIds.put(strainId, storedStrainId);
             LOG.warn("Read strain: " + strainId);
 
@@ -547,7 +548,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         }
     }
 
-    private void processGenotypesForStrain(Connection connection, Integer strainId,
+    private void processGenotypesForStrain(Connection connection, InterMineId strainId,
             String strainIdentifier) throws Exception {
         // One table contains SNPs and once contains bigger indels, etc.
         ResultSet res = queryGenotypesForStrainSingleBp(connection, strainId);
@@ -557,12 +558,12 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         createGenotypesForStrain(res, strainId, strainIdentifier);
     }
 
-    private void createGenotypesForStrain(ResultSet res, Integer strainId, String strainIdentifier)
+    private void createGenotypesForStrain(ResultSet res, InterMineId strainId, String strainIdentifier)
         throws Exception {
         int snpReferenceCount = 0;
         int ignoredCount = 0;
         while (res.next()) {
-            Integer variationId = res.getInt("variation_id");
+            InterMineId variationId = res.getInt("variation_id");
             String allele1 = res.getString("allele_1");
             String allele2 = res.getString("allele_2");
 
@@ -594,7 +595,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
 
         ResultSet res = queryPopulations(connection);
         while (res.next()) {
-            Integer popId = res.getInt("sample_id");
+            InterMineId popId = res.getInt("sample_id");
             String popName = res.getString("name");
             String popDesc = res.getString("description");
 
@@ -611,7 +612,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         }
     }
 
-    private void processAllelesForPopulation(Connection connection, Integer popId,
+    private void processAllelesForPopulation(Connection connection, InterMineId popId,
             String popIdentifier) throws SQLException, ObjectStoreException {
         ResultSet res = queryAllelesForPopulation(connection, popId);
 
@@ -619,7 +620,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         int ignoredCount = 0;
         int counter = 0;
         while (res.next()) {
-            Integer variationId = res.getInt("variation_id");
+            InterMineId variationId = res.getInt("variation_id");
             String allele = res.getString("allele");
             String frequency = res.getString("frequency");
 
@@ -655,10 +656,10 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         throws SQLException, ObjectStoreException {
         ResultSet res = queryStrainPopulationReferences(connection);
 
-        Map<Integer, List<String>> strainToPopulation = new HashMap<Integer, List<String>>();
+        Map<InterMineId, List<String>> strainToPopulation = new HashMap<InterMineId, List<String>>();
         while (res.next()) {
-            Integer strainId = res.getInt("individual_sample_id");
-            Integer popId = res.getInt("population_sample_id");
+            InterMineId strainId = res.getInt("individual_sample_id");
+            InterMineId popId = res.getInt("population_sample_id");
 
             List<String> strainPopIdentifiers = strainToPopulation.get(strainId);
             if (strainPopIdentifiers == null) {
@@ -667,7 +668,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
             }
             strainPopIdentifiers.add(popIdentifiers.get(popId));
         }
-        for (Integer strainId : strainToPopulation.keySet()) {
+        for (InterMineId strainId : strainToPopulation.keySet()) {
             ReferenceList populations = new ReferenceList("populations",
                     strainToPopulation.get(strainId));
             if (strainIds.containsKey(strainId)) {
@@ -688,7 +689,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
     }
 
     private static ResultSet queryGenotypesForStrainSingleBp(Connection connection,
-            Integer strainId)
+            InterMineId strainId)
         throws SQLException {
         String query = "SELECT variation_id, allele_1, allele_2"
             + " FROM tmp_individual_genotype_single_bp"
@@ -701,7 +702,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
     }
 
     private static ResultSet queryGenotypesForStrainMultipleBp(Connection connection,
-            Integer strainId)
+            InterMineId strainId)
         throws SQLException {
         String query = "SELECT variation_id, allele_1, allele_2"
             + " FROM individual_genotype_multiple_bp"
@@ -713,7 +714,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         return res;
     }
 
-    private static ResultSet queryAllelesForPopulation(Connection connection, Integer popId)
+    private static ResultSet queryAllelesForPopulation(Connection connection, InterMineId popId)
         throws SQLException {
         String query = "SELECT a.variation_id, a.sample_id, ac.allele, a.frequency"
             + " FROM allele a, allele_code ac"
@@ -726,7 +727,7 @@ public class EnsemblSnpDbConverter extends BioDBConverter
         return res;
     }
 
-    private void storeSnpConsequenceCollections(Integer storedSnpInterMineId,
+    private void storeSnpConsequenceCollections(InterMineId storedSnpInterMineId,
             Set<String> consequenceItemIdSet)
         throws ObjectStoreException {
         if (!consequenceItemIdSet.isEmpty()) {

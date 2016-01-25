@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.intermine.objectstore.query.iql.IqlQuery;
+import org.intermine.model.InterMineId;
 import org.intermine.util.CombinedIterator;
 
 /**
@@ -41,7 +42,7 @@ public class Query implements FromElement, Queryable, HasFromList
     private Set<QueryNode> groupBy = new LinkedHashSet<QueryNode>();
     private Map<Object, String> aliases = new IdentityHashMap<Object, String>();
     private Map<String, Object> reverseAliases = new HashMap<String, Object>();
-    private int limit = Integer.MAX_VALUE;
+    private int limit = InterMineId.MAX_VALUE;
     // This object caches the current query's IQL, to improve performance. All methods that morph
     // this must set this reference to null.
     private IqlQuery iqlQuery;

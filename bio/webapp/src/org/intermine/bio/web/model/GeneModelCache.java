@@ -39,6 +39,7 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.util.CacheMap;
+import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -51,8 +52,8 @@ import org.intermine.util.DynamicUtil;
  */
 public final class GeneModelCache
 {
-    private static CacheMap<Integer, List<GeneModel>> cache =
-        new CacheMap<Integer, List<GeneModel>>();
+    private static CacheMap<InterMineId, List<GeneModel>> cache =
+        new CacheMap<InterMineId, List<GeneModel>>();
     protected static final Logger LOG = Logger.getLogger(GeneModelCache.class);
     private static Map<String, GeneModelSettings> organismSettings =
         new HashMap<String, GeneModelSettings>();
@@ -232,8 +233,8 @@ public final class GeneModelCache
      * @param model the data model
      * @return the ids of all objects in the gene model or an empty set
      */
-    public static Set<Integer> getGeneModelIds(InterMineObject object, Model model) {
-        Set<Integer> geneModelIds = new HashSet<Integer>();
+    public static Set<InterMineId> getGeneModelIds(InterMineObject object, Model model) {
+        Set<InterMineId> geneModelIds = new HashSet<InterMineId>();
         for (GeneModel geneModel : getGeneModels(object, model)) {
             geneModelIds.addAll(geneModel.getIds());
         }

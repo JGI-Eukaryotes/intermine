@@ -41,6 +41,7 @@ import org.intermine.webservice.server.core.TableRowIterator;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.intermine.webservice.server.exceptions.ServiceException;
 import org.intermine.webservice.server.output.TableCellFormatter;
+import org.intermine.model.InterMineId;
 import org.json.JSONArray;
 
 /**
@@ -67,7 +68,7 @@ public class TableRowService extends QueryResultService
     }
 
     @Override
-    protected void setHeaderAttributes(PathQuery pq, Integer start, Integer size) {
+    protected void setHeaderAttributes(PathQuery pq, InterMineId start, InterMineId size) {
         try {
             Profile p = getPermission().getProfile();
             PathQueryExecutor pqe = im.getPathQueryExecutor(p);

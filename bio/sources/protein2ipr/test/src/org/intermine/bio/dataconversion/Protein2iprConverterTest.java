@@ -33,6 +33,7 @@ import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.util.DynamicUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.xml.full.ItemFactory;
 
 public class Protein2iprConverterTest extends ItemsTestCase
@@ -65,12 +66,12 @@ public class Protein2iprConverterTest extends ItemsTestCase
     private void createProtein() throws ObjectStoreException {
 
         Organism organism = (Organism) DynamicUtil.createObject(Collections.singleton(Organism.class));
-        organism.setId(new Integer(102));
+        organism.setId(new InterMineId(102));
         organism.setTaxonId(7227);
         osw.store(organism);
 
         Protein protein = (Protein) DynamicUtil.createObject(Collections.singleton(Protein.class));
-        protein.setId(new Integer(101));
+        protein.setId(new InterMineId(101));
         protein.setPrimaryAccession("P02833");
         protein.setOrganism(organism);
         osw.store(protein);

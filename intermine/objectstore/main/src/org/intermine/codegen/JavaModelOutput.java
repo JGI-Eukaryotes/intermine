@@ -30,6 +30,8 @@ import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.ReferenceDescriptor;
 import org.intermine.metadata.StringUtil;
+import org.intermine.model.InterMineId;
+import org.intermine.model.InterMineCoord;
 import org.intermine.metadata.TypeUtil;
 
 /**
@@ -686,7 +688,7 @@ public class JavaModelOutput
                 } else if ("short".equals(attribute.getType())) {
                     sb.append(fieldName + " = Short.parseShort(notXml[i]);\n");
                 } else if ("int".equals(attribute.getType())) {
-                    sb.append(fieldName + " = Integer.parseInt(notXml[i]);\n");
+                    sb.append(fieldName + " = InterMineId.parseInt(notXml[i]);\n");
                 } else if ("long".equals(attribute.getType())) {
                     sb.append(fieldName + " = Long.parseLong(notXml[i]);\n");
                 } else if ("float".equals(attribute.getType())) {
@@ -699,6 +701,10 @@ public class JavaModelOutput
                     sb.append(fieldName + " = Short.valueOf(notXml[i]);\n");
                 } else if ("java.lang.Integer".equals(attribute.getType())) {
                     sb.append(fieldName + " = Integer.valueOf(notXml[i]);\n");
+                } else if ("InterMineId".equals(attribute.getType())) {
+                    sb.append(fieldName + " = InterMineId.valueOf(notXml[i]);\n");
+                } else if ("InterMineCoord".equals(attribute.getType())) {
+                    sb.append(fieldName + " = InterMineCoord.valueOf(notXml[i]);\n");
                 } else if ("java.lang.Long".equals(attribute.getType())) {
                     sb.append(fieldName + " = Long.valueOf(notXml[i]);\n");
                 } else if ("java.lang.Float".equals(attribute.getType())) {
@@ -748,7 +754,7 @@ public class JavaModelOutput
                     .append(INDENT + INDENT + INDENT + INDENT)
                     .append("i++;\n")
                     .append(INDENT + INDENT + INDENT + INDENT)
-                    .append(fieldName + " = new ProxyReference(os, Integer.valueOf(notXml[i])"
+                    .append(fieldName + " = new ProxyReference(os, InterMineId.valueOf(notXml[i])"
                             + ", " + reference.getReferencedClassName() + ".class);\n")
                     .append(INDENT + INDENT + INDENT + INDENT)
                     .append("i++;\n")
@@ -813,7 +819,7 @@ public class JavaModelOutput
                         .append("return Short.valueOf(" + fieldName + ");\n");
                 } else if ("int".equals(attribute.getType())) {
                     sb.append(INDENT + INDENT + INDENT)
-                        .append("return Integer.valueOf(" + fieldName + ");\n");
+                        .append("return InterMineId.valueOf(" + fieldName + ");\n");
                 } else if ("long".equals(attribute.getType())) {
                     sb.append(INDENT + INDENT + INDENT)
                         .append("return Long.valueOf(" + fieldName + ");\n");
@@ -892,7 +898,7 @@ public class JavaModelOutput
                         .append(fieldName + " = ((Short) value).shortValue();\n");
                 } else if ("int".equals(attribute.getType())) {
                     sb.append(INDENT + INDENT + INDENT)
-                        .append(fieldName + " = ((Integer) value).intValue();\n");
+                        .append(fieldName + " = ((InterMineId) value).intValue();\n");
                 } else if ("long".equals(attribute.getType())) {
                     sb.append(INDENT + INDENT + INDENT)
                         .append(fieldName + " = ((Long) value).longValue();\n");
@@ -1002,7 +1008,7 @@ public class JavaModelOutput
                 } else if ("short".equals(attribute.getType())) {
                     sb.append("return Short.TYPE;\n");
                 } else if ("int".equals(attribute.getType())) {
-                    sb.append("return Integer.TYPE;\n");
+                    sb.append("return InterMineId.TYPE;\n");
                 } else if ("long".equals(attribute.getType())) {
                     sb.append("return Long.TYPE;\n");
                 } else if ("float".equals(attribute.getType())) {

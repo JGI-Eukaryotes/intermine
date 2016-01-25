@@ -40,6 +40,8 @@ import org.intermine.util.Shutdownable;
 import org.postgresql.util.PSQLException;
 
 import com.zaxxer.hikari.HikariConfig;
+import org.intermine.model.InterMineId;
+import org.intermine.model.InterMineCoord;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
@@ -507,7 +509,7 @@ public class Database implements Shutdownable
                                       new Class[] {int.class});
                         if (m != null) {
                             m.invoke(field.get(this),
-                                     new Object [] {Integer.valueOf(propertyValue.toString())});
+                                     new Object [] {InterMineId.valueOf(propertyValue.toString())});
                         }
                     }
                 } catch (Exception e) {
@@ -535,6 +537,8 @@ public class Database implements Shutdownable
         POSTGRESQL_TYPE_STRING_MAP.put(Date.class, "bigint");
         POSTGRESQL_TYPE_STRING_MAP.put(String.class, "text");
         POSTGRESQL_TYPE_STRING_MAP.put(UUID.class, "uuid");
+        POSTGRESQL_TYPE_STRING_MAP.put(InterMineId.class, InterMineId.JDBC_TYPE);
+        POSTGRESQL_TYPE_STRING_MAP.put(InterMineCoord.class, InterMineCoord.JDBC_TYPE);
     }
 
     /**

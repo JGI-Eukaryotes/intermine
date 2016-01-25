@@ -38,6 +38,7 @@ import org.intermine.xml.full.ReferenceList;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.intermine.model.InterMineId;
 import org.xml.sax.helpers.DefaultHandler;
 
 
@@ -83,7 +84,7 @@ public class BioGridConverter extends BioFileConverter
     private static final String BLANK_EXPERIMENT_NAME = "NAME NOT AVAILABLE";
     private static final String DEFAULT_IDENTIFIER_FIELD = "primaryIdentifier";
     // interactions are duplicated across XML files -- don't store dupes
-    private Set<Integer> interactionDetails = new HashSet<Integer>();
+    private Set<InterMineId> interactionDetails = new HashSet<InterMineId>();
 
     protected IdResolver rslv;
 

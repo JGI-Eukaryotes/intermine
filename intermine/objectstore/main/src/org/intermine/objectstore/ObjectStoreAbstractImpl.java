@@ -35,6 +35,7 @@ import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.util.CacheMap;
+import org.intermine.model.InterMineId;
 import org.intermine.util.PropertiesUtil;
 
 /**
@@ -51,17 +52,17 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     protected static Random rand = new Random();
 
     protected Model model;
-    protected int maxOffset = Integer.MAX_VALUE;
-    protected int maxLimit = Integer.MAX_VALUE;
+    protected int maxOffset = InterMineId.MAX_VALUE;
+    protected int maxLimit = InterMineId.MAX_VALUE;
     protected long maxTime = Long.MAX_VALUE;
     // Optimiser will use a default query parse time if none is provided from properties
     protected Long maxQueryParseTime = null;
-    protected CacheMap<Integer, InterMineObject> cache;
+    protected CacheMap<InterMineId, InterMineObject> cache;
 
     protected int getObjectOps = 0;
     protected int getObjectHits = 0;
     protected int getObjectPrefetches = 0;
-    protected Map<Object, Integer> sequenceNumber = new WeakHashMap<Object, Integer>();
+    protected Map<Object, InterMineId> sequenceNumber = new WeakHashMap<Object, InterMineId>();
     protected Map<Object, WeakReference<Object>> sequenceKeys
         = new WeakHashMap<Object, WeakReference<Object>>();
 
@@ -82,11 +83,11 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
         props = PropertiesUtil.stripStart("os.query", props);
 
         if (props.get("max-limit") != null) {
-            maxLimit = Integer.parseInt((String) props.get("max-limit"));
+            maxLimit = InterMineId.parseInt((String) props.get("max-limit"));
         }
 
         if (props.get("max-offset") != null) {
-            maxOffset = Integer.parseInt((String) props.get("max-offset"));
+            maxOffset = InterMineId.parseInt((String) props.get("max-offset"));
         }
 
         if (props.get("max-time") != null) {
@@ -99,7 +100,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
 
         LOG.info("Creating new " + getClass().getName() + " with sequence = " + sequenceNumber
                 + ", model = \"" + model.getName() + "\"");
-        cache = new CacheMap<Integer, InterMineObject>(getClass().getName() + " with sequence = "
+        cache = new CacheMap<InterMineId, InterMineObject>(getClass().getName() + " with sequence = "
                 + sequenceNumber + ", model = \"" + model.getName() + "\" getObjectById cache");
     }
 
@@ -178,14 +179,14 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id) throws ObjectStoreException {
+    public InterMineObject getObjectById(InterMineId id) throws ObjectStoreException {
         return getObjectById(id, InterMineObject.class);
     }
 
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    public InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException {
         getObjectOps++;
         if (getObjectOps % 10000 == 0) {
@@ -227,7 +228,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @return an object from the database
      * @throws ObjectStoreException if an error occurs during the running of the Query
      */
-    protected InterMineObject internalGetObjectById(Integer id,
+    protected InterMineObject internalGetObjectById(InterMineId id,
             Class<? extends InterMineObject> clazz) throws ObjectStoreException {
         Results results = new Results(QueryCreator.createQueryForId(id, clazz), this,
                 SEQUENCE_IGNORE);
@@ -251,7 +252,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * {@inheritDoc}
      */
     @SuppressWarnings({ "cast", "unchecked", "rawtypes" })
-    public List<InterMineObject> getObjectsByIds(Collection<Integer> ids)
+    public List<InterMineObject> getObjectsByIds(Collection<InterMineId> ids)
         throws ObjectStoreException {
         Results results = executeSingleton(QueryCreator.createQueryForIds(ids,
                         InterMineObject.class), 1000, false, false, false);
@@ -284,7 +285,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public void prefetchObjectById(Integer id) {
+    public void prefetchObjectById(InterMineId id) {
         getObjectPrefetches++;
         try {
             getObjectById(id);
@@ -296,7 +297,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public void invalidateObjectById(Integer id) {
+    public void invalidateObjectById(InterMineId id) {
         synchronized (cache) {
             cache.remove(id);
         }
@@ -305,7 +306,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public Object cacheObjectById(Integer id, InterMineObject obj) {
+    public Object cacheObjectById(InterMineId id, InterMineObject obj) {
         synchronized (cache) {
             cache.put(id, obj);
         }
@@ -324,7 +325,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public InterMineObject pilferObjectById(Integer id) {
+    public InterMineObject pilferObjectById(InterMineId id) {
         synchronized (cache) {
             return cache.get(id);
         }
@@ -404,9 +405,9 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @param message some description of the operation that is about to happen
      * @throws DataChangedException if the sequence numbers do not match
      */
-    public synchronized void checkSequence(Map<Object, Integer> sequence, Query q, String message)
+    public synchronized void checkSequence(Map<Object, InterMineId> sequence, Query q, String message)
         throws DataChangedException {
-        for (Map.Entry<Object, Integer> entry : sequence.entrySet()) {
+        for (Map.Entry<Object, InterMineId> entry : sequence.entrySet()) {
             Object key = entry.getKey();
             if (!entry.getValue().equals(sequenceNumber.get(key))) {
                 throw new DataChangedException("Sequence numbers do not match - was given " + key
@@ -423,11 +424,11 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @param tables a Set of objects representing independent components of the database
      * @return a Map containing sequence data
      */
-    public synchronized Map<Object, Integer> getSequence(Set<Object> tables) {
-        Map<Object, Integer> retval = new HashMap<Object, Integer>();
+    public synchronized Map<Object, InterMineId> getSequence(Set<Object> tables) {
+        Map<Object, InterMineId> retval = new HashMap<Object, InterMineId>();
         for (Object key : tables) {
             WeakReference<Object> keyRef = sequenceKeys.get(key);
-            Integer s = null;
+            InterMineId s = null;
             if (keyRef != null) {
                 Object keyCandidate = keyRef.get();
                 if (keyCandidate != null) {
@@ -437,7 +438,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
             }
             if (s == null) {
                 synchronized (rand) {
-                    s = new Integer(rand.nextInt());
+                    s = new InterMineId(rand.nextInt());
                 }
                 sequenceNumber.put(key, s);
                 sequenceKeys.put(key, new WeakReference<Object>(key));
@@ -457,9 +458,9 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
             WeakReference<Object> keyRef = sequenceKeys.get(key);
             if (keyRef != null) {
                 Object realKey = keyRef.get();
-                Integer value = sequenceNumber.get(key);
+                InterMineId value = sequenceNumber.get(key);
                 if (realKey != null) {
-                    sequenceNumber.put(realKey, new Integer(value.intValue() + 1));
+                    sequenceNumber.put(realKey, new InterMineId(value.intValue() + 1));
                 }
             }
         }
@@ -500,7 +501,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @throws ObjectStoreException if an error occurs fetching a new ID
      */
     public ObjectStoreBag createObjectStoreBag() throws ObjectStoreException {
-        return new ObjectStoreBag(getSerial().intValue());
+        return new ObjectStoreBag(getSerial());
     }
 
     /**
@@ -510,6 +511,6 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @throws ObjectStoreException if an error occurs fetching a new ID
      */
     public Clob createClob() throws ObjectStoreException {
-        return new Clob(getSerial().intValue());
+        return new Clob(getSerial());
     }
 }

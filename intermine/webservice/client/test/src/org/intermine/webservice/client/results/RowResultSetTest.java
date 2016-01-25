@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import junit.framework.TestCase;
 
 public class RowResultSetTest extends TestCase {
@@ -18,7 +19,7 @@ public class RowResultSetTest extends TestCase {
         "Employee.manager.end"
         );
 
-    private List<Integer> expectedAges = Arrays.asList(
+    private List<InterMineId> expectedAges = Arrays.asList(
             10, 20, 25, 25, 26,
             27, 27, 28, 28, 28,
             28, 29, 29, 29, 29

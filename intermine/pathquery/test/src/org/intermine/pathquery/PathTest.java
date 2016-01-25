@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Department;
 
 /**
@@ -68,7 +69,7 @@ public class PathTest extends TestCase
         String stringPath = "Employee.age";
         Path path = new Path(model, stringPath);
         assertEquals(model.getClassDescriptorByName("org.intermine.model.testmodel.Employee"), path.getStartClassDescriptor());
-        assertEquals(Integer.class, path.getEndType());
+        assertEquals(InterMineId.class, path.getEndType());
     }
 
     public void testValidWithClassConstraint() throws Exception {
@@ -129,7 +130,7 @@ public class PathTest extends TestCase
         assertEquals("employees", path.getElements().get(3));
         assertEquals(model.getClassDescriptorByName("org.intermine.model.testmodel.Manager"), path.getElementClassDescriptors().get(4));
         assertEquals("seniority", path.getElements().get(4));
-        assertEquals(Integer.class, path.getEndType());
+        assertEquals(InterMineId.class, path.getEndType());
     }
 
     public void testNullPath() throws Exception {
