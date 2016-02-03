@@ -169,7 +169,7 @@ public final class PrefetchManager
                 // We need both locks, because we need to exclude the possibility that someone
                 // finishes a request between us checking to see if it is already fetched, and
                 // checking if we need to wait for someone to finish fetching it.
-                retval = request.result.batches.get(new InterMineId(request.batchNo));
+                retval = request.result.batches.get(new Integer(request.batchNo));
                 if (retval != null) {
                     // The batch has already been fetched.
                     //LOG.debug("doRequest - the request has already been done:        " + request);

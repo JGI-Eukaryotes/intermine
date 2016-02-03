@@ -26,7 +26,7 @@ import org.intermine.objectstore.ObjectStoreException;
  */
 public class UniProtFastaLoaderTask extends FastaLoaderTask
 {
-    private Map<InterMineId, Organism> organisms = new HashMap<InterMineId, Organism>();
+    private Map<Integer, Organism> organisms = new HashMap<Integer, Organism>();
 
     /**
      * {@inheritDoc}
@@ -46,7 +46,7 @@ public class UniProtFastaLoaderTask extends FastaLoaderTask
             if (bits.length != 2) {
                 return null;
             }
-            InterMineId taxonId = getTaxonId(bits[1]);
+            Integer taxonId = getTaxonId(bits[1]);
             if (taxonId == null) {
                 return null;
             }

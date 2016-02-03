@@ -47,7 +47,7 @@ public class MockItemWriter implements ItemWriter
      * {@inheritDoc}
      */
     public InterMineId store(Item item) {
-        item.setId(idCounter++);
+        item.setId(new InterMineId(idCounter++));
         storedItems.put(item.getIdentifier(), item);
         storedItemIds.put(item.getId(), item);
         return item.getId();

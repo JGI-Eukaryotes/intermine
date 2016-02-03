@@ -32,12 +32,12 @@ public class SingletonResults extends Results implements Set<Object>
      *
      * @param q the Query that produces this Results
      * @param os the ObjectStore that can be used to get results rows from
-     * @param sequence an object representing the state of the ObjectStore, which should be quoted
+     * @param map an object representing the state of the ObjectStore, which should be quoted
      * back to the ObjectStore when requests are made
      * @throws IllegalArgumentException if q does not return a single column
      */
-    public SingletonResults(Query q, ObjectStore os, Map<Object, InterMineId> sequence) {
-        super(q, os, sequence);
+    public SingletonResults(Query q, ObjectStore os, Map<Object, Integer> map) {
+        super(q, os, map);
 
         // Test that this Query returns a single column of type QueryClass
         if (q.getSelect().size() != 1) {

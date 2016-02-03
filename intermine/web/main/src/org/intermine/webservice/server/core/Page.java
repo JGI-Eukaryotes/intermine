@@ -19,7 +19,7 @@ import org.intermine.model.InterMineId;
  */
 public class Page
 {
-    private final int start;
+    private final InterMineId start;
     private final InterMineId size;
 
     /**
@@ -28,9 +28,15 @@ public class Page
      * @param size The maximum number of rows to return.
      */
     public Page(int start, InterMineId size) {
-        this.start = start;
+        this.start = new InterMineId(start);
         this.size = size;
     }
+
+    public Page(InterMineId start, InterMineId size) {
+      this.start = start;
+      this.size = size;
+    }
+
 
     /**
      * Construct a new page, going from a certain row to the end
@@ -45,7 +51,7 @@ public class Page
      * Get the index of the first row that is requested.
      * @return The index of the first row to return.
      */
-    public int getStart() {
+    public InterMineId getStart() {
         return start;
     }
 
@@ -65,7 +71,7 @@ public class Page
         if (size == null) {
             return null;
         } else {
-            return start + size;
+            return new InterMineId(start.nativeValue() + size.nativeValue());
         }
     }
 
@@ -75,9 +81,16 @@ public class Page
      */
     public boolean withinRange(int index) {
         InterMineId end = getEnd();
-        if (end != null && index >= end) {
+        if (end != null && end.compareTo(index) <= 0) {
             return false;
         }
-        return index >= start;
-    }
+        return start.compareTo(index) >= 0 ;
+    }  
+    public boolean withinRange(InterMineId index) {
+      InterMineId end = getEnd();
+      if (end != null && end.compareTo(index) <= 0) {
+          return false;
+      }
+      return start.compareTo(index) >= 0;
+  }
 }

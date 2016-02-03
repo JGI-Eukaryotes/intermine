@@ -217,7 +217,7 @@ public final class SqlGenerator
      */
     public static void registerOffset(Query q, int start, DatabaseSchema schema, Database db,
             Object value, Map<Object, String> bagTableNames) {
-        LOG.debug("registerOffset() called with offset: " + start);
+
 
         try {
             if (value.getClass().equals(Boolean.class)) {
@@ -233,8 +233,8 @@ public final class SqlGenerator
                 Map<Query, CacheEntry> schemaCache = getCacheForSchema(schema);
                 CacheEntry cacheEntry = schemaCache.get(q);
                 if (cacheEntry != null) {
-                    if ((cacheEntry.getLastOffset() - start >= 100000)
-                            || (start - cacheEntry.getLastOffset() >= 10000)) {
+                    if ((cacheEntry.getLastOffset().nativeValue() - start >= 100000)
+                            || (start - cacheEntry.getLastOffset().nativeValue() >= 10000)) {
                         QueryNode firstOrderBy = null;
                         firstOrderBy = (QueryNode) q.getEffectiveOrderBy().iterator().next();
                         if (firstOrderBy instanceof QueryFunction) {
@@ -247,7 +247,7 @@ public final class SqlGenerator
                         // type (that can accept null values).
                         Constraint c = getOffsetConstraint(q, firstOrderBy, value, schema);
                         String sql = generate(q, schema, db, c, QUERY_NORMAL, bagTableNames);
-                        cacheEntry.setLast(start, sql);
+                        cacheEntry.setLast(new InterMineId(start), sql);
                     }
                     SortedMap<InterMineId, String> headMap = cacheEntry.getCached()
                         .headMap(new InterMineId(start + 1));
@@ -269,7 +269,7 @@ public final class SqlGenerator
                 Constraint offsetConstraint = getOffsetConstraint(q, firstOrderByO, value, schema);
                 String sql = generate(q, schema, db, offsetConstraint, QUERY_NORMAL, bagTableNames);
                 if (cacheEntry == null) {
-                    cacheEntry = new CacheEntry(start, sql);
+                    cacheEntry = new CacheEntry(new InterMineId(start), sql);
                     schemaCache.put(q, cacheEntry);
                 }
                 cacheEntry.getCached().put(new InterMineId(start), sql);
@@ -389,17 +389,17 @@ public final class SqlGenerator
                     // ignore
                 }
                 if (lastKey != null) {
-                    int offset = lastKey.intValue();
-                    if ((offset > cacheEntry.getLastOffset())
-                            || (cacheEntry.getLastOffset() > start)) {
+                    InterMineId offset = new InterMineId(lastKey.intValue());
+                    if ((offset.nativeValue() > cacheEntry.getLastOffset().nativeValue())
+                            || (cacheEntry.getLastOffset().nativeValue() > start) ) {
                         return cacheEntry.getCached().get(lastKey)
                             + (limit == InterMineId.MAX_VALUE ? "" : " LIMIT " + limit)
-                            + (start == offset ? "" : " OFFSET " + (start - offset));
+                            + (start == offset.nativeValue() ? "" : " OFFSET " + (start - offset.nativeValue()));
                     } else {
                         return cacheEntry.getLastSQL()
                             + (limit == InterMineId.MAX_VALUE ? "" : " LIMIT " + limit)
-                            + (start == cacheEntry.getLastOffset() ? ""
-                                    : " OFFSET " + (start - cacheEntry.getLastOffset()));
+                            + (start == cacheEntry.getLastOffset().nativeValue() ? ""
+                                    : " OFFSET " + (start - cacheEntry.getLastOffset().nativeValue()));
                     }
                 }
             }
@@ -2849,10 +2849,10 @@ public final class SqlGenerator
     private static class CacheEntry
     {
         private TreeMap<InterMineId, String> cached = new TreeMap<InterMineId, String>();
-        private int lastOffset;
+        private InterMineId lastOffset;
         private String lastSQL;
 
-        public CacheEntry(int lastOffset, String lastSQL) {
+        public CacheEntry(InterMineId lastOffset, String lastSQL) {
             this.lastOffset = lastOffset;
             this.lastSQL = lastSQL;
         }
@@ -2861,12 +2861,12 @@ public final class SqlGenerator
             return cached;
         }
 
-        public void setLast(int lastOffset, String lastSQL) {
+        public void setLast(InterMineId lastOffset, String lastSQL) {
             this.lastOffset = lastOffset;
             this.lastSQL = lastSQL;
         }
 
-        public int getLastOffset() {
+        public InterMineId getLastOffset() {
             return lastOffset;
         }
 

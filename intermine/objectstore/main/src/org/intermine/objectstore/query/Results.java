@@ -71,7 +71,7 @@ public class Results extends AbstractList<Object> implements LazyCollection<Obje
      * @param sequence a number representing the state of the ObjectStore, which should be quoted
      * back to the ObjectStore when requests are made
      */
-    public Results(Query query, ObjectStore os, Map<Object, InterMineId> sequence) {
+    public Results(Query query, ObjectStore os, Map<Object, Integer> sequence) {
         if (query == null) {
             throw new NullPointerException("query must not be null");
         }
@@ -154,7 +154,7 @@ public class Results extends AbstractList<Object> implements LazyCollection<Obje
      *
      * @return the ObjectStore-specific object
      */
-    public Map<Object, InterMineId> getSequence() {
+    public Map<Object, Integer> getSequence() {
         return resultsBatches.getSequence();
     }
 

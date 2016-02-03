@@ -49,7 +49,6 @@ import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.pathquery.PathException;
 import org.intermine.model.InterMineId;
-import org.intermine.model.InterMineCoord;
 import org.intermine.util.ObjectPipe;
 
 /**
@@ -492,9 +491,9 @@ public class InterMineObjectFetcher extends Thread
                     }
                     // only index strings and integers
                     if ("java.lang.String".equals(att.getType())
-                            || "java.lang.Integer".equals(att.getType())) {
-                            || "InterMineId".equals(att.getType())) {
-                            || "InterMineCoord".equals(att.getType())) {
+                            || "java.lang.Integer".equals(att.getType())
+                            || "InterMineId".equals(att.getType())
+                            || "Integer".equals(att.getType())) {
                         Object value = obj.getFieldValue(att.getName());
 
                         // ignore null values

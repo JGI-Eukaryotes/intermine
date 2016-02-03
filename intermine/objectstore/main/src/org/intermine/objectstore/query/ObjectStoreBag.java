@@ -20,17 +20,17 @@ import org.intermine.model.InterMineId;
  */
 public class ObjectStoreBag implements QuerySelectable
 {
-    private final int bagId;
+    private final InterMineId bagId;
 
     /**
      * Constructs a new ObjectStoreBag. This method should only be called from an ObjectStore
      * which can provide a suitable valid bagId. Once the bag has been created, elements can
      * be added to it through the ObjectStoreWriter.
      *
-     * @param bagId the identifier of the bag
+     * @param interMineId the identifier of the bag
      */
-    public ObjectStoreBag(int bagId) {
-        this.bagId = bagId;
+    public ObjectStoreBag(InterMineId interMineId) {
+        this.bagId = interMineId;
     }
 
     /**
@@ -39,7 +39,7 @@ public class ObjectStoreBag implements QuerySelectable
      *
      * @return an int
      */
-    public int getBagId() {
+    public InterMineId getBagId() {
         return bagId;
     }
 
@@ -73,6 +73,6 @@ public class ObjectStoreBag implements QuerySelectable
      */
     @Override
     public int hashCode() {
-        return bagId;
+        return bagId.intValue();
     }
 }

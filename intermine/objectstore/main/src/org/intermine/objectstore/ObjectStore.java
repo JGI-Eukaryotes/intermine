@@ -37,7 +37,7 @@ public interface ObjectStore
     /**
      * Object representing no fail-fast concurrency checks required.
      */
-    Map<Object, InterMineId> SEQUENCE_IGNORE = Collections.emptyMap();
+    Map<Object, Integer> SEQUENCE_IGNORE = Collections.emptyMap();
 
     /**
      * Create an ObjectStoreWriter that writes into this ObjectStore. Note that the given object
@@ -109,7 +109,7 @@ public interface ObjectStore
      * @throws ObjectStoreException if an error occurs during the running of the Query
      */
     List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException;
+            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException;
 
     /**
      * Get an object from the ObjectStore by giving an ID.
@@ -219,7 +219,7 @@ public interface ObjectStore
      * @return the number of rows that will be produced by query
      * @throws ObjectStoreException if an error occurs counting the query
      */
-    int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException;
+    int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException;
 
     /**
      * Return the metadata associated with this ObjectStore
@@ -283,7 +283,7 @@ public interface ObjectStore
      * @param tables a Set of independent database components to get data for
      * @return an object representing the current database state
      */
-    Map<Object, InterMineId> getSequence(Set<Object> tables);
+    Map<Object, Integer> getSequence(Set<Object> tables);
 
     /**
      * Get the maximum LIMIT that can be used in an SQL query without throwing an

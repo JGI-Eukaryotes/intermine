@@ -825,9 +825,9 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
                         batch.addRow(c, indirectTableName, indirColNames[0],
                                      indirColNames[1],
                                      (swap ? ((InterMineObject) o).getId()
-                                      : inCollection.getId()).intValue(),
+                                      : inCollection.getId()),
                                      (swap ? inCollection.getId()
-                                      : ((InterMineObject) o).getId()).intValue());
+                                      : ((InterMineObject) o).getId()));
                         tablesAltered.add(indirectTableName);
                     }
                 }
@@ -893,7 +893,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
                     tableToColNameArray.put(indirectTableName, indirColNames);
                 }
                 batch.addRow(c, indirectTableName, indirColNames[0], indirColNames[1],
-                             (swap ? hasId : hadId).intValue(), (swap ? hadId : hasId).intValue());
+                             (swap ? hasId : hadId), (swap ? hadId : hasId));
                 tablesAltered.add(indirectTableName);
             } else {
                 throw new ObjectStoreException("Field " + clazz.getName() + "." + fieldName
@@ -1105,7 +1105,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
         try {
             for (InterMineId element : coll) {
                 batch.addRow(c, INT_BAG_TABLE_NAME, BAGID_COLUMN, BAGVAL_COLUMN, osb.getBagId(),
-                        element.intValue());
+                        element);
                 tablesAltered.add(osb);
                 tablesAltered.add(INT_BAG_TABLE_NAME);
             }
@@ -1168,7 +1168,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
         try {
             for (InterMineId element : coll) {
                 batch.deleteRow(c, INT_BAG_TABLE_NAME, BAGID_COLUMN, BAGVAL_COLUMN, osb.getBagId(),
-                        element.intValue());
+                        element);
                 tablesAltered.add(osb);
                 tablesAltered.add(INT_BAG_TABLE_NAME);
             }
@@ -1659,7 +1659,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * Delegate to the parent ObjectStore.
      */
     @Override
-    public synchronized Map<Object, InterMineId> getSequence(Set<Object> tables) {
+    public synchronized Map<Object, Integer> getSequence(Set<Object> tables) {
         return os.getSequence(tables);
     }
 
@@ -1668,7 +1668,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * Delegate to the parent ObjectStore.
      */
     @Override
-    public synchronized void checkSequence(Map<Object, InterMineId> sequence, Query q,
+    public synchronized void checkSequence(Map<Object, Integer> sequence, Query q,
             String message) throws DataChangedException {
         //if ((!tablesAltered.isEmpty()) && (!sequence.isEmpty())) {
         //    throw new DataChangedException("Cannot query a writer with uncommitted changes");
@@ -1683,7 +1683,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
         Connection c = null;
         try {
             c = getConnection();
@@ -1714,7 +1714,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * This method is overridden in order to flush batches properly before the read.
      */
     @Override
-    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
         Connection c = null;
         try {
             c = getConnection();

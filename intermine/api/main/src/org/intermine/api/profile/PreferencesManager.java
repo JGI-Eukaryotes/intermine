@@ -91,7 +91,7 @@ public class PreferencesManager
                 new SQLOperation<Map<String, String>>() {
                 @Override
                 public Map<String, String> run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, profile.getUserId());
+                    stm.setObject(1, profile.getUserId());
                     ResultSet rs = stm.executeQuery();
                     Map<String, String> ret = new HashMap<String, String>();
                     while (rs.next()) {
@@ -121,24 +121,24 @@ public class PreferencesManager
                 @Override
                 public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setString(1, value);
-                    stm.setInt(2, profile.getUserId());
+                    stm.setObject(2, profile.getUserId());
                     stm.setString(3, key);
-                    return stm.executeUpdate();
+                    return new InterMineId(stm.executeUpdate());
                 }
             });
 
-        if (updated < 1) { // WHERE clause didn't match. Do insert.
+        if (updated.compareTo(new InterMineId(1)) < 0) { // WHERE clause didn't match. Do insert.
             InterMineId inserted = osw.performUnsafeOperation(INSERT_PREFERENCE_SQL,
                     new SQLOperation<InterMineId>() {
                     @Override
                     public InterMineId run(PreparedStatement stm) throws SQLException {
-                        stm.setInt(1, profile.getUserId());
+                        stm.setObject(1, profile.getUserId());
                         stm.setString(2, key);
                         stm.setString(3, value);
-                        return stm.executeUpdate();
+                        return new InterMineId(stm.executeUpdate());
                     }
                 });
-            if (inserted != 1) {
+            if (inserted.compareTo(new InterMineId(1)) != 0) {
                 throw new SQLException("Expected to insert one row, but actually inserted "
                         + inserted);
             }
@@ -158,7 +158,7 @@ public class PreferencesManager
         osw.performUnsafeOperation(DELETE_PREFERENCE_SQL, new SQLOperation<Void>() {
             @Override
             public Void run(PreparedStatement stm) throws SQLException {
-                stm.setInt(1, profile.getUserId());
+                stm.setObject(1, profile.getUserId());
                 stm.setString(2, key);
                 stm.executeUpdate();
                 return null;
@@ -177,7 +177,7 @@ public class PreferencesManager
         osw.performUnsafeOperation(DELETE_ALL_PREFERENCES_SQL, new SQLOperation<Void>() {
             @Override
             public Void run(PreparedStatement stm) throws SQLException {
-                stm.setInt(1, profile.getUserId());
+                stm.setObject(1, profile.getUserId());
                 stm.executeUpdate();
                 return null;
             }
@@ -230,7 +230,7 @@ public class PreferencesManager
                 ResultSet rs = stm.executeQuery();
                 Set<InterMineId> matches = new HashSet<InterMineId>();
                 while (rs.next()) {
-                    matches.add(rs.getInt(1));
+                    matches.add((InterMineId)rs.getObject(1));
                 }
                 if (matches.isEmpty()) {
                     return null;

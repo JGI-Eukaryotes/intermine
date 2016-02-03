@@ -147,7 +147,7 @@ public class FlyBaseIdResolverFactory extends IdResolverFactory
                 String orgConstraint = "";
                 if (taxonId != null) {
                     String abbrev = or.getOrganismDataByTaxon(
-                            new InterMineId(taxonId)).getAbbreviation();
+                            new Integer(taxonId)).getAbbreviation();
                     query = "select organism_id"
                         + " from organism"
                         + " where abbreviation = \'" + abbrev + "\'";

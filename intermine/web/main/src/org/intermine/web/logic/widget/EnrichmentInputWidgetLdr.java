@@ -20,7 +20,6 @@ import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
-import org.intermine.model.InterMineId;
 import org.intermine.util.CacheMap;
 
 /**
@@ -33,7 +32,7 @@ public class EnrichmentInputWidgetLdr implements EnrichmentInput
 {
     private final EnrichmentWidgetImplLdr ldr;
     private final ObjectStore os;
-    private Map<String, InterMineId> sampleCounts = null;
+    private Map<String, Integer> sampleCounts = null;
     private Map<String, PopulationInfo> populationCounts = null;
     private Map<String, String> labels = null;
     private static final int BATCH_SIZE = 20000;
@@ -83,7 +82,7 @@ public class EnrichmentInputWidgetLdr implements EnrichmentInput
                     // the number of times the item is applied in the population, e.g. the number of
                     // companies that contain a department with this name
                     // TODO should check that casting from a long gives correct result
-                    InterMineId count = ((Long) row.get(1)).intValue();
+                    Integer count = ((Long) row.get(1)).intValue();
 
                     float geneLengthAverage = 0;
                     if (row.size() > 2) {
@@ -100,9 +99,9 @@ public class EnrichmentInputWidgetLdr implements EnrichmentInput
     }
 
     @Override
-    public Map<String, InterMineId> getAnnotatedCountsInSample() {
+    public Map<String, Integer> getAnnotatedCountsInSample() {
         if (sampleCounts == null) {
-            sampleCounts = new HashMap<String, InterMineId>();
+            sampleCounts = new HashMap<String, Integer>();
             labels = new HashMap<String, String>();
 
             Query query = ldr.getSampleQuery(false);
@@ -118,7 +117,7 @@ public class EnrichmentInputWidgetLdr implements EnrichmentInput
 
                 // the number of times the item is applied in the sample, e.g. the number of
                 // companies that contain a department with this name
-                InterMineId count = ((Long) row.get(1)).intValue();
+                Integer count = ((Long) row.get(1)).intValue();
 
                 sampleCounts.put(identifier, count);
 

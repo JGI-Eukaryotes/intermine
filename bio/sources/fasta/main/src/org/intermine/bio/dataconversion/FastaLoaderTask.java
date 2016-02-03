@@ -36,7 +36,6 @@ import org.intermine.model.bio.Organism;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.query.PendingClob;
 import org.intermine.task.FileDirectDataLoaderTask;
-import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 
 /**
@@ -59,7 +58,7 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
     private String dataSourceName = null;
     private DataSource dataSource = null;
     private String fastaTaxonId = null;
-    private Map<String, InterMineId> taxonIds = new HashMap<String, InterMineId>();
+    private Map<String, Integer> taxonIds = new HashMap<String, Integer>();
 
     /**
      * Append this suffix to the identifier of the BioEnitys that are stored.
@@ -249,7 +248,7 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
     protected Organism getOrganism(Sequence bioJavaSequence) throws ObjectStoreException {
         if (org == null) {
             org = getDirectDataLoader().createObject(Organism.class);
-            org.setTaxonId(new InterMineId(fastaTaxonId));
+            org.setTaxonId(new Integer(fastaTaxonId));
             getDirectDataLoader().store(org);
         }
         return org;
@@ -309,7 +308,7 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
         }
         imo.setOrganism(organism);
         try {
-            imo.setFieldValue("length", new InterMineId(flymineSequence.getLength()));
+            imo.setFieldValue("length", new Integer(flymineSequence.getLength()));
         } catch (Exception e) {
             throw new IllegalArgumentException("Error setting: " + className + ".length to: "
                     + flymineSequence.getLength() + ". Does the attribute exist?");
@@ -412,7 +411,7 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
      * @param name eg. Drosophila melanogaster
      * @return the taxonId
      */
-    protected InterMineId getTaxonId(String name) {
+    protected Integer getTaxonId(String name) {
         return taxonIds.get(name);
     }
 
@@ -425,9 +424,9 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
         OrganismRepository repo = OrganismRepository.getOrganismRepository();
         String[] fastaTaxonIds = fastaTaxonId.split(" ");
         for (String taxonIdStr : fastaTaxonIds) {
-            InterMineId taxonId = null;
+            Integer taxonId = null;
             try {
-                taxonId = InterMineId.valueOf(taxonIdStr);
+                taxonId = Integer.valueOf(taxonIdStr);
             } catch (NumberFormatException e) {
                 throw new RuntimeException("invalid taxonId: " + taxonIdStr);
             }

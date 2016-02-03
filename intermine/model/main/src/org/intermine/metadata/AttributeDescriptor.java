@@ -29,8 +29,9 @@ public class AttributeDescriptor extends FieldDescriptor
      * This is a list of the valid type strings.
      */
     public static final Set<String> VALID_TYPES = new LinkedHashSet<String>(Arrays.asList("short",
-            "int", "long", "float", "double", "boolean", "java.lang.Short", "java.lang.InterMineId",
-            "java.lang.Long", "java.lang.Float", "java.lang.Double", "java.lang.Boolean",
+            "int", "long", "float", "double", "boolean", "java.lang.Short", "java.lang.Integer",
+            "org.intermine.model.InterMineId",
+            "java.lang.Long", "java.lang.Float", "java.lang.Double","java.lang.Boolean",
             "java.lang.String", "java.util.Date", "java.math.BigDecimal", "java.util.UUID",
             "org.intermine.objectstore.query.ClobAccess"));
 
@@ -123,7 +124,9 @@ public class AttributeDescriptor extends FieldDescriptor
      */
     public boolean isNumeric() {
         return "short".equals(type)     || "java.lang.Short".equals(type)
-                || "int".equals(type)    || "java.lang.InterMineId".equals(type)
+                || "int".equals(type)    || "java.lang.Integer".equals(type)
+                || "InterMineId".equals(type)    || "org.intermine.model.InterMineId".equals(type)
+                || "Integer".equals(type) || "java.lang.Integer".equals(type)
                 || "long".equals(type)   || "java.lang.Long".equals(type)
                 || "float".equals(type)  || "java.lang.Float".equals(type)
                 || "double".equals(type) || "java.lang.Double".equals(type);

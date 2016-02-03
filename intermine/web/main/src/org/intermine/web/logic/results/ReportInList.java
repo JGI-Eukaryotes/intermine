@@ -46,13 +46,13 @@ public class ReportInList
      * @return size of the collection
      */
     public InterMineId getCount() {
-        InterMineId count = 0;
+        long count = 0;
         for (InterMineBag b : bagsWithId) {
             if (b != null) {
                 count++;
             }
         }
-        return count;
+        return new InterMineId(count);
     }
 
 }

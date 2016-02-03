@@ -107,7 +107,6 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
     private static final Logger LOG = Logger.getLogger(ObjectStoreInterMineImpl.class);
 
     private static final Logger SQLLOGGER = Logger.getLogger("sqllogger");
-
     protected static final int CACHE_LARGEST_OBJECT = 5000000;
     protected static Map<String, ObjectStoreInterMineImpl> instances
         = new HashMap<String, ObjectStoreInterMineImpl>();
@@ -834,7 +833,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
     }
 
     private ResultsBatches getResultsBatches(Map<InterMineId, ResultsBatches> batches, int batchSize) {
-        ResultsBatches batch = batches.get(new InterMineId(batchSize));
+        ResultsBatches batch = batches.get(new Integer(batchSize));
         if (batch != null) {
             try {
                 checkSequence(batch.getSequence(), null, null);
@@ -1006,7 +1005,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
      * {@inheritDoc}
      */
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
         Constraint where = q.getConstraint();
         // we know there will be no results if we ORing or NANDing over an empty constraint set
         if (where instanceof ConstraintSet) {
@@ -1127,9 +1126,9 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
      * @throws ObjectStoreException sometimes
      */
     protected List<ResultsRow<Object>> executeWithConnection(Connection c, Query q, int start,
-            int limit, boolean optimise, boolean explain, Map<Object, InterMineId> sequence)
+            int limit, boolean optimise, boolean explain, Map<Object, Integer> sequence)
         throws ObjectStoreException {
-        return executeWithConnection(c, q, start, limit, optimise, explain, sequence, null, null);
+        return executeWithConnection(c, q, start, limit, optimise, explain, sequence,null,null);
     }
 
     /**
@@ -1148,7 +1147,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
      * @throws ObjectStoreException sometimes
      */
     protected List<ResultsRow<Object>> executeWithConnection(Connection c, Query q, int start,
-            int limit, boolean optimise, boolean explain, Map<Object, InterMineId> sequence,
+            int limit, boolean optimise, boolean explain, Map<Object, Integer> sequence,
             Set<PrecomputedTable> goFasterTables, OptimiserCache goFasterCache)
         throws ObjectStoreException {
         if (explain) {
@@ -1633,7 +1632,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
     /**
      * {@inheritDoc}
      */
-    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
         Connection c = null;
         try {
             c = getConnection();
@@ -1655,7 +1654,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
      * @throws ObjectStoreException sometimes
      */
     protected int countWithConnection(Connection c, Query q,
-            Map<Object, InterMineId> sequence) throws ObjectStoreException {
+            Map<Object, Integer> sequence) throws ObjectStoreException {
         checkSequence(sequence, q, "COUNT ");
 
         String sql = null;

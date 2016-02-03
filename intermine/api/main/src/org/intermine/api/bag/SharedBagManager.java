@@ -179,7 +179,7 @@ public final class SharedBagManager
                         public Map<String, Set<String>> run(PreparedStatement stm)
                             throws SQLException {
                             final Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
-                            stm.setInt(1, profile.getUserId());
+                            stm.setObject(1, profile.getUserId());
                             ResultSet rs = stm.executeQuery();
                             while (rs.next()) {
                                 String bagName = rs.getString("sharer");
@@ -233,7 +233,7 @@ public final class SharedBagManager
                     @Override
                     public Set<String> run(PreparedStatement stm) throws SQLException {
                         final Set<String> usersWithAccess = new LinkedHashSet<String>();
-                        stm.setInt(1, bag.getSavedBagId());
+                        stm.setObject(1, bag.getSavedBagId());
                         ResultSet rs = stm.executeQuery();
                         while (rs.next()) {
                             usersWithAccess.add(rs.getString(1));
@@ -366,9 +366,9 @@ public final class SharedBagManager
             uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<InterMineId>() {
                 @Override
                 public InterMineId run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    stm.setInt(2, sharedWith.getId());
-                    return stm.executeUpdate();
+                    stm.setObject(1, bag.getSavedBagId());
+                    stm.setObject(2, sharedWith.getId());
+                    return new InterMineId(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -423,9 +423,9 @@ public final class SharedBagManager
             uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<InterMineId>() {
                 @Override
                 public InterMineId run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getId());
-                    stm.setInt(2, sharedWith.getId());
-                    return stm.executeUpdate();
+                    stm.setObject(1, bag.getId());
+                    stm.setObject(2, sharedWith.getId());
+                    return new InterMineId(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -459,13 +459,13 @@ public final class SharedBagManager
                     new SQLOperation<InterMineId>() {
                         @Override
                         public InterMineId run(PreparedStatement stm) throws SQLException {
-                            stm.setInt(1, userProfile.getId());
-                            stm.setInt(2, bag.getSavedBagId());
-                            return stm.executeUpdate();
+                            stm.setObject(1, userProfile.getId());
+                            stm.setObject(2, bag.getSavedBagId());
+                            return new InterMineId(stm.executeUpdate());
                         }
                     }
             );
-            if (deleted > 0) {
+            if (deleted.compareTo(new InterMineId(0)) > 0) {
                 informProfileOfChange(userName, new DeletionEvent(bag));
             } else {
                 LOG.warn(format(NOT_ALREADY_SHARED_MSG, bag, userName));
@@ -503,8 +503,8 @@ public final class SharedBagManager
             uosw.performUnsafeOperation(UNSHARE_BAG_SQL, new SQLOperation<InterMineId>() {
                 @Override
                 public InterMineId run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    return stm.executeUpdate();
+                    stm.setObject(1, bag.getSavedBagId());
+                    return new InterMineId(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -538,8 +538,8 @@ public final class SharedBagManager
             uosw.performUnsafeOperation(REMOVE_USERS_INVITES_SQL, new SQLOperation<InterMineId>() {
                 @Override
                 public InterMineId run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, userId.intValue());
-                    return stm.executeUpdate();
+                    stm.setObject(1, userId.intValue());
+                    return new InterMineId(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -564,8 +564,8 @@ public final class SharedBagManager
             uosw.performUnsafeOperation(DELETE_SHARES_WITH, new SQLOperation<InterMineId>() {
                 @Override
                 public InterMineId run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, userId.intValue());
-                    return stm.executeUpdate();
+                    stm.setObject(1, userId.intValue());
+                    return new InterMineId(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -594,9 +594,9 @@ public final class SharedBagManager
             uosw.performUnsafeOperation(DELETE_USERS_SHARES_WITH, new SQLOperation<InterMineId>() {
                 @Override
                 public InterMineId run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, recipient.getUserId());
-                    stm.setInt(2, owner.getUserId());
-                    return stm.executeUpdate();
+                    stm.setObject(1, recipient.getUserId());
+                    stm.setObject(2, owner.getUserId());
+                    return new InterMineId(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {

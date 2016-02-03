@@ -41,7 +41,6 @@ import org.postgresql.util.PSQLException;
 
 import com.zaxxer.hikari.HikariConfig;
 import org.intermine.model.InterMineId;
-import org.intermine.model.InterMineCoord;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
@@ -538,7 +537,6 @@ public class Database implements Shutdownable
         POSTGRESQL_TYPE_STRING_MAP.put(String.class, "text");
         POSTGRESQL_TYPE_STRING_MAP.put(UUID.class, "uuid");
         POSTGRESQL_TYPE_STRING_MAP.put(InterMineId.class, InterMineId.JDBC_TYPE);
-        POSTGRESQL_TYPE_STRING_MAP.put(InterMineCoord.class, InterMineCoord.JDBC_TYPE);
     }
 
     /**

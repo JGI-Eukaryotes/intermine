@@ -654,7 +654,7 @@ public class Query implements SQLStringable
         //   ORDER BY
 
         // find each part of the query first, map by SqlTokenType
-        HashMap<InterMineId, AST> queryPartASTs = new HashMap<InterMineId, AST>();
+        HashMap<Integer, AST> queryPartASTs = new HashMap<Integer, AST>();
         while (ast != null) {
             queryPartASTs.put(ast.getType(), ast.getFirstChild());
             ast = ast.getNextSibling();

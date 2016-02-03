@@ -86,7 +86,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
      * {@inheritDoc}
      */
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
         return os.execute(q, start, limit, optimise, explain, sequence);
     }
 
@@ -158,7 +158,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
         return os.count(q, sequence);
     }
 
@@ -202,7 +202,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public Map<Object, InterMineId> getSequence(Set<Object> tables) {
+    public Map<Object, Integer> getSequence(Set<Object> tables) {
         return os.getSequence(tables);
     }
 

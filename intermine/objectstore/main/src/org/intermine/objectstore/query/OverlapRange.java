@@ -10,7 +10,6 @@ package org.intermine.objectstore.query;
  *
  */
 
-import org.intermine.model.InterMineCoord;
 
 /**
  * Represents a range value on an object.
@@ -41,18 +40,18 @@ public class OverlapRange
             throw new NullPointerException("Parent parameter cannot be null");
         }
         if (start.getType().equals(UnknownTypeValue.class)) {
-            start.youAreType(InterMineCoord.class);
+            start.youAreType(Integer.class);
         }
         if (end.getType().equals(UnknownTypeValue.class)) {
-            end.youAreType(InterMineCoord.class);
+            end.youAreType(Integer.class);
         }
-        if (!InterMineCoord.class.equals(start.getType())) {
+        if (!Integer.class.equals(start.getType())) {
             throw new IllegalArgumentException("Start parameter (" + start.getType()
-                    + ") is not an InterMineCoord");
+                    + ") is not an Integer");
         }
-        if (!InterMineCoord.class.equals(end.getType())) {
+        if (!Integer.class.equals(end.getType())) {
             throw new IllegalArgumentException("End parameter (" + end.getType()
-                    + ") is not an InterMineCoord");
+                    + ") is not an Integer");
         }
         this.start = start;
         this.end = end;

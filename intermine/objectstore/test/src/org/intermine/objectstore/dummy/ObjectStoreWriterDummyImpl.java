@@ -143,7 +143,7 @@ public class ObjectStoreWriterDummyImpl implements ObjectStoreWriter
     }
 
     public List execute(Query q, int start, int limit, boolean optimise, boolean explain,
-            Map<Object, InterMineId> sequence) throws ObjectStoreException {
+            Map<Object, Integer> sequence) throws ObjectStoreException {
         throw new UnsupportedOperationException();
     }
 
@@ -183,7 +183,7 @@ public class ObjectStoreWriterDummyImpl implements ObjectStoreWriter
         throw new UnsupportedOperationException();
     }
 
-    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
         throw new UnsupportedOperationException();
     }
 

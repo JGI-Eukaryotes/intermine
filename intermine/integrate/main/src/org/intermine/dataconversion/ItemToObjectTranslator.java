@@ -1,5 +1,7 @@
 package org.intermine.dataconversion;
 
+import java.lang.reflect.Field;
+
 /*
  * Copyright (C) 2002-2015 FlyMine
  *
@@ -112,8 +114,10 @@ public class ItemToObjectTranslator extends Translator
                     String namespace = (String) row.get(0);
                     idToNamespace.put(new InterMineId(offset), namespace);
                     namespaceToId.put(namespace, new InterMineId(offset));
-                    int highest = ((InterMineId) row.get(1)).intValue();
-                    offset += highest + 1;
+                   // Number f = (Number) InterMineId.class.getField("value").getType().cast(row.get(1));
+                   // InterMineId  highest = new InterMineId(f);
+                    InterMineId highest = new InterMineId((Number)row.get(1));
+                    offset += highest.nativeValue() + 1;
                 }
             }
         } catch (Exception e) {

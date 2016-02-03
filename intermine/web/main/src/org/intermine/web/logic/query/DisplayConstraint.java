@@ -900,14 +900,14 @@ public class DisplayConstraint
     public class DisplayConstraintOption
     {
         private String label;
-        private InterMineId property;
+        private int property;
 
         /**
          * Construct with the constraint lable and index
          * @param label the value to be shown in dropdown
          * @param property the constraint index to be added to form on selection
          */
-        public DisplayConstraintOption(String label, InterMineId property) {
+        public DisplayConstraintOption(String label, Integer property) {
             this.label = label;
             this.property = property;
         }
@@ -924,7 +924,7 @@ public class DisplayConstraint
          * Get the constraint index to be put in form when this op is selected.
          * @return the constraint index
          */
-        public InterMineId getProperty() {
+        public int getProperty() {
             return property;
         }
     }

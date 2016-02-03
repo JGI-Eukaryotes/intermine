@@ -11,7 +11,6 @@ package org.intermine.bio.web.model;
  */
 
 import org.intermine.model.InterMineId;
-import org.intermine.model.InterMineCoord;
 
 /**
  * This Java bean represents one record of Chromosome coordinates from user input
@@ -23,11 +22,11 @@ public class GenomicRegion implements Comparable<GenomicRegion>
 {
     private String organism;
     private String chr;
-    private InterMineCoord start;
-    private InterMineCoord end;
-    private InterMineCoord extendedRegionSize = new InterMineCoord(0); // user add region flanking
-    private InterMineCoord extendedStart;
-    private InterMineCoord extendedEnd;
+    private Integer start;
+    private Integer end;
+    private Integer extendedRegionSize = new Integer(0); // user add region flanking
+    private Integer extendedStart;
+    private Integer extendedEnd;
 
     //user identifier to tag the order of input e.g. X:7880589..7880644:5 is the 5th input
     private InterMineId tag = null;
@@ -72,56 +71,56 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @return start
      */
-    public InterMineCoord getStart() {
+    public Integer getStart() {
         return start;
     }
 
     /**
      * @param start start poistion
      */
-    public void setStart(InterMineCoord start) {
+    public void setStart(Integer start) {
         this.start = start;
     }
 
     /**
      * @return end
      */
-    public InterMineCoord getEnd() {
+    public Integer getEnd() {
         return end;
     }
 
     /**
      * @param end end position
      */
-    public void setEnd(InterMineCoord end) {
+    public void setEnd(Integer end) {
         this.end = end;
     }
 
     /**
      * @return the extendedStart
      */
-    public InterMineCoord getExtendedStart() {
+    public Integer getExtendedStart() {
         return extendedStart;
     }
 
     /**
      * @param extendedStart the extendedStart to set
      */
-    public void setExtendedStart(InterMineCoord extendedStart) {
+    public void setExtendedStart(Integer extendedStart) {
         this.extendedStart = extendedStart;
     }
 
     /**
      * @return the extendedEnd
      */
-    public InterMineCoord getExtendedEnd() {
+    public Integer getExtendedEnd() {
         return extendedEnd;
     }
 
     /**
      * @param extendedEnd the extendedEnd to set
      */
-    public void setExtendedEnd(InterMineCoord extendedEnd) {
+    public void setExtendedEnd(Integer extendedEnd) {
         this.extendedEnd = extendedEnd;
     }
 

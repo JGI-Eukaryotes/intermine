@@ -41,15 +41,15 @@ public class TemplatesExecutionMap
         Map<String, InterMineId> execution;
         if (!templateExecutions.containsKey(templateName)) {
             execution = new HashMap<String, InterMineId>();
-            execution.put(executionKey, 1);
+            execution.put(executionKey, new InterMineId(1));
             templateExecutions.put(templateName, execution);
         }
         else {
             execution = templateExecutions.get(templateName);
             if (!execution.containsKey(executionKey)) {
-                execution.put(executionKey, 1);
+                execution.put(executionKey, new InterMineId(1));
             } else {
-                execution.put(executionKey, execution.get(executionKey).intValue() + 1);
+                execution.put(executionKey, new InterMineId(execution.get(executionKey).nativeValue() + 1));
             }
         }
     }
@@ -74,7 +74,7 @@ public class TemplatesExecutionMap
                         Map<String, InterMineId> execution = templateExecutions.get(templateName);
                         double accessLn = 0;
                         for (String key : execution.keySet()) {
-                            accessLn = accessLn + Math.log(execution.get(key) + 1);
+                            accessLn = accessLn + Math.log(execution.get(key).nativeValue() + 1);
                         }
                         logarithmMap.put(templateName, accessLn);
                     }
@@ -84,7 +84,7 @@ public class TemplatesExecutionMap
             for (String templateName : templateExecutions.keySet()) {
                 Map<String, InterMineId> execution = templateExecutions.get(templateName);
                 if (execution.containsKey(executionKey)) {
-                    double accessLn = Math.log(execution.get(executionKey) + 1);
+                    double accessLn = Math.log(execution.get(executionKey).nativeValue() + 1);
                     logarithmMap.put(templateName, accessLn);
                 }
             }

@@ -120,8 +120,8 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
 
         ObjectStoreWriter writer = ObjectStoreWriterFactory.getObjectStoreWriter(writerAlias);
         try {
-            int maxSize = InterMineId.parseInt(trackerMaxSizeString);
-            int commitSize = InterMineId.parseInt(trackerCommitSizeString);
+            int maxSize = Integer.parseInt(trackerMaxSizeString);
+            int commitSize = Integer.parseInt(trackerCommitSizeString);
             Database db = ((ObjectStoreWriterInterMineImpl) writer).getDatabase();
             Set<Class<?>> trackerMissingClasses = new HashSet<Class<?>>();
             if (trackerMissingClassesString != null) {
@@ -134,9 +134,9 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
                 }
             }
             Constructor<? extends DataTracker> con = trackerClass.getConstructor(
-                    new Class[] {Database.class, InterMineId.TYPE, InterMineId.TYPE});
+                    new Class[] {Database.class, Integer.TYPE, Integer.TYPE});
             DataTracker newDataTracker = con.newInstance(new Object[] {db,
-                new InterMineId(maxSize), new InterMineId(commitSize)});
+                new Integer(maxSize), new Integer(commitSize)});
 
             Constructor<? extends IntegrationWriterDataTrackingImpl> con2 =
                 iwClass.getConstructor(new Class[] {ObjectStoreWriter.class, DataTracker.class,

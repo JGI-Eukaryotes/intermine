@@ -16,7 +16,7 @@
     <attribute name="type" type="java.lang.String"/>
     <attribute name="description" type="java.lang.String"/>
     <attribute name="dateCreated" type="java.util.Date"/>
-    <attribute name="osbId" type="int"/>
+    <attribute name="osbId" type="org.intermine.model.InterMineId"/>
     <attribute name="state" type="java.lang.String"/>
     <reference name="userProfile" referenced-type="UserProfile" reverse-reference="savedBags"/>
   </class>

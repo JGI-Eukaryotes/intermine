@@ -221,7 +221,7 @@ public abstract class StorableBag implements WebSearchable
             String sql = "DELETE FROM " + InterMineBag.BAG_VALUES
                 + " WHERE " + StringUtils.join(clauses, " AND ");
             stm = conn.prepareStatement(sql);
-            stm.setInt(1, savedBagId);
+            stm.setObject(1, savedBagId);
             for (int i = 0; values != null && i < values.size(); i++) {
                 stm.setString(i + 2, values.get(i));
             }

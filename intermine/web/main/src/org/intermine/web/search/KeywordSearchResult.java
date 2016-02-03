@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 import org.intermine.template.TemplateQuery;
 import org.intermine.web.logic.config.FieldConfig;
@@ -37,7 +38,7 @@ public class KeywordSearchResult
     final WebConfig webconfig;
     final InterMineObject object;
 
-    final int id;
+    final InterMineId id;
     final String type;
     final float score;
     final Map<String, TemplateQuery> templates;
@@ -141,7 +142,7 @@ public class KeywordSearchResult
      * intermine ID
      * @return x
      */
-    public int getId() {
+    public InterMineId getId() {
         return id;
     }
 

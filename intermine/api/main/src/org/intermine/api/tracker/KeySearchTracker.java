@@ -103,10 +103,10 @@ public class KeySearchTracker extends AbstractTracker
      * @param con the connection
      * @return map with key the keyword and the number of searches for that keyword
      */
-    protected Map<String, InterMineId> getKeywordSearches(Connection con) {
+    protected Map<String, Integer> getKeywordSearches(Connection con) {
         ResultSet rs = null;
         Statement stm = null;
-        Map<String, InterMineId> keywordSearches = new HashMap<String, InterMineId>();
+        Map<String, Integer> keywordSearches = new HashMap<String, Integer>();
         try {
             stm = con.createStatement();
             String sql = "SELECT keyword, COUNT(keyword) as searchnumbers "
@@ -114,7 +114,7 @@ public class KeySearchTracker extends AbstractTracker
                         + "GROUP BY keyword";
             rs = stm.executeQuery(sql);
             while (rs.next()) {
-                keywordSearches.put(rs.getString(1), rs.getInt(2));
+                keywordSearches.put(rs.getString(1),rs.getInt(2));
             }
             return keywordSearches;
         } catch (SQLException sqle) {

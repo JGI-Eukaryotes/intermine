@@ -21,7 +21,6 @@ import org.intermine.model.bio.Chromosome;
 import org.intermine.model.bio.Location;
 import org.intermine.model.bio.Organism;
 import org.intermine.model.bio.SequenceFeature;
-import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreException;
 
 /**
@@ -75,8 +74,8 @@ public class FlyBaseFeatureFastaLoaderTask extends FastaLoaderTask
             int min = getMin(locationString);
             int max = getMax(locationString);
             Location loc = getDirectDataLoader().createObject(Location.class);
-            loc.setStart(new InterMineId(min));
-            loc.setEnd(new InterMineId(max));
+            loc.setStart(new Integer(min));
+            loc.setEnd(new Integer(max));
             if (isComplement(locationString)) {
                 loc.setStrand("-1");
             } else {
@@ -108,18 +107,18 @@ public class FlyBaseFeatureFastaLoaderTask extends FastaLoaderTask
      * @return the minimum coordinate
      */
     protected int getMin(String locString) {
-        int currentMin = InterMineId.MAX_VALUE;
+        int currentMin = Integer.MAX_VALUE;
         String regexp = "\\d+";
         Pattern p = Pattern.compile(regexp);
         Matcher m = p.matcher(locString);
         while (m.find()) {
             String posString = m.group();
-            int pos = InterMineId.parseInt(posString);
+            int pos = Integer.parseInt(posString);
             if (pos < currentMin) {
                 currentMin = pos;
             }
         }
-        if (currentMin == InterMineId.MAX_VALUE) {
+        if (currentMin == Integer.MAX_VALUE) {
             throw new RuntimeException("can't find minimum value from location: " + locString);
         }
         return currentMin;
@@ -131,18 +130,18 @@ public class FlyBaseFeatureFastaLoaderTask extends FastaLoaderTask
      * @return the maximum coordinate
      */
     protected int getMax(String locString) {
-        int currentMax = InterMineId.MIN_VALUE;
+        int currentMax = Integer.MIN_VALUE;
         String regexp = "\\d+";
         Pattern p = Pattern.compile(regexp);
         Matcher m = p.matcher(locString);
         while (m.find()) {
             String posString = m.group();
-            int pos = InterMineId.parseInt(posString);
+            int pos = Integer.parseInt(posString);
             if (pos > currentMax) {
                 currentMax = pos;
             }
         }
-        if (currentMax == InterMineId.MIN_VALUE) {
+        if (currentMax == Integer.MIN_VALUE) {
             throw new RuntimeException("can't find minimum value from location: " + locString);
         }
         return currentMax;

@@ -209,9 +209,9 @@ public class PathQueryUpdate
             int dotIndex = key.indexOf(".");
             String cls = key.substring(0, dotIndex);
             String prevField = key.substring(dotIndex + 1);
-            List<InterMineId> elementContainingField = p.getElementsContainingField(cls, prevField);
+            List<Integer> elementContainingField = p.getElementsContainingField(cls, prevField);
             if (!elementContainingField.isEmpty()) {
-                for (int index : elementContainingField) {
+                for (Integer index : elementContainingField) {
                     p.getElements().set(index, renamedFields.get(key));
                 }
                 pathUpdated = p.toStringNoConstraints();

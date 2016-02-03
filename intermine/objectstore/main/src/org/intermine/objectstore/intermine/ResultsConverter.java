@@ -51,7 +51,7 @@ import org.intermine.sql.precompute.OptimiserCache;
 import org.intermine.sql.precompute.PrecomputedTable;
 import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
-
+import org.apache.log4j.Logger;
 /**
  * Provides a method to convert from SQL ResultSet data to InterMine object-based data.
  *
@@ -60,6 +60,8 @@ import org.intermine.util.DynamicUtil;
  */
 public final class ResultsConverter
 {
+  private static final Logger LOG = Logger.getLogger(ResultsConverter.class);
+
     private ResultsConverter() {
     }
 
@@ -86,7 +88,7 @@ public final class ResultsConverter
      * SQL exception occurs
      */
     public static List<ResultsRow<Object>> convert(ResultSet sqlResults, Query q,
-            ObjectStoreInterMineImpl os, Connection c, Map<Object, InterMineId> sequence,
+            ObjectStoreInterMineImpl os, Connection c, Map<Object, Integer> sequence,
             boolean optimise, ExtraQueryTime extra, Set<PrecomputedTable> goFasterTables,
             OptimiserCache goFasterCache) throws ObjectStoreException {
         Object currentColumn = null;
@@ -102,7 +104,6 @@ public final class ResultsConverter
             for (QuerySelectable node : q.getSelect()) {
                 aliases.put(node, DatabaseUtil.generateSqlCompatibleName(q.getAliases().get(node)));
             }
-
             while (sqlResults.next()) {
                 ResultsRow<Object> row = new ResultsRow<Object>();
                 for (QuerySelectable node : q.getSelect()) {
@@ -133,7 +134,8 @@ public final class ResultsConverter
                                         objectField = sqlResults.getString(alias);
                                         if (objectField != null) {
                                             currentColumn = objectField;
-                                            obj = NotXmlParser.parse(objectField, os);
+                                            obj 
+                                            = NotXmlParser.parse(objectField, os);
                                             //if (objectField.length() < ObjectStoreInterMineImpl
                                             //        .CACHE_LARGEST_OBJECT) {
                                             os.cacheObjectById(((InterMineObject) obj).getId(),
@@ -187,7 +189,7 @@ public final class ResultsConverter
                                     currentColumn = DynamicUtil.composeClass(classes);
                                 }
                             } else if (Short.class.equals(node.getType())
-                                    && (currentColumn instanceof InterMineId)) {
+                                    && (currentColumn instanceof Integer)) {
                                 int i = ((InterMineId) currentColumn).intValue();
                                 currentColumn = new Short((short) i);
                             } else if (ClobAccess.class.equals(node.getType())) {
@@ -313,9 +315,11 @@ public final class ResultsConverter
                 Class<?> expectedType = retval.getFieldType(fieldName);
                 if ((value instanceof Long) && Date.class.equals(expectedType)) {
                     value = new Date(((Long) value).longValue());
-                } else if ((value instanceof InterMineId) && (Short.class.equals(expectedType)
+                } else if ((value instanceof Integer) && (Short.class.equals(expectedType)
                         || Short.TYPE.equals(expectedType))) {
-                    value = new Short((short) ((InterMineId) value).intValue());
+                    value = new Short((short) ((Integer) value).intValue());
+                } else if ((value instanceof Number) && (InterMineId.class.equals(expectedType)) ) {
+                    value = new InterMineId((Number)value);
                 }
                 try {
                     retval.setFieldValue(fieldName, value);
@@ -331,7 +335,7 @@ public final class ResultsConverter
             } else if (fd instanceof ReferenceDescriptor) {
                 ReferenceDescriptor rd = (ReferenceDescriptor) fd;
                 //long time3 = System.currentTimeMillis();
-                InterMineId id = (InterMineId) sqlResults.getObject(alias + DatabaseUtil.getColumnName(fd));
+                InterMineId id = new InterMineId((Number) sqlResults.getObject(alias + DatabaseUtil.getColumnName(fd)));
                 //timeSpentSql += System.currentTimeMillis() - time3;
                 @SuppressWarnings("unchecked") Class<? extends InterMineObject> refType =
                     (Class) rd.getReferencedClassDescriptor().getType();
@@ -368,7 +372,7 @@ public final class ResultsConverter
      * @throws ObjectStoreException if something goes wrong
      */
     protected static void fetchObjectPathExpression(ObjectStoreInterMineImpl os, Connection c,
-            Map<Object, InterMineId> sequence, Query q, QueryObjectPathExpression qope,
+            Map<Object, Integer> sequence, Query q, QueryObjectPathExpression qope,
             List<ResultsRow<Object>> retval, boolean optimise, ExtraQueryTime extra,
             Set<PrecomputedTable> goFasterTables,
             OptimiserCache goFasterCache) throws ObjectStoreException {
@@ -461,7 +465,7 @@ public final class ResultsConverter
      * @throws ObjectStoreException if something goes wrong
      */
     protected static void fetchCollectionPathExpression(ObjectStoreInterMineImpl os, Connection c,
-            Map<Object, InterMineId> sequence, Query q, QueryCollectionPathExpression qcpe,
+            Map<Object, Integer> sequence, Query q, QueryCollectionPathExpression qcpe,
             List<ResultsRow<Object>> retval, boolean optimise, ExtraQueryTime extra,
             Set<PrecomputedTable> goFasterTables,
             OptimiserCache goFasterCache) throws ObjectStoreException {
@@ -580,7 +584,7 @@ public final class ResultsConverter
      * @throws ObjectStoreException if an error occurs
      */
     protected static Map<InterMineId, InterMineObject> fetchByIds(ObjectStoreInterMineImpl os,
-            Connection c, Map<Object, InterMineId> sequence, Class<?> clazz,
+            Connection c, Map<Object, Integer> sequence, Class<?> clazz,
             Collection<InterMineId> idsToFetch, ExtraQueryTime extra) throws ObjectStoreException {
         try {
             if (idsToFetch.isEmpty()) {

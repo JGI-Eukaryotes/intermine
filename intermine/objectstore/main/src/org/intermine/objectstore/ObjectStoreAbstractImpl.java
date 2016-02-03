@@ -62,7 +62,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     protected int getObjectOps = 0;
     protected int getObjectHits = 0;
     protected int getObjectPrefetches = 0;
-    protected Map<Object, InterMineId> sequenceNumber = new WeakHashMap<Object, InterMineId>();
+    protected Map<Object, Integer> sequenceNumber = new WeakHashMap<Object, Integer>();
     protected Map<Object, WeakReference<Object>> sequenceKeys
         = new WeakHashMap<Object, WeakReference<Object>>();
 
@@ -405,9 +405,9 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @param message some description of the operation that is about to happen
      * @throws DataChangedException if the sequence numbers do not match
      */
-    public synchronized void checkSequence(Map<Object, InterMineId> sequence, Query q, String message)
+    public synchronized void checkSequence(Map<Object, Integer> sequence, Query q, String message)
         throws DataChangedException {
-        for (Map.Entry<Object, InterMineId> entry : sequence.entrySet()) {
+        for (Map.Entry<Object, Integer> entry : sequence.entrySet()) {
             Object key = entry.getKey();
             if (!entry.getValue().equals(sequenceNumber.get(key))) {
                 throw new DataChangedException("Sequence numbers do not match - was given " + key
@@ -424,11 +424,11 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @param tables a Set of objects representing independent components of the database
      * @return a Map containing sequence data
      */
-    public synchronized Map<Object, InterMineId> getSequence(Set<Object> tables) {
-        Map<Object, InterMineId> retval = new HashMap<Object, InterMineId>();
+    public synchronized Map<Object, Integer> getSequence(Set<Object> tables) {
+        Map<Object, Integer> retval = new HashMap<Object, Integer>();
         for (Object key : tables) {
             WeakReference<Object> keyRef = sequenceKeys.get(key);
-            InterMineId s = null;
+            Integer s = null;
             if (keyRef != null) {
                 Object keyCandidate = keyRef.get();
                 if (keyCandidate != null) {
@@ -438,7 +438,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
             }
             if (s == null) {
                 synchronized (rand) {
-                    s = new InterMineId(rand.nextInt());
+                    s = new Integer(rand.nextInt());
                 }
                 sequenceNumber.put(key, s);
                 sequenceKeys.put(key, new WeakReference<Object>(key));
@@ -458,9 +458,9 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
             WeakReference<Object> keyRef = sequenceKeys.get(key);
             if (keyRef != null) {
                 Object realKey = keyRef.get();
-                InterMineId value = sequenceNumber.get(key);
+                Integer value = sequenceNumber.get(key);
                 if (realKey != null) {
-                    sequenceNumber.put(realKey, new InterMineId(value.intValue() + 1));
+                    sequenceNumber.put(realKey, new Integer(value.intValue() + 1));
                 }
             }
         }

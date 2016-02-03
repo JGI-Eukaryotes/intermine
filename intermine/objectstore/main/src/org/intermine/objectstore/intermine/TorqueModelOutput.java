@@ -35,7 +35,6 @@ import org.intermine.model.InterMineObject;
 import org.intermine.modelproduction.MetadataManager;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.model.InterMineId;
-import org.intermine.model.InterMineCoord;
 import org.intermine.sql.DatabaseUtil;
 
 /**
@@ -267,7 +266,7 @@ public class TorqueModelOutput
     public static String generateJdbcType(String type) {
         if ("short".equals(type) || "java.lang.Short".equals(type)) {
             return "SMALLINT";
-        } else if ("int".equals(type) || "java.lang.Inteer".equals(type)) {
+        } else if ("int".equals(type) || "java.lang.Integer".equals(type)) {
             return "INTEGER";
         } else if ("long".equals(type) || "java.lang.Long".equals(type)) {
             return "BIGINT";
@@ -285,10 +284,8 @@ public class TorqueModelOutput
             return "NUMERIC";
         } else if ("org.intermine.objectstore.query.ClobAccess".equals(type)) {
             return "LONGVARCHAR";
-        } else if ("org.intermine.model.InterMineId".equals(type)) {
+        } else if ("org.intermine.model.InterMineId".equals(type) || "InterMineId".equals(type)) {
             return InterMineId.JDBC_TYPE;
-        } else if ("org.intermine.model.InterMineCoord".equals(type)) {
-            return InterMineCoord.JDBC_TYPE;
         } else if ("org.intermine.objectstore.query.ClobAccess".equals(type)) {
             return "LONGVARCHAR";
         } else {

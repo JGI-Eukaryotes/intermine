@@ -660,21 +660,21 @@ public class BagManager
          * @param tags
          * @return
          */
-        private InterMineId resolveOrderFromTagsList(List<Tag> tags) {
+        private Integer resolveOrderFromTagsList(List<Tag> tags) {
             for (Tag t : tags) {
                 String name = t.getTagName();
                 if (name.startsWith("im:order:")) {
-                    return InterMineId.parseInt(name.replaceAll("[^0-9]", ""));
+                    return Integer.parseInt(name.replaceAll("[^0-9]", ""));
                 }
             }
-            return InterMineId.MAX_VALUE;
+            return Integer.MAX_VALUE;
         }
 
         @Override
         public int compare(String aK, String bK) {
             // get the order from the tags for the bags for the superduper profile
-            InterMineId aO = resolveOrderFromTagsList(tagManager.getTags(null, aK, TagTypes.BAG, null));
-            InterMineId bO = resolveOrderFromTagsList(tagManager.getTags(null, bK, TagTypes.BAG, null));
+            Integer aO = resolveOrderFromTagsList(tagManager.getTags(null, aK, TagTypes.BAG, null));
+            Integer bO = resolveOrderFromTagsList(tagManager.getTags(null, bK, TagTypes.BAG, null));
 
             if (aO < bO) {
                 return -1;

@@ -102,7 +102,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
      */
     
     public List execute(Query q, int start, int limit, boolean optimise, boolean explain,
-            Map<Object, InterMineId> sequence) throws ObjectStoreException {
+            Map<Object, Integer> sequence) throws ObjectStoreException {
         checkStartLimit(start, limit, q);
         if (executeTime > maxTime) {
             throw new ObjectStoreException("Query will take longer than " + maxTime);
@@ -256,7 +256,7 @@ public class ObjectStoreDummyImpl extends ObjectStoreAbstractImpl
      * @return the number of rows to be produced by query
      * @throws ObjectStoreException if an error occurs counting the query
      */
-    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
         return this.resultsSize;
     }
 

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 
 /**
  * A class representing a collection of writes to an SQL database. This class is intended for the
@@ -110,12 +111,12 @@ public class Batch
      * @param name the name of the indirection table
      * @param leftColName the name of the left-hand field
      * @param rightColName the name of the right-hand field
-     * @param left the int value of the left field
-     * @param right the int value of the right field
+     * @param interMineId the int value of the left field
+     * @param interMineId2 the int value of the right field
      * @throws SQLException if a flush occurs, and an error occurs while flushing
      */
     public void addRow(Connection con, String name, String leftColName, String rightColName,
-            int left, int right) throws SQLException {
+            InterMineId interMineId, InterMineId interMineId2) throws SQLException {
         if (closed) {
             throw new SQLException("Batch is closed");
         }
@@ -124,7 +125,7 @@ public class Batch
             table = new IndirectionTableBatch(leftColName, rightColName);
             tables.put(name, table);
         }
-        batchSize += table.addRow(left, right);
+        batchSize += table.addRow(interMineId, interMineId2);
         maybeBackgroundFlush(con);
     }
 
@@ -166,12 +167,12 @@ public class Batch
      * @param name the name of the indirection table
      * @param leftColName the name of the left-hand field
      * @param rightColName the name of the right-hand field
-     * @param left the int value of the left field
-     * @param right the int value of the right field
+     * @param interMineId the int value of the left field
+     * @param element the int value of the right field
      * @throws SQLException if a flush occurs, and an error occurs while flushing
      */
     public void deleteRow(Connection con, String name, String leftColName, String rightColName,
-            int left, int right) throws SQLException {
+            InterMineId interMineId, InterMineId element) throws SQLException {
         if (closed) {
             throw new SQLException("Batch is closed");
         }
@@ -180,7 +181,7 @@ public class Batch
             table = new IndirectionTableBatch(leftColName, rightColName);
             tables.put(name, table);
         }
-        batchSize += table.deleteRow(left, right);
+        batchSize += table.deleteRow(interMineId, element);
         maybeBackgroundFlush(con);
     }
 

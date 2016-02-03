@@ -189,7 +189,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
         try {
             long time1 = System.currentTimeMillis();
             List<ResultsRow<Object>> results = os.execute(q, start, limit, optimise, explain,

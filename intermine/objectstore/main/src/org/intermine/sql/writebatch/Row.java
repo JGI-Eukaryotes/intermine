@@ -1,5 +1,7 @@
 package org.intermine.sql.writebatch;
 
+import org.intermine.model.InterMineId;
+
 /*
  * Copyright (C) 2002-2015 FlyMine
  *
@@ -17,17 +19,18 @@ package org.intermine.sql.writebatch;
  */
 public class Row implements Comparable<Row>
 {
-    private int left, right;
+    private InterMineId left;
+    private InterMineId right;
 
     /**
      * Constructor.
      *
-     * @param left the left integer
-     * @param right the right integer
+     * @param interMineId the left integer
+     * @param interMineId2 the right integer
      */
-    public Row(int left, int right) {
-        this.left = left;
-        this.right = right;
+    public Row(InterMineId interMineId, InterMineId interMineId2) {
+        this.left = interMineId;
+        this.right = interMineId2;
     }
 
     /**
@@ -35,7 +38,7 @@ public class Row implements Comparable<Row>
      *
      * @return left
      */
-    public int getLeft() {
+    public InterMineId getLeft() {
         return left;
     }
 
@@ -44,7 +47,7 @@ public class Row implements Comparable<Row>
      *
      * @return right
      */
-    public int getRight() {
+    public InterMineId getRight() {
         return right;
     }
 
@@ -53,7 +56,7 @@ public class Row implements Comparable<Row>
      */
     @Override
     public boolean equals(Object o) {
-        if ((o instanceof Row) && (((Row) o).left == left) && (((Row) o).right == right)) {
+        if ((o instanceof Row) && (((Row) o).left.equals(left)) && (((Row) o).right.equals(right))) {
             return true;
         }
         return false;
@@ -64,16 +67,16 @@ public class Row implements Comparable<Row>
      */
     @Override
     public int hashCode() {
-        return left + (1013 * right);
+        return left.intValue() + (1013 * right.intValue());
     }
 
     /**
      * {@inheritDoc}
      */
     public int compareTo(Row o) {
-        int retval = left - o.left;
+        int retval = left.nativeValue() - o.left.nativeValue();
         if (retval == 0) {
-            retval = right - o.right;
+            retval = right.nativeValue() - o.right.nativeValue();
         }
         return retval;
     }

@@ -101,13 +101,13 @@ public class DisplayField
     public InlineResultsTable getTable() {
         if (table == null && collection.size() > 0) {
             // on References we will have 1 row
-            InterMineId tableSize = 1;
+            Integer tableSize = 1;
             if (webProperties != null) {
                 // resolve max table size to show from properties
                 String maxInlineTableSizeString =
                     (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
                 try {
-                    tableSize = InterMineId.parseInt(maxInlineTableSizeString);
+                    tableSize = Integer.parseInt(maxInlineTableSizeString);
                 } catch (NumberFormatException e) {
                     LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                              + maxInlineTableSizeString);

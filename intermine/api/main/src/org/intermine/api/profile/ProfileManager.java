@@ -336,7 +336,7 @@ public class ProfileManager
         Map<String, List<FieldDescriptor>> classKeys = getClassKeys(os.getModel());
         UserProfile up;
         try {
-            up = (UserProfile) uosw.getObjectById(id, UserProfile.class);
+            up = (UserProfile) uosw.getObjectById(new InterMineId(id), UserProfile.class);
         } catch (ObjectStoreException e) {
             throw new RuntimeException("Error retrieving profile", e);
         }
@@ -443,7 +443,7 @@ public class ProfileManager
                 for (String pref: UserPreferences.UNIQUE_KEYS) {
                     trueId = getPreferencesManager().getUserWithUniqueMapping(pref, username);
                     if (trueId != null) {
-                        return getProfile(trueId);
+                        return getProfile(trueId.toString());
                     }
                 }
             } catch (DuplicateMappingException e) {
@@ -965,7 +965,7 @@ public class ProfileManager
      */
     public synchronized String getProfileUserName(int profileId) {
         try {
-            UserProfile profile = (UserProfile) uosw.getObjectById(profileId, UserProfile.class);
+            UserProfile profile = (UserProfile) uosw.getObjectById(new InterMineId(profileId), UserProfile.class);
             return profile.getUsername();
         } catch (ObjectStoreException e) {
             return null; // Not in DB.

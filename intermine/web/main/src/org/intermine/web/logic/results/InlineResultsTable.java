@@ -383,7 +383,7 @@ public class InlineResultsTable
      *
      * @return the number of columns in each table, based on all FieldConfigs for all objects
      */
-    public InterMineId getColumnsSize() {
+    public int getColumnsSize() {
         return getTableFieldConfigs().size();
     }
 }

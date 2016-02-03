@@ -299,7 +299,7 @@ public class ClobAccess implements CharSequence, Lazy
      */
     public static ClobAccess decodeDbDescription(ObjectStore os, String description) {
         String[] parts = description.split(",");
-        ClobAccess clob = new ClobAccess(os, new Clob(InterMineId.parseInt(parts[0])));
+        ClobAccess clob = new ClobAccess(os, new Clob(new InterMineId(InterMineId.parseInt(parts[0]))));
         if (parts.length >= 3) {
             int offset = InterMineId.parseInt(parts[1]);
             int length = InterMineId.parseInt(parts[2]);

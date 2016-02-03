@@ -32,8 +32,8 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
 
     private static Logger logger = Logger.getLogger(FilteringResultIterator.class);
 
-    private int counter = 0;
-    private int start = 0;
+    private long counter = 0;
+    private InterMineId start = new InterMineId(0);
     private InterMineId end = null;
     private String filterTerm = null;
     private List<ResultElement> nextRow = null;
@@ -58,8 +58,8 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
      */
     public FilteringResultIterator(Results res, int start, int size, String filterTerm) {
         this(res);
-        this.start = start;
-        this.end = start + size;
+        this.start = new InterMineId(start);
+        this.end = new InterMineId(start + size);
         this.filterTerm = ObjectUtils.toString(filterTerm).toLowerCase();
         logger.debug(
                 "START: " + start
@@ -73,7 +73,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
         if (nextRow != null) {
             return true;
         }
-        if (counter >= start && (end == null || counter < end)) {
+        if (start.compareTo(counter) <= 0 && (end == null || end.compareTo(counter) > 0)) {
             if (StringUtils.isBlank(filterTerm)) {
                 return subIter.hasNext();
             } else {
@@ -96,7 +96,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
             return ret;
         }
         scrollToStart();
-        if (end != null && counter > end) {
+        if (end != null && end.compareTo(counter) < 0) {
             throw new NoSuchElementException();
         }
 
@@ -116,7 +116,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
 
     @SuppressWarnings("unchecked")
     private void scrollToStart() {
-        while (counter < start && subIter.hasNext()) {
+        while (start.compareTo(counter) > 0 && subIter.hasNext()) {
             // throw away values we are not interested in.
             List<Object> l = (List<Object>) subIter.next();
             if (StringUtils.isBlank(filterTerm)) {

@@ -29,7 +29,7 @@ public class InlineList
     private FieldDescriptor fieldDescriptor = null;
     private Boolean showLinksToObjects = false;
     private String path = null;
-    private InterMineId lineLength = null;
+    private Integer lineLength = null;
 
     /**
      * Set a set ;) of Objects by turning them into InterMineObjects and then InlineListObjects
@@ -37,17 +37,17 @@ public class InlineList
      * @param columnToDisplayBy No idea - I'm just making checkstyle happy.
      * @param showLinksToObjects No idea - I'm just making checkstyle happy.
      * @param path No idea - I'm just making checkstyle happy.
-     * @param lineLength No idea - I'm just making checkstyle happy.
+     * @param integer No idea - I'm just making checkstyle happy.
      */
     public InlineList(
             Set<Object> listOfListObjects,
             String columnToDisplayBy,
             Boolean showLinksToObjects,
             String path,
-            InterMineId lineLength) {
+            Integer integer) {
         this.showLinksToObjects = showLinksToObjects;
         this.path = path;
-        this.lineLength = lineLength;
+        this.lineLength = integer;
 
         listOfObjects = new HashSet<InlineListObject>();
 
@@ -89,8 +89,8 @@ public class InlineList
    *
    * @return the length of the strings in this list combined, delimiters included!
    */
-    public InterMineId getLength() {
-        InterMineId length = 0;
+    public Integer getLength() {
+        Integer length = 0;
         Set<InlineListObject> items = getItems();
         if (items != null) {
             for (InlineListObject ilObj : getItems()) {
@@ -125,7 +125,7 @@ public class InlineList
      * @see our JavaScript (jQuery) expects non set values to be "0"
      * @return total character length (spaces, commas included) to show
      */
-    public InterMineId getLineLength() {
+    public Integer getLineLength() {
         return (lineLength != null) ? lineLength : 0;
     }
 

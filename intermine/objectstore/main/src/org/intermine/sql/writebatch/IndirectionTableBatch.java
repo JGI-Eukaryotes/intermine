@@ -13,6 +13,8 @@ package org.intermine.sql.writebatch;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.intermine.model.InterMineId;
+
 /**
  * A class representing all changes to be made to an SQL indirection table.
  *
@@ -56,12 +58,12 @@ public class IndirectionTableBatch implements Table
      * Adds a row to the batch. Whatever the previous state of the database and batch, the table
      * will end up with one row matching the arguments.
      *
-     * @param left the left int value
-     * @param right the right int value
+     * @param interMineId the left int value
+     * @param interMineId2 the right int value
      * @return the number of bytes by which the batch should be deemed to have expanded
      */
-    public int addRow(int left, int right) {
-        Row row = new Row(left, right);
+    public int addRow(InterMineId interMineId, InterMineId interMineId2) {
+        Row row = new Row(interMineId, interMineId2);
         boolean removedDelete = rowsToDelete.remove(row);
         boolean addedInsert = rowsToInsert.add(row);
         int deltaSize = (addedInsert ? (removedDelete ? 0 : 16) : 0);
@@ -73,12 +75,12 @@ public class IndirectionTableBatch implements Table
      * Deletes a row from the batch. Whatever the previous state of the database and batch, the
      * table will end up with no rows that match the arguments.
      *
-     * @param left the left int value
-     * @param right the right int value
+     * @param interMineId the left int value
+     * @param element the right int value
      * @return the number of bytes by which the batch should be deemed to have expanded
      */
-    public int deleteRow(int left, int right) {
-        Row row = new Row(left, right);
+    public int deleteRow(InterMineId interMineId, InterMineId element) {
+        Row row = new Row(interMineId, element);
         boolean removedInsert = rowsToInsert.remove(row);
         boolean addedDelete = rowsToDelete.add(row);
         int deltaSize = (addedDelete ? (removedInsert ? 0 : 16) : 0);

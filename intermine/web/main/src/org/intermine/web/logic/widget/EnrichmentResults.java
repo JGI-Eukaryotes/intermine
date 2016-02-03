@@ -11,7 +11,6 @@ package org.intermine.web.logic.widget;
  */
 
 import java.math.BigDecimal;
-import org.intermine.model.InterMineId;
 import java.util.Map;
 
 /**
@@ -24,21 +23,21 @@ public class EnrichmentResults
 {
 
     private final Map<String, BigDecimal> pValues;
-    private final Map<String, InterMineId> counts;
+    private final Map<String, Integer> counts;
     private final Map<String, String> labels;
     private final int analysedTotal;
 
     /**
      * Construct with pre-populated maps from enriched attributes to p-values, counts and labels.
      * @param pValues calculated p-values per attribute value for this enrichment
-     * @param counts number of items in sample per attribute value
+     * @param map number of items in sample per attribute value
      * @param labels an additional label for each attribute value, used for display
      * @param analysedTotal the number of items in the sample that had data for the given attribute
      */
-    protected EnrichmentResults(Map<String, BigDecimal> pValues, Map<String, InterMineId> counts,
+    protected EnrichmentResults(Map<String, BigDecimal> pValues, Map<String, Integer> map,
             Map<String, String> labels, int analysedTotal) {
         this.pValues = pValues;
-        this.counts = counts;
+        this.counts = map;
         this.labels = labels;
         this.analysedTotal = analysedTotal;
     }
@@ -56,7 +55,7 @@ public class EnrichmentResults
      * Get the count of each attribute value found in the sample.
      * @return counts of attribute values in the sample.
      */
-    public Map<String, InterMineId> getCounts() {
+    public Map<String, Integer> getCounts() {
         return counts;
     }
 

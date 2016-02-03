@@ -25,6 +25,7 @@ import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.ProfileManager;
 import org.intermine.api.util.TextUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.model.userprofile.SavedBag;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
@@ -265,8 +266,8 @@ public class SharingInvite
             os.performUnsafeOperation(SAVE_SQL, new SQLOperation<Void>() {
                 @Override
                 public Void run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    stm.setInt(2, bag.getProfileId());
+                    stm.setObject(1, bag.getSavedBagId());
+                    stm.setObject(2, bag.getProfileId());
                     stm.setString(3, token);
                     stm.setString(4, invitee);
 
@@ -279,8 +280,8 @@ public class SharingInvite
             os.performUnsafeOperation(FULL_SAVE_SQL, new SQLOperation<Void>() {
                 @Override
                 public Void run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    stm.setInt(2, bag.getProfileId());
+                    stm.setObject(1, bag.getSavedBagId());
+                    stm.setObject(2, bag.getProfileId());
                     stm.setString(3, token);
                     stm.setString(4, invitee);
                     stm.setDate(5, new java.sql.Date(createdAt.getTime()));
@@ -319,7 +320,7 @@ public class SharingInvite
                 @Override
                 public Collection<IntermediateRepresentation> run(PreparedStatement stm)
                     throws SQLException {
-                    stm.setInt(1, inviter.getUserId());
+                    stm.setObject(1, inviter.getUserId());
                     ResultSet rs = stm.executeQuery();
 
                     final List<IntermediateRepresentation> results
@@ -369,7 +370,7 @@ public class SharingInvite
             ProfileManager pm, BagManager bm,
             IntermediateRepresentation rep) throws ObjectStoreException {
         ObjectStore os = pm.getProfileObjectStoreWriter();
-        Profile inviter = pm.getProfile(rep.inviterId);
+        Profile inviter = pm.getProfile(rep.inviterId.toString());
         SavedBag savedBag = (SavedBag) os.getObjectById(rep.bagId, SavedBag.class);
         InterMineBag bag = bm.getBag(inviter, savedBag.getName());
         return new SharingInvite(bag,
@@ -383,8 +384,8 @@ public class SharingInvite
      */
     public static class IntermediateRepresentation
     {
-        int bagId;
-        int inviterId;
+        InterMineId bagId;
+        InterMineId inviterId;
         String token;
         String invitee;
         Date acceptedAt;
@@ -394,13 +395,13 @@ public class SharingInvite
         /**
          * @return id of the bag shared
          */
-        public int getBagId() {
+        public InterMineId getBagId() {
             return bagId;
         }
         /**
          * @return id of user who sent invite
          */
-        public int getInviterId() {
+        public InterMineId getInviterId() {
             return inviterId;
         }
         /**
@@ -438,8 +439,8 @@ public class SharingInvite
     private static IntermediateRepresentation toIntermediateReps(final ResultSet rs)
         throws SQLException {
         IntermediateRepresentation rep = new IntermediateRepresentation();
-        rep.bagId = rs.getInt("bagid");
-        rep.inviterId = rs.getInt("inviterid");
+        rep.bagId = (InterMineId)rs.getObject("bagid");
+        rep.inviterId = (InterMineId)rs.getObject("inviterid");
         rep.token = rs.getString("token");
         rep.invitee = rs.getString("invitee");
         rep.acceptedAt = rs.getDate("acceptedat");

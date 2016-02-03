@@ -227,12 +227,12 @@ public abstract class QueryExecutor
         String cacheKey = q.toString() + "summary-path: " + path;
         if (COUNT_CACHE.containsKey(cacheKey)) {
             LOG.debug("Count cache hit");
-            return COUNT_CACHE.get(cacheKey);
+            return COUNT_CACHE.get(cacheKey).nativeValue();
         } else {
             LOG.debug("Count cache miss");
             Results res = os.execute(q, summaryBatchSize, true, true, true);
             int c = res.size();
-            COUNT_CACHE.put(cacheKey, c);
+            COUNT_CACHE.put(cacheKey, new InterMineId(c));
             return c;
         }
     }

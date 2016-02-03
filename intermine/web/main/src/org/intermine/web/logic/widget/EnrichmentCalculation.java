@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.intermine.model.InterMineId;
 import org.apache.commons.math3.distribution.HypergeometricDistribution;
 
 /**
@@ -57,7 +56,7 @@ public final class EnrichmentCalculation
         PopulationInfo population = input.getPopulationInfo();
         int populationSize = population.getSize();
 
-        Map<String, InterMineId> sampleCounts = input.getAnnotatedCountsInSample();
+        Map<String, Integer> sampleCounts = input.getAnnotatedCountsInSample();
         Map<String, PopulationInfo> annotatedPopulationInfo =
             input.getAnnotatedCountsInPopulation();
 
@@ -82,15 +81,15 @@ public final class EnrichmentCalculation
     }
 
     private static Map<String, BigDecimal> getRawResults(int sampleSize,
-            int populationSize, Map<String, InterMineId> sampleCounts,
+            int populationSize, Map<String, Integer> sampleCounts,
             Map<String, PopulationInfo> annotatedPopulationInfo) {
         Map<String, BigDecimal> rawResults = new HashMap<String, BigDecimal>();
-        for (Map.Entry<String, InterMineId> entry : sampleCounts.entrySet()) {
+        for (Map.Entry<String, Integer> entry : sampleCounts.entrySet()) {
             String attribute = entry.getKey();
 
-            InterMineId sampleCount = entry.getValue();
+            Integer sampleCount = entry.getValue();
             PopulationInfo pi = annotatedPopulationInfo.get(attribute);
-            InterMineId populationCount = (pi != null) ? pi.getSize() : 0;
+            Integer populationCount = (pi != null) ? pi.getSize() : 0;
 
             HypergeometricDistribution h =
                 new HypergeometricDistribution(populationSize, populationCount, sampleSize);

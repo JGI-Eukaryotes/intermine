@@ -76,6 +76,6 @@ public class Clob implements QuerySelectable
      */
     @Override
     public int hashCode() {
-        return clobId;
+        return clobId.intValue();
     }
 }

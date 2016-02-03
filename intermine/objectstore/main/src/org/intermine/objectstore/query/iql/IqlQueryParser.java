@@ -596,7 +596,7 @@ public final class IqlQueryParser
      */
     private static ObjectStoreBag processNewObjectStoreBag(AST ast) {
         String value = unescape(ast.getText());
-        return new ObjectStoreBag(InterMineId.parseInt(value));
+        return new ObjectStoreBag(new InterMineId(value));
     }
 
     /**

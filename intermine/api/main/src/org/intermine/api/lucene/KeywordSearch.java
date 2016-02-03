@@ -755,8 +755,8 @@ public final class KeywordSearch
             if (ids != null && !ids.isEmpty()) {
                 TermsFilter idFilter = new TermsFilter(); //we may want fieldcachetermsfilter
 
-                for (int id : ids) {
-                    idFilter.addTerm(new Term("id", InterMineId.toString(id)));
+                for (InterMineId id : ids) {
+                    idFilter.addTerm(new Term("id", id.toString()));
                 }
 
                 browseRequest.setFilter(idFilter);

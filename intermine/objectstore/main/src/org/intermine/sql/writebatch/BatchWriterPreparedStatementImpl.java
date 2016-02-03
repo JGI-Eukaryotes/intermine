@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
+
 /**
  * An implementation of the BatchWriter interface that uses JDBC PreparedStatement addBatch() and
  * executeBatch() methods.
@@ -55,22 +57,30 @@ public class BatchWriterPreparedStatementImpl extends BatchWriterSimpleImpl
                     Object[] values = (Object[]) inserts;
                     for (int i = 0; i < colNames.length; i++) {
                         Object value = values[i];
-                        if (value instanceof CharSequence) {
+                        if (value instanceof InterMineId) {
+                          prepS.setObject(i + 1, value, InterMineId.SQL_TYPE);
+                        } else {
+                          if (value instanceof CharSequence) {
                             value = ((CharSequence) value).toString();
+                          } 
+                          prepS.setObject(i + 1, value);
                         }
-                        prepS.setObject(i + 1, value);
                     }
                     prepS.addBatch();
                 } else {
-                    for (Object[] values : ((List<Object[]>) inserts)) {
-                        for (int i = 0; i < colNames.length; i++) {
-                            Object value = values[i];
-                            if (value instanceof CharSequence) {
-                                value = ((CharSequence) value).toString();
-                            }
-                            prepS.setObject(i + 1, value);
+                  for (Object[] values : ((List<Object[]>) inserts)) {
+                    for (int i = 0; i < colNames.length; i++) {
+                      Object value = values[i];
+                      if (value instanceof InterMineId) {
+                        prepS.setObject(i + 1, value, InterMineId.SQL_TYPE);
+                      } else {
+                        if (value instanceof CharSequence) {
+                          value = ((CharSequence) value).toString();
                         }
-                        prepS.addBatch();
+                        prepS.setObject(i + 1, value);
+                      }
+                    }
+                    prepS.addBatch();
                     }
                 }
             }
@@ -91,8 +101,8 @@ public class BatchWriterPreparedStatementImpl extends BatchWriterSimpleImpl
                 + table.getRightColName() + ") VALUES (?, ?)";
             PreparedStatement prepS = con.prepareStatement(sql);
             for (Row row : table.getRowsToInsert()) {
-                prepS.setInt(1, row.getLeft());
-                prepS.setInt(2, row.getRight());
+                prepS.setObject(1, row.getLeft(),InterMineId.SQL_TYPE);
+                prepS.setObject(2, row.getRight(),InterMineId.SQL_TYPE);
                 prepS.addBatch();
             }
             batches.add(new FlushJobStatementBatchImpl(prepS));

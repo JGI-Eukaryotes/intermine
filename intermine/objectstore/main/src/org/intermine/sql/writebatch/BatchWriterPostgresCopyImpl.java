@@ -221,9 +221,9 @@ public class BatchWriterPostgresCopyImpl extends BatchWriterPreparedStatementImp
                     for (Row row : table.getRowsToInsert()) {
                         dos.writeShort(2);
                         dos.writeInt(4);
-                        dos.writeInt(row.getLeft());
+                        dos.writeInt(row.getLeft().nativeValue());
                         dos.writeInt(4);
-                        dos.writeInt(row.getRight());
+                        dos.writeInt(row.getRight().nativeValue());
                     }
                     String sql = "COPY " + name + " (" + table.getLeftColName() + ", "
                         + table.getRightColName() + ") FROM STDIN BINARY";

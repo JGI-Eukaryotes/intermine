@@ -149,7 +149,7 @@ public class WormBaseIdResolverFactory extends IdResolverFactory
 
             String orgConstraint = "";
             if (taxonId != null) {
-                String abbrev = or.getOrganismDataByTaxon(new InterMineId(taxonId)).getAbbreviation();
+                String abbrev = or.getOrganismDataByTaxon(new Integer(taxonId)).getAbbreviation();
                 query = "select organism_id"
                     + " from organism"
                     + " where abbreviation = \'" + abbrev + "\'";

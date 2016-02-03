@@ -606,8 +606,8 @@ public class Path
      * @param field the field
      * @return list of indexes
      */
-    public List<InterMineId> getElementsContainingField(String cls, String field) {
-        List<InterMineId> indexElementsContainingField = new ArrayList<InterMineId>();
+    public List<Integer> getElementsContainingField(String cls, String field) {
+        List<Integer> indexElementsContainingField = new ArrayList<Integer>();
         ClassDescriptor cd;
         for (int index = 0; index < elements.size(); index++) {
             if (elements.get(index).equals(field)) {

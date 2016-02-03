@@ -98,10 +98,10 @@ public class LoginTracker extends AbstractTracker
      * @param con the connection
      * @return map with key the user name and access number
      */
-    protected Map<String, InterMineId> getUserLogin(Connection con) {
+    protected Map<String, Integer> getUserLogin(Connection con) {
         ResultSet rs = null;
         Statement stm = null;
-        Map<String, InterMineId> userLogin = new HashMap<String, InterMineId>();
+        Map<String, Integer> userLogin = new HashMap<String, Integer>();
         try {
             stm = con.createStatement();
             String sql = "SELECT username, COUNT(username) as accessnumbers "

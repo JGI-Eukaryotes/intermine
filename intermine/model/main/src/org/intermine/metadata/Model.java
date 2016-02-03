@@ -146,7 +146,7 @@ public class Model
         Set<CollectionDescriptor> emptyCols = Collections.emptySet();
         ClassDescriptor intermineObject = new ClassDescriptor(
                 "org.intermine.model.InterMineObject", null, true,
-                Collections.singleton(new AttributeDescriptor("id", "java.lang.InterMineId")),
+                Collections.singleton(new AttributeDescriptor("id", "org.intermine.model.InterMineId")),
                 emptyRefs, emptyCols);
         orderedClds.add(intermineObject);
         rootCld = intermineObject;

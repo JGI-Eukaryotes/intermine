@@ -267,7 +267,7 @@ public class ChromosomeLocationHelper implements RangeHelper
             } else {
                 throw new IllegalArgumentException("Illegal range: " + range);
             }
-            if (start != null && end != null && start > end) {
+            if (start != null && end != null && start.compareTo(end) > 0) {
                 throw new IllegalArgumentException(
                         "Illegal range - start is greater than end: " + range);
             }

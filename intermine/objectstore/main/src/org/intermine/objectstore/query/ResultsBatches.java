@@ -35,19 +35,19 @@ public class ResultsBatches
 
     protected Query query;
     protected ObjectStore os;
-    protected Map<Object, InterMineId> sequence;
+    protected Map<Object, Integer> sequence;
 
     protected int minSize = 0;
     // TODO: update this to use ObjectStore.getMaxRows().
-    protected int maxSize = InterMineId.MAX_VALUE;
+    protected int maxSize = Integer.MAX_VALUE;
     protected int batchSize = DEFAULT_BATCH_SIZE;
     protected boolean initialised = false;
 
     protected ResultsInfo info;
 
     // A map of batch number against a List of ResultsRows
-    protected Map<InterMineId, List<Object>> batches = Collections.synchronizedMap(
-            new CacheMap<InterMineId, List<Object>>("Results batches"));
+    protected Map<Integer, List<Object>> batches = Collections.synchronizedMap(
+            new CacheMap<Integer, List<Object>>("Results batches"));
 
     /**
      * Construct a new ResultsBatches object. This is generally only called by the Results object.
@@ -56,7 +56,7 @@ public class ResultsBatches
      * @param os an ObjectStore
      * @param sequence the ObjectStore-specific sequence data
      */
-    public ResultsBatches(Query query, ObjectStore os, Map<Object, InterMineId> sequence) {
+    public ResultsBatches(Query query, ObjectStore os, Map<Object, Integer> sequence) {
         this.query = query;
         this.os = os;
         this.sequence = sequence;
@@ -78,7 +78,7 @@ public class ResultsBatches
      *
      * @return the ObjectStore-specific object
      */
-    public Map<Object, InterMineId> getSequence() {
+    public Map<Object, Integer> getSequence() {
         return sequence;
     }
 
@@ -118,7 +118,7 @@ public class ResultsBatches
      * @param explain true if this method should explain each query first
      */
     public void prefetch(int batchNo, boolean optimise, boolean explain) {
-        if (!batches.containsKey(new InterMineId(batchNo))) {
+        if (!batches.containsKey(new Integer(batchNo))) {
             PrefetchManager.addRequest(this, batchNo, optimise, explain);
         }
     }
@@ -160,7 +160,7 @@ public class ResultsBatches
      */
     protected List<Object> getBatch(int batchNo, boolean optimise, boolean explain)
         throws ObjectStoreException {
-        List<Object> retval = batches.get(new InterMineId(batchNo));
+        List<Object> retval = batches.get(new Integer(batchNo));
         if (retval == null) {
             retval = PrefetchManager.doRequest(this, batchNo, optimise, explain);
         }
@@ -206,7 +206,7 @@ public class ResultsBatches
                     minSize = (minSize > size ? minSize : size);
                 }
 
-                InterMineId key = new InterMineId(batchNo);
+                Integer key = new Integer(batchNo);
                 batches.put(key, rows);
             }
         } catch (IndexOutOfBoundsException e) {
@@ -348,7 +348,7 @@ public class ResultsBatches
     public ResultsBatches makeWithDifferentBatchSize(int newBatchSize) {
         ResultsBatches retval = new ResultsBatches(query, os, sequence);
         retval.setBatchSize(newBatchSize);
-        List<Object> firstBatch = batches.get(new InterMineId(0));
+        List<Object> firstBatch = batches.get(new Integer(0));
         if ((firstBatch != null) && (isSingleBatch() || (firstBatch.size() >= newBatchSize))) {
             if (firstBatch.size() > newBatchSize) {
                 // Trim batch to size
@@ -358,7 +358,7 @@ public class ResultsBatches
                 }
                 firstBatch = newFirstBatch;
             }
-            retval.batches.put(new InterMineId(0), firstBatch);
+            retval.batches.put(new Integer(0), firstBatch);
             retval.minSize = minSize;
             retval.maxSize = maxSize;
             retval.initialised = true;

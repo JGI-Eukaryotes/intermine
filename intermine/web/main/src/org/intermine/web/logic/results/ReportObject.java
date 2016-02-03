@@ -179,7 +179,7 @@ public class ReportObject
     }
 
     private String stripTail(String input) {
-        InterMineId dot = input.indexOf(".");
+        Integer dot = input.indexOf(".");
         if (dot > 0) {
             return input.substring(0, dot);
         }
@@ -590,11 +590,11 @@ public class ReportObject
      *  from webProperties.
      * @return InterMineId duh
      */
-    public InterMineId getNumberOfTableRowsToShow() {
+    public Integer getNumberOfTableRowsToShow() {
         String maxInlineTableSizeString =
             (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
         try {
-            return InterMineId.parseInt(maxInlineTableSizeString);
+            return Integer.parseInt(maxInlineTableSizeString);
         } catch (NumberFormatException e) {
             LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                      + maxInlineTableSizeString);
