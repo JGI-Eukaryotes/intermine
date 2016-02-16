@@ -107,7 +107,7 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
   private PathQuery getAnalysisTable(String identifier) {
     PathQuery query = new PathQuery(im.getModel());
     query.addViews(
-        "Protein.proteinAnalysisFeatures.sourceDatabase.name",
+        "Protein.proteinAnalysisFeatures.crossReference.source.name",
         "Protein.proteinAnalysisFeatures.crossReference.identifier",
         "Protein.proteinAnalysisFeatures.crossReference.subject.primaryIdentifier",
         "Protein.proteinAnalysisFeatures.crossReference.subject.id",
@@ -116,7 +116,7 @@ public class ProteinAnalysisDisplayer extends ReportDisplayer {
         "Protein.proteinAnalysisFeatures.rawscore",
         "Protein.proteinAnalysisFeatures.significance");
     query.setOuterJoinStatus("Protein.proteinAnalysisFeatures.crossReference.subject",OuterJoinStatus.OUTER);
-    query.addOrderBy("Protein.proteinAnalysisFeatures.sourceDatabase.name", OrderDirection.ASC);
+    query.addOrderBy("Protein.proteinAnalysisFeatures.crossReference.source.name", OrderDirection.ASC);
     query.addConstraint(Constraints.eq("Protein.secondaryIdentifier",identifier));
     return query;
   }
