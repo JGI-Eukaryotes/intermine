@@ -56,7 +56,7 @@ public class URLGenerator
         try {
           // looking in for baseURL in properties
           Properties properties = SessionMethods.getWebProperties(request.getSession().getServletContext());
-          String ret = properties.getProperty("project.sitePrefix");
+          String ret = properties.getProperty("webapp.baseurl");
           if (contextPath.length() > 0) {
             ret += contextPath;
           }
