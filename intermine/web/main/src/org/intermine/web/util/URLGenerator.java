@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.intermine.web.context.InterMineContext;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -55,7 +56,7 @@ public class URLGenerator
         String port = "";
         try {
           // looking in for baseURL in properties
-          Properties properties = SessionMethods.getWebProperties(request.getSession().getServletContext());
+          Properties properties = InterMineContext.getWebProperties();
           String ret = properties.getProperty("webapp.baseurl");
           if (contextPath.length() > 0) {
             ret += contextPath;
