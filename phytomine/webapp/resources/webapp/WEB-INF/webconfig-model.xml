@@ -181,6 +181,14 @@
     </fields>
   </class>
 
+  <class className="org.intermine.model.bio.ProteinDomain">
+    <fields>
+      <fieldconfig fieldExpr="primaryIdentifier"/>
+      <fieldconfig fieldExpr="type" />
+      <fieldconfig fieldExpr="name"/>
+    </fields>
+  </class>
+
   <class className="org.intermine.model.bio.Publication">
     <headerconfig>
       <titles>
