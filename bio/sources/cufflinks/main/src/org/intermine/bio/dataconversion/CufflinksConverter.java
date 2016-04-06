@@ -13,7 +13,9 @@ package org.intermine.bio.dataconversion;
 import java.io.Reader;
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -21,7 +23,8 @@ import org.apache.tools.ant.BuildException;
 import org.apache.commons.lang.StringUtils;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;           
-import org.intermine.xml.full.Item;            
+import org.intermine.xml.full.Item;
+import org.intermine.xml.full.Reference;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.bio.dataconversion.BioFileConverter;
 import org.intermine.util.FormattedTextParser;
@@ -41,8 +44,10 @@ public class CufflinksConverter extends BioFileConverter
   private static final Logger LOG =
       Logger.getLogger(CufflinksConverter.class);
 
-  // experiment records we will refer to
+  // experiment records we will refer to by name
   private HashMap<String, Item> experimentMap = new HashMap<String,Item>();
+  // a map from item id to experiment name.
+  private HashMap<String,String> experimentIdMap = new HashMap<String,String>();
   // the 'column group' correspondence with experiment
   private HashMap<Integer,String> experimentColGroupMap = new HashMap<Integer,String>();
   // for now, this can only process files of 1 organism
@@ -54,6 +59,10 @@ public class CufflinksConverter extends BioFileConverter
   // the keys are bioentity type (gene or isoform), then bioentity identifier, then the experiment
   private HashMap<String,HashMap<String,HashMap<String,Item>>> scoreMap = 
       new HashMap<String, HashMap<String,HashMap<String,Item>>>();
+  // keepers of the outlier data.
+  private HashMap<String,HashMap<String,String>> locusRating = new HashMap<String,HashMap<String,String>>();
+  private HashMap<String,HashMap<String,String>> libraryRating = new HashMap<String,HashMap<String,String>>();
+
 
   private final String[] expectedFPKMHeaders = { "tracking_id" , "class_code",
       "nearest_ref_id" , "gene_id" , "gene_short_name",
@@ -101,7 +110,7 @@ public class CufflinksConverter extends BioFileConverter
         throw new BuildException("No proteomeId specified.");
       }
     }
-    
+
     if (theFile.getName().endsWith("genes.fpkm_tracking")) {
       processCufflinksFile(reader,"FPKM","Gene");
     } else if (theFile.getName().endsWith("isoforms.fpkm_tracking")) {
@@ -110,6 +119,10 @@ public class CufflinksConverter extends BioFileConverter
       processCufflinksFile(reader,"Count","Gene");
     } else if (theFile.getName().endsWith("isoforms.count_tracking")) {
       processCufflinksFile(reader,"Count","MRNA");
+    } else if (theFile.getName().endsWith("outliers.tsv")) {
+      processOutliersFile(reader);
+    } else if (theFile.getName().endsWith("experiments.info")) {
+      processSampleFile(reader);
     } else {
       LOG.info("Ignoring file "+theFile.getName()+".");
     }
@@ -117,16 +130,42 @@ public class CufflinksConverter extends BioFileConverter
 
   public void close() throws Exception
   {
-    // Now store. First an iterator over the types
+    // store the experiments
+    for(Item exp: experimentMap.values()) {
+      try {
+        store(exp);
+      } catch (ObjectStoreException e) {
+        throw new BuildException("Cannot save experiment " + exp.getAttribute("name"));
+      }
+    }
+    // Now store scores. First an iterator over the types
     Iterator<Map.Entry<String,HashMap<String, HashMap<String,Item> > > > typeIterator = scoreMap.entrySet().iterator();
     while (typeIterator.hasNext() ) {
       // look at each (name,item) for that type
-      Iterator<Map.Entry<String,HashMap<String, Item>>> idMapIterator = typeIterator.next().getValue().entrySet().iterator();
+      Entry<String, HashMap<String, HashMap<String, Item>>> theType = typeIterator.next();
+      Iterator<Map.Entry<String,HashMap<String, Item>>> idMapIterator = theType.getValue().entrySet().iterator();
       while (idMapIterator.hasNext() ) {
-        Iterator<Map.Entry<String,Item>> scoreMapIterator = idMapIterator.next().getValue().entrySet().iterator();
+        Entry<String, HashMap<String, Item>> theBioentity = idMapIterator.next();
+        Iterator<Map.Entry<String,Item>> scoreMapIterator = theBioentity.getValue().entrySet().iterator();
         while(scoreMapIterator.hasNext() ) {
+          Entry<String, Item> theScore = scoreMapIterator.next();
+          String geneName = theBioentity.getKey();
+          Reference expRef = theScore.getValue().getReference("experiment");
+          String expName = experimentIdMap.get(expRef.getRefId());
+          if (theType.getKey().equals("Gene")) {
+            if (locusRating.containsKey(geneName) && locusRating.get(geneName).containsKey(expName) ){
+              theScore.getValue().setAttribute("locusExpressionLevel",locusRating.get(geneName).get(expName));         
+            }
+            if (libraryRating.containsKey(geneName) && libraryRating.get(geneName).containsKey(expName) ){
+              theScore.getValue().setAttribute("libraryExpressionLevel",libraryRating.get(geneName).get(expName));
+            }
+            if(Double.parseDouble(theScore.getValue().getAttribute("fpkm").getValue()) == 0.) {
+              theScore.getValue().setAttribute("locusExpressionLevel","Not Expressed");
+              theScore.getValue().setAttribute("libraryExpressionLevel","Not Expressed");
+            }
+          }
           try {
-            store(scoreMapIterator.next().getValue());
+            store(theScore.getValue());
           } catch (Exception e) {
             throw new BuildException("Problem when storing item: " +e);
           }
@@ -134,12 +173,70 @@ public class CufflinksConverter extends BioFileConverter
       }
     } 
   }
-  
+
+  private void processSampleFile(Reader reader) throws BuildException {
+    Iterator<?> tsvIter;
+    try {
+      tsvIter = FormattedTextParser.parseTabDelimitedReader(reader);
+    } catch (Exception e) {
+      throw new BuildException("Cannot parse file: " + getCurrentFile(),e);
+    }
+    int ctr = 0;
+    while (tsvIter.hasNext() ) {
+      ctr++;
+      String[] fields = (String[]) tsvIter.next();
+      if (fields.length > 1) {
+        Item sample = createExperiment(cleanUpExperimentName(fields[0]));
+        setIfNotNull(sample,"experimentGroup",fields[1]);
+        if (fields.length > 2) setIfNotNull(sample,"description",fields[2]);
+        if (fields.length > 3) setIfNotNull(sample,"url",fields[3]);
+      }
+    }
+  }
+
+
+  private void processOutliersFile(Reader reader) throws BuildException {  
+
+    Iterator<?> tsvIter;                             
+    try {                                            
+      tsvIter = FormattedTextParser.parseTabDelimitedReader(reader);
+    } catch (Exception e) {                                           
+      throw new BuildException("cannot parse file: " + getCurrentFile(), e);
+    }
+
+    int lineNumber = 0;                                        
+
+    while (tsvIter.hasNext()) {
+      lineNumber++;
+      String[] fields = (String[]) tsvIter.next();
+      if (fields.length != 3) {
+        throw new BuildException("Unexpected number of columns in outlier file at line "+lineNumber);
+      }
+      if (fields[0].equals("LocusLow")) {
+        // first gene, then experiment
+        if (!locusRating.containsKey(fields[1])) locusRating.put(fields[1],new HashMap<String,String>());
+        locusRating.get(fields[1]).put(cleanUpExperimentName(fields[2]),"Low");   
+      } else if (fields[0].equals("LocusHigh")) { 
+        // first gene, then experiment
+        if (!locusRating.containsKey(fields[1])) locusRating.put(fields[1],new HashMap<String,String>());
+        locusRating.get(fields[1]).put(cleanUpExperimentName(fields[2]),"High");       
+      } else if (fields[0].equals("ExperimentLow")) {        
+        // first experiment, then gene
+        if (!libraryRating.containsKey(fields[2])) libraryRating.put(fields[2],new HashMap<String,String>());
+        libraryRating.get(fields[2]).put(cleanUpExperimentName(fields[1]),"Low");
+      } else if (fields[0].equals("ExperimentHigh")) {       
+        // first experiment, then gene
+        if (!libraryRating.containsKey(fields[2])) libraryRating.put(fields[2],new HashMap<String,String>());
+        libraryRating.get(fields[2]).put(cleanUpExperimentName(fields[1]),"High");
+      }
+    }
+  }
+
   private void processCufflinksFile(Reader reader, String fileType, String bioentityType)
-      throws BuildException, ObjectStoreException {  
+      throws BuildException, ObjectStoreException   {  
 
     int colGroupSize = fileType.equals("FPKM")?expectedFPKMSuffices.length:
-                                               expectedCountSuffices.length;
+      expectedCountSuffices.length;
     String[] expectedHeaders = fileType.equals("FPKM")?
         (String[])expectedFPKMHeaders.clone():(String[])expectedCountHeaders.clone();
         Iterator<?> tsvIter;                             
@@ -257,13 +354,7 @@ public class CufflinksConverter extends BioFileConverter
           experimentName = headers[i].substring(0,headers[i].lastIndexOf(expectedSuffices[0]));
           String cleanedExperimentName = cleanUpExperimentName(experimentName);
           experimentColGroupMap.put(colGroup,cleanedExperimentName);
-          if (!experimentMap.containsKey(cleanedExperimentName) ) {
-            try {
-              experimentMap.put(cleanedExperimentName, createExperiment(cleanedExperimentName));
-            } catch (ObjectStoreException e) {
-              throw new BuildException("Cannot save experiment " + cleanedExperimentName);
-            }
-          }
+          createExperiment(cleanedExperimentName);
         }
         if (!headers[i].equals(experimentName + expectedSuffices[which])){
           throw new BuildException("Unexpected header " + headers[i] +
@@ -278,7 +369,6 @@ public class CufflinksConverter extends BioFileConverter
    * convert N (N>1) underscore to N-1 underscores and no space.
    */
   private String cleanUpExperimentName(String s) {
-    String[] bits = s.split("_");
     StringBuffer sb = new StringBuffer();
     for( String bit: s.split("_") ) {
       // a bit of zero-length means there were 2 underscores. Replace
@@ -286,27 +376,33 @@ public class CufflinksConverter extends BioFileConverter
       if(bit.length()==0) {
         sb.append("_");
       } else {
-        if (sb.length() > 0) sb.append(" ");
+        if (sb.length() > 0  && !sb.toString().endsWith("_") ) sb.append(" ");
         sb.append(bit);
       }
     }
-    System.out.println("chaning "+s+" to "+sb.toString());
     return sb.toString();
   }
-  
+
   /*
-   * Create and store one experiment for the current organism. 
+   * If we have not seen this experiment before, create (but do not store)
+   * one experiment for the current organism. 
    */
 
-  private Item createExperiment(String name) throws ObjectStoreException {
-    Item experiment = createItem("RNAseqExperiment");
-    experiment.setAttribute("name",name);
-    experiment.setReference("organism",organism);
-    experimentMap.put(name,experiment);
-    store(experiment);
-    return experiment;
+  private Item createExperiment(String name) {
+    if (!experimentMap.containsKey(name) ) {
+      Item experiment = createItem("RNAseqExperiment");
+      experiment.setAttribute("name",name);
+      experiment.setReference("organism",organism);
+      experimentMap.put(name,experiment);
+      experimentIdMap.put(experiment.getIdentifier(),name);
+    }
+    return experimentMap.get(name);
   }
-
+  void setIfNotNull(Item s,String field,String value) {
+    if (value != null && value.trim().length() > 0) {
+      s.setAttribute(field,value);
+    }
+  }
   public void setProteomeId(String organism) {
     try {
       proteomeId = Integer.valueOf(organism);
