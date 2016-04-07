@@ -1,0 +1,5 @@
+#!/bin/bash
+../bio/scripts/project_build -l -v -a interpro--metazome-cluster-node-570 localhost ${BSCRATCH}/phytomine-build
+
+
+  

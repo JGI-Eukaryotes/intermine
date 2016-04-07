@@ -207,7 +207,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
           }
           msa.setPrimaryIdentifier("Cluster "+clusterId+" alignment");
           msa.setAlignment(newMSA);
-          msa.sethMM(newHMM);
+          if (newHMM != null) msa.sethMM(newHMM);
           try {
             getDirectDataLoader().store(msa);
           } catch (ObjectStoreException e) {
@@ -530,6 +530,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     //do what we have to do to reformat a hmm into something suitable for intermine
     // pretty much replacing the newline character with the 2 characters \ and n
 
+    if (hmm == null) return null;
     StringBuffer returnHMM = new StringBuffer();
     for( String line: hmm.split("\\n") ) {
       if (returnHMM.length() > 0) returnHMM.append("\\n");

@@ -1,0 +1,648 @@
+  <source name="phytozome-chado-C.savignyi" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Ciona savignyi" />
+    <property name="genus" value="Ciona" />
+    <property name="name" value="Ciona savignyi" />
+    <property name="species" value="savignyi" />
+    <property name="assemblyDbxrefId" value="9818530" />
+    <property name="proteomeId" value="1" />
+    <property name="taxonId" value="51511" />
+    <property name="annotationVersion" value="CSAV2.0" />
+    <property name="dataSourceName" value="phytozome-C.savignyi" />
+    <property name="shortName" value="C. savignyi" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950441" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-A.gambiae" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="mosquito" />
+    <property name="genus" value="Anopheles" />
+    <property name="name" value="Anopheles gambiae" />
+    <property name="species" value="gambiae" />
+    <property name="assemblyDbxrefId" value="9818531" />
+    <property name="proteomeId" value="2" />
+    <property name="taxonId" value="7165" />
+    <property name="annotationVersion" value="AgamP3" />
+    <property name="dataSourceName" value="phytozome-A.gambiae" />
+    <property name="shortName" value="A. gambiae" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950426" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-D.melanogaster" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="fruitfly" />
+    <property name="genus" value="Drosophila" />
+    <property name="name" value="Drosophila melanogaster" />
+    <property name="species" value="melanogaster" />
+    <property name="assemblyDbxrefId" value="9818532" />
+    <property name="proteomeId" value="3" />
+    <property name="taxonId" value="7227" />
+    <property name="annotationVersion" value="v4" />
+    <property name="dataSourceName" value="phytozome-D.melanogaster" />
+    <property name="shortName" value="D. melanogaster" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950448" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-A.aegypti" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Aedes aegypti" />
+    <property name="genus" value="Aedes" />
+    <property name="name" value="Aedes aegypti" />
+    <property name="species" value="aegypti" />
+    <property name="assemblyDbxrefId" value="9840466" />
+    <property name="proteomeId" value="4" />
+    <property name="taxonId" value="7159" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-A.aegypti" />
+    <property name="shortName" value="A. aegypti" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9840467" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-G.aculeatus" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Gasterosteus aculeatus" />
+    <property name="genus" value="Gasterosteus" />
+    <property name="name" value="Gasterosteus aculeatus" />
+    <property name="species" value="aculeatus" />
+    <property name="assemblyDbxrefId" value="9818533" />
+    <property name="proteomeId" value="5" />
+    <property name="taxonId" value="69293" />
+    <property name="annotationVersion" value="S1" />
+    <property name="dataSourceName" value="phytozome-G.aculeatus" />
+    <property name="shortName" value="G. aculeatus" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950451" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-M.musculus" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="mouse" />
+    <property name="genus" value="Mus" />
+    <property name="name" value="Mus musculus" />
+    <property name="species" value="musculus" />
+    <property name="assemblyDbxrefId" value="9818534" />
+    <property name="proteomeId" value="6" />
+    <property name="taxonId" value="10090" />
+    <property name="annotationVersion" value="m36" />
+    <property name="dataSourceName" value="phytozome-M.musculus" />
+    <property name="shortName" value="M. musculus" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9840465" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-Mono.domestica" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Monodelphis domestica" />
+    <property name="genus" value="Monodelphis" />
+    <property name="name" value="Monodelphis domestica" />
+    <property name="species" value="domestica" />
+    <property name="assemblyDbxrefId" value="9818537" />
+    <property name="proteomeId" value="7" />
+    <property name="taxonId" value="13616" />
+    <property name="annotationVersion" value="v4" />
+    <property name="dataSourceName" value="phytozome-Mono.domestica" />
+    <property name="shortName" value="M. domestica" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9840468" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-O.latipes" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Oryzias latipes" />
+    <property name="genus" value="Oryzias" />
+    <property name="name" value="Oryzias latipes" />
+    <property name="species" value="latipes" />
+    <property name="assemblyDbxrefId" value="9818535" />
+    <property name="proteomeId" value="8" />
+    <property name="taxonId" value="8090" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-O.latipes" />
+    <property name="shortName" value="O. latipes" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950472" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-D.rerio" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="zebrafish" />
+    <property name="genus" value="Danio" />
+    <property name="name" value="Danio rerio" />
+    <property name="species" value="rerio" />
+    <property name="assemblyDbxrefId" value="950446" />
+    <property name="proteomeId" value="9" />
+    <property name="taxonId" value="7955" />
+    <property name="annotationVersion" value="ENSEMBL.41" />
+    <property name="dataSourceName" value="phytozome-D.rerio" />
+    <property name="shortName" value="D. rerio" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950446" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-R.norvegicus" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="rat" />
+    <property name="genus" value="Rattus" />
+    <property name="name" value="Rattus norvegicus" />
+    <property name="species" value="norvegicus" />
+    <property name="assemblyDbxrefId" value="9818538" />
+    <property name="proteomeId" value="10" />
+    <property name="taxonId" value="10116" />
+    <property name="annotationVersion" value="v3.4" />
+    <property name="dataSourceName" value="phytozome-R.norvegicus" />
+    <property name="shortName" value="R. norvegicus" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950483" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-H.sapiens" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="human" />
+    <property name="genus" value="Homo" />
+    <property name="name" value="Homo sapiens" />
+    <property name="species" value="sapiens" />
+    <property name="assemblyDbxrefId" value="9864643" />
+    <property name="proteomeId" value="11" />
+    <property name="taxonId" value="9606" />
+    <property name="annotationVersion" value="NCBI 36" />
+    <property name="dataSourceName" value="phytozome-H.sapiens" />
+    <property name="shortName" value="H. sapiens" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9908161" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-C.elegans" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="worm" />
+    <property name="genus" value="Caenorhabditis" />
+    <property name="name" value="Caenorhabditis elegans" />
+    <property name="species" value="elegans" />
+    <property name="assemblyDbxrefId" value="9818539" />
+    <property name="proteomeId" value="12" />
+    <property name="taxonId" value="6239" />
+    <property name="annotationVersion" value="WS164" />
+    <property name="dataSourceName" value="phytozome-C.elegans" />
+    <property name="shortName" value="C. elegans" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950435" />
+    <property name="assemblyVersion" value="WS164" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-C.briggsae" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Caenorhabditis briggsae" />
+    <property name="genus" value="Caenorhabditis" />
+    <property name="name" value="Caenorhabditis briggsae" />
+    <property name="species" value="briggsae" />
+    <property name="assemblyDbxrefId" value="9818540" />
+    <property name="proteomeId" value="13" />
+    <property name="taxonId" value="6238" />
+    <property name="annotationVersion" value="WS164" />
+    <property name="dataSourceName" value="phytozome-C.briggsae" />
+    <property name="shortName" value="C. briggsae" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9864644" />
+    <property name="assemblyVersion" value="WS164" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-X.tropicalis" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Xenopus tropicalis" />
+    <property name="genus" value="Xenopus" />
+    <property name="name" value="Xenopus tropicalis" />
+    <property name="species" value="tropicalis" />
+    <property name="assemblyDbxrefId" value="9864642" />
+    <property name="proteomeId" value="14" />
+    <property name="taxonId" value="8364" />
+    <property name="annotationVersion" value="v4.1" />
+    <property name="dataSourceName" value="phytozome-X.tropicalis" />
+    <property name="shortName" value="X. tropicalis" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12697110" />
+    <property name="assemblyVersion" value="v4.1" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-T.rubripes" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Takifugu rubripes" />
+    <property name="genus" value="Takifugu" />
+    <property name="name" value="Takifugu rubripes" />
+    <property name="species" value="rubripes" />
+    <property name="assemblyDbxrefId" value="9818541" />
+    <property name="proteomeId" value="15" />
+    <property name="taxonId" value="31033" />
+    <property name="annotationVersion" value="v4.0" />
+    <property name="dataSourceName" value="phytozome-T.rubripes" />
+    <property name="shortName" value="T. rubripes" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950489" />
+    <property name="assemblyVersion" value="v4.0" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-B.floridae" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Branchiostoma floridae" />
+    <property name="genus" value="Branchiostoma" />
+    <property name="name" value="Branchiostoma floridae" />
+    <property name="species" value="floridae" />
+    <property name="assemblyDbxrefId" value="9818542" />
+    <property name="proteomeId" value="17" />
+    <property name="taxonId" value="7739" />
+    <property name="annotationVersion" value="Brafl1" />
+    <property name="dataSourceName" value="phytozome-B.floridae" />
+    <property name="shortName" value="B. floridae" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950432" />
+    <property name="assemblyVersion" value="v1" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-B.mori" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Bombyx mori" />
+    <property name="genus" value="Bombyx" />
+    <property name="name" value="Bombyx mori" />
+    <property name="species" value="mori" />
+    <property name="assemblyDbxrefId" value="9818543" />
+    <property name="proteomeId" value="18" />
+    <property name="taxonId" value="7091" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-B.mori" />
+    <property name="shortName" value="B. mori" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950430" />
+    <property name="assemblyVersion" value="v1" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-N.vectensis" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Nematostella vectensis" />
+    <property name="genus" value="Nematostella" />
+    <property name="name" value="Nematostella vectensis" />
+    <property name="species" value="vectensis" />
+    <property name="assemblyDbxrefId" value="950470" />
+    <property name="proteomeId" value="19" />
+    <property name="taxonId" value="45351" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-N.vectensis" />
+    <property name="shortName" value="N. vectensis" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950470" />
+    <property name="assemblyVersion" value="v1" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-L.gigantea" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Lottia gigantea" />
+    <property name="genus" value="Lottia" />
+    <property name="name" value="Lottia gigantea" />
+    <property name="species" value="gigantea" />
+    <property name="assemblyDbxrefId" value="9818544" />
+    <property name="proteomeId" value="20" />
+    <property name="taxonId" value="225164" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-L.gigantea" />
+    <property name="shortName" value="L. gigantea" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950463" />
+    <property name="assemblyVersion" value="v1" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-T.castaneum" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Tribolium castaneum" />
+    <property name="genus" value="Tribolium" />
+    <property name="name" value="Tribolium castaneum" />
+    <property name="species" value="castaneum" />
+    <property name="assemblyDbxrefId" value="9818545" />
+    <property name="proteomeId" value="22" />
+    <property name="taxonId" value="7070" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-T.castaneum" />
+    <property name="shortName" value="T. castaneum" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950493" />
+    <property name="assemblyVersion" value="Tcas_2.0" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-C.familiaris" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="dog" />
+    <property name="genus" value="Canis" />
+    <property name="name" value="Canis familiaris" />
+    <property name="species" value="familiaris" />
+    <property name="assemblyDbxrefId" value="9818546" />
+    <property name="proteomeId" value="23" />
+    <property name="taxonId" value="9615" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-C.familiaris" />
+    <property name="shortName" value="C. familiaris" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9818552" />
+    <property name="assemblyVersion" value="Broad10May2005" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-S.purpuratus" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Strongylocentrotus purpuratus" />
+    <property name="genus" value="Strongylocentrotus" />
+    <property name="name" value="Strongylocentrotus purpuratus" />
+    <property name="species" value="purpuratus" />
+    <property name="assemblyDbxrefId" value="9818547" />
+    <property name="proteomeId" value="24" />
+    <property name="taxonId" value="7668" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-S.purpuratus" />
+    <property name="shortName" value="S. purpuratus" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9818553" />
+    <property name="assemblyVersion" value="Spur_v2.1" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-G.gallus" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Gallus gallus" />
+    <property name="genus" value="Gallus" />
+    <property name="name" value="Gallus gallus" />
+    <property name="species" value="gallus" />
+    <property name="assemblyDbxrefId" value="9840470" />
+    <property name="proteomeId" value="25" />
+    <property name="taxonId" value="9031" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-G.gallus" />
+    <property name="shortName" value="G. gallus" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9840471" />
+    <property name="assemblyVersion" value="ENSEMBL.41" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-C.intestinalis" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Ciona intestinalis" />
+    <property name="genus" value="Ciona" />
+    <property name="name" value="Ciona intestinalis" />
+    <property name="species" value="intestinalis" />
+    <property name="assemblyDbxrefId" value="9818549" />
+    <property name="proteomeId" value="45" />
+    <property name="taxonId" value="7719" />
+    <property name="annotationVersion" value="v2" />
+    <property name="dataSourceName" value="phytozome-C.intestinalis" />
+    <property name="shortName" value="C. intestinalis" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950440" />
+    <property name="assemblyVersion" value="v2" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-H.magnipapillata" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Hydra magnipapillata" />
+    <property name="genus" value="Hydra" />
+    <property name="name" value="Hydra magnipapillata" />
+    <property name="species" value="magnipapillata" />
+    <property name="assemblyDbxrefId" value="9818550" />
+    <property name="proteomeId" value="97" />
+    <property name="taxonId" value="6085" />
+    <property name="annotationVersion" value="v1" />
+    <property name="dataSourceName" value="phytozome-H.magnipapillata" />
+    <property name="shortName" value="H. magnipapillata" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950460" />
+    <property name="assemblyVersion" value="07.14.2008" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-S.kowalevskii" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Saccoglossus kowalevskii" />
+    <property name="genus" value="Saccoglossus" />
+    <property name="name" value="Saccoglossus kowalevskii" />
+    <property name="species" value="kowalevskii" />
+    <property name="assemblyDbxrefId" value="9818551" />
+    <property name="proteomeId" value="187" />
+    <property name="taxonId" value="10224" />
+    <property name="annotationVersion" value="v3.0" />
+    <property name="dataSourceName" value="phytozome-S.kowalevskii" />
+    <property name="shortName" value="S. kowalevskii" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="950503" />
+    <property name="assemblyVersion" value="v3.0" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="phytozome-chado-O.bimaculoides" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Octopus bimaculoides" />
+    <property name="genus" value="Octopus" />
+    <property name="name" value="Octopus bimaculoides" />
+    <property name="species" value="bimaculoides" />
+    <property name="assemblyDbxrefId" value="7943367" />
+    <property name="proteomeId" value="280" />
+    <property name="taxonId" value="37653" />
+    <property name="annotationVersion" value="v2.2" />
+    <property name="dataSourceName" value="phytozome-O.bimaculoides" />
+    <property name="shortName" value="O. bimaculoides" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="7943368" />
+    <property name="assemblyVersion" value="v2" />
+    <property name="dataSetTitle" value="Metazome v3" />
+  </source>
+  <source name="interflowscan-C.savignyi_1" type="interflowscan">
+    <property name="proteomeId" value="1" />
+    <property name="src.data.file" value="C.savignyi_1.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-A.gambiae_2" type="interflowscan">
+    <property name="proteomeId" value="2" />
+    <property name="src.data.file" value="A.gambiae_2.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-D.melanogaster_3" type="interflowscan">
+    <property name="proteomeId" value="3" />
+    <property name="src.data.file" value="D.melanogaster_3.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-A.aegypti_4" type="interflowscan">
+    <property name="proteomeId" value="4" />
+    <property name="src.data.file" value="A.aegypti_4.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-G.aculeatus_5" type="interflowscan">
+    <property name="proteomeId" value="5" />
+    <property name="src.data.file" value="G.aculeatus_5.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-M.musculus_6" type="interflowscan">
+    <property name="proteomeId" value="6" />
+    <property name="src.data.file" value="M.musculus_6.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-Mono.domestica_7" type="interflowscan">
+    <property name="proteomeId" value="7" />
+    <property name="src.data.file" value="Mono.domestica_7.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-O.latipes_8" type="interflowscan">
+    <property name="proteomeId" value="8" />
+    <property name="src.data.file" value="O.latipes_8.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-D.rerio_9" type="interflowscan">
+    <property name="proteomeId" value="9" />
+    <property name="src.data.file" value="D.rerio_9.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-R.norvegicus_10" type="interflowscan">
+    <property name="proteomeId" value="10" />
+    <property name="src.data.file" value="R.norvegicus_10.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-H.sapiens_11" type="interflowscan">
+    <property name="proteomeId" value="11" />
+    <property name="src.data.file" value="H.sapiens_11.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-C.elegans_12" type="interflowscan">
+    <property name="proteomeId" value="12" />
+    <property name="src.data.file" value="C.elegans_12.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-C.briggsae_13" type="interflowscan">
+    <property name="proteomeId" value="13" />
+    <property name="src.data.file" value="C.briggsae_13.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-X.tropicalis_14" type="interflowscan">
+    <property name="proteomeId" value="14" />
+    <property name="src.data.file" value="X.tropicalis_14.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-T.rubripes_15" type="interflowscan">
+    <property name="proteomeId" value="15" />
+    <property name="src.data.file" value="T.rubripes_15.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-B.floridae_17" type="interflowscan">
+    <property name="proteomeId" value="17" />
+    <property name="src.data.file" value="B.floridae_17.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-B.mori_18" type="interflowscan">
+    <property name="proteomeId" value="18" />
+    <property name="src.data.file" value="B.mori_18.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-N.vectensis_19" type="interflowscan">
+    <property name="proteomeId" value="19" />
+    <property name="src.data.file" value="N.vectensis_19.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-L.gigantea_20" type="interflowscan">
+    <property name="proteomeId" value="20" />
+    <property name="src.data.file" value="L.gigantea_20.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-T.castaneum_22" type="interflowscan">
+    <property name="proteomeId" value="22" />
+    <property name="src.data.file" value="T.castaneum_22.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-C.familiaris_23" type="interflowscan">
+    <property name="proteomeId" value="23" />
+    <property name="src.data.file" value="C.familiaris_23.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-S.purpuratus_24" type="interflowscan">
+    <property name="proteomeId" value="24" />
+    <property name="src.data.file" value="S.purpuratus_24.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-G.gallus_25" type="interflowscan">
+    <property name="proteomeId" value="25" />
+    <property name="src.data.file" value="G.gallus_25.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-C.intestinalis_45" type="interflowscan">
+    <property name="proteomeId" value="45" />
+    <property name="src.data.file" value="C.intestinalis_45.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-H.magnipapillata_97" type="interflowscan">
+    <property name="proteomeId" value="97" />
+    <property name="src.data.file" value="H.magnipapillata_97.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-S.kowalevskii_187" type="interflowscan">
+    <property name="proteomeId" value="187" />
+    <property name="src.data.file" value="S.kowalevskii_187.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-O.bimaculoides_280" type="interflowscan">
+    <property name="proteomeId" value="280" />
+    <property name="src.data.file" value="O.bimaculoides_280.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Metazome v3" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
