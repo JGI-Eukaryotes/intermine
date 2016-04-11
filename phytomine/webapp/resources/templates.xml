@@ -1,0 +1,268 @@
+<template-queries>
+<template name="All_Gene_Homolog" title="All homologs of a specific gene in any organism" comment="">
+  <query name="All_Gene_Homolog" model="genomic" view="Homolog.gene1.primaryIdentifier Homolog.gene2.primaryIdentifier Homolog.organism2.shortName Homolog.relationship" longDescription="Retrieve the homologs of a specific gene in any organism as determined by inParanoid" sortOrder="Homolog.gene1.primaryIdentifier asc" constraintLogic="A and B and C">
+    <constraint path="Homolog.gene1.primaryIdentifier" code="A" editable="true" op="=" value="AT1G20960"/>
+    <constraint path="Homolog.organism1.shortName" code="B" editable="true" op="=" value="A. thaliana"/>
+    <constraint path="Homolog.organism2.shortName" code="C" editable="true" op="!=" value="A. thaliana"/>
+  </query>
+</template>
+<template name="Chromosome_seq" title="Sequence of a chromosome or scaffold." comment="">
+  <query name="Chromosome_seq" model="genomic" view="Chromosome.primaryIdentifier Chromosome.sequence.residues" longDescription="" sortOrder="Chromosome.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Chromosome.primaryIdentifier" code="A" editable="true" op="=" value="Chr01"/>
+    <constraint path="Chromosome.organism.shortName" code="B" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Diversity_Affected_Gene" title="Variants Near an Annotated Gene." comment="">
+  <query name="Diversity_Affected_Gene" model="genomic" view="Location.locatedOn.primaryIdentifier Location.start Location.feature.name Location.feature.reference Location.feature.alternate Location.feature.consequences.type.type Location.feature.consequences.transcript.name" longDescription="" sortOrder="Location.start asc">
+    <constraint path="Location.feature" editable="false" type="SNP"/>
+    <constraint path="Location.feature.consequences.gene.primaryIdentifier" editable="true" description="Affected Gene" op="=" value="Potri.001G000500"/>
+  </query>
+</template>
+<template name="Diversity_Affected_Gene_Type" title="Variants Near an Annotated Gene of a specific type." comment="">
+  <query name="Diversity_Affected_Gene_Type" model="genomic" view="Location.locatedOn.primaryIdentifier Location.start Location.feature.name Location.feature.reference Location.feature.alternate Location.feature.consequences.type.type Location.feature.consequences.substitution Location.feature.consequences.transcript.name" longDescription="" sortOrder="Location.start asc" constraintLogic="A and B">
+    <constraint path="Location.feature" editable="false" type="SNP"/>
+    <constraint path="Location.feature.consequences.gene.primaryIdentifier" code="A" editable="true" description="Affected Gene" op="=" value="Potri.001G000500"/>
+    <constraint path="Location.feature.consequences.type.type" code="B" editable="true" op="=" value="NON_SYNONYMOUS_CODING"/>
+  </query>
+</template>
+<template name="Diversity_Range" title="Variants within Range of Genomic Coordinates." comment="">
+  <query name="Diversity_Range" model="genomic" view="Location.locatedOn.primaryIdentifier Location.start Location.feature.reference Location.feature.alternate Location.feature.consequences.type.type Location.feature.consequences.type.effectImpact Location.feature.consequences.gene.primaryIdentifier Location.feature.consequences.transcript.name" longDescription="This is an example query for finding variants within a range of genomic coordinates. Be aware our webservices will not give results for queries that will return results for large ranges. This query is suitable for regions approximately the size of 1 gene." sortOrder="Location.start asc" constraintLogic="A and B and C and D">
+    <constraint path="Location.feature" editable="false" type="SNP"/>
+    <constraint path="Location.start" code="A" editable="true" description="Start Coordinate" op="&gt;=" value="80000"/>
+    <constraint path="Location.start" code="B" editable="true" description="End Coordinate" op="&lt;=" value="90000"/>
+    <constraint path="Location.locatedOn.primaryIdentifier" code="C" editable="true" description="Chromosome" op="=" value="Chr01"/>
+    <constraint path="Location.feature.organism.shortName" code="D" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Families_of_a_Specified_Organism" title="Protein Families of a Specified Organism" comment="">
+  <query name="Families_of_a_Specified_Organism" model="genomic" view="ProteinFamily.clusterId ProteinFamily.member.protein.primaryIdentifier ProteinFamily.member.protein.organism.shortName ProteinFamily.member.protein.sequence.residues" longDescription="Display the peptide sequences for a specific protein family." sortOrder="ProteinFamily.clusterId asc">
+    <constraint path="ProteinFamily.clusterId" editable="true" op="=" value="53766197"/>
+  </query>
+</template>
+<template name="Family_Consensus_Sequence" title="Consensus sequence for a specific protein family" comment="">
+  <query name="Family_Consensus_Sequence" model="genomic" view="ProteinFamily.clusterId ProteinFamily.consensus.residues" longDescription="Display the consensus sequence for a specific protein family." sortOrder="ProteinFamily.clusterId asc">
+    <constraint path="ProteinFamily.clusterId" editable="true" op="=" value="57910332"/>
+  </query>
+</template>
+<template name="Family_KOG_Member_1" title="Protein Families of a Specific KOG Letter Identifier" comment="">
+  <query name="Family_KOG_Member_1" model="genomic" view="ProteinFamily.clusterId ProteinFamily.clusterName ProteinFamily.methodId ProteinFamily.consensus.residues" longDescription="" sortOrder="ProteinFamily.clusterId asc">
+    <constraint path="ProteinFamily.crossReferences.identifier" editable="true" op="=" value="A"/>
+  </query>
+</template>
+<template name="GO-Annotations" title="GO-Annotations" comment="">
+  <query name="GO-Annotations" model="genomic" view="Gene.primaryIdentifier Gene.secondaryIdentifier Gene.length Gene.chromosomeLocation.start Gene.chromosomeLocation.end Gene.goAnnotation.ontologyTerm.identifier Gene.goAnnotation.ontologyTerm.name Gene.goAnnotation.ontologyTerm.description Gene.briefDescription" longDescription="Look up the GO terms associated with a gene, or use a saved list of genes and look up the GO terms associated with all genes on the list." sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Potri.014G066100"/>
+  </query>
+</template>
+<template name="GO-Annotations_Basic" title="GO-Annotations_Basic" comment="">
+  <query name="GO-Annotations_Basic" model="genomic" view="Gene.primaryIdentifier Gene.goAnnotation.ontologyTerm.description Gene.goAnnotation.ontologyTerm.identifier Gene.goAnnotation.ontologyTerm.name Gene.goAnnotation.ontologyTerm.namespace" longDescription="Look up the GO terms associated with a gene, or use a saved list of genes and look up the GO terms associated with all genes on the list." sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Potri.014G066100"/>
+  </query>
+</template>
+<template name="GOTerm" title="GO term lookup." comment="">
+  <query name="GOTerm" model="genomic" view="OntologyTerm.identifier OntologyTerm.namespace OntologyTerm.name OntologyTerm.description" longDescription="Either enter a GO term into the identifier box or create a list of GO identifiers from another query or paste into the list box. If supplying a list, type the name of the saved list pulldown menu." sortOrder="OntologyTerm.identifier asc">
+    <constraint path="OntologyTerm.identifier" editable="true" description="" op="=" value="GO:2000906"/>
+  </query>
+</template>
+<template name="GO_children" title="Children of a specific GO term" comment="">
+  <query name="GO_children" model="genomic" view="OntologyRelation.parentTerm.identifier OntologyRelation.parentTerm.name OntologyRelation.childTerm.identifier OntologyRelation.childTerm.name OntologyRelation.direct" longDescription="Find the direct child terms of a specific GO term" sortOrder="OntologyRelation.parentTerm.identifier asc" constraintLogic="A and B">
+    <constraint path="OntologyRelation.parentTerm.identifier" code="A" editable="true" op="=" value="GO:0035803"/>
+    <constraint path="OntologyRelation.direct" code="B" editable="true" op="=" value="true"/>
+  </query>
+</template>
+<template name="GO_children_1" title="Children of a specific GO term" comment="">
+  <query name="GO_children_1" model="genomic" view="OntologyRelation.parentTerm.identifier OntologyRelation.parentTerm.name OntologyRelation.childTerm.identifier OntologyRelation.childTerm.name OntologyRelation.direct" longDescription="Find the direct child terms of a specific GO term" sortOrder="OntologyRelation.parentTerm.identifier asc" constraintLogic="A and B">
+    <constraint path="OntologyRelation.parentTerm.identifier" code="A" editable="true" op="=" value="GO:0035803"/>
+    <constraint path="OntologyRelation.direct" code="B" editable="true" op="=" value="true"/>
+  </query>
+</template>
+<template name="GO_term_with_children_count" title="Retrieve the child terms of a specific GO terms and the number of genes within that class of GO terms" comment="">
+  <query name="GO_term_with_children_count" model="genomic" view="GOSummary.term.identifier GOSummary.term.name GOSummary.childSummary.term.identifier GOSummary.childSummary.term.name GOSummary.childSummary.total" longDescription="" sortOrder="GOSummary.term.identifier asc" constraintLogic="A and B">
+    <constraint path="GOSummary.term.identifier" code="A" editable="true" op="=" value="GO:0008150"/>
+    <constraint path="GOSummary.organism.proteomeId" code="B" editable="true" op="=" value="281"/>
+  </query>
+</template>
+<template name="GO_terms_for_genes" title="GO Terms for a gene or list of genes" comment="">
+  <query name="GO_terms_for_genes" model="genomic" view="Gene.primaryIdentifier Gene.ontologyAnnotations.ontologyTerm.identifier Gene.ontologyAnnotations.ontologyTerm.name Gene.ontologyAnnotations.ontologyTerm.namespace Gene.ontologyAnnotations.ontologyTerm.description" longDescription="Look up the GO terms associated with a gene, or use a saved list of genes and look up the GO terms associated with all genes on the list." sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Potri.014G066100"/>
+  </query>
+</template>
+<template name="GO_terms_for_proteins" title="GO Terms for a protein or list of proteins" comment="">
+  <query name="GO_terms_for_proteins" model="genomic" view="Protein.primaryIdentifier Protein.ontologyAnnotations.ontologyTerm.identifier Protein.ontologyAnnotations.ontologyTerm.name Protein.ontologyAnnotations.ontologyTerm.namespace Protein.ontologyAnnotations.ontologyTerm.description" longDescription="Look up the GO terms associated with a single protein, or save a list of proteins and look up GO terms for all proteins on your list." sortOrder="Protein.primaryIdentifier asc">
+    <constraint path="Protein.primaryIdentifier" editable="true" op="=" value="Potri.014G066100.1"/>
+  </query>
+</template>
+<template name="GO_terms_for_transcript" title="GO Terms for a transcript or list of transcripts" comment="">
+  <query name="GO_terms_for_transcript" model="genomic" view="Gene.primaryIdentifier Gene.ontologyAnnotations.ontologyTerm.identifier Gene.ontologyAnnotations.ontologyTerm.name Gene.ontologyAnnotations.ontologyTerm.namespace Gene.ontologyAnnotations.ontologyTerm.description" longDescription="Look up the GO terms associated with a single gene with a specified transcript, or save a list of transcripts and look up GO terms for all genes with transcripts on your list." sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.transcripts.primaryIdentifier" editable="true" op="=" value="Potri.014G066100.1"/>
+  </query>
+</template>
+<template name="Gene_CDS_Sequence" title="Show all CDSs for a specified gene with nucleotide sequence." comment="">
+  <query name="Gene_CDS_Sequence" model="genomic" view="Gene.primaryIdentifier Gene.transcripts.primaryIdentifier Gene.transcripts.CDSs.sequence.residues" longDescription="" sortOrder="Gene.transcripts.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Gene.primaryIdentifier" code="A" editable="true" op="=" value="Potri.001G009900"/>
+    <constraint path="Gene.organism.shortName" code="B" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Gene_Expression" title="Expression score for all genes in an organism." comment="">
+  <query name="Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.organism.shortName" editable="true" op="=" value="G. max"/>
+  </query>
+</template>
+<template name="Gene_Gene_Sequence" title="Show the DNA sequence flanking a specified gene." comment="">
+  <query name="Gene_Gene_Sequence" model="genomic" view="Gene.primaryIdentifier Gene.sequence.residues" longDescription="Show all the flanking sequence for a particular gene." sortOrder="Gene.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Gene.primaryIdentifier" code="A" editable="true" op="=" value="Potri.001G009900"/>
+    <constraint path="Gene.organism.shortName" code="B" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Gene_MRNA_Sequence" title="Show all mRNAs for a specified gene with nucleotide sequence." comment="">
+  <query name="Gene_MRNA_Sequence" model="genomic" view="Gene.primaryIdentifier Gene.transcripts.primaryIdentifier Gene.transcripts.sequence.residues" longDescription="Show all the transcript sequences for a particular gene." sortOrder="Gene.transcripts.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Gene.primaryIdentifier" code="A" editable="true" op="=" value="Potri.001G009900"/>
+    <constraint path="Gene.organism.shortName" code="B" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Gene_Protein" title="Gene &amp; Proteins." comment="06.06.07 updated to work from gene class - Philip">
+  <query name="Gene_Protein" model="genomic" view="Gene.primaryIdentifier Gene.proteins.primaryIdentifier Gene.proteins.length" longDescription="Show the proteins for a particular gene." sortOrder="Gene.primaryIdentifier asc">
+    <pathDescription pathString="Gene.proteins" description="Protein"/>
+    <constraint path="Gene" editable="true" op="LOOKUP" value="(Enter gene name)"/>
+  </query>
+</template>
+<template name="Gene_TO_GO_Type_Converter" title="Gene to GO type converter" comment="">
+  <query name="Gene_TO_GO_Type_Converter" model="genomic" view="Gene.id Gene.goAnnotation.ontologyTerm.id" longDescription="Construct a list of GO terms from a list of genes" sortOrder="Gene.id asc">
+    <constraint path="Gene.id" editable="true" op="=" value="0"/>
+  </query>
+</template>
+<template name="Gene_To_Protein_Type_Converter" title="Gene to protein type converter" comment="">
+  <query name="Gene_To_Protein_Type_Converter" model="genomic" view="Gene.id Gene.proteins.id" longDescription="" sortOrder="Gene.id asc">
+    <constraint path="Gene.id" editable="true" description="Gene.id" op="=" value="0"/>
+  </query>
+</template>
+<template name="Gene_UTR_Sequence" title="Show all UTRs for a specified gene with nucleotide sequence." comment="">
+  <query name="Gene_UTR_Sequence" model="genomic" view="Gene.primaryIdentifier Gene.transcripts.primaryIdentifier Gene.transcripts.UTRs.primaryIdentifier Gene.transcripts.UTRs.sequence.residues" longDescription="" sortOrder="Gene.transcripts.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Gene.primaryIdentifier" code="A" editable="true" op="=" value="Potri.001G009900"/>
+    <constraint path="Gene.organism.shortName" code="B" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Gene_info" title="Gene, Transcript, Protein names for a specific gene" comment="">
+  <query name="Gene_info" model="genomic" view="Gene.organism.shortName Gene.primaryIdentifier Gene.transcripts.primaryIdentifier Gene.transcripts.protein.primaryIdentifier Gene.briefDescription Gene.symbol Gene.description" longDescription="Display the names of the gene, transcript, proteins and deflines for a specifc gene." sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Potri.007G077100"/>
+  </query>
+</template>
+<template name="Gene_synonyms_1" title="Gene Synonyms" comment="">
+  <query name="Gene_synonyms_1" model="genomic" view="Gene.primaryIdentifier Gene.synonyms.value" longDescription="Retrieve a list of genes with synonyms for an organism" sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.organism.shortName" editable="true" op="=" value="P. patens"/>
+  </query>
+</template>
+<template name="Genes to GO terms" title="Genes to GO terms" comment="">
+  <query name="Genes to GO terms" model="genomic" view="Gene.primaryIdentifier Gene.ontologyAnnotations.ontologyTerm.identifier Gene.ontologyAnnotations.ontologyTerm.name Gene.ontologyAnnotations.ontologyTerm.namespace Gene.ontologyAnnotations.ontologyTerm.description" longDescription="Look up the GO terms associated with a gene, or use a saved list of genes and look up the GO terms associated with all genes on the list." sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Potri.014G066100"/>
+  </query>
+</template>
+<template name="InterproScan_Proteins" title="InterproScan results for specific organism." comment="">
+  <query name="InterproScan_Proteins" model="genomic" view="Protein.primaryIdentifier Protein.proteinAnalysisFeatures.rawscore Protein.proteinAnalysisFeatures.significance Protein.proteinAnalysisFeatures.crossReference.identifier Protein.proteinAnalysisFeatures.crossReference.subject.primaryIdentifier" longDescription="" sortOrder="Protein.primaryIdentifier asc" constraintLogic="B and A">
+    <join path="Protein.proteinAnalysisFeatures.crossReference.subject" style="OUTER"/>
+    <constraint path="Protein.proteinAnalysisFeatures.organism.shortName" code="B" editable="true" op="=" value="P. trichocarpa"/>
+    <constraint path="Protein.proteinAnalysisFeatures.crossReference.source.name" code="A" editable="true" op="=" value="PFAM"/>
+  </query>
+</template>
+<template name="MRNA_Expression" title="Expression score for all mRNAs in an organism." comment="">
+  <query name="MRNA_Expression" model="genomic" view="MRNA.primaryIdentifier MRNA.cufflinksscores.fpkm MRNA.cufflinksscores.experiment.name MRNA.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="MRNA.primaryIdentifier asc">
+    <constraint path="MRNA.organism.shortName" editable="true" op="=" value="G. max"/>
+  </query>
+</template>
+<template name="One_Gene_Expression" title="Expression score for one specific gene." comment="">
+  <query name="One_Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Glyma.01G000700"/>
+  </query>
+</template>
+<template name="Organism_MRNA_Sequence" title="Show all mRNAs for an organism with nucleotide sequence." comment="">
+  <query name="Organism_MRNA_Sequence" model="genomic" view="MRNA.primaryIdentifier MRNA.length MRNA.sequence.residues" longDescription="Show all the mRNAs from a particular organism and their nucleotide sequence." sortOrder="MRNA.primaryIdentifier asc">
+    <constraint path="MRNA.organism.shortName" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Organism_Protein" title="All proteins for a specific organism" comment="">
+  <query name="Organism_Protein" model="genomic" view="Protein.primaryIdentifier Protein.primaryAccession" longDescription="Show all the proteins from a particular organism." sortOrder="Protein.primaryIdentifier asc">
+    <constraint path="Protein.organism.name" editable="true" description="Show all the proteins from the organism:" op="=" value="Zea mays"/>
+  </query>
+</template>
+<template name="Organism_Protein_Sequence" title="Show all proteins in a specific organism with polypeptide sequence." comment="">
+  <query name="Organism_Protein_Sequence" model="genomic" view="Protein.primaryIdentifier Protein.organism.name Protein.length Protein.sequence.residues" longDescription="" sortOrder="Protein.primaryIdentifier asc">
+    <constraint path="Protein.organism.name" editable="true" description="Show all proteins from the organism with the polypeptide sequence" op="=" value="Zea mays"/>
+  </query>
+</template>
+<template name="PFAM_Proteins" title="Proteins with a PFAM Domain in a specific organism." comment="">
+  <query name="PFAM_Proteins" model="genomic" view="Protein.primaryIdentifier Protein.proteinAnalysisFeatures.crossReference.identifier Protein.proteinAnalysisFeatures.locations.start Protein.proteinAnalysisFeatures.locations.end Protein.proteinAnalysisFeatures.primaryIdentifier" longDescription="" sortOrder="Protein.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Protein.organism.shortName" code="A" editable="true" op="=" value="P. trichocarpa"/>
+    <constraint path="Protein.proteinAnalysisFeatures.crossReference.identifier" code="B" editable="true" op="=" value="PF11779"/>
+  </query>
+</template>
+<template name="Panther_Proteins" title="Proteins with a specific PANTHER Domain in any organism." comment="">
+  <query name="Panther_Proteins" model="genomic" view="Protein.organism.shortName Protein.primaryIdentifier Protein.proteinAnalysisFeatures.crossReference.identifier Protein.proteinAnalysisFeatures.crossReference.subject.name Protein.proteinAnalysisFeatures.locations.start Protein.proteinAnalysisFeatures.locations.end" longDescription="" sortOrder="Protein.primaryIdentifier asc">
+    <constraint path="Protein.proteinAnalysisFeatures.crossReference.identifier" editable="true" op="=" value="PTHR10060"/>
+  </query>
+</template>
+<template name="Protein_Domain_GO" title="Protein Domains with GO terms." comment="">
+  <query name="Protein_Domain_GO" model="genomic" view="Protein.primaryIdentifier Protein.proteinAnalysisFeatures.programname Protein.proteinAnalysisFeatures.crossReference.identifier Protein.proteinAnalysisFeatures.crossReference.subject.primaryIdentifier Protein.proteinAnalysisFeatures.crossReference.subject.ontologyAnnotations.ontologyTerm.identifier Protein.proteinAnalysisFeatures.crossReference.subject.ontologyAnnotations.ontologyTerm.name Protein.proteinAnalysisFeatures.crossReference.subject.ontologyAnnotations.ontologyTerm.namespace Protein.proteinAnalysisFeatures.crossReference.subject.ontologyAnnotations.ontologyTerm.description" longDescription="" sortOrder="Protein.primaryIdentifier asc">
+    <constraint path="Protein.organism.shortName" editable="true" op="=" value="P. trichocarpa"/>
+  </query>
+</template>
+<template name="Protein_To_Gene_Type_Converter" title="Protein to gene type converter" comment="">
+  <query name="Protein_To_Gene_Type_Converter" model="genomic" view="Protein.id Protein.genes.id" longDescription="" sortOrder="Protein.id asc">
+    <constraint path="Protein.id" editable="true" description="Protein.id" op="=" value="0"/>
+  </query>
+</template>
+<template name="Protein_protein_sequence" title="Peptide sequence for a specific protein" comment="">
+  <query name="Protein_protein_sequence" model="genomic" view="Protein.primaryIdentifier Protein.sequence.residues" longDescription="Displays the annotated peptide sequence for a specific protein." sortOrder="Protein.primaryIdentifier asc">
+    <constraint path="Protein.primaryIdentifier" editable="true" op="=" value="Potri.007G077100.1"/>
+  </query>
+</template>
+<template name="Proteins with Two PFAM Domains" title="Proteins with Two Specific PFAM Domains" comment="">
+  <query name="Proteins with Two PFAM Domains" model="genomic" view="ProteinAnalysisFeature.protein.primaryIdentifier ProteinAnalysisFeature.protein.proteinAnalysisFeatures.organism.shortName ProteinAnalysisFeature.crossReference.identifier ProteinAnalysisFeature.locations.start ProteinAnalysisFeature.locations.end ProteinAnalysisFeature.protein.proteinAnalysisFeatures.crossReference.identifier ProteinAnalysisFeature.protein.proteinAnalysisFeatures.locations.end ProteinAnalysisFeature.protein.proteinAnalysisFeatures.locations.start" longDescription="Search for proteins in any organism with two specified PFAM (or Panther...) domains" sortOrder="ProteinAnalysisFeature.protein.primaryIdentifier asc" constraintLogic="A and B">
+    <pathDescription pathString="ProteinAnalysisFeature.crossReference" description="Domain 1"/>
+    <pathDescription pathString="ProteinAnalysisFeature.protein.proteinAnalysisFeatures.crossReference" description="Domain 2"/>
+    <pathDescription pathString="ProteinAnalysisFeature.protein.proteinAnalysisFeatures.locations" description="Domain 2 End"/>
+    <pathDescription pathString="ProteinAnalysisFeature.locations" description="Domain 1 End"/>
+    <constraint path="ProteinAnalysisFeature.crossReference.identifier" code="A" editable="true" op="=" value="PF00931"/>
+    <constraint path="ProteinAnalysisFeature.protein.proteinAnalysisFeatures.crossReference.identifier" code="B" editable="true" op="=" value="PF01582"/>
+  </query>
+</template>
+<template name="Region_Gene" title="Genes in a genomic Region." comment="">
+  <query name="Region_Gene" model="genomic" view="Gene.primaryIdentifier Gene.chromosome.primaryIdentifier Gene.chromosomeLocation.start Gene.chromosomeLocation.end Gene.chromosomeLocation.strand" longDescription="" sortOrder="Gene.chromosomeLocation.start asc" constraintLogic="A and B and C and D and E">
+    <constraint path="Gene.organism.name" code="A" editable="true" op="=" value="Zea mays"/>
+    <constraint path="Gene.chromosome.primaryIdentifier" code="B" editable="true" op="=" value="1"/>
+    <constraint path="Gene.chromosomeLocation.start" code="C" editable="true" op="&lt;=" value="1050000"/>
+    <constraint path="Gene.chromosomeLocation.end" code="D" editable="true" op="&gt;=" value="1000000"/>
+    <constraint path="Gene.secondaryIdentifier" code="E" editable="true" op="IS NOT NULL"/>
+  </query>
+</template>
+<template name="Transcript_CDS_sequence" title="CDS sequence for a specific transcript" comment="">
+  <query name="Transcript_CDS_sequence" model="genomic" view="Transcript.primaryIdentifier Transcript.CDSs.sequence.residues" longDescription="Display the nucleotide sequence of the CDS of a specific transcript." sortOrder="Transcript.primaryIdentifier asc">
+    <constraint path="Transcript.primaryIdentifier" editable="true" op="=" value="Potri.007G077100.1"/>
+  </query>
+</template>
+<template name="Transcript_To_Gene_Type_Converter" title="Transcript to gene type converter" comment="">
+  <query name="Transcript_To_Gene_Type_Converter" model="genomic" view="Transcript.id Transcript.gene.id" longDescription="" sortOrder="Transcript.id asc">
+    <constraint path="Transcript.id" editable="true" op="=" value="0"/>
+  </query>
+</template>
+<template name="Transcript_To_Protein_Type_Converter" title="Transcript to protein type converter" comment="">
+  <query name="Transcript_To_Protein_Type_Converter" model="genomic" view="Transcript.id Transcript.protein.id" longDescription="" sortOrder="Transcript.id asc">
+    <constraint path="Transcript.id" editable="true" op="=" value="0"/>
+  </query>
+</template>
+<template name="Transcript_peptide_sequence" title="Peptide sequence for a specific transcript" comment="">
+  <query name="Transcript_peptide_sequence" model="genomic" view="Protein.primaryIdentifier Protein.sequence.residues" longDescription="Displays the conceptual translation of a transcript's CDS" sortOrder="Protein.primaryIdentifier asc">
+    <constraint path="Protein.transcripts.primaryIdentifier" editable="true" op="=" value="Potri.007G077100.1"/>
+  </query>
+</template>
+<template name="Transcript_transcript_sequence" title="Nucleotide sequence for a specific transcript" comment="">
+  <query name="Transcript_transcript_sequence" model="genomic" view="Transcript.primaryIdentifier Transcript.sequence.residues" longDescription="Displays the nucleotide sequence of a specific transcript." sortOrder="Transcript.primaryIdentifier asc">
+    <constraint path="Transcript.primaryIdentifier" editable="true" op="=" value="Potri.007G077100.1"/>
+  </query>
+</template>
+<template name="Two_Species_Homologs" title="Homologous genes in two specific species" comment="">
+  <query name="Two_Species_Homologs" model="genomic" view="Homolog.gene1.primaryIdentifier Homolog.gene1.organism.shortName Homolog.gene2.primaryIdentifier Homolog.gene2.organism.shortName Homolog.relationship" longDescription="Finds all homologous pairs of genes as determined by inParanoid between two specified species" sortOrder="Homolog.gene1.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Homolog.gene1.organism.shortName" code="A" editable="true" op="=" value="M. truncatula"/>
+    <constraint path="Homolog.gene2.organism.shortName" code="B" editable="true" op="=" value="G. max"/>
+  </query>
+</template>
+</template-queries>
