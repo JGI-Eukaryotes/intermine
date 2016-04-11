@@ -1,2 +1,2 @@
 #!/bin/csh
-wget -q -O /dev/stdout --no-check-certificate "http://metazome-dev.jgi.doe.gov/mzmine/service/regions/sequence?query=%7B%22regions%22:[%22reftig_1\t692566\t700215%22],%22organism%22:%221%22%7D"
+wget -q -O /dev/stdout --no-check-certificate "http://metazome-dev.jgi.doe.gov/mzmine/service/regions/sequence?query=%7B%22regions%22:[%22scaffold_16\t692566\t700215%22],%22organism%22:%2219%22%7D"

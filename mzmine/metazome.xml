@@ -304,6 +304,25 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Metazome v3" />
   </source>
+
+  <source name="phytozome-chado-N.vectensis-seq" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="assemblyDbxrefId" value="12858828" />
+    <property name="genus" value="Nematostella" />
+    <property name="name" value="Nematostella vectensis" />
+    <property name="taxonId" value="45351" />
+    <property name="proteomeId" value="19" />
+  </source>
+  <source name="phytozome-chado-D.rerio-seq" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="proteomeId" value="9" />
+    <property name="genus" value="Danio" />
+    <property name="name" value="Danio rerio" />
+    <property name="species" value="rerio" />
+    <property name="proteomeId" value="9" />
+    <property name="assemblyDbxrefId" value="12858829" />
+  </source>
+
   <source name="phytozome-chado-L.gigantea" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Lottia gigantea" />
