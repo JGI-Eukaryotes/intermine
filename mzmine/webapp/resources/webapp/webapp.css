@@ -1439,7 +1439,7 @@ div.floatRight { float:right; }
     #list-progress div span { vertical-align:middle; }
 
     #list-progress div strong, #list-progress div img { font-size:20px; vertical-align:middle; margin:0 10px; }
-    #list-progress div.white strong { color:#61a100; }
+    #list-progress div.white strong { color:#D3691C; }
     #list-progress div.gray strong { color:#c4c4c4; }
 
     #list-progress div.white-start { background:url('../images/progress/white-solid.gif') no-repeat left; padding:0; width:1px;

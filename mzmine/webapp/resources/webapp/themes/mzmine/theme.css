@@ -165,7 +165,7 @@ a.footerlink:hover {
 
 ul#nav a{ text-decoration:none; color: #333; font-weight:bold; }
 ul#nav a:hover { text-decoration:underline; color:#000;}
-ul#nav li.activelink a{ color:#609C42;}
+ul#nav li.activelink a{ color:#D3691C;}
 ul#nav li.activelink { background:#E3E2DD;}
 
 #submenu, #submenufixed {
@@ -196,11 +196,16 @@ ul#submenulist li.myminebagstabtitle a, ul#submenulist li.myminehistorytabtitle 
 ul#submenulist li.myminesavedtemplatestabtitle a, ul#submenulist li.myminepasswordtabtitle a, ul#submenulist li.myminetrackstabtitle a,
 ul#submenulist li.mymineapikeytabtitle a { color:#000; }
 
-ul#submenulist li#subactive_bag {height:40px;
-  font-weight:bold;color:#609C42;background:url('submenu_indent.png') no-repeat bottom center;}
+ul#submenulist li#subactive_bag {
+  height:40px;
+  font-weight:bold;color:#D3691C;
+}
 
-ul#submenulist li#subactive_mymine { height:40px;
-  font-weight:bold;color:#CCC;background:url('submenu_my.png') no-repeat bottom center;}
+
+ul#submenulist li#subactive_mymine { 
+    height:40px;
+}
+
 
 ul#submenulist li#subactive_mymine span { color:#000; }
 
@@ -588,13 +593,35 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     height: 30px;
 }
 
-#boxes input.dark[type="submit"] { background:url("button.png") no-repeat scroll center bottom transparent;
-  color:#FFF; padding:2px 36px; }
-#boxes input.light[type="submit"] { background:url("button.png") no-repeat scroll center bottom transparent;
-  color:#FFF; padding:2px 36px; }
+#boxes input.dark[type="submit"], #boxes input.light[type="submit"]{ 
+    background: #D3691C; border-radius: 1.5em; border: 1px solid #384D48; color:#FFF; padding:2px 36px; 
+}
 #low #rss p.more a { background: url("button.png") no-repeat scroll left center transparent; }
 
-#templates #tab-content #ribbon { background: url("ribbon.png") no-repeat scroll right top transparent; }
+#templates #tab-content #ribbon-wrapper {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+#templates #tab-content #ribbon { 
+    text-align: center;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform:    rotate(-45deg);
+    -ms-transform:     rotate(-45deg);
+    -o-transform:      rotate(-45deg);
+    position: relative;
+    color: #ddd;
+    width: 250px;
+    padding: 7px 0;
+    right: -15px;
+    bottom: -120px;
+    background: #D3691C;
+    font-size: .9em;
+}
+
 #templates #tab-content {
     border-right: 1px solid #0F0F0F;
     border-bottom-right-radius: 15px;
@@ -625,12 +652,12 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
 }
 
 #templates table#menu td.active {
-    color: #609C42;
+    color: #D3691C;
     border-bottom: none;
 }
 
 #templates table#menu td:active {
-    color: #609C42;
+    color: #D3691C;
     border-bottom: none;
 }
 
