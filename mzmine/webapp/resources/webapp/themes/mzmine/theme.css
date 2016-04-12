@@ -679,7 +679,11 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     display: none; /* override begin.css */
 }
 
-#templates table#menu td span, #templates table#menu td.active span, x:-moz-any-link, x:default {
+#templates table#menu td span, #templates table#menu td.active span {
+    line-height: normal;
+}
+
+x:-moz-any-link, x:default {
     line-height: normal;
 }
 
