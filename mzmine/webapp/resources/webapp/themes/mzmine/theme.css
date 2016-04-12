@@ -26,6 +26,12 @@ h1 a:hover,h1 a:visited:hover {
 }
 
 /* =HEADER --------------------------*/
+
+#header {
+    margin: 0 0 20px 0; /* override webapp.css */
+    height: 75px;
+}
+
 div#header h1,
 div#header h1 a,
 div#header h1 a:link,
@@ -56,17 +62,16 @@ div#menucontainer {
   width: 1000px;
   font-size: 12px;
   text-align: justify;
-  text-justify: distribute-all-lines;
+  margin: 0 auto;
 }
 
 #contactFormDivButton {
-  width: 1000px;
+  width: auto;
 }
 
 .footer_floater {
   width: 270px;
   height: 100px;
-  vertical-align: center;
   display: inline-block;
   text-align: center;
 }
@@ -132,7 +137,7 @@ a.footerlink:hover {
     clear: both;
     background-color: #FFF;
     text-align: left;
-/*    width: 1000px;*/
+    width: 100% !important; /* override begin.css */
     margin: 0;
     padding: 10px 0 0 0;
 }
@@ -178,7 +183,9 @@ ul#nav li.activelink { background:#E3E2DD;}
   border-top:1px solid #000;
   border-bottom:1px solid #000;
   border-left:1px solid #000;
-  border-right:1px solid #000;}
+  border-right:1px solid #000;
+  float: left;
+}
 
 #submenudiv {
   width: 100%; }
@@ -266,7 +273,7 @@ div#filter_tool_bar {
 
 .widget_slide {
   margin-top:10px; max-height:350px;
-    overflow-x:none;overflow-y:auto;overflow: auto;}
+  overflow-x:auto;overflow-y:auto;overflow: auto;}
 
 #bagDescriptionDiv{
     background-color: #D2CEBF;}
@@ -307,6 +314,8 @@ table.dbsources td.leftcol {
     }*/
 
 #listTags { background-color: #D2CEBF; margin-left: 10px; padding: 3px 10px; }
+
+#list-progress div.white strong { color: #D3691C; }
 
 /* keyword search results */
 .keywordSearchResults .resultTableContainer table.dbsources { border-left: 1px solid #DFDFDF; }
@@ -374,6 +383,12 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     font-size: 13px;
 }
 
+#bottom-wrap {
+    background: none; /* override begin.css */
+    padding: 0;
+    margin-top: 0 !important;
+}
+
 #search-bochs div.inner h3 { background:#E3E2DD; color:#020202; }
 #lists-bochs div.inner h3 { background:#E3E2DD; color:#020202; }
 #lists-bochs div.inner a { color:#000; }
@@ -383,7 +398,6 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     width: 38%;
     margin-right: 5%;
     margin-left: 5%;
-    vertical-align: center;
     position: relative;
     border: 1px solid #000;
     border-radius: 10px;
@@ -391,6 +405,7 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     padding: 0 0px;
     display: inline-block;
     text-align: center;
+    float: none; /* override .begin.css */
 }
 
 #boxes div.inner h3 {
@@ -458,12 +473,10 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
 
 #boxes {
   text-align: justify;
-  text-justify: distribute-all-lines;
   width: 100%;
   margin: 0;
   padding: 0;
   border: 0;
-  vertical-align: center;
 }
 
 
@@ -605,6 +618,7 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     position: absolute;
     bottom: 0;
     right: 0;
+    display: none;
 }
 #templates #tab-content #ribbon { 
     text-align: center;
@@ -615,10 +629,12 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     position: relative;
     color: #ddd;
     width: 250px;
+    height: auto;
     padding: 7px 0;
     right: -20px;
     bottom: -125px;
     background: #D3691C;
+    background-image: none;
     font-size: .9em;
 }
 
@@ -651,15 +667,22 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     text-align: center;
 }
 
-#templates table#menu td.active {
+#templates table#menu td.active, #templates table#menu td:active {
+    background-image: url('tab_grad.png'); /* override begin.css */
+    background-color: transparent;
     color: #D3691C;
+    border: 1px solid #0F0F0F;
     border-bottom: none;
 }
 
-#templates table#menu td:active {
-    color: #D3691C;
-    border-bottom: none;
+#templates table#menu td.active span.left, #templates table#menu td.active span.right {
+    display: none; /* override begin.css */
 }
+
+#templates table#menu td span, #templates table#menu td.active span, x:-moz-any-link, x:default {
+    line-height: normal;
+}
+
 
 /* restore for FF3 */
 #templates {
@@ -703,12 +726,12 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
 
 #templates a:hover {
     color: #000;
-    text-decoraton: underline;
+    text-decoration: underline;
 }
 
 #templates div.content {
     background: #E3E2DD;
-    bottom: 1px solid #dfdfdf;
+/*    bottom: 1px solid #dfdfdf;*/
     padding: 14px;
     padding-bottom: 0;
 }
@@ -722,6 +745,7 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     width:80%;
     margin-left:10%;
     margin-right:10%;
+    text-align: center;
 }
 
 #templates div.content p.more a {
@@ -878,7 +902,7 @@ div.bagDetails-page div.widget table.table-striped tbody tr:hover td { backgroun
 
 /* embeddable results tables - bootstrap modify */
 .bootstrap .btn-primary {
-  background-color: #5bb75b;
+/*  background-color: #5bb75b;
   *background-color: #51a351;
   background-image: -ms-linear-gradient(top, #62c462, #51a351);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#51a351));
@@ -888,9 +912,9 @@ div.bagDetails-page div.widget table.table-striped tbody tr:hover td { backgroun
   background-image: linear-gradient(top, #62c462, #51a351);
   background-repeat: repeat-x;
   border-color: #51a351 #51a351 #387038;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#62c462', endColorstr='#51a351', GradientType=0);
-  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);*/
+/*  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#62c462', endColorstr='#51a351', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);*/
 }
 .bootstrap .btn-primary:hover,
 .bootstrap .btn-primary:active,
@@ -898,11 +922,11 @@ div.bagDetails-page div.widget table.table-striped tbody tr:hover td { backgroun
 .bootstrap .btn-primary.disabled,
 .bootstrap .btn-primary[disabled] {
   background-color: #51a351;
-  *background-color: #499249;
+  /*background-color: #499249;*/
 }
 .bootstrap .btn-primary:active,
 .bootstrap .btn-primary.active {
-  background-color: #408140 \9;
+  background-color: #408140;
 }
 .bootstrap .btn-group.open .btn-primary.dropdown-toggle {
   background-color: #51a351;
