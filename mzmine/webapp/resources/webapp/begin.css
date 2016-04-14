@@ -598,7 +598,7 @@ html, body {
     padding-left: 16px;
 }
 
-#templates #tab-content #ribbon {
+/*#templates #tab-content #ribbon {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -607,7 +607,7 @@ html, body {
     display: block;
     background: url("../themes/purple/homepage/ribbon-forest.png") no-repeat top right;
     z-index:2;
-}
+}*/
 
 #templates #tab-content #try {
     position: absolute;

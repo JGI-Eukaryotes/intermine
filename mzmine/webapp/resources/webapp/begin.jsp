@@ -109,7 +109,7 @@
                         </table>
 
                         <div id="tab-content">
-                                <div id="ribbon"></div>
+                                <div id="ribbon-wrapper"><div id="ribbon">popular templates</div></div>
                                 <div id="try"></div>
 
                                 <!-- templates content -->
