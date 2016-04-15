@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -242,7 +243,7 @@ public class GenomicRegionSearchQueryRunner implements Runnable
     @SuppressWarnings("unchecked")
     public static Map<String, Map<String, ChromosomeInfo>> getChromosomeInfo(InterMineAPI im) {
 
-      return getChromosomeInfo(im, GenomicRegionSearchService.DEFAULT_REGION_INIT_BATCH_SIZE);
+      return getChromosomeInfo(im, GenomicRegionSearchService.DEFAULT_REGION_INIT_BATCH_SIZE,null);
     }
 
     /**
@@ -256,27 +257,31 @@ public class GenomicRegionSearchQueryRunner implements Runnable
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Map<String, ChromosomeInfo>> getChromosomeInfo(InterMineAPI im,
-        int batchSize) {
+        int batchSize,Properties p) {
       if (chrInfoMap != null) {
         return chrInfoMap;
       } else {
 
         long start = (new Date()).getTime();
 
-        //TODO: figure out how to configure this path more better.
-        File chrMapFile = new File("webapps/phytomine/chrMapInfo.obj");
-        if (chrMapFile.exists() && chrMapFile.canRead()) {
-          try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(chrMapFile));
-            chrInfoMap = (Map<String, Map<String, ChromosomeInfo>>)ois.readObject();
-            ois.close();
-          } catch( Exception e) {
-            LOG.warn("Exception thrown while reading chrInfoMap: "+e.getMessage()+". Regenerating...");
-            chrMapFile.delete();
+        // look for a cached file. Location is in a path based on web properties.
+        File chrMapFile = null;
+        if (p != null) {
+          String webappPath = p.getProperty("webapp.path");
+          chrMapFile = new File("webapps/"+webappPath+"/chrMapInfo.obj");
+          if (chrMapFile.exists() && chrMapFile.canRead()) {
+            try {
+              ObjectInputStream ois = new ObjectInputStream(new FileInputStream(chrMapFile));
+              chrInfoMap = (Map<String, Map<String, ChromosomeInfo>>)ois.readObject();
+              ois.close();
+            } catch( Exception e) {
+              LOG.warn("Exception thrown while reading chrInfoMap: "+e.getMessage()+". Regenerating...");
+              chrMapFile.delete();
+            }
+            long elapsed = (new Date()).getTime() - start;
+            LOG.info("Read chrInfoMap in "+elapsed+" milliseconds.");
+            return chrInfoMap;
           }
-          long elapsed = (new Date()).getTime() - start;
-          LOG.info("Read chrInfoMap in "+elapsed+" milliseconds.");
-          return chrInfoMap;
         }
 
 
@@ -338,13 +343,17 @@ public class GenomicRegionSearchQueryRunner implements Runnable
         long elapsed = (new Date()).getTime() - start;
         LOG.info("Created chrInfoMap in "+elapsed+" milliseconds.");
 
-        try {
-          ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(chrMapFile));
-          oos.writeObject(chrInfoMap);
-          oos.flush();
-          oos.close();
-        } catch( IOException e) {
-          LOG.warn("Exception thrown while writing chrInfoMap: "+e.getMessage()+".");
+        if( chrMapFile != null) {
+          // if we're here, then (1) we have web properties but (2) file was not found
+          // so save it
+          try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(chrMapFile));
+            oos.writeObject(chrInfoMap);
+            oos.flush();
+            oos.close();
+          } catch( IOException e) {
+            LOG.warn("Exception thrown while writing chrInfoMap: "+e.getMessage()+".");
+          }
         }
 
         return chrInfoMap;

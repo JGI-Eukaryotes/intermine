@@ -246,7 +246,7 @@ public class GenomicRegionSearchService
       Set<String> featureTypeSet = new LinkedHashSet<String>();
 
       //TODO: figure out how to configure this path more better.
-      File resultsMapFile = new File("webapps/phytomine/featureOrgMap.obj");
+      File resultsMapFile = new File("webapps/"+getProperty("webapp.path")+"/featureOrgMap.obj");
       if (resultsMapFile.exists() && resultsMapFile.canRead()) {
         try {
           ObjectInputStream ois = new ObjectInputStream(new FileInputStream(resultsMapFile));
@@ -875,7 +875,7 @@ public class GenomicRegionSearchService
      * @return chrInfoMap
      */
     public Map<String, Map<String, ChromosomeInfo>> getChromosomeInfomationMap() {
-        return GenomicRegionSearchQueryRunner.getChromosomeInfo(interMineAPI, initBatchSize);
+        return GenomicRegionSearchQueryRunner.getChromosomeInfo(interMineAPI, initBatchSize,webProperties);
     }
 
     /**
@@ -886,7 +886,8 @@ public class GenomicRegionSearchService
         if (featureTypeToSOTermMap == null) {
           
           //TODO: figure out how to configure this path more better.
-          File featureSOMapFile = new File("webapps/phytomine/featureSOMap.obj");
+          
+          File featureSOMapFile = new File("webapps/"+webProperties.getProperty("webapp.path")+"/featureSOMap.obj");
           if (featureSOMapFile.exists() && featureSOMapFile.canRead()) {
             try {
               ObjectInputStream ois = new ObjectInputStream(new FileInputStream(featureSOMapFile));

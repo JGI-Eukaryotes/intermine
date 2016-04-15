@@ -1,4 +1,4 @@
-## created by makeWebPropertiesLinks.pl at Wed Apr  6 16:13:27 2016
+## created by makeWebPropertiesLinks.pl at Thu Apr 14 11:22:55 2016
 attributelink.JBrowse.Gene.1.chromosomeLocation.paddedRegion.url=/jbrowse/index.html?data=genomes%2FCSavignyi&tracks=Transcripts%2CAlt_Transcripts%2CBlastx_protein&highlight=&loc=<<attributeValue>>
 attributelink.JBrowse.Transcript.1.chromosomeLocation.paddedRegion.url=/jbrowse/index.html?data=genomes%2FCSavignyi&tracks=Transcripts%2CAlt_Transcripts%2CBlastx_protein&highlight=&loc=<<attributeValue>>
 attributelink.JBrowse.Protein.1.transcripts.chromosomeLocation.paddedRegion.url=/jbrowse/index.html?data=genomes%2FCSavignyi&tracks=Transcripts%2CAlt_Transcripts%2CBlastx_protein&highlight=&loc=<<attributeValue>>
