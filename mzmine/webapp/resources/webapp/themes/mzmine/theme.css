@@ -170,7 +170,7 @@ a.footerlink:hover {
 
 ul#nav a{ text-decoration:none; color: #333; font-weight:bold; }
 ul#nav a:hover { text-decoration:underline; color:#000;}
-ul#nav li.activelink a{ color:#D3691C;}
+ul#nav li.activelink a{ color:#629c2e;}
 ul#nav li.activelink { background:#E3E2DD;}
 
 #submenu, #submenufixed {
@@ -205,7 +205,7 @@ ul#submenulist li.mymineapikeytabtitle a { color:#000; }
 
 ul#submenulist li#subactive_bag {
   height:40px;
-  font-weight:bold;color:#D3691C;
+  font-weight:bold;color:#629c2e;
 }
 
 
@@ -315,7 +315,7 @@ table.dbsources td.leftcol {
 
 #listTags { background-color: #D2CEBF; margin-left: 10px; padding: 3px 10px; }
 
-#list-progress div.white strong { color: #D3691C; }
+#list-progress div.white strong { color: #629c2e; }
 
 /* keyword search results */
 .keywordSearchResults .resultTableContainer table.dbsources { border-left: 1px solid #DFDFDF; }
@@ -607,7 +607,7 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
 }
 
 #boxes input.dark[type="submit"], #boxes input.light[type="submit"]{ 
-    background: #D3691C; border-radius: 1.5em; border: 1px solid #384D48; color:#FFF; padding:2px 36px; 
+    background: #629c2e; border-radius: 1.5em; border: 1px solid #384D48; color:#FFF; padding:2px 36px; 
 }
 #low #rss p.more a { background: url("button.png") no-repeat scroll left center transparent; }
 
@@ -633,7 +633,7 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
     padding: 7px 0;
     right: -20px;
     bottom: -125px;
-    background: #D3691C;
+    background: #629c2e;
     background-image: none;
     font-size: .9em;
 }
@@ -670,7 +670,7 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
 #templates table#menu td.active, #templates table#menu td:active {
     background-image: url('tab_grad.png'); /* override begin.css */
     background-color: transparent;
-    color: #D3691C;
+    color: #629c2e;
     border: 1px solid #0F0F0F;
     border-bottom: none;
 }
