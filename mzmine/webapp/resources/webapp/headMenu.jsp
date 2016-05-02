@@ -39,7 +39,7 @@
   <!-- Logged in section -->
   <c:set var="loggedin" value="${PROFILE.loggedIn}"/>
 
-    <a href="${WEB_PROPERTIES['project.homeLink']}" alt="Home" rel="NOFOLLOW"><img id="logo" src="/pz/site/images/logo-JGI-Metazome.png" height="70px" width="541px" alt="Logo" /></a>
+    <a href="${WEB_PROPERTIES['project.homeLink']}" alt="Home" rel="NOFOLLOW"><img id="logo" src="/pz/site/images/logo-JGI-Metazome.png" alt="Logo" /></a>
     <span style="position:relative;top:25px;left:50px;">
     <ul style="list-style-type:none">
     <li style="float:left;font-size:14px"><html:link href="http://jgi.doe.gov"> JGI Home </html:link></li>
