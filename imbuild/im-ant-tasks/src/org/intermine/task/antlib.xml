@@ -21,8 +21,11 @@
     <typedef
         name="read-resource"
     	classname="org.intermine.task.ReadResourceTask"/>
-    <typedef
+    <typedef 
         name="merge-source-models"
-    	classname="org.intermine.task.MergeSourceModelsTask"/>
+        classname="org.intermine.task.MergeSourceModelsTask" />
+	<typedef
+		name="slack-notify"
+		classname="org.intermine.task.SlackNotify"/>
 
 </antlib>
