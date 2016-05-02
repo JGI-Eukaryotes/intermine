@@ -36,8 +36,9 @@ public class SlackNotify extends Task {
     String url = "https://slack.com/api/chat.postMessage";
     URL obj;
 
-    String urlParameters = "token=xoxp-18936306774-18984242054-38380340455-66eba1d57c&"+
-                            "channel=intermine-build&text=Loaded+source+"+sourceAttribute;
+    String token = PropertiesUtil.getProperties().getProperty("slack.token");
+
+    String urlParameters = "token="+token+"&channel=intermine-build&text=Loaded+source+"+sourceAttribute;
     
     HttpsURLConnection con;
     try {
