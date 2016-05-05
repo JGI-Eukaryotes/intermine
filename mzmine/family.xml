@@ -1,0 +1,80 @@
+  <source name="metazome-cluster-crown-nodes" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="2201,2202,2203,2204,2205,2206,2207,2208,2209,2210,2211,2212,2213,2214,2215,2216,2217,2218,2219,2220,2221,2222,2223,2224,3245,3355,4998" />
+  </source>
+
+  <source name="metazome-cluster-node-554" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="554" />
+  </source>
+
+  <source name="metazome-cluster-node-555" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="555" />
+  </source>
+
+  <source name="metazome-cluster-node-558" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="558" />
+  </source>
+
+  <source name="metazome-cluster-node-559" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="559" />
+  </source>
+
+  <source name="metazome-cluster-node-560" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="560" />
+  </source>
+
+  <source name="metazome-cluster-node-561" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="561" />
+  </source>
+
+  <source name="metazome-cluster-node-567" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="567" />
+  </source>
+
+  <source name="metazome-cluster-node-569" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="569" />
+  </source>
+
+  <source name="metazome-cluster-node-570" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Metazome v3" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="570" />
+  </source>
+

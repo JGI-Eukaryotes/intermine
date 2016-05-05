@@ -74,7 +74,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
 
   private Map<String,InterMineObject> geneMap = new HashMap<String, InterMineObject>();
   private Map<String,InterMineObject> protMap = new HashMap<String, InterMineObject>();
-  private Map<Integer,ProxyReference> organismProxy = new HashMap<Integer,ProxyReference>();
+  private Map<Integer,Organism> organismHash = new HashMap<Integer,Organism>();
   private Map<String,ProxyReference> crossRefProxy = new HashMap<String,ProxyReference>();
   private Map<String,ProxyReference> dataSourceProxy = new HashMap<String,ProxyReference>();
   private Set<Integer> alreadyGot = new HashSet<Integer>();
@@ -207,7 +207,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
           }
           msa.setPrimaryIdentifier("Cluster "+clusterId+" alignment");
           msa.setAlignment(newMSA);
-          msa.sethMM(newHMM);
+          if (newHMM != null) msa.sethMM(newHMM);
           try {
             getDirectDataLoader().store(msa);
           } catch (ObjectStoreException e) {
@@ -271,7 +271,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
         LOG.info("Need to register protein for pac id "+pacID);
         Protein p = getDirectDataLoader().createObject(Protein.class);
         p.setSecondaryIdentifier(pacID);
-        p.proxyOrganism(getOrganism(proteomeId));
+        p.setOrganism(getOrganism(proteomeId));
         getDirectDataLoader().store(p);
         protMap.put(pacID,p);
       }
@@ -279,19 +279,19 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
         LOG.info("Need to register gene for pac id "+pacID);
         Gene g = getDirectDataLoader().createObject(Gene.class);
         g.setSecondaryIdentifier(pacID);
-        g.proxyOrganism(getOrganism(proteomeId));
+        g.setOrganism(getOrganism(proteomeId));
         getDirectDataLoader().store(g);
         geneMap.put(pacID,g);
       }
       GeneShadow g = new GeneShadow();
       g.setId(geneMap.get(pacID).getId());
-      g.proxyOrganism(getOrganism(proteomeId));
+      g.setOrganism(getOrganism(proteomeId));
       g.setSecondaryIdentifier(pacID);
       family.addGene(g);
       ProteinFamilyMember pfm = getDirectDataLoader().createObject(ProteinFamilyMember.class);
       pfm.setMembershipDetail(res.getString("name"));
       LOG.info("Adding member "+pacID+" with proteome id "+proteomeId);
-      pfm.proxyOrganism(getOrganism(proteomeId));
+      pfm.setOrganism(getOrganism(proteomeId));
       pfm.setProtein((Protein)protMap.get(pacID));
       pfm.setProteinFamily(family);
  
@@ -530,6 +530,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     //do what we have to do to reformat a hmm into something suitable for intermine
     // pretty much replacing the newline character with the 2 characters \ and n
 
+    if (hmm == null) return null;
     StringBuffer returnHMM = new StringBuffer();
     for( String line: hmm.split("\\n") ) {
       if (returnHMM.length() > 0) returnHMM.append("\\n");
@@ -628,12 +629,9 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     Query q = new Query();
     QueryClass qC = new QueryClass(Organism.class);
     q.addFrom(qC);
-    QueryField qFPid = new QueryField(qC,"proteomeId");
-    QueryField qFId = new QueryField(qC,"id");
-    q.addToSelect(qFPid);
-    q.addToSelect(qFId);
+    q.addToSelect(qC);
 
-    LOG.info("Prefilling Organism ProxyReferences. Query is "+q);
+    LOG.info("Prefilling Organism Hash. Query is "+q);
     try {
       Results res = getIntegrationWriter().getObjectStore().execute(q,1000,false,false,false);
       Iterator<Object> resIter = res.iterator();
@@ -641,29 +639,25 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
       while (resIter.hasNext()) {
         @SuppressWarnings("unchecked")
         ResultsRow<Object> rr = (ResultsRow<Object>) resIter.next();
-        Integer proteomeId = (Integer)rr.get(0);
-        Integer id = (Integer)rr.get(1);
-        organismProxy.put(proteomeId,new ProxyReference(getIntegrationWriter().getObjectStore(),id,Organism.class));
-        ((IntegrationWriterDataTrackingImpl)getIntegrationWriter()).markAsStored(id);
+        Organism o = (Organism)rr.get(0);
+        organismHash.put(o.getProteomeId(),o);
       }
     } catch (Exception e) {
       throw new BuildException("Problem in prefilling Organism ProxyReferences: " + e.getMessage());
     }
-    LOG.info("Retrieved "+organismProxy.size()+" Organism ProxyReferences.");
+    LOG.info("Retrieved "+organismHash.size()+" Organism ProxyReferences.");
   }
 
-  private ProxyReference getOrganism(Integer proteomeId) throws ObjectStoreException {
-    ProxyReference orgRef = organismProxy.get(proteomeId);
-    if (orgRef == null) {
-      LOG.info("Getting new proxy ref for organism "+proteomeId);
-      Organism org = getDirectDataLoader().createObject(Organism.class);
-          org.setProteomeId(proteomeId);
-          getDirectDataLoader().store(org);
-          orgRef = new ProxyReference(getIntegrationWriter().getObjectStore(),
-                  org.getId(), Organism.class);
-          organismProxy.put(proteomeId, orgRef);
+  private Organism getOrganism(Integer proteomeId) throws ObjectStoreException {
+    Organism org = organismHash.get(proteomeId);
+    if (org == null) {
+      org = getDirectDataLoader().createObject(Organism.class);
+      org.setProteomeId(proteomeId);
+      getDirectDataLoader().store(org);
+      organismHash.put(proteomeId,org);
     }
-    return orgRef;
+    return org;
   }
+    
   
 }

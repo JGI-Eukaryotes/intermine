@@ -1,0 +1,1 @@
+convert -size 125x29 xc:transparent -fill #609C42 -stroke #384D48 -strokewidth 1 -draw "roundrectangle 1,1 123,27 14,14" button.png
