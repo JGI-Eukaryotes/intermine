@@ -3,42 +3,63 @@ package org.intermine.task;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import org.apache.tools.ant.taskdefs.Ant;
-import org.apache.tools.ant.taskdefs.Property;
-import org.apache.tools.ant.util.StringUtils;
-import org.intermine.task.project.Project;
-import org.intermine.task.project.ProjectXmlBinding;
-import org.intermine.task.project.Source;
-import org.intermine.task.project.UserProperty;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import javax.net.ssl.HttpsURLConnection;
 
+
 public class SlackNotify extends Task {
   
-  String sourceAttribute = "all sources.";
+  private Properties projectProperties;
+  private String sourceAttribute = "all sources.";
+
   /**
-   * Set the source to integrate.  null means integrate all sources.
+   * Set and load properties. The propertiesFile must lie in the classpath.
+   * @param propertiesFile
+   */
+  public void setProperties(String propertiesFile) {
+    projectProperties = new Properties();
+    try {
+      ClassLoader cl = SlackNotify.class.getClassLoader();
+      InputStream is = cl.getResourceAsStream(propertiesFile);
+      if (is == null) {
+        throw new BuildException("Could not find file " + propertiesFile);
+      }
+      projectProperties.load(is);
+      is.close();
+    } catch (IOException e) {
+      throw new BuildException("Failed to load :" + propertiesFile, e);
+    }
+  }
+
+  /**
+   * Set the source from integrate.
    * @param source the source
    */
   public void setSource(String source) {
       this.sourceAttribute = source.replaceAll(" ","+");
   }
+  
   public void execute() throws BuildException {
-    System.out.println("Sending notification for completion of "+sourceAttribute);
+    
     String url = "https://slack.com/api/chat.postMessage";
     URL obj;
+    String token = projectProperties.getProperty("slack.token");
+    String channel = projectProperties.getProperty("slack.channel");
 
-    String token = PropertiesUtil.getProperties().getProperty("slack.token");
+    if (token == null || token.equals("") || channel == null || channel.equals("") ) {
+      // if these are not set, we'll quietly return without doing anything
+      return;
+    }
 
-    String urlParameters = "token="+token+"&channel=intermine-build&text=Loaded+source+"+sourceAttribute;
+    System.out.println("Sending notification for completion of "+sourceAttribute);
+    String urlParameters = "token="+token+"&channel="+channel+"&text=Loaded+source+"+sourceAttribute+"&username=InterMine+Builder";
     
     HttpsURLConnection con;
     try {
@@ -69,8 +90,6 @@ public class SlackNotify extends Task {
     } catch (Exception e) {
       throw new BuildException("Exception while receiving message in notify task: "+e.getMessage());
     }
-    //print result
-    System.out.println(response.toString());
 
   }
 }

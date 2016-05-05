@@ -52,8 +52,6 @@ or  ant -Dsource=all
   <target name="integrate" depends="-init-properties, init, -init-deps, -init-integrate">
     <!--<integrate projectXml="../project.xml" basedir="../.." source="${source}" action="${action}"/>-->
     <integrate projectXml="../project.xml" source="${source}" action="${action}"/>
-    <!-- not standard. -->
-    <slack-notify source="${source}" />
   </target>
 
   
