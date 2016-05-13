@@ -1,7 +1,7 @@
 package org.intermine.objectstore.query;
 
 /*
- * Copyright (C) 2002-2015 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -12,7 +12,7 @@ package org.intermine.objectstore.query;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Collection;
 
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
@@ -24,7 +24,7 @@ import org.intermine.objectstore.ObjectStoreException;
  * @author Richard Smith
  * @author Matthew Wakeling
  */
-public class SingletonResults extends Results implements Set<Object>
+public class SingletonResults extends Results implements Collection<Object>
 {
     /**
      * Constructor for a SingletonResults object

@@ -1,7 +1,7 @@
 package org.intermine.dataloader;
 
 /*
- * Copyright (C) 2002-2015 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -138,7 +138,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @return a Set of InterMineObjects
      * @throws ObjectStoreException if an error occurs
      */
-    public Set<InterMineObject> getEquivalentObjects(InterMineObject obj,
+    public Collection<InterMineObject> getEquivalentObjects(InterMineObject obj,
             Source source) throws ObjectStoreException {
         lastSource = source;
         if (obj == null) {

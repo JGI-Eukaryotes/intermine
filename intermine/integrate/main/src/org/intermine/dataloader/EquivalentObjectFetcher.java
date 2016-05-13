@@ -1,7 +1,7 @@
 package org.intermine.dataloader;
 
 /*
- * Copyright (C) 2002-2015 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -11,7 +11,7 @@ package org.intermine.dataloader;
  */
 
 import java.util.Set;
-
+import java.util.Collection;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.MetaDataException;
 import org.intermine.model.InterMineObject;
@@ -27,15 +27,15 @@ import org.intermine.objectstore.query.Query;
 public interface EquivalentObjectFetcher
 {
     /**
-     * Returns a Set of objects that are equivalent to the given object, according to the primary
-     * keys defined by the given Source.
+     * Returns a Collection of objects that are equivalent to the given object, according to the
+     *  primary keys defined by the given Source.
      *
      * @param obj the Object to look for
      * @param source the data Source
-     * @return a Set of InterMineObjects
+     * @return a Collection of InterMineObjects
      * @throws ObjectStoreException if an error occurs
      */
-    Set<InterMineObject> queryEquivalentObjects(InterMineObject obj,
+    Collection<InterMineObject> queryEquivalentObjects(InterMineObject obj,
             Source source) throws ObjectStoreException;
 
     /**
