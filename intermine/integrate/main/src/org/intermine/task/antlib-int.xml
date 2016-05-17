@@ -38,7 +38,4 @@
     <typedef
     	name="postprocessor"
     	classname="org.intermine.task.PostProcessorTask"/>
-	<typedef
-		name="slack-notify"
-		classname="org.intermine.task.SlackNotify"/>
 </antlib>

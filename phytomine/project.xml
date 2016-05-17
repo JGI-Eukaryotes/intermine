@@ -1,254 +1,93 @@
 <?xml version="1.0"?>
 <!DOCTYPE doc [
-  <!ENTITY chado SYSTEM "../chado.xml">
+  <!ENTITY chado SYSTEM "/global/u1/j/jcarlson/src/intermine/phytomine/chado.xml">
+  <!ENTITY family SYSTEM "/global/u1/j/jcarlson/src/intermine/phytomine/family.xml">
 ]>
 <project type="bio">
-  <property name="intermine.properties.file" value="phytomine.properties" />
+  <property name="intermine.properties.file" value="phytomine-load.properties" />
   <property name="common.os.prefix" value="common" />
   <property name="target.model" value="genomic" />
   <property name="default.intermine.properties.file" location="../default.intermine.integrate.properties" />
   <property name="source.location" location="../bio/sources/" />
   <sources>
     &chado;
-    <source name="pac-clusters-crown" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="2289,2290,2295,2296,2297,2298,2299,2304,2307,2312,2395,3123,3124,3127,3141,3142,3144,3246,3252,3253,3254,3299,3301,3302,3304,3305,3306,3307,3308,3309,3352,3445,3451,3464,3467,4431,4432,4433,4434,4435,4436,4612,4613,4614,4759,4865,4850,4851,4907,4908,4909,4910" />
-    </source>
+    &family;
 
-    <source name="pac-cluster-nodes-4954" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4954" />
-    </source>
+  <source name="ec-assignments" type="e2p2-enzymes">
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="E2P2" />
+  </source>
 
-    <source name="pac-cluster-nodes-4955" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4955" />
-    </source>
-    <source name="pac-cluster-nodes-4956" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4956" />
-    </source>
-    <source name="pac-cluster-nodes-4957" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4957" />
-    </source>
-    <source name="pac-cluster-nodes-4958" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4958" />
-    </source>
-    <source name="pac-cluster-nodes-4959" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4959" />
-    </source>
-    <source name="pac-cluster-nodes-4960" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4960" />
-    </source>
-    <source name="pac-cluster-nodes-4961" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4961" />
-    </source>
-    <source name="pac-cluster-nodes-4962" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4962" />
-    </source>
-    <source name="pac-cluster-nodes-4963" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4963" />
-    </source>
-    <source name="pac-cluster-nodes-4964" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4964" />
-    </source>
-    <source name="pac-cluster-nodes-4965" type="phytozome-clusters">
-      <property name="source.db.name" value="PAC" />
-      <property name="dataSourceName" value="pac-clusters" />
-      <property name="dataSetTitle" value="Phytozome Clusters" />
-      <property name="createrelations" value="false" />
-      <property name="methodIds" value="4965" />
-    </source>
+  <source name="ec-assignments-plus" type="e2p2-enzymes">
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="E2P2" />
+  </source>
 
-    <source name="diversity-S.bicolor" type="gatkvcf">
-      <property name="proteomeId" value="255" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-S.bicolor" />
-      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
+    <source name="cufflinks-A.hypochondriacus" type="cufflinks">
+      <property name="proteomeId" value="315" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ahypochondriacus/" />
+      <property name="dataSourceName" value="rnaseq-A.hypochondriacus" />
+      <property name="dataSetTitle" value="A.hypochondriacus RNA-seq" />
     </source>
-    <source name="diversity-P.vulgaris" type="gatkvcf">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Pvulgaris/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris Natural Diversity" />
-    </source>
-    <source name="diversity-P.trichocarpa" type="gatkvcf">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-P.trichocarpa" />
-      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity" />
-    </source>
-    <source name="diversity-P.trichocarpa-part2" type="gatkvcf">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-P.trichocarpa" />
-      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity" />
-    </source>
-    <source name="diversity-B.distachyon" type="gatkvcf">
-      <property name="proteomeId" value="283" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Bdistachyon/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-B.distachyon" />
-      <property name="dataSetTitle" value="B.distachyon Natural Diversity" />
-    </source>
-    <source name="diversity-E.grandis" type="gatkvcf">
-      <property name="proteomeId" value="201" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Egrandis/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis Natural Diversity" />
-    </source>
-    <source name="diversity-M.esculenta" type="gatkvcf">
-      <property name="proteomeId" value="147" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Mesculenta/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-M.esculenta" />
-      <property name="dataSetTitle" value="M.esculenta Natural Diversity" />
-    </source>
-    <source name="diversity-S.bicolor-corrected-info" type="gatkvcf">
-      <property name="proteomeId" value="255" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-S.bicolor" />
-      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
-    </source>
-    <source name="diversity-P.vulgaris-corrected-info" type="gatkvcf">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Pvulgaris/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris Natural Diversity" />
-    </source>
-    <source name="diversity-P.trichocarpa-corrected-info" type="gatkvcf">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-P.trichocarpa" />
-      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity" />
-    </source>
-    <source name="diversity-B.distachyon-corrected-info" type="gatkvcf">
-      <property name="proteomeId" value="283" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Bdistachyon/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-B.distachyon" />
-      <property name="dataSetTitle" value="B.distachyon Natural Diversity" />
-    </source>
-    <source name="diversity-E.grandis-corrected-info" type="gatkvcf">
-      <property name="proteomeId" value="201" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Egrandis/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis Natural Diversity" />
-    </source>
-    <source name="diversity-P.trichocarpa-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="210"/>
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/"/>
-      <property name="dataSourcename" value="diversity-P.trichocarpa"/>
-      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity Sample Info"/>
-    </source>
-    <source name="diversity-P.vulgaris-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="218"/>
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Pvulgaris/"/>
-      <property name="dataSourcename" value="diversity-P.vulgaris"/>
-      <property name="dataSetTitle" value="P.vulgaris Natural Diversity Sample Info"/>
-    </source>
-    <source name="diversity-B.distachyon-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="283" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Bdistachyon/" />
-      <property name="dataSourcename" value="diversity-B.distachyon" />
-      <property name="dataSetTitle" value="B.distachyon Natural Diversity Sample Info" />
-    </source>
-    <source name="diversity-E.grandis-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="201" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Egrandis/" />
-      <property name="dataSourcename" value="diversity-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis Natural Diversity Sample Info" />
-    </source>
-    <source name="diversity-M.esculenta-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="147" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Mesculenta/" />
-      <property name="dataSourcename" value="diversity-M.esculenta" />
-      <property name="dataSetTitle" value="M.esculenta Natural Diversity Sample Info" />
-    </source>
-
-    <source name="cufflinks-P.vulgaris" type="cufflinks">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
-      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
-    </source>
-    <source name="coexpression-P.vulgaris" type="coexpression">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
+    <source name="coexpression-A.hypochondriacus" type="coexpression">
+      <property name="proteomeId" value="315" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ahypochondriacus/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
+      <property name="dataSourceName" value="rnaseq-A.hypochondriacus" />
+      <property name="dataSetTitle" value="A.hypochondriacus RNA-seq" />
     </source>
-    <source name="cufflinks-P.vulgaris-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
-      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris RNA-seq Info" />
+    <source name="cufflinks-A.hypochondriacus-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="315" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ahypochondriacus/" />
+      <property name="dataSourceName" value="rnaseq-A.hypochondriacus" />
+      <property name="dataSetTitle" value="A.hypochondriacus RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-A.thaliana-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="167" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Athaliana-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-A.thaliana-geneAtlas" />
+      <property name="dataSetTitle" value="A.thaliana-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-A.thaliana-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="167" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Athaliana-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-A.thaliana-geneAtlas" />
+      <property name="dataSetTitle" value="A.thaliana-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-A.thaliana-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="167" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Athaliana-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-A.thaliana-geneAtlas" />
+      <property name="dataSetTitle" value="A.thaliana-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-B.distachyon-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Bdistachyon-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-B.distachyon-geneAtlas" />
+      <property name="dataSetTitle" value="B.distachyon-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-B.distachyon-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Bdistachyon-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-B.distachyon-geneAtlas" />
+      <property name="dataSetTitle" value="B.distachyon-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-B.distachyon-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Bdistachyon-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-B.distachyon-geneAtlas" />
+      <property name="dataSetTitle" value="B.distachyon-geneAtlas RNA-seq Info" />
     </source>
 
     <source name="cufflinks-C.reinhardtii" type="cufflinks">
       <property name="proteomeId" value="281" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii/" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii" />
-      <property name="dataSetTitle" value="C.reinhardtii RNA-seq" />
-    </source>
-    <source name="coexpression-C.reinhardtii" type="coexpression">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii/" />
-      <property name="src.data.dir.includes" value="coexpression.tsv" />
       <property name="dataSourceName" value="rnaseq-C.reinhardtii" />
       <property name="dataSetTitle" value="C.reinhardtii RNA-seq" />
     </source>
@@ -259,16 +98,49 @@
       <property name="dataSetTitle" value="C.reinhardtii RNA-seq Info" />
     </source>
 
+    <source name="cufflinks-C.reinhardtii-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
+      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-C.reinhardtii-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
+      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-C.reinhardtii-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
+      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-E.grandis" type="cufflinks">
+      <property name="proteomeId" value="297" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Egrandis/" />
+      <property name="dataSourceName" value="rnaseq-E.grandis" />
+      <property name="dataSetTitle" value="E.grandis RNA-seq" />
+    </source>
+    <source name="coexpression-E.grandis" type="coexpression">
+      <property name="proteomeId" value="297" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Egrandis/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-E.grandis" />
+      <property name="dataSetTitle" value="E.grandis RNA-seq" />
+    </source>
+    <source name="cufflinks-E.grandis-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="297" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Egrandis/" />
+      <property name="dataSourceName" value="rnaseq-E.grandis" />
+      <property name="dataSetTitle" value="E.grandis RNA-seq Info" />
+    </source>
+
     <source name="cufflinks-G.max" type="cufflinks">
       <property name="proteomeId" value="275" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax/" />
-      <property name="dataSourceName" value="rnaseq-G.max" />
-      <property name="dataSetTitle" value="G.max RNA-seq" />
-    </source>
-    <source name="coexpression-G.max" type="coexpression">
-      <property name="proteomeId" value="275" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax/" />
-      <property name="src.data.dir.includes" value="coexpression.tsv" />
       <property name="dataSourceName" value="rnaseq-G.max" />
       <property name="dataSetTitle" value="G.max RNA-seq" />
     </source>
@@ -279,24 +151,84 @@
       <property name="dataSetTitle" value="G.max RNA-seq Info" />
     </source>
 
-    <source name="cufflinks-E.grandis" type="cufflinks">
-      <property name="proteomeId" value="201" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Egrandis/" />
-      <property name="dataSourceName" value="rnaseq-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis RNA-seq" />
+    <source name="cufflinks-G.max-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-G.max-geneAtlas" />
+      <property name="dataSetTitle" value="G.max-geneAtlas RNA-seq" />
     </source>
-    <source name="coexpression-E.grandis" type="coexpression">
-      <property name="proteomeId" value="201" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Egrandis/" />
+    <source name="coexpression-G.max-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax-geneAtlas/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis RNA-seq" />
+      <property name="dataSourceName" value="rnaseq-G.max-geneAtlas" />
+      <property name="dataSetTitle" value="G.max-geneAtlas RNA-seq" />
     </source>
-    <source name="cufflinks-E.grandis-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="201" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Egrandis/" />
-      <property name="dataSourceName" value="rnaseq-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis RNA-seq Info" />
+    <source name="cufflinks-G.max-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Gmax-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-G.max-geneAtlas" />
+      <property name="dataSetTitle" value="G.max-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-M.truncatula-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="285" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Mtruncatula-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-M.truncatula-geneAtlas" />
+      <property name="dataSetTitle" value="M.truncatula-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-M.truncatula-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="285" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Mtruncatula-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-M.truncatula-geneAtlas" />
+      <property name="dataSetTitle" value="M.truncatula-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-M.truncatula-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="285" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Mtruncatula-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-M.truncatula-geneAtlas" />
+      <property name="dataSetTitle" value="M.truncatula-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-P.hallii-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="308" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Phallii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.hallii-geneAtlas" />
+      <property name="dataSetTitle" value="P.hallii-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-P.hallii-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="308" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Phallii-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-P.hallii-geneAtlas" />
+      <property name="dataSetTitle" value="P.hallii-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-P.hallii-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="308" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Phallii-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.hallii-geneAtlas" />
+      <property name="dataSetTitle" value="P.hallii-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-P.patens-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="318" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ppatens-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.patens-geneAtlas" />
+      <property name="dataSetTitle" value="P.patens-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-P.patens-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="318" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ppatens-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-P.patens-geneAtlas" />
+      <property name="dataSetTitle" value="P.patens-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-P.patens-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="318" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ppatens-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.patens-geneAtlas" />
+      <property name="dataSetTitle" value="P.patens-geneAtlas RNA-seq Info" />
     </source>
 
     <source name="cufflinks-P.trichocarpa-geneAtlas" type="cufflinks">
@@ -319,50 +251,316 @@
       <property name="dataSetTitle" value="P.trichocarpa-geneAtlas RNA-seq Info" />
     </source>
 
-    <source name="cufflinks-C.reinhardtii-geneAtlas" type="cufflinks">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
-      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq" />
+    <source name="cufflinks-P.virgatum-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="273" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvirgatum-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.virgatum-geneAtlas" />
+      <property name="dataSetTitle" value="P.virgatum-geneAtlas RNA-seq" />
     </source>
-    <source name="coexpression-C.reinhardtii-geneAtlas" type="coexpression">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
+    <source name="coexpression-P.virgatum-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="273" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvirgatum-geneAtlas/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
-      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq Info" />
+      <property name="dataSourceName" value="rnaseq-P.virgatum-geneAtlas" />
+      <property name="dataSetTitle" value="P.virgatum-geneAtlas RNA-seq" />
     </source>
-    <source name="cufflinks-C.reinhardtii-geneAtlas-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Creinhardtii-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-C.reinhardtii-geneAtlas" />
-      <property name="dataSetTitle" value="C.reinhardtii-geneAtlas RNA-seq Info" />
+    <source name="cufflinks-P.virgatum-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="273" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvirgatum-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-P.virgatum-geneAtlas" />
+      <property name="dataSetTitle" value="P.virgatum-geneAtlas RNA-seq Info" />
     </source>
 
-    <source name="cufflinks-P.patens-geneAtlas" type="cufflinks">
-      <property name="proteomeId" value="251" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ppatens-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-P.patens-geneAtlas" />
-      <property name="dataSetTitle" value="P.patens-geneAtlas RNA-seq" />
+    <source name="cufflinks-P.vulgaris" type="cufflinks">
+      <property name="proteomeId" value="218" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
+      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
     </source>
-    <source name="coexpression-P.patens-geneAtlas" type="coexpression">
-      <property name="proteomeId" value="251" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ppatens-geneAtlas/" />
+    <source name="coexpression-P.vulgaris" type="coexpression">
+      <property name="proteomeId" value="218" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
-      <property name="dataSourceName" value="rnaseq-P.patens-geneAtlas" />
-      <property name="dataSetTitle" value="P.patens-geneAtlas RNA-seq" />
+      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
     </source>
-    <source name="cufflinks-P.patens-geneAtlas-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="251" />
-      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ppatens-geneAtlas/" />
-      <property name="dataSourceName" value="rnaseq-P.patens-geneAtlas" />
-      <property name="dataSetTitle" value="P.patens-geneAtlas RNA-seq Info" />
+    <source name="cufflinks-P.vulgaris-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="218" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
+      <property name="dataSourceName" value="rnaseq-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-S.bicolor-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
+      <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-S.bicolor-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
+      <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-S.bicolor-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
+      <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-S.italica-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="312" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sitalica-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.italica-geneAtlas" />
+      <property name="dataSetTitle" value="S.italica-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-S.italica-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="312" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sitalica-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-S.italica-geneAtlas" />
+      <property name="dataSetTitle" value="S.italica-geneAtlas RNA-seq Info" />
+    </source>
+    <source name="cufflinks-S.italica-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="312" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sitalica-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.italica-geneAtlas" />
+      <property name="dataSetTitle" value="S.italica-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="cufflinks-S.viridis-geneAtlas" type="cufflinks">
+      <property name="proteomeId" value="311" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sviridis-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.viridis-geneAtlas" />
+      <property name="dataSetTitle" value="S.viridis-geneAtlas RNA-seq" />
+    </source>
+    <source name="coexpression-S.viridis-geneAtlas" type="coexpression">
+      <property name="proteomeId" value="311" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sviridis-geneAtlas/" />
+      <property name="src.data.dir.includes" value="coexpression.tsv" />
+      <property name="dataSourceName" value="rnaseq-S.viridis-geneAtlas" />
+      <property name="dataSetTitle" value="S.viridis-geneAtlas RNA-seq" />
+    </source>
+    <source name="cufflinks-S.viridis-geneAtlas-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="311" />
+      <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sviridis-geneAtlas/" />
+      <property name="dataSourceName" value="rnaseq-S.viridis-geneAtlas" />
+      <property name="dataSetTitle" value="S.viridis-geneAtlas RNA-seq Info" />
+    </source>
+
+    <source name="provisional-defline" type="gene-defline">
+      <property name="src.data.file" value="defline.tsv" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/defline/" />
+      <property name="dataSourceName" value="Phytozome v11" />
+      <property name="dataSetTitle" value="Phytozome v11" />
+    </source>
+
+    <source name="diversity-B.distachyon" type="gatkvcf">
+      <property name="proteomeId" value="314" />
+      <property name="sampleGroup" value="Gordon2014_7" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Bdistachyon/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-B.distachyon" />
+      <property name="dataSetTitle" value="B.distachyon Natural Diversity" />
+    </source>
+    <source name="diversity-C.reinhardtii-short" type="gatkvcf">
+      <property name="proteomeId" value="281" />
+      <property name="sampleGroup" value="Gallaher2015_short_39" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Creinhardtii-short/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-C.reinhardtii" />
+      <property name="dataSetTitle" value="C.reinhardtii Natural Diversity" />
+    </source>
+    <source name="diversity-E.grandis" type="gatkvcf">
+      <property name="proteomeId" value="297" />
+      <property name="sampleGroup" value="Myburg2014_G7J1_M35D2_36" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Egrandis/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-E.grandis" />
+      <property name="dataSetTitle" value="E.grandis Natural Diversity" />
+    </source>
+    <source name="diversity-G.max" type="gatkvcf">
+      <property name="proteomeId" value="275" />
+      <property name="sampleGroup" value="Zhou2015_302" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Gmax/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-G.max" />
+      <property name="dataSetTitle" value="G.max Natural Diversity" />
+    </source>
+    <source name="diversity-M.esculenta" type="gatkvcf">
+      <property name="proteomeId" value="305" />
+      <property name="sampleGroup" value="prelim_61" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Mesculenta/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-M.esculenta" />
+      <property name="dataSetTitle" value="M.esculenta Natural Diversity" />
+    </source>
+    <source name="diversity-P.trichocarpa" type="gatkvcf">
+      <property name="proteomeId" value="210" />
+      <property name="sampleGroup" value="Evans2014_549" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-P.trichocarpa" />
+      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity" />
+    </source>
+    <source name="diversity-P.vulgaris" type="gatkvcf">
+      <property name="proteomeId" value="218" />
+      <property name="sampleGroup" value="Schmutz2014_8" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Pvulgaris/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris Natural Diversity" />
+    </source>
+    <source name="diversity-S.bicolor-mace" type="gatkvcf">
+      <property name="proteomeId" value="313" />
+      <property name="sampleGroup" value="Mace2013_48" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-mace/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-S.bicolor" />
+      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
+    </source>
+    <source name="diversity-S.bicolor-patterson" type="gatkvcf">
+      <property name="proteomeId" value="313" />
+      <property name="sampleGroup" value="Patterson2009_23" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-patterson/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-S.bicolor" />
+      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
+    </source>
+
+    <source name="diversity-B.distachyon-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Bdistachyon/" />
+      <property name="dataSourcename" value="diversity-B.distachyon" />
+      <property name="dataSetTitle" value="B.distachyon Natural Diversity" />
+    </source>
+    <source name="diversity-C.reinhardtii-short-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Creinhardtii-short/" />
+      <property name="dataSourcename" value="diversity-C.reinhardtii" />
+      <property name="dataSetTitle" value="C.reinhardtii Natural Diversity" />
+    </source>
+    <source name="diversity-E.grandis-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="297" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Egrandis/" />
+      <property name="dataSourcename" value="diversity-E.grandis" />
+      <property name="dataSetTitle" value="E.grandis Natural Diversity" />
+    </source>
+    <source name="diversity-G.max-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Gmax/" />
+      <property name="dataSourcename" value="diversity-G.max" />
+      <property name="dataSetTitle" value="G.max Natural Diversity" />
+    </source>
+    <source name="diversity-M.esculenta-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="305" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Mesculenta/" />
+      <property name="dataSourcename" value="diversity-M.esculenta" />
+      <property name="dataSetTitle" value="M.esculenta Natural Diversity" />
+    </source>
+    <source name="diversity-P.trichocarpa-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="210" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/" />
+      <property name="dataSourcename" value="diversity-P.trichocarpa" />
+      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity" />
+    </source>
+    <source name="diversity-P.vulgaris-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="218" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Pvulgaris/" />
+      <property name="dataSourcename" value="diversity-P.vulgaris" />
+      <property name="dataSetTitle" value="P.vulgaris Natural Diversity" />
+    </source>
+    <source name="diversity-S.bicolor-mace-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-mace/" />
+      <property name="dataSourcename" value="diversity-S.bicolor" />
+      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
+    </source>
+    <source name="diversity-S.bicolor-patterson-samples" type="vcfsampleinfo">
+      <property name="proteomeId" value="313" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-patterson/" />
+      <property name="dataSourcename" value="diversity-S.bicolor" />
+      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
     </source>
 
     <source name="phytozome-homologs" type="inparanoid-homologs" >
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
+
+    <source name="phytozome-homologs-extra" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    </source>
+
+    <source name="chlamy-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="281" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Creinhardtii_KEGG.cre_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="C.reinhardtii KEGG Pathway" />
+    </source>
+    <source name="soybean-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="275" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Gmax_KEGG.gmx_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="G.max KEGG Pathway" />
+    </source>
+    <source name="medicago-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="285" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Mtruncatula_KEGG.mtr_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="M.truncatula KEGG Pathway" />
+    </source>
+    <source name="hallii-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="300" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Phallii_KEGG.ath_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="P.hallii KEGG Pathway" />
+    </source>
+    <source name="physco-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="251" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Ppatens_KEGG.ppp_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="P.patens Pathway" />
+    </source>
+    <source name="poplar-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="210" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Ptrichocarpa_KEGG.pop_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="P.trichocarpa KEGG Pathway" />
+    </source>
+    <source name="switchgrass-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="273" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Pvirgatum_KEGG.ath_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="P.virgatum KEGG Pathway" />
+    </source>
+    <source name="sorghum-kegg-pathways" type="plantcyc-pathway">
+      <property name="proteomeId" value="255" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
+      <property name="src.data.dir.includes" value="Sbicolor_KEGG.sbi_Pathway2Gene.csv" />
+      <property name="dataSourcename" value="KEGG" />
+      <property name="dataSetTitle" value="S.bicolor KEGG Pathway" />
+    </source>
+
+
+    <source name="synonyms" type="tsv-synonyms">
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/synonyms/" />
+      <property name="src.data.file" value="synonyms.tsv" />
+      <property name="dataSetTitle" value="Phytozome V10" />
+      <property name="dataSourceName" value="Phytozome V10" />
+    </source>
+
     <source name="interpro" type="interpro">
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/interpro/" />
     </source>
@@ -372,14 +570,6 @@
     <source name="interpro-go" type="interpro-go">
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/interpro-go/" />
     </source>
-
-    <source name="Panther-terms" type="ontology-terms">
-      <property name="src.data.dir" value="/projectb/sandbox/phytomine/panther-terms/" />
-      <property name="src.data.file" value="names.tab" />
-      <property name="dataSetTitle" value="PANTHER" />
-      <property name="dataSetURL" value="ftp://ftp.pantherdb.org/panther_library/8.1" />
-      <property name="converter.class" value="org.intermine.bio.dataconversion.PantherTermsConverter" />
-    </source>
     <source name="Enzyme-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/enzyme-terms/" />
       <property name="src.data.file" value="enzyme.dat" />
@@ -387,23 +577,22 @@
       <property name="dataSourceName" value="ENZYME" />
       <property name="dataSetURL" value="http://enzyme.expasy.org" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.ExpasyTermsConverter" />
-      <property name="dataSetVersion" value="13-Nov-13" />
+      <property name="dataSetVersion" value="15-Dec-09" />
+    </source>
+    <source name="Panther-terms" type="ontology-terms">
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/panther-terms/" />
+      <property name="src.data.file" value="names.tab" />
+      <property name="dataSetTitle" value="PANTHER" />
+      <property name="dataSetURL" value="ftp://ftp.pantherdb.org/panther_library/10.0" />
+      <property name="converter.class" value="org.intermine.bio.dataconversion.PantherTermsConverter" />
     </source>
     <source name="Pfam-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pfam-terms/" />
-      <property name="src.data.file" value="Pfam-A.hmm.dat" />
+      <property name="src.data.file" value="Pfam-A.full" />
       <property name="dataSetTitle" value="PFAM" />
       <property name="dataSourceName" value="PFAM" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.PfamTermsConverter" />
-      <property name="dataSetURL" value="ftp://ftp.sanger.ac.uk/pub/databases/Pfam/releases/Pfam27.0" />
-    </source>
-    <source name="PfamB-terms" type="ontology-terms">
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pfam-terms/" />
-      <property name="src.data.file" value="Pfam-B.hmm.dat" />
-      <property name="dataSetTitle" value="PFAMB" />
-      <property name="dataSourceName" value="PFAMB" />
-      <property name="converter.class" value="org.intermine.bio.dataconversion.PfamTermsConverter" />
-      <property name="dataSetURL" value="ftp://ftp.sanger.ac.uk/pub/databases/Pfam/releases/Pfam27.0" />
+      <property name="dataSetURL" value="ftp://ftp.sanger.ac.uk/pub/databases/Pfam/releases/Pfam28.0" />
     </source>
     <source name="Prodom-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/prodom-terms/" />
@@ -431,7 +620,6 @@
     <source name="Kegg-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-terms/" />
       <property name="src.data.file" value="ko00001.keg" />
-      <property name="src.map.file" value="kegg_mapping.tsv" />
       <property name="dataSetTitle" value="KEGG" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.KeggTermsConverter" />
       <property name="dataSetURL" value="http://www.genome.jp" />
@@ -448,31 +636,31 @@
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/profile-terms/" />
       <property name="src.data.file" value="prosite.dat" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.PrositeTermsConverter" />
-      <property name="dataSetTitle" value="PROSITE" />
-      <property name="dataSourceName" value="PROSITE" />
+      <property name="dataSetTitle" value="PROFILE" />
+      <property name="dataSourceName" value="PROFILE" />
       <property name="dataSetURL" value="http://www.expasy.org/prosite" />
     </source>
     <source name="Superfamily-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/superfamily-terms/" />
-      <property name="src.data.file" value="superfamily.hmm" />
+      <property name="src.data.file" value="hmmlib_1.75" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.SuperfamilyTermsConverter" />
-      <property name="dataSetTitle" value="SUPERFAMILY" />
-      <property name="dataSourceName" value="SUPERFAMILY" />
+      <property name="dataSetTitle" value="SSF" />
+      <property name="dataSourceName" value="SSF" />
       <property name="dataSetURL" value="http://www.supfam.org" />
     </source>
     <source name="Prints-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/prints-terms/" />
-      <property name="src.data.file" value="prints41_1.dat" />
+      <property name="src.data.file" value="prints42_0.kdat" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.PrintsTermsConverter" />
       <property name="dataSetTitle" value="PRINTS" />
       <property name="dataSourceName" value="PRINTS" />
-      <property name="dataSetURL" value="ftp://ftp.bioinf.man.ac.uk/pub/prints/P41.1" />
-      <property name="dataSetVersion" value="P41.1" />
+      <property name="dataSetURL" value="ftp://ftp.bioinf.man.ac.uk/pub/prints/" />
+      <property name="dataSetVersion" value="P42.0" />
     </source>
-    <source name="Pir-terms" type="ontology-terms">
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pir-terms/" />
+    <source name="Pirsf-terms" type="ontology-terms">
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pirsf-terms/" />
       <property name="src.data.file" value="pirsfinfo.dat" />
-      <property name="converter.class" value="org.intermine.bio.dataconversion.PirTermsConverter" />
+      <property name="converter.class" value="org.intermine.bio.dataconversion.PirsfTermsConverter" />
       <property name="dataSetTitle" value="PIRSF" />
       <property name="dataSourceName" value="PIRSF" />
       <property name="dataSetURL" value="http://pir.georgetown.edu" />
@@ -485,49 +673,40 @@
       <property name="dataSourceName" value="SMART" />
       <property name="dataSetURL" value="http://smart.embl-heidelberg.de" />
     </source>
-    <source name="TIGR-terms" type="ontology-terms">
+    <source name="Tigrfams-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/tigrfams-terms/" />
       <property name="src.data.file" value="TIGRFAMs_HMM.LIB" />
       <property name="dataSetTitle" value="TIGRFAMs" />
       <property name="dataSourceName" value="TIGRFAMs" />
       <property name="dataSetURL" value="http://www.jcvi.org/tigrfams" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.TigrfamsTermsConverter" />
-      <property name="dataSetVersion" value="13.0" />
+      <property name="dataSetVersion" value="15.0" />
     </source>
     <source name="Gene3D-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/gene3d-terms/" />
-      <property name="src.data.file" value="gene3d.lib" />
+      <property name="src.data.file" value="gene3d_classified.hmm" />
       <property name="src.map.file" value="model_to_family_map.tsv" />
       <property name="dataSetTitle" value="GENE3D" />
       <property name="dataSourceName" value="GENE3D" />
       <property name="dataSetURL" value="http://gene3d.biochem.ucl.ac.uk/Gene3D" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.Gene3DTermsConverter" />
     </source>
-    <source name="Interpro-terms" type="ontology-terms">
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interpro/" />
-      <property name="src.data.file" value="interpro.xml" />
-      <property name="dataSetTitle" value="Interpro" />
-      <property name="dataSourceName" value="Interpro" />
-      <property name="dataSetURL" value="http://www.ebi.ac.uk/interpro" />
-      <property name="converter.class" value="org.intermine.bio.dataconversion.OntologyTermsXMLConverter" />
-    </source>
   </sources>
+
   <post-processing>
-    <post-process name="create-references" />
-    <post-process name="transfer-sequences" />
-    <post-process name="create-attribute-indexes" />
-    <!-- this runs the postprocessing steps in all sources -->
-    <post-process name="do-sources" />
     <post-process name="create-gene-flanking-features" />
+    <post-process name="transfer-sequences" />
+    <post-process name="create-references" />
+    <post-process name="create-attribute-indexes" />
+    <post-process name="add-uniprot-ids" />
+    <!-- this runs the postprocessing steps in all sources -->
+    <post-process name="characterize-cufflinks" />
+    <post-process name="transfer-go-terms" />
+    <post-process name="transfer-ontology-terms" />
+    <post-process name="transfer-protein-domains" />
     <post-process name="summarise-objectstore" />
     <post-process name="create-autocomplete-index" />
     <post-process name="create-search-index" />
     <post-process name="create-lucene-index" />
-    <post-process name="add-uniprot-ids" />
-    <post-process name="transfer-go-terms" />
-    <post-process name="transfer-ontology-terms" />
-    <post-process name="name-features" />
-
-    
   </post-processing>
 </project>

@@ -17,3 +17,4 @@ cp $TEST_PROPS $TESTMODEL_PROPS
 echo "#--- creating $BIO_PROPS"
 cp config/ci-bio.properties $BIO_PROPS
 sed -i.bak -e "$SED_SCRIPT" $BIO_PROPS
+
