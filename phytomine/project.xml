@@ -4,7 +4,7 @@
   <!ENTITY family SYSTEM "/global/u1/j/jcarlson/src/intermine/phytomine/family.xml">
 ]>
 <project type="bio">
-  <property name="intermine.properties.file" value="phytomine-load.properties" />
+  <property name="intermine.properties.file" value="phytomine.properties" />
   <property name="common.os.prefix" value="common" />
   <property name="target.model" value="genomic" />
   <property name="default.intermine.properties.file" location="../default.intermine.integrate.properties" />
@@ -20,6 +20,11 @@
   </source>
 
   <source name="ec-assignments-plus" type="e2p2-enzymes">
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="E2P2" />
+  </source>
+  <source name="ec-assignments-383" type="e2p2-enzymes">
     <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
     <property name="dataSourceName" value="Phytozome v11" />
     <property name="dataSetTitle" value="E2P2" />
@@ -494,6 +499,11 @@
     <source name="phytozome-homologs-extra" type="inparanoid-homologs" >
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    </source>
+
+    <source name="phytozome-homologs-383" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.383.fa-*.fa" />
     </source>
 
     <source name="chlamy-kegg-pathways" type="plantcyc-pathway">

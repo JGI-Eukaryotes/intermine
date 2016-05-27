@@ -3,7 +3,7 @@
 # The following environment variables need to be set
 # INTERMINE: location of local InterMine installation
 
-export INTERMINE=~/src/intermine/intermine
+export INTERMINE=~/svn/dev/intermine
 
 cd $INTERMINE
 

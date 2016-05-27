@@ -33,7 +33,6 @@ import org.intermine.model.bio.BioEntity;
 import org.intermine.model.bio.DataSet;
 import org.intermine.model.bio.DataSource;
 import org.intermine.model.bio.Organism;
-import org.intermine.model.bio.ProteinFamily;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.query.PendingClob;
 import org.intermine.task.FileDirectDataLoaderTask;
@@ -51,15 +50,15 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
 {
     private static final Logger LOG = Logger.getLogger(FastaLoaderTask.class);
 
-    protected String sequenceType = "dna";
-    protected String classAttribute = "primaryIdentifier";
-    protected Organism org;
-    protected String className;
-    protected int storeCount = 0;
-    protected String dataSourceName = null;
-    protected DataSource dataSource = null;
-    protected String fastaTaxonId = null;
-    protected Map<String, Integer> taxonIds = new HashMap<String, Integer>();
+    private String sequenceType = "dna";
+    private String classAttribute = "primaryIdentifier";
+    private Organism org;
+    private String className;
+    private int storeCount = 0;
+    private String dataSourceName = null;
+    private DataSource dataSource = null;
+    private String fastaTaxonId = null;
+    private Map<String, Integer> taxonIds = new HashMap<String, Integer>();
 
     /**
      * Append this suffix to the identifier of the BioEnitys that are stored.
@@ -221,7 +220,7 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
 
             while (iter.hasNext()) {
                 Sequence bioJavaSequence = iter.nextSequence();
-                processSequence(null, bioJavaSequence);
+                processSequence(getOrganism(bioJavaSequence), bioJavaSequence);
             }
 
             reader.close();
@@ -265,9 +264,9 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
         throws ObjectStoreException {
         // some fasta files are not filtered - they contain sequences from organisms not
         // specified in project.xml
-      /*  if (organism == null) {
+        if (organism == null) {
             return;
-        }*/
+        }
         org.intermine.model.bio.Sequence flymineSequence = getDirectDataLoader().createObject(
                 org.intermine.model.bio.Sequence.class);
 
@@ -290,24 +289,24 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
             throw new RuntimeException("unknown class: " + className
                                        + " while creating new Sequence object");
         }
-        //BioEntity imo = (BioEntity) getDirectDataLoader().createObject(imClass);
-        ProteinFamily imo = (ProteinFamily) getDirectDataLoader().createObject(imClass);
+        BioEntity imo = (BioEntity) getDirectDataLoader().createObject(imClass);
+
         String attributeValue = getIdentifier(bioJavaSequence);
 
         try {
-            imo.setFieldValue(classAttribute, new Integer(attributeValue));
+            imo.setFieldValue(classAttribute, attributeValue);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error setting: " + className + "."
                                                + classAttribute + " to: " + attributeValue
                                                + ". Does the attribute exist?");
         }
         try {
-            imo.setFieldValue("consensus", flymineSequence);
+            imo.setFieldValue("sequence", flymineSequence);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error setting: " + className + ".sequence to: "
                     + attributeValue + ". Does the attribute exist?");
         }
-        /*imo.setOrganism(organism);
+        imo.setOrganism(organism);
         try {
             imo.setFieldValue("length", new Integer(flymineSequence.getLength()));
         } catch (Exception e) {
@@ -329,7 +328,7 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
 
         DataSet dataSet = getDataSet();
         imo.addDataSets(dataSet);
-*/
+
         try {
             getDirectDataLoader().store(flymineSequence);
             getDirectDataLoader().store(imo);

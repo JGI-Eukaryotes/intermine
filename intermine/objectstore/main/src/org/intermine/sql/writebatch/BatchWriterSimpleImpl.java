@@ -19,7 +19,6 @@ import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,6 @@ public class BatchWriterSimpleImpl implements BatchWriter
     protected Statement postDeleteBatch;
     protected List<FlushJob> addBatches;
     protected Statement lastBatch;
-    private Set<String> analyseTables = null;
 
     /**
      * This sets the threshold above which a temp table will be used for deletes.
@@ -57,21 +55,6 @@ public class BatchWriterSimpleImpl implements BatchWriter
     }
 
     /**
-     * * Optionally provide database table names that can be analysed during the load - typically
-     * these are tables that have primary keys used for data integration. If no table names are
-     * provided analyse will be run periodically on all tables during the build.
-     * @param analyseTables a set of database table names
-     */
-    public void setTablesToAnalyse(Set<String> analyseTables) {
-      if (analyseTables != null) {
-        this.analyseTables = new HashSet<String>();
-        for (String tableName : analyseTables) {
-          this.analyseTables.add(tableName.toLowerCase());
-        }
-      }
-    }
- 
-     /**
      * {@inheritDoc}
      */
     public List<FlushJob> write(Connection con, Map<String, ? extends Table> tables,
@@ -420,35 +403,19 @@ public class BatchWriterSimpleImpl implements BatchWriter
                 stats.put(name, stat);
             }
             boolean doAnalyse = stat.addActivity(amount);
-            if (doAnalyse && canAnalyseTable(name)) {
+            if (doAnalyse) {
                 long start = System.currentTimeMillis();
                 doAnalyse(name, conn);
-                long endAnalyse = System.currentTimeMillis();
                 int tableSize = getTableSize(name, conn);
                 long end = System.currentTimeMillis();
                 stat.setTableSize(tableSize, end - start);
-                LOG.info("Analysing table " + name + " took " + (end - start)
-                        + "ms, of which row count took " + (end - endAnalyse)
-                        + "ms (" + tableSize + " rows)");
+                LOG.info("Analysing table " + name + " took " + (end - start) + "ms ("
+                        + tableSize + " rows)");
             }
         }
     }
 
     /**
-      * Return true if we should ever run ANALYSE on the given table. If valid tables have been set
-      * check the table name in the set, if no tables have been set always returns true. Table names
-      * are matched regardless of text case.
-      * @param tableName the table that may be analysed
-      * @return true if ANALYSE should ever be run on this table
-      */
-    private boolean canAnalyseTable(String tableName) {
-      if (analyseTables != null) {
-        return analyseTables.contains(tableName.toLowerCase());
-      }
-      return true;
-    }
-
-   /**
      * Returns the approximate number of rows in a table.
      *
      * @param name the name of the table
@@ -503,20 +470,14 @@ public class BatchWriterSimpleImpl implements BatchWriter
         }
 
         // Return true (i.e. do analyse) if total number of rows written is greater than some
-        // threshold.  Currently if table has doubled in size or if the table size has increased
-        // by 10% and haven't run an analyse recently.
+        // threshold.  Currently if aprrox 50% of original table size.
         public boolean addActivity(int activity) {
             LOG.debug("Statistics: " + name + ", tableSize = " + tableSize + ", activity "
                     + this.totalActivity + " --> tableSize = " + tableSize + ", activity = "
                     + (this.totalActivity + activity) + "    - Activity of " + activity + " rows");
             this.totalActivity += activity;
-
-            // minimum gap between incremental analyses is ten minutes plus a multiple of the
-            // last analyse time (to handle very slow analyses)
-            long timeTrigger = 600000 + (analyseTime * 20);
-            return (this.totalActivity > tableSize + 1000)
-                    || ((totalActivity > 100000) && (totalActivity > (tableSize / 10))
-                            && (System.currentTimeMillis() - lastResizeTime > timeTrigger));
+            return (this.totalActivity > (tableSize / 2) + 1000) || ((this.totalActivity > 100000)
+                && (System.currentTimeMillis() - lastResizeTime > 600000 + (analyseTime * 20)));
         }
 
         public void setTableSize(int tableSize, long analyseTime) {

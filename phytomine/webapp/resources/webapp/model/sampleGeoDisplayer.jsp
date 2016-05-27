@@ -14,22 +14,25 @@
 
 <script type="text/javascript">
    function ShowMap() {
-   google.load("maps", "3", {other_params:"sensor=false", "callback":loadGoogleMap});
-   function loadGoogleMap() {
-    var mapOptions = {
-      center: new google.maps.LatLng('${latitude}','${longitude}'),
-      zoom: 11,
-      mapTypeId: google.maps.MapTypeId.TERRAIN
-    };
-    var map = new google.maps.Map(document.getElementById("sample-geo-map"),mapOptions);
-    var mapMarker = new google.maps.Marker( {
-      position: map.getCenter(),
-      map: map,
-      title: '${name}' });
+     if ('${latitude}' && '${longitude}') {
+       function loadGoogleMap() {
+         var mapOptions = {
+           center: new google.maps.LatLng('${latitude}','${longitude}'),
+           zoom: 11,
+           mapTypeId: google.maps.MapTypeId.TERRAIN
+         };
+         var map = new google.maps.Map(document.getElementById("sample-geo-map"),mapOptions);
+         var mapMarker = new google.maps.Marker( {
+           position: map.getCenter(),
+           map: map,
+           title: '${name}' });
+       }
+       google.load("maps", "3", {"callback":loadGoogleMap});
+      } else {
+        document.getElementById("sample-geo-display").innerHTML = "Location information not available";
+      }
     }
-    }
-
-    ShowMap();
+  ShowMap();
 </script>
 
 <div id="sample-geo-map" class="map">

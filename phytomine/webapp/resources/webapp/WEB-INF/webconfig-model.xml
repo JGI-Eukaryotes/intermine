@@ -153,6 +153,23 @@
     </fields>
   </class>
 
+  <class className="org.intermine.model.bio.OntologyAnnotation">
+    <fields>
+      <fieldconfig fieldExpr="ontologyTerm.identifier" label="Ontology Term"/>
+      <fieldconfig fieldExpr="subject.primaryIdentifier" label="Gene/Protein Name"/>
+      <fieldconfig fieldExpr="subject.organism.name" label="Organism"/>
+    </fields>
+  </class>
+
+  <class className="org.intermine.model.bio.GOAnnotation">
+    <fields>
+      <fieldconfig fieldExpr="ontologyTerm.identifier" label="GO Term"/>
+      <fieldconfig fieldExpr="subject.primaryIdentifier" label="Gene Name"/>
+      <fieldconfig fieldExpr="subject.organism.name" label="Organism"/>
+    </fields>
+  </class>
+
+
   <class className="org.intermine.model.bio.Organism">
     <headerconfig>
       <titles>

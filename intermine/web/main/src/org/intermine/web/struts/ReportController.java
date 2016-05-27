@@ -245,7 +245,7 @@ public class ReportController extends InterMineAction
     private InterMineObject getRequestedObject(InterMineAPI im, HttpServletRequest request) {
 
         String idString = request.getParameter("id");
-        if (!StringUtils.isNumeric(idString) || StringUtils.isBlank(idString)) {
+        if (!StringUtils.isNumeric(idString.replaceFirst("^-","")) || StringUtils.isBlank(idString)) {
             return null;
         }
         Integer id = new Integer(Integer.parseInt(idString));

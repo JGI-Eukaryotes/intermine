@@ -108,7 +108,7 @@ public class HtmlHeadController extends TilesAction
 
         /* report page */
         } else if ("report".equals(pageName) && objectId != null) {
-            if (!StringUtils.isNumeric(objectId)) {
+            if (!StringUtils.isNumeric(objectId.replaceFirst("^-",""))) {
                 LOG.warn("object ID not a number! " + objectId);
                 htmlPageTitle = "invalid id - " + objectId;
                 request.setAttribute("htmlPageTitle", htmlPageTitle);

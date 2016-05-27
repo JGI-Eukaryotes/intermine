@@ -167,7 +167,7 @@ public class JSONFormatter extends Formatter
             return "null";
         }
         if ("null".equals(val) || "true".equals(val) || "false".equals(val)
-                || StringUtils.isNumeric(val)) {
+                || StringUtils.isNumeric(val.replaceFirst("^-",""))) {
             return val;
         }
         return "\"" + val + "\"";

@@ -1,0 +1,6 @@
+#!/bin/bash
+../bio/scripts/project_build -l -v -a phytozome-chado-A.trichopoda--interflowscan-A.coerulea_195 localhost ${BSCRATCH}/phytomine
+  
+
+
+  

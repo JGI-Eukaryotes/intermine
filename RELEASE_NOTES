@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2002-2015 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -8,8 +8,6 @@
  *
  */
 
-<<<<<<< HEAD
-=======
 InterMine 1.6.6 (2016 13 May, Friday the 13th)
 
 #1361 - Correct Panther homologue labels
@@ -72,7 +70,6 @@ InterMine 1.6.6 (2016 13 May, Friday the 13th)
 
 
 
->>>>>>> c08937855576f58aff219d774b1bf9ac8564c870
 InterMine 1.6.5
 
 #1255 - Restore missing template counts
