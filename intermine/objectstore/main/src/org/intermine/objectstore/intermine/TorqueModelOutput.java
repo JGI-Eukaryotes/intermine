@@ -228,7 +228,7 @@ public class TorqueModelOutput
             .append("\" type=\"")
             .append(generateJdbcType(type))
             .append("\"");
-        if ((type.indexOf(".") == -1 && !type.equals(LONG_VAR_BINARY_TYPE))
+        if ((type.indexOf(".") == -1 && !type.equals(LONG_VAR_BINARY_TYPE) && !type.equals("InterMineId"))
             || ("id".equals(name))) {
             sb.append(" required=\"true\"");
         }
