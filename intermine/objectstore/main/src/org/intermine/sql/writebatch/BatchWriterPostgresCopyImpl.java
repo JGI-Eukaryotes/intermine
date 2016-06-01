@@ -116,6 +116,9 @@ public class BatchWriterPostgresCopyImpl extends BatchWriterPreparedStatementImp
         } else if (o instanceof InterMineId) {
             dos.writeInt(4);
             dos.writeInt(((InterMineId) o).intValue());
+        } else if (o instanceof Integer) {
+          dos.writeInt(4);
+          dos.writeInt(((Integer) o).intValue());
         } else if (o instanceof Short) {
             dos.writeInt(2);
             dos.writeShort(((Short) o).intValue());
