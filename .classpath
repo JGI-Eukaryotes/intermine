@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="bio/postprocess/main/src"/>
+	<classpathentry kind="src" path="intermine/integrate/model/fulldata/build/gen/src"/>
 	<classpathentry kind="src" path="bio/sources/e2p2-enzymes/main/src"/>
 	<classpathentry kind="src" path="bio/sources/interflowscan/main/src"/>
 	<classpathentry kind="src" path="bio/sources/genetic-marker/main/src"/>
