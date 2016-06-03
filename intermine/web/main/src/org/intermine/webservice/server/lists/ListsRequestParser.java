@@ -71,7 +71,7 @@ public class ListsRequestParser
             }
         } else {
             try {
-                ret.setMineId(InterMineId.parseInt(mineId));
+                ret.setMineId(InterMineId.valueOf(mineId));
             } catch (Throwable t) {
                 throw new BadRequestException("invalid parameter: " + MINE_ID_PARAMETER);
             }

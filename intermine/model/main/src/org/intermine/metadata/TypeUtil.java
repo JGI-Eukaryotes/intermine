@@ -754,17 +754,20 @@ public final class TypeUtil
             return InterMineId.valueOf(value.replace(",", ""));
         }
         if (clazz.equals(Boolean.class) || clazz.equals(Boolean.TYPE)) {
-            if ("NULL".equals(value)) {
-                return "NULL";
-            } else {
-                return Boolean.valueOf(value);
-            }
+          if ("NULL".equals(value)) {
+            return "NULL";
+          } else {
+            return Boolean.valueOf(value);
+          }
+        }
+        if (clazz.equals(Integer.class) || clazz.equals(Integer.TYPE)) {
+          return Integer.valueOf(value.replace(",", ""));
         }
         if (clazz.equals(Double.class) || clazz.equals(Double.TYPE)) {
-            return Double.valueOf(value.replace(",", ""));
+          return Double.valueOf(value.replace(",", ""));
         }
         if (clazz.equals(Float.class) || clazz.equals(Float.TYPE)) {
-            return Float.valueOf(value.replace(",", ""));
+          return Float.valueOf(value.replace(",", ""));
         }
         if (clazz.equals(Long.class)  || clazz.equals(Long.TYPE)) {
             return Long.valueOf(value.replace(",", ""));

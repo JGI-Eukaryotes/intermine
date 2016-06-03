@@ -201,15 +201,15 @@ public class CreateFlankingRegions
 
                     // if the region hangs off the start or end of a chromosome set it to finish
                     // at the end of the chromosome
-                    location.setStart(new InterMineId(Math.max(start, 1)));
+                    location.setStart(new Integer(Math.max(start, 1)));
                     int e = Math.min(end, chr.getLength().intValue());
-                    location.setEnd(new InterMineId(e));
+                    location.setEnd(new Integer(e));
 
                     location.setStrand(strand);
                     location.setLocatedOn(chr);
                     location.setFeature(region);
 
-                    region.setLength(new InterMineId((location.getEnd().intValue()
+                    region.setLength(new Integer((location.getEnd().intValue()
                             - location.getStart().intValue()) + 1));
 
                     osw.store(location);

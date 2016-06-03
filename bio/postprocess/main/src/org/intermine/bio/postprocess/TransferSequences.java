@@ -46,7 +46,6 @@ import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.SingletonResults;
-import org.intermine.model.InterMineId;
 import org.intermine.util.DynamicUtil;
 
 /**
@@ -80,7 +79,7 @@ public class TransferSequences
         osw.store(sequence);
         feature.proxySequence(new ProxyReference(osw.getObjectStore(),
                                                  sequence.getId(), Sequence.class));
-        feature.setLength(new InterMineId(sequenceString.length()));
+        feature.setLength(new Integer(sequenceString.length()));
         osw.store(feature);
     }
 
@@ -236,7 +235,7 @@ public class TransferSequences
                 osw.store(sequence);
                 SequenceFeature cloneLsf = PostProcessUtil.cloneInterMineObject(feature);
                 cloneLsf.setSequence(sequence);
-                cloneLsf.setLength(new InterMineId(featureSeq.length()));
+                cloneLsf.setLength(new Integer(featureSeq.length()));
                 osw.store(cloneLsf);
                 i++;
                 if (i % 1000 == 0) {

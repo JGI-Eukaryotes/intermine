@@ -130,7 +130,7 @@ public class UpdateListTablesTask extends Task
         ResultSet rs = stm.executeQuery(sql2);
         Map<InterMineId, Boolean> intermineCurrentMap = new HashMap<InterMineId, Boolean>();
         while (rs.next()) {
-            intermineCurrentMap.put(rs.getInt(1), rs.getBoolean(2));
+            intermineCurrentMap.put(new InterMineId((Number)rs.getObject(1)), rs.getBoolean(2));
         }
         Boolean intermineCurrentBoolean;
         String intermineCurrent = "";

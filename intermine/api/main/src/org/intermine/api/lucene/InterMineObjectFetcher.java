@@ -311,8 +311,8 @@ public class InterMineObjectFetcher extends Thread
                 // current object's id. See:
                 // https://github.com/intermine/intermine/issues/473
                 while (resultsContainer.getIterator().hasNext()
-                        && ((InterMineId) next.get(0)).compareTo(
-                                object.getId()) == -1) {
+                        && (InterMineId.valueOf(String.valueOf(next.get(0))).compareTo(
+                                object.getId()) == -1) ) {
                     next = resultsContainer.getIterator().next();
                 }
 

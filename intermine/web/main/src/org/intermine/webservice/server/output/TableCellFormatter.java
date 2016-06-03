@@ -19,7 +19,6 @@ import org.intermine.api.results.ResultCell;
 import org.intermine.model.InterMineObject;
 import org.intermine.web.context.InterMineContext;
 import org.intermine.web.logic.PortalHelper;
-import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -38,12 +37,12 @@ public class TableCellFormatter
 
     private final LinkRedirectManager redirector;
     private final InterMineAPI im;
-    private InterMineId maxCellLength;
+    private int maxCellLength;
 
     /** @param im The InterMine state object **/
     public TableCellFormatter(InterMineAPI im) {
         this.im = im;
-        this.maxCellLength = InterMineId.valueOf(
+        this.maxCellLength = Integer.valueOf(
                 InterMineContext.getWebProperties().getProperty(
                         "webservice.tablecellformatter.cell.length.max", "200"));
         this.redirector = im.getLinkRedirector();

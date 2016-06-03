@@ -65,7 +65,6 @@ import org.intermine.webservice.server.output.Output;
 import org.intermine.webservice.server.output.PlainFormatter;
 import org.intermine.webservice.server.output.StreamedOutput;
 import org.intermine.webservice.server.output.TabFormatter;
-import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.output.XMLFormatter;
 
 /**
@@ -234,10 +233,10 @@ public abstract class WebService
      * @return An integer
      * @throws BadRequestException if The value is absent or mal-formed.
      */
-    protected InterMineId getIntParameter(String name) {
+    protected Integer getIntParameter(String name) {
         String value = getRequiredParameter(name);
         try {
-            return InterMineId.valueOf(value);
+            return Integer.valueOf(value);
         } catch (NumberFormatException e) {
             String msg = String.format("%s should be a valid number. Got %s", name, value);
             throw new BadRequestException(msg, e);
@@ -248,15 +247,15 @@ public abstract class WebService
      * Get the value of a parameter that should be interpreted as an integer.
      *
      * @param name The name of the parameter.
-     * @param defaultValue The value to return if none is provided by the user.
+     * @param i The value to return if none is provided by the user.
      * @return An integer
      * @throw BadRequestException if the user provided a mal-formed value.
      */
-    protected InterMineId getIntParameter(String name, InterMineId defaultValue) {
+    protected Integer getIntParameter(String name, Integer i) {
         try {
             return getIntParameter(name);
         } catch (MissingParameterException e) {
-            return defaultValue;
+            return i;
         }
     }
 

@@ -35,8 +35,8 @@ import org.intermine.web.logic.results.ReportObject;
 public class PathwaysDisplayer extends ReportDisplayer
 {
 
-    private Map<InterMineId, Map<InterMineObject, InterMineId>> cache =
-        new ConcurrentHashMap<InterMineId, Map<InterMineObject, InterMineId>>();
+    private Map<InterMineId, Map<InterMineObject, Integer>> cache =
+        new ConcurrentHashMap<InterMineId, Map<InterMineObject, Integer>>();
 
     /**
      * Construct with config and the InterMineAPI.
@@ -51,21 +51,21 @@ public class PathwaysDisplayer extends ReportDisplayer
     @Override
     public void display(HttpServletRequest request, ReportObject reportObject) {
         InterMineObject gene = reportObject.getObject();
-        Map<InterMineObject, InterMineId> pathways = getPathways(gene);
+        Map<InterMineObject, Integer> pathways = getPathways(gene);
         if (pathways.isEmpty()) {
             request.setAttribute("noPathwayResults", "No pathways found");
         } else {
-            SortedMap<InterMineObject, InterMineId> sortedPathways =
-                new TreeMap<InterMineObject, InterMineId>(new ValueComparator(pathways));
+            SortedMap<InterMineObject, Integer> sortedPathways =
+                new TreeMap<InterMineObject, Integer>(new ValueComparator(pathways));
             sortedPathways.putAll(pathways);
             request.setAttribute("pathways", sortedPathways);
         }
     }
 
-    private Map<InterMineObject, InterMineId> getPathways(InterMineObject gene) {
+    private Map<InterMineObject, Integer> getPathways(InterMineObject gene) {
         if (!cache.containsKey(gene.getId())) {
             try {
-                Map<InterMineObject, InterMineId> pathways = new HashMap<InterMineObject, InterMineId>();
+                Map<InterMineObject, Integer> pathways = new HashMap<InterMineObject, Integer>();
                 Collection col = (Collection) gene.getFieldValue("pathways");
                 for (Object item : col) {
                     InterMineObject pathway = (InterMineObject) item;
@@ -102,7 +102,7 @@ class ValueComparator implements Comparator
     @Override
     public int compare(Object a, Object b) {
         // sort descending
-        int i = ((InterMineId) base.get(a)).compareTo((InterMineId) base.get(b));
+        int i = ((Integer) base.get(a)).compareTo((Integer) base.get(b));
 
         // gene counts are the same, sort by name ascending
         if (i == 0) {

@@ -134,7 +134,7 @@ public class Item
      * Get the internal database id of the object. This value guarantees object identity.
      * @return The id of the object.
      */
-    public int getId() {
+    public InterMineId getId() {
         return getInt("id");
     }
 
@@ -215,14 +215,14 @@ public class Item
     private List<Map<String, Object>> getReferenceData(FieldDescriptor fd) {
         PathQuery query = new PathQuery(model);
         query.addViews(PQUtil.getStar(model, this.type + "." + fd.getName()));
-        query.addConstraint(Constraints.eq(this.type + ".id", InterMineId.toString(getId())));
+        query.addConstraint(Constraints.eq(this.type + ".id", getId().toString()));
         return factory.getQueryService().getRowsAsMaps(query);
     }
 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 17 + getId();
+        hash = hash * 17 + getId().hashCode();
         return hash;
     }
 

@@ -94,7 +94,7 @@ public class CalculateLocations
     public void createOverlapRelations(List<String> classNamesToIgnore, boolean ignoreSelfMatches)
         throws Exception {
         osw.beginTransaction();
-        Map<String, InterMineId> summary = new HashMap<String, InterMineId>();
+        Map<String, Integer> summary = new HashMap<String, Integer>();
         Map<InterMineId, Chromosome> chromosomeMap = makeChromosomeMap();
         Iterator<?> chromosomeIdIter = chromosomeMap.keySet().iterator();
         while (chromosomeIdIter.hasNext()) {
@@ -107,7 +107,7 @@ public class CalculateLocations
         List<SortElement> sortList = new ArrayList<SortElement>();
         Iterator<?> summaryIter = summary.entrySet().iterator();
         while (summaryIter.hasNext()) {
-            Map.Entry<String, InterMineId> summaryEntry = (Map.Entry<String, InterMineId>)
+            Map.Entry<String, Integer> summaryEntry = (Map.Entry<String, Integer>)
                 summaryIter.next();
             sortList.add(new SortElement(summaryEntry.getKey(),
                         summaryEntry.getValue().intValue()));
@@ -157,7 +157,7 @@ public class CalculateLocations
      * @param summary a Map to which summary data will be added
      */
     private void createSubjectOverlapRelations(Chromosome subject, List<String> classNamesToIgnore,
-            boolean ignoreSelfMatches, Map<String, InterMineId> summary) throws Exception {
+            boolean ignoreSelfMatches, Map<String, Integer> summary) throws Exception {
         LOG.info("Creating overlaps for id " + subject.getId() + ", identifier: "
                  + subject.getPrimaryIdentifier());
 
@@ -241,7 +241,7 @@ public class CalculateLocations
             SimpleLoc parentObjectSimpleLoc = parentObjectMap.get(parentObjectId);
 
             if (parentObjectSimpleLoc == null) {
-                parentObjectSimpleLoc = new SimpleLoc(-1, -1, InterMineId.MAX_VALUE, -1, "0");
+                parentObjectSimpleLoc = new SimpleLoc(-1, -1, Integer.MAX_VALUE, -1, "0");
                 parentObjectMap.put(parentObjectId, parentObjectSimpleLoc);
             }
 
@@ -279,8 +279,8 @@ public class CalculateLocations
                 Location newLocation =
                     (Location) DynamicUtil.createObject(Collections.singleton(Location.class));
 
-                newLocation.setStart(new InterMineId(parentObjectSimpleLoc.getStart()));
-                newLocation.setEnd(new InterMineId(parentObjectSimpleLoc.getEnd()));
+                newLocation.setStart(new Integer(parentObjectSimpleLoc.getStart()));
+                newLocation.setEnd(new Integer(parentObjectSimpleLoc.getEnd()));
                 newLocation.setStrand(parentObjectSimpleLoc.getStrand());
                 newLocation.setFeature(parentObject);
                 newLocation.setLocatedOn(locatedOnObject);
@@ -476,7 +476,7 @@ public class CalculateLocations
             // an alternative is to set according to type of feature.
             if (lsfClone.getLength() == null) {
                 int length = Math.abs(end - start) + 1;
-                lsfClone.setLength(new InterMineId(length));
+                lsfClone.setLength(new Integer(length));
             }
         }
         lsfClone.proxyChromosome(new ProxyReference(os, chrId, Chromosome.class));

@@ -15,7 +15,6 @@ import java.net.URL;
 
 import org.apache.commons.codec.binary.Base64;
 import org.intermine.webservice.client.exceptions.ServiceException;
-import org.intermine.model.InterMineId;
 import org.intermine.webservice.client.util.HttpConnection;
 
 
@@ -277,7 +276,7 @@ public class Service
      *        will be used.
      * @return a string containing the body of the response
      */
-    protected String getStringResponse(Request request, InterMineId retryCount) {
+    protected String getStringResponse(Request request, Integer retryCount) {
         HttpConnection connection = executeRequest(request);
         if (retryCount != null) {
             connection.setRetryCount(retryCount.intValue());
@@ -312,7 +311,7 @@ public class Service
             throw new ServiceException("The server didn't return any results");
         }
         try {
-            return InterMineId.parseInt(body);
+            return Integer.parseInt(body);
         }  catch (NumberFormatException e) {
             throw new ServiceException(
                     "The server returned an invalid result. It is not a number: "

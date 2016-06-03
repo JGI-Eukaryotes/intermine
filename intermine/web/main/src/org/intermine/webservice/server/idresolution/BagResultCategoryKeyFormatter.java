@@ -86,10 +86,10 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static Map<String, Map<String, InterMineId>> getStats(BagQueryResult bqr) {
-        Map<String, Map<String, InterMineId>> stats = new HashMap<String, Map<String, InterMineId>>();
-        Map<String, InterMineId> objectStats = new HashMap<String, InterMineId>();
-        Map<String, InterMineId> termStats = new HashMap<String, InterMineId>();
+    private static Map<String, Map<String, Integer>> getStats(BagQueryResult bqr) {
+        Map<String, Map<String, Integer>> stats = new HashMap<String, Map<String, Integer>>();
+        Map<String, Integer> objectStats = new HashMap<String, Integer>();
+        Map<String, Integer> termStats = new HashMap<String, Integer>();
         Set<String> goodMatchTerms = new HashSet<String>();
         Set<String> issueMatchTerms = new HashSet<String>();
         Set<InterMineId> matchedObjects = bqr.getMatches().keySet();

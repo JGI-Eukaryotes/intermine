@@ -311,7 +311,7 @@ public class ItemList extends AbstractSet<Item>
         pq.addViews(getType() + ".id");
         Set<String> values = new HashSet<String>();
         for (Item i: newItems) {
-            values.add(InterMineId.toString(i.getId()));
+            values.add(i.getId().toString());
         }
         pq.addConstraint(Constraints.oneOfValues(getType() + ".id", values));
         update(services.getListService().append(this, pq));
@@ -327,7 +327,7 @@ public class ItemList extends AbstractSet<Item>
             String path = item.getType() + ".id";
             PathQuery pq = new PathQuery(services.getModel());
             pq.addView(path);
-            pq.addConstraint(Constraints.eq(path, InterMineId.toString(item.getId())));
+            pq.addConstraint(Constraints.eq(path, item.getId().toString()));
             createListAndSubtract(pq);
         }
         return priorSize != getSize();

@@ -103,7 +103,7 @@ public class IntergenicRegionUtil
 
         InterMineId previousChrId = null;
         Set<Location> locationSet = new HashSet<Location>();
-        Map<InterMineId, Set<Gene>> locToGeneMap = new HashMap<InterMineId, Set<Gene>>();
+        Map<Integer, Set<Gene>> locToGeneMap = new HashMap<Integer, Set<Gene>>();
 
         osw.beginTransaction();
         while (resIter.hasNext()) {
@@ -117,7 +117,7 @@ public class IntergenicRegionUtil
                         createIntergenicRegionFeatures(locationSet, locToGeneMap, previousChrId);
                 storeItergenicRegions(osw, irIter);
                 locationSet = new HashSet<Location>();
-                locToGeneMap = new HashMap<InterMineId, Set<Gene>>();
+                locToGeneMap = new HashMap<Integer, Set<Gene>>();
             }
 
             addToLocToGeneMap(locToGeneMap, loc, gene);
@@ -137,7 +137,7 @@ public class IntergenicRegionUtil
         osw.commitTransaction();
     }
 
-    private static void addToLocToGeneMap(Map<InterMineId, Set<Gene>> locToGeneMap, Location loc,
+    private static void addToLocToGeneMap(Map<Integer, Set<Gene>> locToGeneMap, Location loc,
             Gene gene) {
         Util.addToSetMap(locToGeneMap, loc.getStart(), gene);
         Util.addToSetMap(locToGeneMap, loc.getEnd(), gene);
@@ -180,7 +180,7 @@ public class IntergenicRegionUtil
      */
     protected Iterator<SequenceFeature> createIntergenicRegionFeatures(
             final Set<Location> locationSet,
-            final Map<InterMineId, Set<Gene>> locToGeneMap,
+            final Map<Integer, Set<Gene>> locToGeneMap,
             final InterMineId chrId)
         throws ObjectStoreException {
         final Chromosome chr = (Chromosome) os.getObjectById(chrId);
@@ -246,8 +246,8 @@ public class IntergenicRegionUtil
                 .createObject(Collections.singleton(igCls));
                 Location location = (Location) DynamicUtil.createObject(
                         Collections.singleton(Location.class));
-                location.setStart(new InterMineId(newLocStart));
-                location.setEnd(new InterMineId(newLocEnd));
+                location.setStart(new Integer(newLocStart));
+                location.setEnd(new Integer(newLocEnd));
                 location.setStrand("1");
 
                 location.setFeature(intergenicRegion);
@@ -259,7 +259,7 @@ public class IntergenicRegionUtil
                 intergenicRegion.addDataSets(dataSet);
 
                 int length = location.getEnd().intValue() - location.getStart().intValue() + 1;
-                intergenicRegion.setLength(new InterMineId(length));
+                intergenicRegion.setLength(new Integer(length));
 
                 String primaryIdentifier = "intergenic_region_chr"
                         + chr.getPrimaryIdentifier() + "_"
@@ -268,7 +268,7 @@ public class IntergenicRegionUtil
 
                 Set<Gene> adjacentGenes = new HashSet<Gene>();
 
-                Set<Gene> nextGenes = locToGeneMap.get(new InterMineId(newLocEnd + 1));
+                Set<Gene> nextGenes = locToGeneMap.get(new Integer(newLocEnd + 1));
                 if (nextGenes != null) {
                     Iterator<?> nextGenesIter = nextGenes.iterator();
 
@@ -291,7 +291,7 @@ public class IntergenicRegionUtil
                     }
                 }
 
-                Set<Gene> prevGenes = locToGeneMap.get(new InterMineId(newLocStart - 1));
+                Set<Gene> prevGenes = locToGeneMap.get(new Integer(newLocStart - 1));
                 if (prevGenes != null) {
                     Iterator<?> prevGenesIter = prevGenes.iterator();
 

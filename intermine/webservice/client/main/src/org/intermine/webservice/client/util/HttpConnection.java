@@ -42,7 +42,6 @@ import org.intermine.webservice.client.exceptions.ServiceException;
 import org.intermine.webservice.client.exceptions.ServiceForbiddenException;
 import org.intermine.webservice.client.exceptions.ServiceUnavailableException;
 import org.json.JSONException;
-import org.intermine.model.InterMineId;
 import org.json.JSONObject;
 
 /**
@@ -158,7 +157,7 @@ public class HttpConnection
         Properties systemProps = System.getProperties();
         if (systemProps.containsKey("http.proxyHost")) {
             String server = systemProps.getProperty("http.proxyHost");
-            InterMineId port = InterMineId.valueOf(systemProps.getProperty("http.proxyPort", "-1"));
+            Integer port = Integer.valueOf(systemProps.getProperty("http.proxyPort", "-1"));
             ProxyHost ph = new ProxyHost(server, port);
             client.getHostConfiguration().setProxyHost(ph);
         }

@@ -88,19 +88,19 @@ public class FindInListAction extends InterMineAction
             String bagQualifiedType = bag.getQualifiedType();
             Collection<String> keyFields =
                 ClassKeyHelper.getKeyFieldNames(classKeys, bagQualifiedType);
-            int foundId = -1;
+            InterMineId foundId = null;
             if (keyFields.size() > 0) {
                 Query q = makeQuery(textToFind, bag, keyFields, os.getModel());
                 foundId = findFirst(os, q);
             }
-            if (foundId == -1) {
+            if (foundId == null) {
                 // no class key fields match so try all keys
                 List<String> allStringFields = getStringFields(os.getModel(), bagQualifiedType);
                 Query q = makeQuery(textToFind, bag, allStringFields, os.getModel());
                 foundId = findFirst(os, q);
             }
 
-            if (foundId == -1) {
+            if (foundId == null) {
                 SessionMethods.recordMessage("Cannot find \"" + textToFind + "\" in " + bagName,
                                              session);
                 // radek: so we can apply a style based on failed search results
@@ -207,9 +207,9 @@ public class FindInListAction extends InterMineAction
     private InterMineId findFirst(ObjectStore os, Query q) {
         Results res = os.execute(q);
         try {
-            return ((InterMineId) ((ResultsRow) res.get(0)).get(0)).objectValue();
+            return (new InterMineId((Number)((ResultsRow)res.get(0)).get(0)));
         } catch (IndexOutOfBoundsException e) {
-            return -1;
+            return null;
         }
     }
 }

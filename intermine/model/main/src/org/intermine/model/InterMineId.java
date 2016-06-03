@@ -23,29 +23,42 @@ public class InterMineId extends Number implements Comparable <InterMineId>{
   public int nativeValue() {
     return value.intValue();
   }
+  @Override
   public double doubleValue() {
     return value.doubleValue();
   }
+  @Override
   public float floatValue() {
     return value.floatValue();
   }
+  @Override
   public int intValue() {
     return value.intValue();
   }
+  @Override
   public byte byteValue() {
     return value.byteValue();
   }
+  @Override
   public short shortValue() {
     return value.shortValue();
   }
+  @Override
   public long longValue() {
     return value.longValue();
   }
+  @Override
   public String toString() {
     return value.toString();
   }
-  public boolean equals(InterMineId obj) {
-    return value == obj.nativeValue();
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Number ) {
+      return longValue() == ((Number)obj).longValue();
+    } else {
+      return false;
+    }
+
   }
   public void add(int i) {
     value = value + i;
@@ -59,6 +72,7 @@ public class InterMineId extends Number implements Comparable <InterMineId>{
   public int compareTo(long x) {
     return compare(value.longValue(),x);
   }
+  @Override
   public int hashCode() {
     return value.hashCode();
   }
@@ -88,6 +102,9 @@ public class InterMineId extends Number implements Comparable <InterMineId>{
   }
   public static InterMineId valueOf(int i) {
     return new InterMineId(i);
+  }  
+  public static InterMineId valueOf(Integer i) {
+    return new InterMineId(i.intValue());
   }
   public static InterMineId valueOf(InterMineId i) {
     return new InterMineId(i);

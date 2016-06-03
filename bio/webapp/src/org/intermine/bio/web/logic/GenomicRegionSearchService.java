@@ -89,7 +89,7 @@ public class GenomicRegionSearchService
     private GenomicRegionSearchConstraint grsc = null;
     private static Set<String> featureTypesInOrgs = null;
     private static Map<String, List<String>> featureTypeToSOTermMap = null;
-    private static Map<String, InterMineId> orgTaxonIdMap = null;
+    private static Map<String, Integer> orgTaxonIdMap = null;
     private List<String> selectionInfo = new ArrayList<String>();
 
     /**
@@ -453,7 +453,7 @@ public class GenomicRegionSearchService
 
         if (initBatchSizeStr != null && !"".equals(initBatchSizeStr)) {
             try {
-                return InterMineId.parseInt(initBatchSizeStr);
+                return Integer.parseInt(initBatchSizeStr);
             } catch (NumberFormatException e) {
                 LOG.warn("Couldn't read integer value from 'genomicsRegionSearch.initBatchSize'"
                         + " property:" + initBatchSizeStr);
@@ -501,12 +501,12 @@ public class GenomicRegionSearchService
         // Organism
         grsc.setOrgName(organism);
 
-        if (InterMineId.parseInt(extendedRegionSize) < 0) {
+        if (Integer.parseInt(extendedRegionSize) < 0) {
             throw new Exception(
                     "extendedRegionSize can't be a negative value: "
                             + extendedRegionSize);
         } else {
-            grsc.setExtededRegionSize(InterMineId.parseInt(extendedRegionSize));
+            grsc.setExtededRegionSize(Integer.parseInt(extendedRegionSize));
         }
 
         selectionInfo.add("<b>Selected organism: </b><i>" + organism + "</i>");
@@ -632,54 +632,54 @@ public class GenomicRegionSearchService
                 String[] spanItems = (spanStr.split(":"))[1].split("\\..");
                 String start = spanItems[0].trim();
                 if ("isInterBaseCoordinate".equals(dataFormat)) {
-                    aSpan.setStart(InterMineId.valueOf(start) + 1);
+                    aSpan.setStart(Integer.valueOf(start) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(start));
+                    aSpan.setStart(Integer.valueOf(start));
                 }
-                aSpan.setEnd(InterMineId.valueOf(spanItems[1]));
+                aSpan.setEnd(Integer.valueOf(spanItems[1]));
             } else if (Pattern.matches(ddotstagRegex, spanStr)) {
                 spanStr = spanStr.contains(",") ? spanStr.replaceAll(",", "") : spanStr;
                 aSpan.setChr((spanStr.split(":"))[0]);
                 String[] spanItems = (spanStr.split(":"))[1].split("\\..");
                 String start = spanItems[0].trim();
                 if ("isInterBaseCoordinate".equals(dataFormat)) {
-                    aSpan.setStart(InterMineId.valueOf(start) + 1);
+                    aSpan.setStart(Integer.valueOf(start) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(start));
+                    aSpan.setStart(Integer.valueOf(start));
                 }
-                aSpan.setEnd(InterMineId.valueOf(spanItems[1]));
-                aSpan.setTag(InterMineId.valueOf((spanStr.split(":"))[2]));
+                aSpan.setEnd(Integer.valueOf(spanItems[1]));
+                aSpan.setTag(Integer.valueOf((spanStr.split(":"))[2]));
             } else if (Pattern.matches(tabRegex, spanStr)) {
                 spanStr = spanStr.contains(",") ? spanStr.replaceAll(",", "") : spanStr;
                 String[] spanItems = spanStr.split("\t");
                 aSpan.setChr(spanItems[0]);
                 if ("isInterBaseCoordinate".equals(dataFormat)) {
-                    aSpan.setStart(InterMineId.valueOf(spanItems[1]) + 1);
+                    aSpan.setStart(Integer.valueOf(spanItems[1]) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(spanItems[1]));
+                    aSpan.setStart(Integer.valueOf(spanItems[1]));
                 }
-                aSpan.setEnd(InterMineId.valueOf(spanItems[2]));
+                aSpan.setEnd(Integer.valueOf(spanItems[2]));
             } else if (Pattern.matches(dashRegex, spanStr)) {
                 spanStr = spanStr.contains(",") ? spanStr.replaceAll(",", "") : spanStr;
                 aSpan.setChr((spanStr.split(":"))[0]);
                 String[] spanItems = (spanStr.split(":"))[1].split("-");
                 String start = spanItems[0].trim();
                 if ("isInterBaseCoordinate".equals(dataFormat)) {
-                    aSpan.setStart(InterMineId.valueOf(start) + 1);
+                    aSpan.setStart(Integer.valueOf(start) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(start));
+                    aSpan.setStart(Integer.valueOf(start));
                 }
-                aSpan.setEnd(InterMineId.valueOf(spanItems[1]));
+                aSpan.setEnd(Integer.valueOf(spanItems[1]));
             } else if (Pattern.matches(snpRegex, spanStr)) {
                 spanStr = spanStr.contains(",") ? spanStr.replaceAll(",", "") : spanStr;
                 aSpan.setChr((spanStr.split(":"))[0]);
                 String start = (spanStr.split(":"))[1].trim();
                 if ("isInterBaseCoordinate".equals(dataFormat)) {
-                    aSpan.setStart(InterMineId.valueOf(start) + 1);
+                    aSpan.setStart(Integer.valueOf(start) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(start));
+                    aSpan.setStart(Integer.valueOf(start));
                 }
-                aSpan.setEnd(InterMineId.valueOf((spanStr.split(":"))[1].trim()));
+                aSpan.setEnd(Integer.valueOf((spanStr.split(":"))[1].trim()));
 
             } else {
                 if (!Pattern.matches(emptyLine, spanStr)) {
@@ -717,15 +717,15 @@ public class GenomicRegionSearchService
         selectionInfo.add("<b>Selected feature types: </b>"
                 + ftString.substring(0, ftString.lastIndexOf(", ")));
 
-        if (InterMineId.parseInt(extendedRegionSize) > 0) {
-            if (InterMineId.parseInt(extendedRegionSize) >= 1000
-                    && InterMineId.parseInt(extendedRegionSize) < 1000000) {
+        if (Integer.parseInt(extendedRegionSize) > 0) {
+            if (Integer.parseInt(extendedRegionSize) >= 1000
+                    && Integer.parseInt(extendedRegionSize) < 1000000) {
                 selectionInfo.add("<b>Extend Regions: </b>"
-                        + new DecimalFormat("#.##").format(InterMineId
+                        + new DecimalFormat("#.##").format(Integer
                                 .parseInt(extendedRegionSize) / 1000) + " kbp");
-            } else if (InterMineId.parseInt(extendedRegionSize) >= 1000000) {
+            } else if (Integer.parseInt(extendedRegionSize) >= 1000000) {
                 selectionInfo.add("<b>Extend Regions: </b>"
-                        + new DecimalFormat("#.##").format(InterMineId
+                        + new DecimalFormat("#.##").format(Integer
                                 .parseInt(extendedRegionSize) / 1000000) + " Mbp");
             } else {
                 selectionInfo.add("<b>Extend Regions: </b>" + extendedRegionSize + "bp");
@@ -807,7 +807,7 @@ public class GenomicRegionSearchService
      *
      * @return orgTaxonIdMap
      */
-    public Map<String, InterMineId> getOrganismToTaxonMap() {
+    public Map<String, Integer> getOrganismToTaxonMap() {
         if (orgTaxonIdMap == null) {
             orgTaxonIdMap = GenomicRegionSearchQueryRunner.getTaxonInfo(interMineAPI,
                     initBatchSize);
@@ -1101,14 +1101,14 @@ public class GenomicRegionSearchService
      */
     public String convertResultMapToHTML(
             Map<GenomicRegion, List<List<String>>> resultMap,
-            Map<GenomicRegion, Map<String, InterMineId>> resultStat,
+            Map<GenomicRegion, Map<String, Integer>> resultStat,
             List<GenomicRegion> genomicRegionList, int fromIdx, int toIdx,
             HttpSession session) {
 
         // TODO hard coded count limit
         int maxRecordCutOff = 1000;
         if (webProperties.getProperty("genomicRegionSearch.maxRecordCutOff") != null) {
-            maxRecordCutOff = InterMineId.valueOf(webProperties
+            maxRecordCutOff = Integer.valueOf(webProperties
                     .getProperty("genomicRegionSearch.maxRecordCutOff"));
         }
 
@@ -1135,19 +1135,19 @@ public class GenomicRegionSearchService
         for (GenomicRegion s : subGenomicRegionList) {
 
             List<List<String>> features = resultMap.get(s);
-            Map<String, InterMineId> stat = resultStat.get(s);
+            Map<String, Integer> stat = resultStat.get(s);
 
             String ftHtml = "";
             Set<String> ftSet = null;
-            Map<String, InterMineId> aboveCutOffFeatureTypeMap = null;
+            Map<String, Integer> aboveCutOffFeatureTypeMap = null;
             if (stat != null) {
                 // get list of featureTypes
                 ftHtml = categorizeFeatureTypes(stat.keySet(), s);
                 ftSet = getFeatureTypeSetInAlphabeticalOrder(stat.keySet());
-                aboveCutOffFeatureTypeMap = new LinkedHashMap<String, InterMineId>();
+                aboveCutOffFeatureTypeMap = new LinkedHashMap<String, Integer>();
                 int topCount = stat.values().iterator().next();
                 if (topCount >= maxRecordCutOff) {
-                    for (Entry<String, InterMineId> e : stat.entrySet()) {
+                    for (Entry<String, Integer> e : stat.entrySet()) {
                         if (e.getValue() > maxRecordCutOff) {
                             aboveCutOffFeatureTypeMap.put(e.getKey(), e.getValue());
                         } else {
@@ -1333,7 +1333,7 @@ public class GenomicRegionSearchService
     private int addFeaturesAboveCutoff(String galaxyDisplay,
             String exportChromosomeSegment, StringBuffer sb, GenomicRegion s,
             List<List<String>> features, String ftHtml, Set<String> ftSet,
-            Map<String, InterMineId> aboveCutOffFeatureTypeMap, String span) {
+            Map<String, Integer> aboveCutOffFeatureTypeMap, String span) {
         int length = features.size();
 
         String firstFeatureType = aboveCutOffFeatureTypeMap.keySet().iterator().next();
@@ -1509,7 +1509,7 @@ public class GenomicRegionSearchService
 
     private void parseFeaturesBelowCutoff(String baseURL, String path,
             StringBuffer sb, List<List<String>> features,
-            Map<String, InterMineId> aboveCutOffFeatureTypeMap, int length) {
+            Map<String, Integer> aboveCutOffFeatureTypeMap, int length) {
         for (int i = 0; i < length; i++) {
 
             String id = features.get(i).get(0);
@@ -1567,7 +1567,7 @@ public class GenomicRegionSearchService
     }
 
     private void parseFeaturesAboveCutoff(StringBuffer sb, GenomicRegion s,
-            Map<String, InterMineId> aboveCutOffFeatureTypeMap) {
+            Map<String, Integer> aboveCutOffFeatureTypeMap) {
         if (aboveCutOffFeatureTypeMap.size() > 1) {
             List<String> aboveCutOffFeatureTypeList = new ArrayList<String>(
                     aboveCutOffFeatureTypeMap.keySet());
@@ -1656,8 +1656,8 @@ public class GenomicRegionSearchService
 
         int spanStart = gr.getStart();
         int spanEnd = gr.getEnd();
-        int featureStart = InterMineId.valueOf(r.get(3));
-        int featureEnd = InterMineId.valueOf(r.get(4));
+        int featureStart = Integer.valueOf(r.get(3));
+        int featureEnd = Integer.valueOf(r.get(4));
 
         int matchedBaseCount = 0;
 
@@ -1731,8 +1731,8 @@ public class GenomicRegionSearchService
      * @param organisms set of org names
      * @return set of taxonIds
      */
-    public Set<InterMineId> getTaxonIds(Set<String> organisms) {
-        Set<InterMineId> taxIds = new HashSet<InterMineId>();
+    public Set<Integer> getTaxonIds(Set<String> organisms) {
+        Set<Integer> taxIds = new HashSet<Integer>();
 
         for (String org : organisms) {
             taxIds.add(this.getOrganismToTaxonMap().get(org));

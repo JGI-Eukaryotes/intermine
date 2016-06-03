@@ -385,7 +385,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
         @SuppressWarnings({ "unchecked", "rawtypes" })
         Collection<ResultsRow<Object>> res = (Collection) l;
         for (ResultsRow<Object> row : res) {
-            Collection<Object> fromCollection = collections.get(row.get(0));
+            Collection<Object> fromCollection = collections.get(new InterMineId((Number)row.get(0)));
             if (fromCollection != null) {
                 Object toObj = row.get(1);
                 fromCollection.add(toObj);

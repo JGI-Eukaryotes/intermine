@@ -109,8 +109,8 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             throw new RuntimeException(e);
         }
 
-        InterMineId up = 0;
-        InterMineId down = 0;
+        Integer up = 0;
+        Integer down = 0;
         while (results.hasNext()) {
             List<ResultElement> item = results.next();
             String expression = item.get(0).getField().toString();
@@ -121,7 +121,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             }
         }
 
-        HashMap<String, InterMineId> map = new HashMap<String, InterMineId>();
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
         map.put("up", up);
         map.put("down", down);
 
@@ -149,8 +149,8 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             throw new RuntimeException(e);
         }
 
-        InterMineId up = 0;
-        InterMineId down = 0;
+        Integer up = 0;
+        Integer down = 0;
         while (results.hasNext()) {
             List<ResultElement> item = results.next();
             String expression = item.get(0).getField().toString();
@@ -161,7 +161,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             }
         }
 
-        HashMap<String, InterMineId> map = new HashMap<String, InterMineId>();
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
         map.put("up", up);
         map.put("down", down);
 
@@ -189,7 +189,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
      * @param objectId
      * @return
      */
-    private PathQuery allelesPathQuery(InterMineId objectId) {
+    private PathQuery allelesPathQuery(Integer objectId) {
         PathQuery query = new PathQuery(im.getModel());
         query.addViews("Gene.homologues.homologue.alleles.primaryIdentifier");
         query.addConstraint(Constraints.eq("Gene.homologues.homologue.organism.shortName",
@@ -318,7 +318,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
                     throw new RuntimeException(e);
                 }
 
-                HashMap<String, InterMineId> temp = new HashMap<String, InterMineId>();
+                HashMap<String, Integer> temp = new HashMap<String, Integer>();
                 while (results.hasNext()) {
                     List<ResultElement> item = results.next();
                     String value = item.get(0).getField().toString();

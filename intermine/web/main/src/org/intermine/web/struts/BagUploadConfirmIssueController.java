@@ -137,7 +137,7 @@ public class BagUploadConfirmIssueController extends TilesAction
             for (Object rowNumber : value) {
                 // fetch the actual row in the table
                 BagUploadConfirmInlineResultsTableRow tableRow =
-                    (BagUploadConfirmInlineResultsTableRow) tableRows.get((InterMineId) rowNumber);
+                    (BagUploadConfirmInlineResultsTableRow) tableRows.get(((Number)rowNumber).intValue());
                 // set the new values
                 if (first) {
                     tableRow.setRowSpan(value.size());
@@ -145,7 +145,7 @@ public class BagUploadConfirmIssueController extends TilesAction
                 }
                 tableRow.setIdentifier((String) identifierKey);
                 // save the row back
-                tableRows.set((InterMineId) rowNumber, tableRow);
+                tableRows.set(((Number)rowNumber).intValue(), tableRow);
                 // switch
                 first = false;
             }

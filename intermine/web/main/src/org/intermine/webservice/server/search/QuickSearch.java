@@ -95,7 +95,7 @@ public class QuickSearch extends JSONService
         if (input.getIncludeFacets()) {
             Map<String, Object> facetData = new HashMap<String, Object>();
             for (KeywordSearchFacet kwsf: results.getFacets()) {
-                Map<String, InterMineId> sfData = new HashMap<String, InterMineId>();
+                Map<String, Integer> sfData = new HashMap<String, Integer>();
                 for (BrowseFacet bf: kwsf.getItems()) {
                     sfData.put(bf.getValue(), bf.getFacetValueHitCount());
                 }
@@ -155,7 +155,7 @@ public class QuickSearch extends JSONService
 
         private final String searchTerm;
         private final int offset;
-        private final InterMineId limit;
+        private final Integer limit;
         private final String searchBag;
         private final boolean includeFacets;
 
@@ -172,10 +172,10 @@ public class QuickSearch extends JSONService
             includeFacets = !Boolean.valueOf(request.getParameter("nofacets"));
 
             String limitParam = request.getParameter("size");
-            InterMineId lim = null;
+            Integer lim = null;
             if (!StringUtils.isBlank(limitParam)) {
                 try {
-                    lim = InterMineId.valueOf(limitParam);
+                    lim = Integer.valueOf(limitParam);
                 } catch (NumberFormatException e) {
                     throw new BadRequestException("Expected a number for size: got " + limitParam);
                 }
@@ -186,7 +186,7 @@ public class QuickSearch extends JSONService
             int parsed = 0;
             if (!StringUtils.isBlank(offsetP)) {
                 try {
-                    parsed = InterMineId.valueOf(offsetP);
+                    parsed = Integer.valueOf(offsetP);
                 } catch (NumberFormatException e) {
                     throw new BadRequestException("Expected a number for start: got " + offsetP);
                 }

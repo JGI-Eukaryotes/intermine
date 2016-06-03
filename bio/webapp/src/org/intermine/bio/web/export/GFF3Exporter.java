@@ -67,14 +67,14 @@ public class GFF3Exporter implements Exporter
         "http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=7227";
 
     PrintWriter out;
-    private List<InterMineId> featureIndexes;
+    private List<Integer> featureIndexes;
     private Map<String, String> soClassNames;
     private int writtenResultsCount = 0;
     private boolean headerPrinted = false;
     private IntPresentSet exportedIds = new IntPresentSet();
     private List<String> attributesNames;
     private String sourceName;
-    private Set<InterMineId> organisms;
+    private Set<Integer> organisms;
     // this one to store the lower case class names of  soClassNames,
     // for comparison with path elements classes.
     private Set<String> cNames = new HashSet<String>();
@@ -93,8 +93,8 @@ public class GFF3Exporter implements Exporter
      * @param organisms taxon id of the organisms
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      */
-    public GFF3Exporter(PrintWriter out, List<InterMineId> indexes, Map<String, String> soClassNames,
-            List<String> attributesNames, String sourceName, Set<InterMineId> organisms,
+    public GFF3Exporter(PrintWriter out, List<Integer> indexes, Map<String, String> soClassNames,
+            List<String> attributesNames, String sourceName, Set<Integer> organisms,
             boolean makeUcscCompatible) {
         this.out = out;
         this.featureIndexes = indexes;
@@ -122,8 +122,8 @@ public class GFF3Exporter implements Exporter
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      * @param paths paths
      */
-    public GFF3Exporter(PrintWriter out, List<InterMineId> indexes, Map<String, String> soClassNames,
-            List<String> attributesNames, String sourceName, Set<InterMineId> organisms,
+    public GFF3Exporter(PrintWriter out, List<Integer> indexes, Map<String, String> soClassNames,
+            List<String> attributesNames, String sourceName, Set<Integer> organisms,
             boolean makeUcscCompatible, List<Path> paths) {
         this.out = out;
         this.featureIndexes = indexes;
@@ -148,7 +148,7 @@ public class GFF3Exporter implements Exporter
         Properties props = PropertiesUtil.getProperties();
 
         if (organisms != null && !organisms.isEmpty()) {
-            for (InterMineId taxId : organisms) {
+            for (Integer taxId : organisms) {
                 if (taxId == 7227) {
                     String fV = props.getProperty("genomeVersion.fly");
                     if (fV != null && fV.length() > 0) {
@@ -157,7 +157,7 @@ public class GFF3Exporter implements Exporter
                     }
                 }
             }
-            for (InterMineId taxId : organisms) {
+            for (Integer taxId : organisms) {
                 if (taxId == 6239) {
                     String wV = props.getProperty("genomeVersion.worm");
                     if (wV != null && wV.length() > 0) {
@@ -216,11 +216,11 @@ public class GFF3Exporter implements Exporter
     }
 
     /* State for the exportRow method, to allow several rows to be merged. */
-    private Map<String, InterMineId> attributeVersions = new HashMap<String, InterMineId>();
+    private Map<String, Integer> attributeVersions = new HashMap<String, Integer>();
     private InterMineId lastLsfId = null;
     private SequenceFeature lastLsf = null;
     private Map<String, List<String>> attributes = null;
-    private Map<String, Set<InterMineId>> seenAttributes = new HashMap<String, Set<InterMineId>>();
+    private Map<String, Set<Integer>> seenAttributes = new HashMap<String, Set<Integer>>();
 
     private void exportRow(List<ResultElement> row,
             Collection<Path> unionPathCollection, Collection<Path> newPathCollection) {
@@ -463,21 +463,21 @@ public class GFF3Exporter implements Exporter
      */
     private void checkAttribute(ResultElement el, String attributeName) {
         if (!GFF_FIELDS.contains(attributeName)) {
-            Set<InterMineId> seenAttributeValues = seenAttributes.get(attributeName);
+            Set<Integer> seenAttributeValues = seenAttributes.get(attributeName);
             if (seenAttributeValues == null) {
-                seenAttributeValues = new HashSet<InterMineId>();
+                seenAttributeValues = new HashSet<Integer>();
                 seenAttributes.put(attributeName, seenAttributeValues);
             }
             if (!seenAttributeValues.contains(el.getId())) {
                 seenAttributeValues.add(el.getId());
-                InterMineId version = attributeVersions.get(attributeName);
+                Integer version = attributeVersions.get(attributeName);
                 if (version == null) {
-                    version = new InterMineId(1);
+                    version = new Integer(1);
                     attributes.put(attributeName, formatElementValue(el));
                 } else {
                     attributes.put(attributeName + version, formatElementValue(el));
                 }
-                attributeVersions.put(attributeName, new InterMineId(version.intValue() + 1));
+                attributeVersions.put(attributeName, new Integer(version.intValue() + 1));
             }
         }
     }
@@ -501,7 +501,7 @@ public class GFF3Exporter implements Exporter
 
     private List<ResultElement> getResultElements(List<ResultElement> row) {
         List<ResultElement> els = new ArrayList<ResultElement>();
-        for (InterMineId index : featureIndexes) {
+        for (Integer index : featureIndexes) {
             if (row.get(index) != null) {
                 els.add(row.get(index));
             }

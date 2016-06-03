@@ -33,7 +33,6 @@ import org.intermine.webservice.server.exceptions.ServiceException;
 import org.intermine.webservice.server.output.JSONFormatter;
 import org.intermine.webservice.server.query.AbstractQueryService;
 import org.intermine.webservice.server.query.QueryRequestParser;
-import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.query.result.PathQueryBuilder;
 
 /**
@@ -84,8 +83,8 @@ public class SequenceService extends JSONService
 
     @Override
     protected void execute() {
-        InterMineId start = getIntParameter("start", 0);
-        InterMineId end = getIntParameter("end", null);
+        Integer start = getIntParameter("start", 0);
+        Integer end = getIntParameter("end", null);
         PathQuery pq = getQuery();
 
         Iterator<CharSequence> sequences = getSequences(pq);
@@ -159,7 +158,7 @@ public class SequenceService extends JSONService
         }
     }
 
-    private Map<String, Object> makeFeature(CharSequence chars, InterMineId start, InterMineId end) {
+    private Map<String, Object> makeFeature(CharSequence chars, Integer start, Integer end) {
         CharSequence subSequence;
         try {
             if (end == null) {

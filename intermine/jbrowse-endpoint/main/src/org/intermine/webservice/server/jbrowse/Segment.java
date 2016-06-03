@@ -11,7 +11,6 @@ package org.intermine.webservice.server.jbrowse;
  */
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.intermine.model.InterMineId;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
@@ -23,9 +22,9 @@ public final class Segment
 {
 
     private final String section;
-    private final InterMineId start, end;
+    private final Integer start, end;
 
-    private Segment(String section, InterMineId start, InterMineId end) {
+    private Segment(String section, Integer start, Integer end) {
         this.section = section;
         this.start = start;
         this.end = end;
@@ -46,7 +45,7 @@ public final class Segment
      * @param e end
      * @return segment
      */
-    public static Segment makeSegment(String ref, InterMineId s, InterMineId e) {
+    public static Segment makeSegment(String ref, Integer s, Integer e) {
         if (("global").equals(ref)) {
             return GLOBAL_SEGMENT;
         }
@@ -66,21 +65,21 @@ public final class Segment
     /**
      * @return start
      */
-    public InterMineId getStart() {
+    public Integer getStart() {
         return this.start;
     }
 
     /**
      * @return end
      */
-    public InterMineId getEnd() {
+    public Integer getEnd() {
         return this.end;
     }
 
     /**
      * @return width
      */
-    public InterMineId getWidth() {
+    public Integer getWidth() {
         if (this.end == null || this.start == null) {
             return null;
         }
@@ -96,7 +95,7 @@ public final class Segment
         } else if (start == null || end == null) {
             throw new RuntimeException("Not implemented"); // TODO
         } else {
-            // Convert Interbase -> Base coördinates: start + 1
+            // Convert Interbase -> Base coordinates: start + 1
             return String.format("%s:%d..%d", section, start + 1, end);
         }
     }

@@ -9,7 +9,6 @@ package org.intermine.webservice.server.core;
  * information or http://www.gnu.org/copyleft/lesser.html.
  *
  */
-import org.intermine.model.InterMineId;
 
 /**
  * Parameter class for passing start and limit arguments to
@@ -19,20 +18,20 @@ import org.intermine.model.InterMineId;
  */
 public class Page
 {
-    private final InterMineId start;
-    private final InterMineId size;
+    private final Integer start;
+    private final Integer size;
 
     /**
      * Construct a new page.
      * @param start The index of the first row to return.
      * @param size The maximum number of rows to return.
      */
-    public Page(int start, InterMineId size) {
-        this.start = new InterMineId(start);
+    public Page(int start, Integer size) {
+        this.start = new Integer(start);
         this.size = size;
     }
 
-    public Page(InterMineId start, InterMineId size) {
+    public Page(Integer start, Integer size) {
       this.start = start;
       this.size = size;
     }
@@ -51,7 +50,7 @@ public class Page
      * Get the index of the first row that is requested.
      * @return The index of the first row to return.
      */
-    public InterMineId getStart() {
+    public Integer getStart() {
         return start;
     }
 
@@ -59,7 +58,7 @@ public class Page
      * @return The requested size, or NULL if all results are
      * requested.
      */
-    public InterMineId getSize() {
+    public Integer getSize() {
         return size;
     }
 
@@ -67,11 +66,11 @@ public class Page
      * @return The index of the last result to be returned, or NULL
      * if all results are requested.
      */
-    public InterMineId getEnd() {
+    public Integer getEnd() {
         if (size == null) {
             return null;
         } else {
-            return new InterMineId(start.nativeValue() + size.nativeValue());
+            return new Integer(start + size);
         }
     }
 
@@ -80,14 +79,14 @@ public class Page
      * @return Whether or not the given index lies within the page.
      */
     public boolean withinRange(int index) {
-        InterMineId end = getEnd();
+        Integer end = getEnd();
         if (end != null && end.compareTo(index) <= 0) {
             return false;
         }
         return start.compareTo(index) >= 0 ;
     }  
-    public boolean withinRange(InterMineId index) {
-      InterMineId end = getEnd();
+    public boolean withinRange(Integer index) {
+      Integer end = getEnd();
       if (end != null && end.compareTo(index) <= 0) {
           return false;
       }

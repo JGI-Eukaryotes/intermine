@@ -49,7 +49,7 @@ public class AddToBagAction extends InterMineAction
     public ActionForward execute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response) {
-        int id = InterMineId.parseInt(request.getParameter("object"));
+        InterMineId id = new InterMineId(request.getParameter("object"));
         HttpSession session = request.getSession();
 
         final InterMineAPI im = SessionMethods.getInterMineAPI(request.getSession());

@@ -81,11 +81,11 @@ public class MyMineController extends TilesAction
 
         if (SessionMethods.isSuperUser(session)) {
             TrackerDelegate td = im.getTrackerDelegate();
-            Map<String, InterMineId> templateCounter = td.getAccessCounter();
+            Map<String, Integer> templateCounter = td.getAccessCounter();
             if (templateCounter != null) {
                 request.setAttribute("templateCounter", templateCounter);
             }
-            Map<String, InterMineId> templateRank = td.getRank(im.getTemplateManager());
+            Map<String, Integer> templateRank = td.getRank(im.getTemplateManager());
             if (templateRank != null) {
                 request.setAttribute("templateRank", templateRank);
             }

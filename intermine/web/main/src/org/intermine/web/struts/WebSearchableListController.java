@@ -44,12 +44,12 @@ import org.intermine.api.search.SearchResults;
 import org.intermine.api.search.WebSearchable;
 import org.intermine.api.tag.TagTypes;
 import org.intermine.api.template.TemplateManager;
+import org.intermine.model.InterMineId;
 import org.intermine.model.userprofile.Tag;
 import org.intermine.objectstore.query.ObjectStoreBag;
 import org.intermine.metadata.StringUtil;
 import org.intermine.web.logic.WebUtil;
 import org.intermine.web.logic.session.SessionMethods;
-import org.intermine.model.InterMineId;
 import org.stringtree.json.JSONWriter;
 
 /**
@@ -116,7 +116,7 @@ public class WebSearchableListController extends TilesAction
         int limitInt = 0;
         if (limit != null) {
             try {
-                limitInt = new InterMineId(limit.trim()).intValue();
+                limitInt = new Integer(limit.trim()).intValue();
             } catch (NumberFormatException e) {
                 // ignore - don't shuffle
             }
@@ -136,7 +136,7 @@ public class WebSearchableListController extends TilesAction
 
         SearchResults.filterOutInvalidTemplates(filteredWebSearchables);
         for (String wsName: (Set<String>) filteredWebSearchables.keySet()) {
-            wsMapForJS.put(wsName, new InterMineId(1));
+            wsMapForJS.put(wsName, new Integer(1));
         }
 
         Profile profile = SessionMethods.getProfile(session);
@@ -147,7 +147,7 @@ public class WebSearchableListController extends TilesAction
             Map<String, InterMineBag> sharedBags = profile.getSharedBags();
             Map<String, String> sharedBagsByOwner = new HashMap<String, String>();
             for (Map.Entry<String, InterMineBag> entry : sharedBags.entrySet()) {
-                int id = entry.getValue().getProfileId();
+                InterMineId id = entry.getValue().getProfileId();
                 Profile owner = pm.getProfile(id);
                 sharedBagsByOwner.put(entry.getKey(), owner.getName());
             }
@@ -173,11 +173,11 @@ public class WebSearchableListController extends TilesAction
                 return tags;
             }
 
-            private InterMineId resolveOrderFromTagsList(List<Tag> tags) {
+            private Integer resolveOrderFromTagsList(List<Tag> tags) {
                 for (Tag t : tags) {
                     String name = t.getTagName();
                     if (name.startsWith("im:order:")) {
-                        return InterMineId.parseInt(name.replaceAll("[^0-9]", ""));
+                        return Integer.parseInt(name.replaceAll("[^0-9]", ""));
                     }
                 }
                 return 666;
@@ -198,8 +198,8 @@ public class WebSearchableListController extends TilesAction
             }
 
             private int compareBags(InterMineBag bag1, InterMineBag bag2) {
-                InterMineId aO = resolveOrderFromTagsList(resolveTagsInBag(bag1));
-                InterMineId bO = resolveOrderFromTagsList(resolveTagsInBag(bag2));
+                Integer aO = resolveOrderFromTagsList(resolveTagsInBag(bag1));
+                Integer bO = resolveOrderFromTagsList(resolveTagsInBag(bag2));
 
                 if (aO < bO) {
                     return -1;
@@ -364,7 +364,7 @@ public class WebSearchableListController extends TilesAction
         for (Object o : filteredWebSearchables.values()) {
             InterMineBag bag = (InterMineBag) o;
             ObjectStoreBag osb = bag.getOsb();
-            InterMineId i = new InterMineId(osb.getBagId());
+            InterMineId i = osb.getBagId();
             // check that this is in our list
             if (!set.contains(i.toString())) {
                 clone.remove(bag.getName());

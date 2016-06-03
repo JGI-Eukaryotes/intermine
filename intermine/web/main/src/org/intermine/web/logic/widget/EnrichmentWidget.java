@@ -36,7 +36,6 @@ import org.intermine.pathquery.PathConstraint;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.web.logic.widget.config.EnrichmentWidgetConfig;
 import org.intermine.web.logic.widget.config.WidgetConfig;
-import org.intermine.model.InterMineId;
 import org.intermine.web.logic.widget.config.WidgetConfigUtil;
 
 /**
@@ -242,7 +241,7 @@ public class EnrichmentWidget extends Widget
         List<List<Object>> exportResults = new LinkedList<List<Object>>();
         if (results != null) {
             Map<String, BigDecimal> pValues = results.getPValues();
-            Map<String, InterMineId> counts = results.getCounts();
+            Map<String, Integer> counts = results.getCounts();
             Map<String, String> labels = results.getLabels();
             for (String id : pValues.keySet()) {
                 List<Object> row = new LinkedList<Object>();

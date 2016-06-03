@@ -187,8 +187,8 @@ public class EquivalentObjectHints
                         q.setDistinct(false);
                         List<ResultsRow<Object>> results2 = os.execute(q, 0, 2, false, false,
                                 ObjectStore.SEQUENCE_IGNORE);
-                        values = new InterMineIdRangeSet(((InterMineId) results2.get(0).get(0)).intValue(),
-                                ((InterMineId) results2.get(0).get(1)).intValue());
+                        values = new InterMineIdRangeSet(new InterMineId((Number)results2.get(0).get(0)),
+                                new InterMineId((Number)results2.get(0).get(1)));
                     } else {
                         values = AlwaysSet.getInstance();
                     }
@@ -273,28 +273,28 @@ public class EquivalentObjectHints
 
     private static class InterMineIdRangeSet extends PseudoSet<Object>
     {
-        private int low, high;
+        private InterMineId low, high;
 
         public InterMineIdRangeSet() {
-            this.low = InterMineId.MAX_VALUE;
-            this.high = InterMineId.MIN_VALUE;
+            this.low = new InterMineId(InterMineId.MAX_VALUE);
+            this.high = new InterMineId(InterMineId.MIN_VALUE);
         }
 
-        public InterMineIdRangeSet(int low, int high) {
+        public InterMineIdRangeSet(InterMineId low, InterMineId high) {
             this.low = low;
             this.high = high;
         }
 
         public boolean contains(Object o) {
-            int i = ((InterMineId) o).intValue();
-            return (i >= low) && (i <= high);
+            InterMineId i = ((InterMineId) o);
+            return (low.compareTo(i)>=0) && (high.compareTo(i)<=0);
         }
 
         @Override
         public boolean add(Object o) {
-            int i = ((InterMineId) o).intValue();
-            low = Math.min(low, i);
-            high = Math.max(high, i);
+            InterMineId i = ((InterMineId) o);
+            low = low.compareTo(i)<0?low:i;
+            high = high.compareTo(i)>0?high:i;
             return false;
         }
 

@@ -24,7 +24,6 @@ import org.apache.commons.lang.StringUtils;
 import org.intermine.api.query.QueryStore;
 import org.intermine.api.query.QueryStoreException;
 import org.intermine.webservice.server.WebServiceRequestParser;
-import org.intermine.model.InterMineId;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 
 /**
@@ -127,10 +126,10 @@ public class QueryRequestParser extends WebServiceRequestParser
      * @param compressed A query compressed to a list of bytes.
      * @return The decompressed query.
      **/
-    public static String decompressLZW(List<InterMineId> compressed) {
+    public static String decompressLZW(List<Integer> compressed) {
         // Build the dictionary.
         int dictSize = 256;
-        Map<InterMineId, String> dictionary = new HashMap<InterMineId, String>();
+        Map<Integer, String> dictionary = new HashMap<Integer, String>();
         for (int i = 0; i < 256; i++) {
             dictionary.put(i, "" + (char) i);
         }
@@ -163,11 +162,11 @@ public class QueryRequestParser extends WebServiceRequestParser
      * @param encoded The compressed and encoded representation of the query.
      */
     public static String decodeLZWString(String encoded) {
-        List<InterMineId> codes = new ArrayList<InterMineId>();
+        List<Integer> codes = new ArrayList<Integer>();
         encoded = fixEncoding(encoded);
         int length = encoded.length();
         for (int i = 0; i < length; i++) {
-            InterMineId cp = InterMineId.valueOf(encoded.codePointAt(i));
+            Integer cp = Integer.valueOf(encoded.codePointAt(i));
             codes.add(cp);
         }
         return decompressLZW(codes);

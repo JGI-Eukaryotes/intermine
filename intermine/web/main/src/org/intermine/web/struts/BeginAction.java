@@ -50,7 +50,7 @@ import org.intermine.web.logic.session.SessionMethods;
  */
 public class BeginAction extends InterMineAction
 {
-    private static final InterMineId MAX_TEMPLATES = new InterMineId(8);
+    private static final int MAX_TEMPLATES = 8;
 
     /**
      * @LinkedHashMap stores tabs of popular templates on the homepage

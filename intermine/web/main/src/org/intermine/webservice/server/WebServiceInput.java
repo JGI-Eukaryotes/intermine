@@ -10,7 +10,6 @@ package org.intermine.webservice.server;
  *
  */
 
-import org.intermine.model.InterMineId;
 
 /**
  * Base class for input classes used with web services.
@@ -19,9 +18,9 @@ import org.intermine.model.InterMineId;
 public class WebServiceInput
 {
 
-    private InterMineId start; // The index of the first item the user will accept.
+    private Integer start; // The index of the first item the user will accept.
 
-    private InterMineId limit; // The maximum number of items the user will accept.
+    private Integer limit; // The maximum number of items the user will accept.
 
     private String userName;
 
@@ -59,7 +58,7 @@ public class WebServiceInput
      * Sets from which index should be results returned 1-based.
      * @param start start
      */
-    public void setStart(InterMineId start) {
+    public void setStart(Integer start) {
         this.start = start;
     }
 
@@ -67,7 +66,7 @@ public class WebServiceInput
      * Sets maximum of returned results.
      * @param limit maximal count
      */
-    public void setLimit(InterMineId limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 
@@ -75,7 +74,7 @@ public class WebServiceInput
      * Returns index of first returned result
      * @return index of first returned result
      */
-    public InterMineId getStart() {
+    public Integer getStart() {
         return start;
     }
 
@@ -83,7 +82,7 @@ public class WebServiceInput
      * Returns maximum number of results the user will accept.
      * @return maximum count
      */
-    public InterMineId getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 }

@@ -578,7 +578,7 @@ public class ListService extends Service
         pq.addView(list.getType() + ".id");
         Set<String> ids = new HashSet<String>();
         for (Item i: items) {
-            ids.add(InterMineId.toString(i.getId()));
+            ids.add(i.getId().toString());
         }
         pq.addConstraint(Constraints.oneOfValues(list.getType() + ".id", ids));
         pq.addConstraint(Constraints.in(list.getType(), list.getName()));

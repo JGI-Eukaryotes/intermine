@@ -30,7 +30,7 @@ import org.xml.sax.SAXParseException;
 
 /**
  * XMLValidator is class that validates xml string according an XML Schema at specified url.
- * @author Radek Štěpán after Jakub Kulaviak
+ * @author Radek after Jakub Kulaviak
  **/
 public class XMLValidator
 {

@@ -144,8 +144,8 @@ public class ReportObject
      * Get the id of this object
      * @return the id
      */
-    public int getId() {
-        return object.getId().intValue();
+    public InterMineId getId() {
+        return object.getId();
     }
 
     /**

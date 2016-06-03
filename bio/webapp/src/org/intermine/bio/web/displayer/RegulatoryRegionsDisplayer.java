@@ -47,7 +47,7 @@ import org.intermine.web.logic.session.SessionMethods;
 public class RegulatoryRegionsDisplayer extends ReportDisplayer
 {
     /** @var maximum amount of rows to show per table */
-    private InterMineId maxCount = 30;
+    private Integer maxCount = 30;
 
     protected static final Logger LOG = Logger.getLogger(RegulatoryRegionsDisplayer.class);
 
@@ -66,7 +66,7 @@ public class RegulatoryRegionsDisplayer extends ReportDisplayer
         // TODO check if type is a gene model type
 
         // group other overlapping features by type, to display types and counts
-        Map<String, InterMineId> regionCounts = new TreeMap<String, InterMineId>();
+        Map<String, Integer> regionCounts = new TreeMap<String, Integer>();
         Map<String, InlineResultsTable> regionTables = new TreeMap<String, InlineResultsTable>();
 
         SequenceFeature startRegion = (SequenceFeature) reportObject.getObject();
@@ -124,7 +124,7 @@ public class RegulatoryRegionsDisplayer extends ReportDisplayer
                     List<InterMineObject> s = new ArrayList<InterMineObject>();
 
                     String type = null;
-                    InterMineId count = this.maxCount;
+                    Integer count = this.maxCount;
                     // loop through each row object
                     while (resultsIter.hasNext() && count > 0) {
                         Object o = resultsIter.next();
@@ -169,14 +169,14 @@ public class RegulatoryRegionsDisplayer extends ReportDisplayer
         request.setAttribute("regionTables", regionTables);
     }
 
-    private void incrementCount(Map<String, InterMineId> regionCounts, InterMineObject feature) {
+    private void incrementCount(Map<String, Integer> regionCounts, InterMineObject feature) {
         String type = DynamicUtil.getSimpleClass(feature).getSimpleName();
-        InterMineId count = regionCounts.get(type);
+        Integer count = regionCounts.get(type);
         if (count == null) {
-            count = new InterMineId(0);
+            count = new Integer(0);
             regionCounts.put(type, count);
         }
-        regionCounts.put(type, new InterMineId(count.intValue() + 1));
+        regionCounts.put(type, new Integer(count.intValue() + 1));
     }
 
 }

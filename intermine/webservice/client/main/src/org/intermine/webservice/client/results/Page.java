@@ -10,7 +10,6 @@ package org.intermine.webservice.client.results;
  *
  */
 
-import org.intermine.model.InterMineId;
 /**
  * Object representing a page parameter.
  *
@@ -28,7 +27,7 @@ public final class Page
     /** The default page size (from the beginning to the maximum page size) **/
     public static final Page DEFAULT = new Page(0);
     private final int start;
-    private final InterMineId size;
+    private final Integer size;
 
     /**
      * Construct a new page, specifying a start point and a size.
@@ -64,7 +63,7 @@ public final class Page
      * Get the maximum size of this page.
      * @return the size.
      */
-    public InterMineId getSize() {
+    public Integer getSize() {
         return size;
     }
 

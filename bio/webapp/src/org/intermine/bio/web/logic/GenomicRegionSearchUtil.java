@@ -42,7 +42,6 @@ import org.intermine.objectstore.query.QueryField;
 import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.SimpleConstraint;
-import org.intermine.model.InterMineId;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -143,8 +142,8 @@ public final class GenomicRegionSearchUtil
 
         GenomicRegion region = new GenomicRegion();
         region.setChr(parts[0].trim());
-        int start = InterMineId.valueOf(parts[1].trim()),
-                end = InterMineId.valueOf(parts[2].trim());
+        int start = Integer.valueOf(parts[1].trim()),
+                end = Integer.valueOf(parts[2].trim());
         if (isInterbase) {
             region.setStart(start + 1);
         } else {
@@ -276,8 +275,8 @@ public final class GenomicRegionSearchUtil
 
         for (GenomicRegion aSpan : genomicRegions) {
 
-            InterMineId start;
-            InterMineId end;
+            Integer start;
+            Integer end;
 
             if (extension > 0) {
                 aSpan = extendGenomicRegion(aSpan, extension);
@@ -456,8 +455,8 @@ public final class GenomicRegionSearchUtil
 
                     gr.setOrganism(organism);
                     gr.setChr(chr);
-                    gr.setStart(InterMineId.valueOf(start));
-                    gr.setEnd(InterMineId.valueOf(end));
+                    gr.setStart(Integer.valueOf(start));
+                    gr.setEnd(Integer.valueOf(end));
                     gr.setExtendedRegionSize(0);
 
                     genomicRegionList.add(gr);
@@ -479,11 +478,11 @@ public final class GenomicRegionSearchUtil
 
                         gr.setOrganism(organism);
                         gr.setChr(chr);
-                        gr.setStart(InterMineId.valueOf(start));
-                        gr.setEnd(InterMineId.valueOf(end));
-                        gr.setExtendedStart(InterMineId.valueOf(extStart));
-                        gr.setExtendedEnd(InterMineId.valueOf(extEnd));
-                        gr.setExtendedRegionSize(InterMineId.valueOf(extenedSize));
+                        gr.setStart(Integer.valueOf(start));
+                        gr.setEnd(Integer.valueOf(end));
+                        gr.setExtendedStart(Integer.valueOf(extStart));
+                        gr.setExtendedEnd(Integer.valueOf(extEnd));
+                        gr.setExtendedRegionSize(Integer.valueOf(extenedSize));
 
                         genomicRegionList.add(gr);
                     } else {
@@ -506,7 +505,7 @@ public final class GenomicRegionSearchUtil
      */
     public static List<GenomicRegion> createGenomicRegionsFromString(
             Collection<String> regionStringList, String organism,
-            InterMineId extendedRegionSize, Boolean isInterBaseCoordinate) {
+            Integer extendedRegionSize, Boolean isInterBaseCoordinate) {
         List<GenomicRegion> grList = new ArrayList<GenomicRegion>();
         for (String grStr : regionStringList) {
             GenomicRegion aSpan = new GenomicRegion();
@@ -520,39 +519,39 @@ public final class GenomicRegionSearchUtil
                 String[] spanItems = (grStr.split(":"))[1].split("\\..");
                 String start = spanItems[0].trim();
                 if (isInterBaseCoordinate) {
-                    aSpan.setStart(InterMineId.valueOf(start) + 1);
+                    aSpan.setStart(Integer.valueOf(start) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(start));
+                    aSpan.setStart(Integer.valueOf(start));
                 }
-                aSpan.setEnd(InterMineId.valueOf(spanItems[1]));
+                aSpan.setEnd(Integer.valueOf(spanItems[1]));
             } else if (BED.matcher(grStr).find()) {
                 String[] spanItems = grStr.split("\t");
                 aSpan.setChr(spanItems[0]);
                 if (isInterBaseCoordinate) {
-                    aSpan.setStart(InterMineId.valueOf(spanItems[1]) + 1);
+                    aSpan.setStart(Integer.valueOf(spanItems[1]) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(spanItems[1]));
+                    aSpan.setStart(Integer.valueOf(spanItems[1]));
                 }
-                aSpan.setEnd(InterMineId.valueOf(spanItems[2]));
+                aSpan.setEnd(Integer.valueOf(spanItems[2]));
             } else if (DASH.matcher(grStr).find()) {
                 aSpan.setChr((grStr.split(":"))[0]);
                 String[] spanItems = (grStr.split(":"))[1].split("-");
                 String start = spanItems[0].trim();
                 if (isInterBaseCoordinate) {
-                    aSpan.setStart(InterMineId.valueOf(start) + 1);
+                    aSpan.setStart(Integer.valueOf(start) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(start));
+                    aSpan.setStart(Integer.valueOf(start));
                 }
-                aSpan.setEnd(InterMineId.valueOf(spanItems[1]));
+                aSpan.setEnd(Integer.valueOf(spanItems[1]));
             } else if (SINGLE_POS.matcher(grStr).find()) {
                 aSpan.setChr((grStr.split(":"))[0]);
                 String start = (grStr.split(":"))[1].trim();
                 if (isInterBaseCoordinate) {
-                    aSpan.setStart(InterMineId.valueOf(start) + 1);
+                    aSpan.setStart(Integer.valueOf(start) + 1);
                 } else {
-                    aSpan.setStart(InterMineId.valueOf(start));
+                    aSpan.setStart(Integer.valueOf(start));
                 }
-                aSpan.setEnd(InterMineId.valueOf((grStr.split(":"))[1].trim()));
+                aSpan.setEnd(Integer.valueOf((grStr.split(":"))[1].trim()));
             } else {
                 throw new IllegalArgumentException("Region string is in wrong format: " + grStr);
             }
@@ -576,8 +575,8 @@ public final class GenomicRegionSearchUtil
         Matcher m = DOT_DOT.matcher(interval);
         if (m.find()) {
             String chr = interval.split(":")[0];
-            int start = InterMineId.valueOf(interval.split(":")[1].split("\\.{2}")[0]);
-            int end = InterMineId.valueOf(interval.split(":")[1].split("\\.{2}")[1]);
+            int start = Integer.valueOf(interval.split(":")[1].split("\\.{2}")[0]);
+            int end = Integer.valueOf(interval.split(":")[1].split("\\.{2}")[1]);
 
             List<GenomicRegion> filteredList = new ArrayList<GenomicRegion>();
 

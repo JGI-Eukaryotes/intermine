@@ -332,11 +332,11 @@ public class ProfileManager
      * @param id userprofile ID
      * @return user's profile
      */
-    public Profile getProfile(int id) {
+    public Profile getProfile(InterMineId id) {
         Map<String, List<FieldDescriptor>> classKeys = getClassKeys(os.getModel());
         UserProfile up;
         try {
-            up = (UserProfile) uosw.getObjectById(new InterMineId(id), UserProfile.class);
+            up = (UserProfile) uosw.getObjectById(id, UserProfile.class);
         } catch (ObjectStoreException e) {
             throw new RuntimeException("Error retrieving profile", e);
         }
@@ -960,12 +960,12 @@ public class ProfileManager
      * Return the name of the user with the given internal DB id.
      *
      * If no user with that name exists, returns null.
-     * @param profileId the id of the profile.
+     * @param interMineId the id of the profile.
      * @return the name of the user, or null.
      */
-    public synchronized String getProfileUserName(int profileId) {
+    public synchronized String getProfileUserName(InterMineId interMineId) {
         try {
-            UserProfile profile = (UserProfile) uosw.getObjectById(new InterMineId(profileId), UserProfile.class);
+            UserProfile profile = (UserProfile) uosw.getObjectById(interMineId, UserProfile.class);
             return profile.getUsername();
         } catch (ObjectStoreException e) {
             return null; // Not in DB.

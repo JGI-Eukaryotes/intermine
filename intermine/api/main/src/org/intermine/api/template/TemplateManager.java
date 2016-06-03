@@ -38,7 +38,6 @@ import org.intermine.pathquery.Path;
 import org.intermine.pathquery.PathConstraint;
 import org.intermine.pathquery.PathException;
 import org.intermine.template.TemplateComparator;
-import org.intermine.model.InterMineId;
 import org.intermine.template.TemplateQuery;
 
 /**
@@ -261,7 +260,7 @@ public class TemplateManager
      * @param aspectTag name of aspect tag
      * @return a list of template queries
      */
-    public List<ApiTemplate> getAspectTemplates(String aspectTag, InterMineId size) {
+    public List<ApiTemplate> getAspectTemplates(String aspectTag, Integer size) {
 
         int i = 0;
         String aspect = aspectTag;
@@ -421,7 +420,7 @@ public class TemplateManager
      * @param size maximum number of templates to return
      * @return List of template names
      */
-    public List<String> getMostPopularTemplateOrder(InterMineId size) {
+    public List<String> getMostPopularTemplateOrder(Integer size) {
         return getMostPopularTemplateOrder(null, null, size);
     }
 
@@ -434,7 +433,7 @@ public class TemplateManager
      * @return List of template names
      */
     public List<String> getMostPopularTemplateOrder(String userName, String sessionId,
-            InterMineId size) {
+            Integer size) {
         List<String> mostPopularTemplateOrder = new ArrayList<String>();
         Map<String, Double> templateLnRank = templateTracker.getLogarithmMap(userName, sessionId,
                                                                              this);
@@ -464,7 +463,7 @@ public class TemplateManager
      * @param size maximum number of templates to return
      * @return List of template names
      */
-    public List<ApiTemplate> getPopularTemplatesByAspect(String aspectTag, InterMineId size) {
+    public List<ApiTemplate> getPopularTemplatesByAspect(String aspectTag, Integer size) {
         return getPopularTemplatesByAspect(aspectTag, size, null, null);
     }
 
@@ -472,12 +471,12 @@ public class TemplateManager
      * Return the template list for a particular aspect, ordered by rank descendant for
      * the user/sessionid specified in the input
      * @param aspectTag name of aspect tag
-     * @param size maximum number of templates to return
+     * @param maxTemplates maximum number of templates to return
      * @param userName the user name
      * @param sessionId the session id
      * @return List of template names
      */
-    public List<ApiTemplate> getPopularTemplatesByAspect(String aspectTag, InterMineId size,
+    public List<ApiTemplate> getPopularTemplatesByAspect(String aspectTag, Integer maxTemplates,
                                                            String userName, String sessionId) {
         List<ApiTemplate> templates = getAspectTemplates(aspectTag, null);
         List<String> mostPopularTemplateNames;
@@ -491,9 +490,9 @@ public class TemplateManager
             Collections.sort(templates, new MostPopularTemplateComparator(
                                             mostPopularTemplateNames));
         }
-        if (templates != null && size != null) {
-            if (templates.size() > size.intValue()) {
-                templates = templates.subList(0, size.intValue());
+        if (templates != null && maxTemplates != null) {
+            if (templates.size() > maxTemplates.intValue()) {
+                templates = templates.subList(0, maxTemplates.intValue());
             }
         }
         return templates;
