@@ -1860,3 +1860,99 @@
     <property name="dataSourceName" value="Phytozome v11" />
     <property name="dataSetTitle" value="InterFlowScan" />
   </source>
+  <source name="phytozome-chado-K.laxiflora-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Kalanchoe laxiflora" />
+    <property name="genus" value="Kalanchoe" />
+    <property name="name" value="Kalanchoe laxiflora" />
+    <property name="species" value="laxiflora" />
+    <property name="assemblyDbxrefId" value="12975248" />
+    <property name="proteomeId" value="382" />
+    <property name="taxonId" value="1670617" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-K.laxiflora" />
+    <property name="shortName" value="K. laxiflora early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="12975273" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-T.pratense-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="red clover" />
+    <property name="genus" value="Trifolium" />
+    <property name="name" value="Trifolium pratense" />
+    <property name="species" value="pratense" />
+    <property name="assemblyDbxrefId" value="12877191" />
+    <property name="proteomeId" value="385" />
+    <property name="taxonId" value="57577" />
+    <property name="annotationVersion" value="v2" />
+    <property name="dataSourceName" value="phytozome-T.pratense" />
+    <property name="shortName" value="T. pratense early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="12877275" />
+    <property name="assemblyVersion" value="v2" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-O.thomaeum-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Oropetium thomaeum" />
+    <property name="genus" value="Oropetium" />
+    <property name="name" value="Oropetium thomaeum" />
+    <property name="species" value="thomaeum" />
+    <property name="assemblyDbxrefId" value="13078558" />
+    <property name="proteomeId" value="386" />
+    <property name="taxonId" value="1148796" />
+    <property name="annotationVersion" value="v1.0" />
+    <property name="dataSourceName" value="phytozome-O.thomaeum" />
+    <property name="shortName" value="O. thomaeum early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="13114521" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-D.carota-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="carrots" />
+    <property name="genus" value="Daucus" />
+    <property name="name" value="Daucus carota" />
+    <property name="species" value="carota" />
+    <property name="assemblyDbxrefId" value="13078562" />
+    <property name="proteomeId" value="388" />
+    <property name="taxonId" value="4039" />
+    <property name="annotationVersion" value="v1.0" />
+    <property name="dataSourceName" value="phytozome-D.carota" />
+    <property name="shortName" value="D. carota early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="13078579" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="interflowscan-K.laxiflora_382" type="interflowscan">
+    <property name="proteomeId" value="382" />
+    <property name="src.data.file" value="K.laxiflora_382.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-T.pratense_385" type="interflowscan">
+    <property name="proteomeId" value="385" />
+    <property name="src.data.file" value="T.pratense_385.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-O.thomaeum_386" type="interflowscan">
+    <property name="proteomeId" value="386" />
+    <property name="src.data.file" value="O.thomaeum_386.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-D.carota_388" type="interflowscan">
+    <property name="proteomeId" value="388" />
+    <property name="src.data.file" value="D.carota_388.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>

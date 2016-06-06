@@ -222,10 +222,6 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
                 CreateLocationOverlapIndex cloi =
                         new CreateLocationOverlapIndex(getObjectStoreWriter());
                 cloi.create();
-            } else if ("link-ins".equals(operation)) {
-                CreateFlyBaseLinkIns.createLinkInFile(getObjectStoreWriter().getObjectStore());
-            } else if ("modmine-metadata-cache".equals(operation)) {
-                CreateModMineMetaDataCache.createCache(getObjectStoreWriter().getObjectStore());
             } else if ("add-uniprot-ids".equals(operation)) {
               AddUniProtIds task = new AddUniProtIds(getObjectStoreWriter());
               task.execute();
