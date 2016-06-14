@@ -506,6 +506,11 @@
       <property name="src.data.dir.includes" value="table.383.fa-*.fa" />
     </source>
 
+    <source name="phytozome-homologs-11-0-5" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.38*.fa-*.fa" />
+    </source>
+
     <source name="chlamy-kegg-pathways" type="plantcyc-pathway">
       <property name="proteomeId" value="281" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
