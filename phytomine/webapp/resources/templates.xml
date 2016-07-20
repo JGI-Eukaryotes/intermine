@@ -82,8 +82,8 @@
     <constraint path="GOSummary.organism.proteomeId" code="B" editable="true" op="=" value="281"/>
   </query>
 </template>
-<template name="GO_terms_for_genes" title="GO Terms for a gene or list of genes" comment="">
-  <query name="GO_terms_for_genes" model="genomic" view="Gene.primaryIdentifier Gene.ontologyAnnotations.ontologyTerm.identifier Gene.ontologyAnnotations.ontologyTerm.name Gene.ontologyAnnotations.ontologyTerm.namespace Gene.ontologyAnnotations.ontologyTerm.description" longDescription="Look up the GO terms associated with a gene, or use a saved list of genes and look up the GO terms associated with all genes on the list." sortOrder="Gene.primaryIdentifier asc">
+<template name="GO_terms_for_genes_1" title="GO Terms for a gene or list of genes" comment="">
+  <query name="GO_terms_for_genes_1" model="genomic" view="Gene.primaryIdentifier Gene.goAnnotation.ontologyTerm.identifier Gene.goAnnotation.ontologyTerm.name Gene.goAnnotation.ontologyTerm.namespace Gene.goAnnotation.ontologyTerm.description" longDescription="Look up the GO terms associated with a gene, or use a saved list of genes and look up the GO terms associated with all genes on the list." sortOrder="Gene.primaryIdentifier asc">
     <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Potri.014G066100"/>
   </query>
 </template>
@@ -208,6 +208,12 @@
 <template name="Protein_To_Gene_Type_Converter" title="Protein to gene type converter" comment="">
   <query name="Protein_To_Gene_Type_Converter" model="genomic" view="Protein.id Protein.genes.id" longDescription="" sortOrder="Protein.id asc">
     <constraint path="Protein.id" editable="true" description="Protein.id" op="=" value="0"/>
+  </query>
+</template>
+<template name="Protein_domain" title="All Located Protein Domains for an Organism" comment="">
+  <query name="Protein_domain" model="genomic" view="Protein.primaryIdentifier Protein.proteinAnalysisFeatures.locations.start Protein.proteinAnalysisFeatures.locations.end Protein.proteinAnalysisFeatures.crossReference.subject.primaryIdentifier Protein.proteinAnalysisFeatures.crossReference.subject.name" longDescription="" sortOrder="Protein.primaryIdentifier asc" constraintLogic="A and B">
+    <constraint path="Protein.organism.shortName" code="A" editable="true" op="=" value="R. communis"/>
+    <constraint path="Protein.proteinAnalysisFeatures.crossReference.subject.dataSets.dataSource.name" code="B" editable="true" op="=" value="InterPro"/>
   </query>
 </template>
 <template name="Protein_protein_sequence" title="Peptide sequence for a specific protein" comment="">
