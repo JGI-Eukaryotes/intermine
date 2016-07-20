@@ -82,16 +82,48 @@ public class PhytozomeDbProcessor {
     //fillSynonyms();
     System.out.println("Relationships...");
     fillRelationships();
-    //System.out.println("Analyses...");
-    //fillAnalyses();
+    System.out.println("Analyses...");
+    fillAnalyses();
     System.out.println("Done.");
     converter.getDatabase().getConnection().createStatement().execute(
-        "DROP TABLE "+ tempChromosomeTableName);
-    converter.getDatabase().getConnection().createStatement().execute(
-        "DROP TABLE "+ tempFeatureTableName);
+        "DROP TABLE "+ tempChromosomeTableName+";DROP TABLE "+ tempFeatureTableName);
+    //converter.getDatabase().getConnection().createStatement().execute(
+    //    "DROP TABLE "+ tempFeatureTableName);
   }
   
   private void fillAnalyses() throws SQLException, ObjectStoreException {
+    
+    // first, find the important analyses.
+    
+    StringBuffer analysisIds = new StringBuffer();
+    
+    String query = "SELECT analysis_id FROM analysis a, feature f"
+        + " WHERE"
+        + " a.program in (" + PhytozomeDbConfig.ANALYSIS_PROGRAMS + ")"
+        + " AND a.sourcename::int = f.feature_id "
+        + " AND f.dbxref_id = " + annotationDbxrefId 
+        + " AND f.type_id="+config.cvTerm("sequence","peptide_collection");
+    LOG.info("executing analysis_id query: " + query);
+    ResultSet aRes = null;
+    try {
+      Statement stmt = converter.getDatabase().getConnection().createStatement();
+      aRes = stmt.executeQuery(query);
+    } catch (SQLException e) {
+      throw new BuildException("Problem when querying analyses " + e);
+    }
+    LOG.info("got resultset.");
+    int counter = 0;
+    try {
+      while (aRes.next()) {
+        if (analysisIds.length() > 0) {
+          analysisIds.append(",");
+        }
+        analysisIds.append(new Integer(aRes.getInt(1)));
+      }
+    } catch (SQLException e) {
+      throw new BuildException("Problem when querying CVTerms " + e);
+    }
+    aRes.close();
     
     String pQuery = "SELECT p.feature_id as protein_analysis_feature_id," +
         "p.name as match_name, " +
@@ -128,6 +160,7 @@ public class PhytozomeDbProcessor {
         "AND p.feature_id=af.feature_id " +
         "AND af.analysisfeature_id = afp.analysisfeature_id " +
         "AND p.dbxref_id=dbx.dbxref_id " +
+        "AND af.analysis_id IN ("+analysisIds.toString()+")" +
         "AND dbx.db_id=db.db_id";
 
     LOG.info("executing getProteinFeatureResultSet(): " + pQuery);
@@ -205,7 +238,7 @@ public class PhytozomeDbProcessor {
       ontologyTermMap.put(dbName, new HashMap<String,Item> ());
     }
     String dataSourceIdentifier = dataSourceMap.get(dbName);
-    feature.setReference("sourceDatabase",dataSourceIdentifier);
+    //feature.setReference("sourceDatabase",dataSourceIdentifier);
 
     if (!dataHitMap.get(dbName).containsKey(accession)) {
       Item newItem = converter.createItem("CrossReference");

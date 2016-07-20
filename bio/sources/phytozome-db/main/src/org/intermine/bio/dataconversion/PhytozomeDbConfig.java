@@ -49,9 +49,11 @@ public class PhytozomeDbConfig {
       Arrays.asList("chromosome");
   // default feature types to query from the feature table
   public  static final  List<String> ANNOTATION_FEATURES =
-      Arrays.asList( "gene", "mRNA",
+      Arrays.asList( "gene", "mRNA","peptide_collection",
           "polypeptide","intron","exon","CDS",
           "five_prime_UTR","three_prime_UTR");
+  // which analysis results we load. A listing of programs to load
+  public static final String ANALYSIS_PROGRAMS = "'interflowscan','e2p2'";
   // a mapping of chado type -> intermine class. And initialize
   static final HashMap<String,String> typeMap;
   static {

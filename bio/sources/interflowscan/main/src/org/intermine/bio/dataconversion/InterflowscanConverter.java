@@ -286,11 +286,14 @@ public class InterflowscanConverter extends BioFileConverter
       if (qName.equals("protein-matches")) {
       } else if (qName.equals("release") ) {
       } else if (qName.endsWith("-match") ) {
-      } else if (qName.equals("signature") ) {
+      } else if (qName.equals("entry") ) {
         if (crossReference != null ) {
           xrefMap.get(dbName).put(hitAcc,tryToStore(crossReference));
           crossReference = null;
         }
+      } else if (qName.equals("signature")) {
+        hitAcc = null;
+        dbName = null;
       }
       
     }
