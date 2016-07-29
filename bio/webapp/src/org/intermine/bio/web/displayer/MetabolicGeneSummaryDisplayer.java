@@ -189,7 +189,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
      * @param objectId
      * @return
      */
-    private PathQuery allelesPathQuery(Integer objectId) {
+    private PathQuery allelesPathQuery(InterMineId objectId) {
         PathQuery query = new PathQuery(im.getModel());
         query.addViews("Gene.homologues.homologue.alleles.primaryIdentifier");
         query.addConstraint(Constraints.eq("Gene.homologues.homologue.organism.shortName",
