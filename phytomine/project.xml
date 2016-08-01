@@ -363,6 +363,7 @@
       <property name="dataSetTitle" value="Phytozome v11" />
     </source>
 
+
     <source name="diversity-B.distachyon" type="gatkvcf">
       <property name="proteomeId" value="314" />
       <property name="sampleGroup" value="Gordon2014_7" />
@@ -371,6 +372,16 @@
       <property name="dataSourcename" value="diversity-B.distachyon" />
       <property name="dataSetTitle" value="B.distachyon Natural Diversity" />
     </source>
+
+    <source name="diversity-D.carota" type="gatkvcf">
+      <property name="proteomeId" value="388" />
+      <property name="sampleGroup" value="Senalik2016_43" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Dcarota/" />
+      <property name="src.data.dir.includes" value="*.vcf" />
+      <property name="dataSourcename" value="diversity-D.carota" />
+      <property name="dataSetTitle" value="D.carota Natural Diversity" />
+    </source>
+
     <source name="diversity-C.reinhardtii-short" type="gatkvcf">
       <property name="proteomeId" value="281" />
       <property name="sampleGroup" value="Gallaher2015_short_39" />

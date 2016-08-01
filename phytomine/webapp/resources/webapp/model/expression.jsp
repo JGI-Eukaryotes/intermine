@@ -295,7 +295,7 @@
       </div>
       <div class="body">
       Bulk data files for gene expression data for <em><b>non-Gene Atlas</b></em> experiments are available for download from individual organisms folders at the 
-      <a href="http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?organism=PhytozomeV10">
+      <a href="http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?organism=PhytozomeV11">
       JGI Genome Portal </a>.
       </div>
     </td>

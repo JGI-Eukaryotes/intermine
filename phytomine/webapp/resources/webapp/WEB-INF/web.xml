@@ -1148,7 +1148,7 @@
                 description="The maximum p-value of results to display. The range is 0.0 - 1.0">maxp</param>
             <param type="enumerated"
                 values="Holm-Bonferroni,Benjamini and Hochberg,Bonferroni,None"
-                default="Holm-Bonferroni"
+                default="Bonferroni"
                 required="true"
                 description="The error correction algorithm to use.">correction</param>
             <param type="String"

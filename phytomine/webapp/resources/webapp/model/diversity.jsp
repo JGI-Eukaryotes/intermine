@@ -28,7 +28,7 @@
               <LI><em>Eucalyptus grandis</em> (8 individuals)</LI>
               <LI><em>Brachipodium distachyon</em> (7 individuals)</LI>
               <LI><em>Phaseolus vulgaris</em> (8 individuals)</LI>
-              
+              <LI><em>Daucus carota</em> (35 individuals)</LI>
             </UL>
           </DD>
         </DL>
@@ -40,7 +40,7 @@
       </div>
       <div class="body">
       Bulk data files for all organisms in Phytozome are available for download from the 
-      <a href="http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?organism=PhytozomeV10">
+      <a href="http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?organism=PhytozomeV11">
       JGI Download Portal </a>.
       </div>
     </td>

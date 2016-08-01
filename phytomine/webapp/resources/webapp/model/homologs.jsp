@@ -36,7 +36,7 @@ comparisons. Remm M, Storm CE and Sonnhammer EL. J. Mol Biol. 2001 Dec 14.
       </div>
       <div class="body">
       Bulk data files for all organisms in Phytozome are available for download from the 
-      <a href="http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?organism=PhytozomeV10">
+      <a href="http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?organism=PhytozomeV11">
       JGI Download Portal </a>.
       </div>
     </td>
