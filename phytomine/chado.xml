@@ -1956,3 +1956,20 @@
     <property name="dataSourceName" value="Phytozome v11" />
     <property name="dataSetTitle" value="InterFlowScan" />
   </source>
+  <source name="phytozome-chado-C.quinoa-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="quinoa" />
+    <property name="genus" value="Chenopodium" />
+    <property name="name" value="Chenopodium quinoa" />
+    <property name="species" value="quinoa" />
+    <property name="assemblyDbxrefId" value="13447569" />
+    <property name="proteomeId" value="392" />
+    <property name="taxonId" value="63459" />
+    <property name="annotationVersion" value="v1.0" />
+    <property name="dataSourceName" value="phytozome-C.quinoa" />
+    <property name="shortName" value="C. quinoa early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="13447571" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
