@@ -1,7 +1,7 @@
 package org.intermine.web.struts;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -108,7 +108,7 @@ public class HtmlHeadController extends TilesAction
 
         /* report page */
         } else if ("report".equals(pageName) && objectId != null) {
-            if (!StringUtils.isNumeric(objectId.replaceFirst("^-",""))) {
+            if (!StringUtils.isNumeric(objectId)) {
                 LOG.warn("object ID not a number! " + objectId);
                 htmlPageTitle = "invalid id - " + objectId;
                 request.setAttribute("htmlPageTitle", htmlPageTitle);

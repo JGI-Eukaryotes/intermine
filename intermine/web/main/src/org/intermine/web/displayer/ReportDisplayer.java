@@ -1,7 +1,7 @@
 package org.intermine.web.displayer;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -35,7 +35,7 @@ public abstract class ReportDisplayer
 
     protected ReportDisplayerConfig config;
     protected InterMineAPI im;
-    protected static final Logger LOG = Logger.getLogger(ReportDisplayer.class);
+    private static final Logger LOG = Logger.getLogger(ReportDisplayer.class);
 
 
     /**
@@ -58,19 +58,11 @@ public abstract class ReportDisplayer
     public void execute(HttpServletRequest request, ReportObject reportObject) {
         request.setAttribute("reportObject", reportObject);
         request.setAttribute("jspPage", getJspPage());
-        Profile p = SessionMethods.getProfile(request.getSession());
-        // JWC. are we logged in?
-        if (p.isLoggedIn()) {
-          LOG.info("User "+p.getUsername()+" is logged in.");
-        } else {
-          LOG.info("User is not logged in.");
-        }
         try {
             display(request, reportObject);
         } catch (ReportDisplayerNoResultsException e) {
             request.setAttribute("displayerName", getClass().getSimpleName());
             request.setAttribute("jspPage", "reportDisplayerNoResults.jsp");
-            
         } catch (Exception e) {
             // failed to display so put an error message in place instead
             LOG.error("Error rendering report displayer " + getClass() + " for "

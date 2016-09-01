@@ -1,9 +1,7 @@
 package org.intermine.web.util;
 
-import java.util.Properties;
-
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -13,9 +11,6 @@ import java.util.Properties;
  */
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.intermine.web.context.InterMineContext;
-import org.intermine.web.logic.session.SessionMethods;
 
 /**
  * Class generating useful links like base link: http://localhost:8080/query
@@ -54,17 +49,6 @@ public class URLGenerator
 
     private String generateURL(HttpServletRequest request, String contextPath) {
         String port = "";
-        try {
-          // looking in for baseURL in properties
-          Properties properties = InterMineContext.getWebProperties();
-          String ret = properties.getProperty("webapp.baseurl");
-          if (contextPath.length() > 0) {
-            ret += contextPath;
-          }
-          return ret;
-        } catch (Exception e) {
-          // quietly fall back
-        }
         if (request.getServerPort() != 80) {
             port = ":" + request.getServerPort();
         }

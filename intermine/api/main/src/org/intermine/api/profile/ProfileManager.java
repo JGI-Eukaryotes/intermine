@@ -1,7 +1,7 @@
 package org.intermine.api.profile;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -13,11 +13,7 @@ package org.intermine.api.profile;
 import static java.util.Collections.singleton;
 
 import java.io.Reader;
-import java.io.IOException;
 import java.io.StringReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,11 +31,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.RandomStringUtils;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.intermine.api.bag.SharedBagManager;
@@ -49,10 +41,8 @@ import org.intermine.api.template.ApiTemplate;
 import org.intermine.api.util.TextUtil;
 import org.intermine.api.xml.SavedQueryBinding;
 import org.intermine.metadata.ConstraintOp;
-import org.intermine.api.profile.Caliban;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
-import org.intermine.model.InterMineObject;
 import org.intermine.model.userprofile.PermanentToken;
 import org.intermine.model.userprofile.SavedBag;
 import org.intermine.model.userprofile.SavedQuery;
@@ -83,11 +73,6 @@ import org.intermine.template.xml.TemplateQueryBinding;
 import org.intermine.util.CacheMap;
 import org.intermine.util.PasswordHasher;
 import org.intermine.util.PropertiesUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Class to manage and persist user profile data such as saved bags
@@ -607,24 +592,8 @@ public class ProfileManager
         try {
             UserProfile userProfile = getUserProfile(userId);
 
-            if (userProfile != null) {
-                userProfile.setApiKey(profile.getApiKey());
-                for (Iterator i = userProfile.getSavedQuerys().iterator(); i.hasNext();) {
-                    uosw.delete((InterMineObject) i.next());
-                }
-
-                for (Iterator i = userProfile.getSavedTemplateQuerys().iterator();
-                     i.hasNext();) {
-                    uosw.delete((InterMineObject) i.next());
-                }
-            } else {
-                // Should not happen
-                //throw new RuntimeException("The UserProfile is null");
-              // no. it can happen. For accounts created outside the normal procedures.
-                 userProfile = new UserProfile();
-                 userProfile.setUsername(profile.getUsername());
-                 userProfile.setPassword(profile.getPassword());
-                 userProfile.setId(userId);
+            if (userProfile == null) {
+                throw new RuntimeException("Cannot save this profile: The UserProfile is null");
             }
 
             userProfile.setApiKey(profile.getApiKey());
@@ -1488,60 +1457,21 @@ public class ProfileManager
     }
 
     private Profile getProfileByApiKey(String token, Map<String,
-        List<FieldDescriptor>> classKeys) {
-      UserProfile profile = new UserProfile();
-      
-      // Phytozome modification. We will query caliban to
-      // see if this token is a legitimate session id.
-      boolean useCalibanAuthenticator = true;
-      
-      if (!useCalibanAuthenticator) {
+            List<FieldDescriptor>> classKeys) {
+        UserProfile profile = new UserProfile();
         profile.setApiKey(token);
         Set<String> fieldNames = new HashSet<String>();
         fieldNames.add("apiKey");
         try {
-          profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
-        } catch (ObjectStoreException e1) {
-          return null;
+            profile = uosw.getObjectByExample(profile, fieldNames);
+        } catch (ObjectStoreException e) {
+            return null; // Could not be found.
         }
-      } else {
-        HashMap<String,String> identity = null;
-        try {
-          // this will validate the token every time.
-          identity = Caliban.getIdentityHash(token);
-        } catch (Exception e) {}
-        if ( identity != null) {
-          Set<String> fieldNames = new HashSet<String>();
-          fieldNames.add("username");
-          profile = new UserProfile();
-          profile.setUsername(identity.get("login"));
-          profile.setApiKey(token);
-          try {
-            profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
-          } catch (ObjectStoreException e1) {
-            return null;
-          }
-          // if the identity hash is not null, but profile is null, this is
-          // a new user. We need to create a new user profile.
-          if (profile == null) {
-            Caliban.createUserAccount(this,identity);
-            // and repeat
-            profile = new UserProfile();
-            profile.setUsername(identity.get("login"));
-            profile.setApiKey(token);
-            try {
-              profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
-            } catch (ObjectStoreException e1) {
-              return null;
-            }
-          }
+        if (profile == null) {
+            throw new AuthenticationException(
+                "'" + token + "' is not a valid API access key");
         }
-      }
-      if (profile == null) {
-        throw new AuthenticationException(
-            "'" + token + "' is not a valid API access key");
-      }
-      return getProfile(profile.getUsername(), classKeys);
+        return getProfile(profile.getUsername(), classKeys);
     }
 
     /**

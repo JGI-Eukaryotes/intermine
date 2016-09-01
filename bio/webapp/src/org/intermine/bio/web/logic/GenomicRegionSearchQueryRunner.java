@@ -1,7 +1,7 @@
 package org.intermine.bio.web.logic;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -10,24 +10,16 @@ package org.intermine.bio.web.logic;
  *
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -36,11 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.intermine.api.InterMineAPI;
-import org.intermine.api.lucene.KeywordSearch;
 import org.intermine.api.profile.Profile;
-import org.intermine.api.query.PathQueryExecutor;
-import org.intermine.api.results.ExportResultsIterator;
-import org.intermine.api.results.ResultElement;
 import org.intermine.bio.web.model.ChromosomeInfo;
 import org.intermine.bio.web.model.GenomicRegion;
 import org.intermine.bio.web.model.GenomicRegionSearchConstraint;
@@ -57,7 +45,6 @@ import org.intermine.objectstore.query.QueryField;
 import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
-import org.intermine.pathquery.OrderDirection;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.web.logic.session.SessionMethods;
 
@@ -74,10 +61,10 @@ public class GenomicRegionSearchQueryRunner implements Runnable
     private String spanUUIDString = null;
     private GenomicRegionSearchConstraint grsc = null;
     private Map<GenomicRegion, Query> queryMap = null;
-    private static final Logger LOG = Logger.getLogger(GenomicRegionSearchQueryRunner.class);
 
     private static Map<String, Map<String, ChromosomeInfo>> chrInfoMap = null;
 
+    private static final Logger LOG = Logger.getLogger(GenomicRegionSearchQueryRunner.class);
 
     /**
      * Constructor
@@ -240,10 +227,9 @@ public class GenomicRegionSearchQueryRunner implements Runnable
      * @param im - the InterMineAPI
      * @return chrInfoMap - a HashMap with orgName as key and its chrInfo accordingly as value
      */
-    @SuppressWarnings("unchecked")
     public static Map<String, Map<String, ChromosomeInfo>> getChromosomeInfo(InterMineAPI im) {
 
-      return getChromosomeInfo(im, GenomicRegionSearchService.DEFAULT_REGION_INIT_BATCH_SIZE,null);
+        return getChromosomeInfo(im, GenomicRegionSearchService.DEFAULT_REGION_INIT_BATCH_SIZE);
     }
 
     /**
@@ -255,109 +241,91 @@ public class GenomicRegionSearchQueryRunner implements Runnable
      * @param batchSize - the query batch size to use
      * @return chrInfoMap - a HashMap with orgName as key and its chrInfo accordingly as value
      */
-    @SuppressWarnings("unchecked")
     public static Map<String, Map<String, ChromosomeInfo>> getChromosomeInfo(InterMineAPI im,
-        int batchSize,Properties p) {
-      if (chrInfoMap != null) {
-        return chrInfoMap;
-      } else {
-
-        long start = (new Date()).getTime();
-
-        // look for a cached file. Location is in a path based on web properties.
-        File chrMapFile = null;
-        if (p != null) {
-          String webappPath = p.getProperty("webapp.path");
-          chrMapFile = new File("webapps/"+webappPath+"/chrMapInfo.obj");
-          if (chrMapFile.exists() && chrMapFile.canRead()) {
-            try {
-              ObjectInputStream ois = new ObjectInputStream(new FileInputStream(chrMapFile));
-              chrInfoMap = (Map<String, Map<String, ChromosomeInfo>>)ois.readObject();
-              ois.close();
-            } catch( Exception e) {
-              LOG.warn("Exception thrown while reading chrInfoMap: "+e.getMessage()+". Regenerating...");
-              chrMapFile.delete();
-            }
-            long elapsed = (new Date()).getTime() - start;
-            LOG.info("Read chrInfoMap in "+elapsed+" milliseconds.");
+            int batchSize) {
+        if (chrInfoMap != null) {
             return chrInfoMap;
-          }
-        }
+        } else {
+            long startTime = System.currentTimeMillis();
+
+            // a Map contains orgName and its chrInfo accordingly
+            // e.g. <D.Melanogaster, <X, (D.Melanogaster, X, x, 5000)>>
+            chrInfoMap = new HashMap<String, Map<String, ChromosomeInfo>>();
 
 
-        // a Map contains orgName and its chrInfo accordingly
-        // e.g. <D.Melanogaster, <X, (D.Melanogaster, X, x, 5000)>>
-        chrInfoMap = new HashMap<String, Map<String, ChromosomeInfo>>();
+            Query q = new Query();
+            q.setDistinct(true);
 
+            QueryClass qcChr = new QueryClass(Chromosome.class);
+            QueryClass qcOrg = new QueryClass(Organism.class);
 
-        try {
-          PathQuery query = new PathQuery(im.getModel());
+            q.addFrom(qcChr);
+            q.addFrom(qcOrg);
 
-          // Add views
-          query.addViews(
-              "Chromosome.organism.shortName",
-              "Chromosome.primaryIdentifier",
-              "Chromosome.length"
-              );
+            QueryField qfOrgName = new QueryField(qcOrg, "shortName");
+            QueryField qfChrIdentifier = new QueryField(qcChr, "primaryIdentifier");
+            QueryField qfChrLength = new QueryField(qcChr, "length");
 
-          // Add orderby
-          query.addOrderBy("Chromosome.organism.shortName", OrderDirection.ASC);
-          PathQueryExecutor pQE = im.getPathQueryExecutor();
-          // JWC bigger batch size.
-          pQE.setBatchSize(200000);
-          ExportResultsIterator results = pQE.execute(query);
+            q.addToSelect(qfOrgName);
+            q.addToSelect(qfChrIdentifier);
+            q.addToSelect(qfChrLength);
 
-          // a List contains all the chrInfo (organism, chrPID, length)
-          //List<ChromosomeInfo> chrInfoList = new ArrayList<ChromosomeInfo>(500000);
-          // a Set contains all the orgName
-          //Set<String> orgSet = new HashSet<String>();
+            QueryObjectReference orgRef = new QueryObjectReference(qcChr, "organism");
+            ContainsConstraint ccOrg = new ContainsConstraint(orgRef,
+                    ConstraintOp.CONTAINS, qcOrg);
+            q.setConstraint(ccOrg);
 
-          while (results.hasNext()) {
-            List<ResultElement> row = results.next();
+            Results results = im.getObjectStore().execute(q, batchSize, true, true, true);
 
-            String org = (String) row.get(0).getField();
-            String chrPID = (String) row.get(1).getField();
-            Integer chrLength = (Integer) row.get(2).getField();
+            // a List contains all the chrInfo (organism, chrPID, length)
+            List<ChromosomeInfo> chrInfoList = new ArrayList<ChromosomeInfo>();
+            // a Set contains all the orgName
+            Set<String> orgSet = new HashSet<String>();
+            int entryCount = 0;
 
-            // Have we seen this organism before?
-            // Put a key in the chrInfoMap is not.
-            if (!chrInfoMap.containsKey(org)) {
-              chrInfoMap.put(org,new HashMap<String, ChromosomeInfo>());
+            for (Iterator<?> iter = results.iterator(); iter.hasNext();) {
+                entryCount++;
+                ResultsRow<?> row = (ResultsRow<?>) iter.next();
+
+                String orgName = (String) row.get(0);
+                String chrIdentifier = (String) row.get(1);
+                Integer chrLength = (Integer) row.get(2);
+
+                // Add orgName to HashSet to filter out duplication
+                orgSet.add(orgName);
+
+                ChromosomeInfo chrInfo = new ChromosomeInfo();
+                chrInfo.setOrgName(orgName);
+                chrInfo.setChrPID(chrIdentifier);
+                if (chrLength != null) {
+                    chrInfo.setChrLength(chrLength);
+                }
+                // Add ChromosomeInfo to Arraylist
+                chrInfoList.add(chrInfo);
+
             }
 
-            ChromosomeInfo chrInfo = new ChromosomeInfo();
-            chrInfo.setOrgName(org);
-            chrInfo.setChrPID(chrPID);
-            if (chrLength != null) {
-              chrInfo.setChrLength(chrLength);
+
+            // Iterate orgSet and chrInfoList to put data in chrInfoMap which
+            // has the key as the
+            // orgName and value as a ArrayList containing a list of chrInfo
+            // which has the same
+            // orgName
+            for (String o : orgSet) {
+                // a map to store chrInfo for the same organism
+                Map<String, ChromosomeInfo> chrInfoSubMap = new HashMap<String, ChromosomeInfo>();
+
+                for (ChromosomeInfo chrInfo : chrInfoList) {
+                    if (o.equals(chrInfo.getOrgName())) {
+                        chrInfoSubMap
+                                .put(chrInfo.getChrPIDLowerCase(), chrInfo);
+                        chrInfoMap.put(o, chrInfoSubMap);
+                    }
+                }
             }
-            // Add ChromosomeInfo to map
-            chrInfoMap.get(org).put(chrPID.toLowerCase(),chrInfo);
 
-          }
-
-        } catch (Exception e) {
-          e.printStackTrace();
+            return chrInfoMap;
         }
-
-        long elapsed = (new Date()).getTime() - start;
-        LOG.info("Created chrInfoMap in "+elapsed+" milliseconds.");
-
-        if( chrMapFile != null) {
-          // if we're here, then (1) we have web properties but (2) file was not found
-          // so save it
-          try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(chrMapFile));
-            oos.writeObject(chrInfoMap);
-            oos.flush();
-            oos.close();
-          } catch( IOException e) {
-            LOG.warn("Exception thrown while writing chrInfoMap: "+e.getMessage()+".");
-          }
-        }
-
-        return chrInfoMap;
-      }
     }
 
     /**
@@ -374,8 +342,6 @@ public class GenomicRegionSearchQueryRunner implements Runnable
 
         Map<String, List<String>> featureTypeToSOTermMap = new HashMap<String, List<String>>();
 
-        long start = (new Date()).getTime();
-        
         Query q = new Query();
         q.setDistinct(true);
 
@@ -435,9 +401,6 @@ public class GenomicRegionSearchQueryRunner implements Runnable
                 featureTypeToSOTermMap.put(ft, soInfo);
             }
         }
-        
-        long elapsed = (new Date()).getTime() - start;
-        LOG.info("Created featureTypeToSOTermMap in "+elapsed+" milliseconds.");
 
         return featureTypeToSOTermMap;
     }

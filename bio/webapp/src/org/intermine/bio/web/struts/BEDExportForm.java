@@ -1,7 +1,7 @@
 package org.intermine.bio.web.struts;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -20,7 +20,7 @@ import org.intermine.web.struts.TableExportForm;
 public class BEDExportForm extends TableExportForm
 {
     private static final long serialVersionUID = 1L;
-    private String organismString = null;
+    private String organsimString = null;
     private boolean makeUcscCompatible = false;
     private String ucscCompatibleCheck; // a patch to Struts checkbox design...
     private String trackDescription = "";
@@ -56,17 +56,17 @@ public class BEDExportForm extends TableExportForm
     }
 
     /**
-     * @return the organismString
+     * @return the organsimString
      */
-    public String getOrganismString() {
-        return organismString;
+    public String getOrgansimString() {
+        return organsimString;
     }
 
     /**
-     * @param organismString the organismString to set
+     * @param organsimString the organsimString to set
      */
-    public void setOrganismString(String organismString) {
-        this.organismString = organismString;
+    public void setOrgansimString(String organsimString) {
+        this.organsimString = organsimString;
     }
 
     /**

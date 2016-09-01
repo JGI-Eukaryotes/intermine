@@ -1,7 +1,7 @@
 package org.intermine.bio.web.struts;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -239,7 +239,7 @@ public class GalaxyExportOptionsController extends TilesAction
             request.setAttribute("bedURL", bedURL);
 
             genomeBuildSet = (Set<String>) OrganismGenomeBuildLookup
-            .getGenomeBuildByOrganismCollection(orgSet);
+            .getGenomeBuildByOrgansimCollection(orgSet);
 
             String org = (orgSet.size() < 1)
                     ? "Organism information not available"

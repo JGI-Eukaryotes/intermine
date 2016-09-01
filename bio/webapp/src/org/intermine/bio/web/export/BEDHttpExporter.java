@@ -1,7 +1,7 @@
 package org.intermine.bio.web.export;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -73,7 +73,7 @@ public class BEDHttpExporter extends HttpExporterBase implements TableHttpExport
 
         // try to find the organism from the form
         if (form != null && form instanceof BEDExportForm) {
-            organisms = ((BEDExportForm) form).getOrganismString();
+            organisms = ((BEDExportForm) form).getOrgansimString();
             trackDescription = ((BEDExportForm) form).getTrackDescription();
             if ("yes".equals(((BEDExportForm) form).getUcscCompatibleCheck())) {
                 makeUcscCompatible = true;

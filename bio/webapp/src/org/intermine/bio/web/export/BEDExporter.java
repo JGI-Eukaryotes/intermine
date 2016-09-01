@@ -1,7 +1,7 @@
 package org.intermine.bio.web.export;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -161,7 +161,7 @@ public class BEDExporter implements Exporter
             if (orgSet != null) {
                 List<String> genomeBuildList = new ArrayList<String>();
                 for (String org : orgSet) {
-                    String gb = OrganismGenomeBuildLookup.getGenomeBuildbyOrganismAbbreviation(org);
+                    String gb = OrganismGenomeBuildLookup.getGenomeBuildbyOrgansimAbbreviation(org);
                     if (gb != null && gb.length() > 0) {
                         genomeBuildList.add(org + " " + gb);
                     } else {

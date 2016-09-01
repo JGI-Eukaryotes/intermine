@@ -1,7 +1,7 @@
 package org.intermine.util;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -89,12 +89,6 @@ public abstract class MailUtils
             properties.put("mail.smtp.auth", authFlag);
         }
 
-        // with no specified domain, look at property
-        if (!to.contains("@") ) {
-          String mailDomain = (String) webProperties.get("mail.defaultDomain");
-          if (mailDomain != null && !mailDomain.isEmpty() ) 
-            to = new String(to + "@" + mailDomain);
-        }
         Session session;
         if (authFlag != null && ("true".equals(authFlag) || "t".equals(authFlag))) {
             Authenticator authenticator = new Authenticator() {

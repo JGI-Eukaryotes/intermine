@@ -1,7 +1,7 @@
 package org.intermine.web.struts;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -10,9 +10,6 @@ package org.intermine.web.struts;
  *
  */
 
-import java.io.IOException;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,8 +18,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
-import org.intermine.api.profile.Caliban;
-import org.xml.sax.SAXException;
 
 /**
  * Action that invalidates the user session effectively logging the user out of
@@ -49,16 +44,6 @@ public class LogoutAction extends InterMineAction
                                  HttpServletResponse response)
         throws Exception {
         HttpSession session = request.getSession();
-        for( Cookie cookie : request.getCookies() ) {
-          if (cookie.getName().equals("jgi_session")) {
-            cookie.setDomain(InterMineAction.getWebProperties(request).getProperty("project.siteDomain"));
-            cookie.setPath("/");
-            cookie.setValue("");
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-          }
-        }
-        
         session.invalidate();
         recordMessage(new ActionMessage("login.loggedout"), request);
         return mapping.findForward("begin");

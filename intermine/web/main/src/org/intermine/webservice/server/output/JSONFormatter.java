@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.output;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -167,7 +167,7 @@ public class JSONFormatter extends Formatter
             return "null";
         }
         if ("null".equals(val) || "true".equals(val) || "false".equals(val)
-                || StringUtils.isNumeric(val.replaceFirst("^-",""))) {
+                || StringUtils.isNumeric(val)) {
             return val;
         }
         return "\"" + val + "\"";

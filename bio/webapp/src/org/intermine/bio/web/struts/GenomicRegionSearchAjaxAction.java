@@ -1,7 +1,7 @@
 package org.intermine.bio.web.struts;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2015 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -463,7 +463,7 @@ public class GenomicRegionSearchAjaxAction extends Action
                     String ucscCompatibleCheck = "yes";
                     exportForm = new BEDExportForm();
                     exportForm.setDoGzip(doGzip);
-                    ((BEDExportForm) exportForm).setOrganismString(organism);
+                    ((BEDExportForm) exportForm).setOrgansimString(organism);
                     ((BEDExportForm) exportForm)
                             .setUcscCompatibleCheck(ucscCompatibleCheck);
                 }
