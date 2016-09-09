@@ -1,0 +1,969 @@
+  <source name="phytozome-chado-B.distachyon-283" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="7371495" />
+    <property name="proteomeId" value="283" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="7371496" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-326" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818474" />
+    <property name="proteomeId" value="326" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9956000" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-327" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818475" />
+    <property name="proteomeId" value="327" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10002230" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-328" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818476" />
+    <property name="proteomeId" value="328" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10048024" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-329" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818477" />
+    <property name="proteomeId" value="329" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10085259" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-330" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818478" />
+    <property name="proteomeId" value="330" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10130700" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-331" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818479" />
+    <property name="proteomeId" value="331" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10177573" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-332" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818480" />
+    <property name="proteomeId" value="332" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10225360" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-333" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818481" />
+    <property name="proteomeId" value="333" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10268581" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-334" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818482" />
+    <property name="proteomeId" value="334" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10303597" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-335" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818483" />
+    <property name="proteomeId" value="335" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10350792" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-336" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818484" />
+    <property name="proteomeId" value="336" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10411732" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-337" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818485" />
+    <property name="proteomeId" value="337" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10457776" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-338" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818486" />
+    <property name="proteomeId" value="338" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10504414" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-339" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818487" />
+    <property name="proteomeId" value="339" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10550149" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-340" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818488" />
+    <property name="proteomeId" value="340" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10587025" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-341" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818489" />
+    <property name="proteomeId" value="341" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10633114" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-342" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818490" />
+    <property name="proteomeId" value="342" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10678018" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-343" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818491" />
+    <property name="proteomeId" value="343" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10724763" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-344" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818492" />
+    <property name="proteomeId" value="344" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10771134" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-345" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818493" />
+    <property name="proteomeId" value="345" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10813161" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-346" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818494" />
+    <property name="proteomeId" value="346" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10859884" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-347" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818495" />
+    <property name="proteomeId" value="347" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10904163" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-348" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818496" />
+    <property name="proteomeId" value="348" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10950362" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-349" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818497" />
+    <property name="proteomeId" value="349" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="10994790" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-350" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818498" />
+    <property name="proteomeId" value="350" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11037018" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-351" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818499" />
+    <property name="proteomeId" value="351" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11081776" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-352" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818500" />
+    <property name="proteomeId" value="352" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11126383" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-353" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818501" />
+    <property name="proteomeId" value="353" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11170967" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-354" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818502" />
+    <property name="proteomeId" value="354" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11216427" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-355" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818503" />
+    <property name="proteomeId" value="355" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11259817" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-356" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818504" />
+    <property name="proteomeId" value="356" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11305669" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-357" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818505" />
+    <property name="proteomeId" value="357" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11349927" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-358" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818506" />
+    <property name="proteomeId" value="358" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11396656" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-359" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818507" />
+    <property name="proteomeId" value="359" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11441327" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-360" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818508" />
+    <property name="proteomeId" value="360" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11486698" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-361" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818509" />
+    <property name="proteomeId" value="361" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11532767" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-362" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818510" />
+    <property name="proteomeId" value="362" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11579767" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-363" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818511" />
+    <property name="proteomeId" value="363" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11626389" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-364" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818512" />
+    <property name="proteomeId" value="364" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11672597" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-365" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818513" />
+    <property name="proteomeId" value="365" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11718707" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-366" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818514" />
+    <property name="proteomeId" value="366" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11763793" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-367" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818515" />
+    <property name="proteomeId" value="367" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11810251" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-368" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818516" />
+    <property name="proteomeId" value="368" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11855382" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-369" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818517" />
+    <property name="proteomeId" value="369" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11897267" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-370" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818518" />
+    <property name="proteomeId" value="370" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11943561" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-371" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818519" />
+    <property name="proteomeId" value="371" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="11987912" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-372" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818520" />
+    <property name="proteomeId" value="372" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12034439" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-373" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818521" />
+    <property name="proteomeId" value="373" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12081000" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-374" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818522" />
+    <property name="proteomeId" value="374" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12126913" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-375" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818523" />
+    <property name="proteomeId" value="375" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12171213" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-376" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818524" />
+    <property name="proteomeId" value="376" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12217261" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-377" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818525" />
+    <property name="proteomeId" value="377" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12263236" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-378" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818526" />
+    <property name="proteomeId" value="378" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12309314" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-379" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818527" />
+    <property name="proteomeId" value="379" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12503147" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-380" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818528" />
+    <property name="proteomeId" value="380" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12549739" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon-381" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="purple false brome" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon" />
+    <property name="species" value="distachyon" />
+    <property name="assemblyDbxrefId" value="9818529" />
+    <property name="proteomeId" value="381" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="1.0" />
+    <property name="dataSourceName" value="phytozome-B.distachyon" />
+    <property name="shortName" value="B. distachyon" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="12599301" />
+    <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>

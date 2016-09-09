@@ -1,0 +1,2 @@
+#!/bin/bash
+../bio/scripts/project_build -l -v -a phytozome-chado-B.distachyon-283--phytozome-chado-B.distachyon-381 localhost ${BSCRATCH}/phytomine-build
