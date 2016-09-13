@@ -11,19 +11,13 @@ package org.intermine.bio.web.logic;
  */
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -233,41 +227,11 @@ public class GenomicRegionSearchService
         }
         return excludedFeatureTypes;
     }
-/*
- * problem in the merge
-    @SuppressWarnings("unchecked")
-    private String prepareWebData(List<String> orgList, List<String> excludedFeatureTypeList) {
 
-      long start = (new Date()).getTime();
-      // see if we can recover the resultsMap from disk
-
-      // Parse results data to a map
-      Map<String, Set<String>> resultsMap = new LinkedHashMap<String, Set<String>>();
-      Set<String> featureTypeSet = new LinkedHashSet<String>();
-
-      //TODO: figure out how to configure this path more better.
-      File resultsMapFile = new File("webapps/"+getProperty("webapp.path")+"/featureOrgMap.obj");
-      if (resultsMapFile.exists() && resultsMapFile.canRead()) {
-        try {
-          ObjectInputStream ois = new ObjectInputStream(new FileInputStream(resultsMapFile));
-          resultsMap = (LinkedHashMap<String, Set<String>>)ois.readObject();
-          ois.close();
-        } catch( Exception e) {
-          LOG.warn("Exception thrown while reading chrInfoMap: "+e.getMessage()+". Regenerating...");
-          resultsMapFile.delete();
-        }
-        // scan to put into featureTypeSet
-        for( String org : resultsMap.keySet()) {
-          for( String featureType: resultsMap.get(org)) {
-            featureTypeSet.add(featureType);
-          }
-        }
-        long elapsed = (new Date()).getTime() - start;
-        LOG.info("Read featureTypeInOrgMap in "+elapsed+" milliseconds.");
-      }
-
-      if (resultsMap.size() == 0) {
-
+    // build a map of feature types that exist per organism in the database, NOTE this also
+    // populates global featureTypesInOrgs set.
+    private Map<String, Set<String>> getFeatureTypesForOrgs(List<String> orgList,
+            List<String> excludedFeatureTypes) {
         Query q = new Query();
         q.setDistinct(true);
 
@@ -291,9 +255,9 @@ public class GenomicRegionSearchService
 
         // SequenceFeature.organism = Organism
         QueryObjectReference organism = new QueryObjectReference(qcFeature,
-            "organism");
+                "organism");
         ContainsConstraint ccOrg = new ContainsConstraint(organism,
-            ConstraintOp.CONTAINS, qcOrg);
+                ConstraintOp.CONTAINS, qcOrg);
         constraints.addConstraint(ccOrg);
 
         // constraints.addConstraint(new BagConstraint(qfOrgName,
@@ -301,108 +265,34 @@ public class GenomicRegionSearchService
 
         Results results = objectStore.execute(q, initBatchSize, true, true, true);
 
+        // Parse results data to a map
+        Map<String, Set<String>> orgFeatureMap = new LinkedHashMap<String, Set<String>>();
+        Set<String> featureTypeSet = new LinkedHashSet<String>();
+
         // TODO this will be very slow when query too many features
-        if (results == null || results.size() < 0) {
-          return "";
-        } else {
-          for (Iterator<?> iter = results.iterator(); iter.hasNext();) {
-            ResultsRow<?> row = (ResultsRow<?>) iter.next();
+        if (results != null && results.size() > 0) {
+            for (Iterator<?> iter = results.iterator(); iter.hasNext();) {
+                ResultsRow<?> row = (ResultsRow<?>) iter.next();
 
-            String org = (String) row.get(0);
-            @SuppressWarnings("rawtypes")
-            // TODO exception - feature type is NULL
-            String featureType = ((Class) row.get(1)).getSimpleName();
-            if (!"Chromosome".equals(featureType) && orgList.contains(org)) {
-              if (resultsMap.size() < 1) {
-                featureTypeSet.add(featureType);
-                resultsMap.put(org, featureTypeSet);
-              } else {
-                if (resultsMap.keySet().contains(org)) {
-                  resultsMap.get(org).add(featureType);
-                } else {
-                  Set<String> s = new LinkedHashSet<String>();
-                  s.add(featureType);
-                  resultsMap.put(org, s);
+                String org = (String) row.get(0);
+                @SuppressWarnings("rawtypes")
+                // TODO exception - feature type is NULL
+                String featureType = ((Class) row.get(1)).getSimpleName();
+                if (!"Chromosome".equals(featureType) && orgList.contains(org)) {
+                    if (orgFeatureMap.size() < 1) {
+                        featureTypeSet.add(featureType);
+                        orgFeatureMap.put(org, featureTypeSet);
+                    } else {
+                        if (orgFeatureMap.keySet().contains(org)) {
+                            orgFeatureMap.get(org).add(featureType);
+                        } else {
+                            Set<String> s = new LinkedHashSet<String>();
+                            s.add(featureType);
+                            orgFeatureMap.put(org, s);
+                        }
+                    }
                 }
-              }
             }
-          }
-        }
-        try {
-          ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(resultsMapFile));
-          oos.writeObject(resultsMap);
-          oos.flush();
-          oos.close();
-        } catch( IOException e) {
-          LOG.warn("Exception thrown while writing featureMapOrg: "+e.getMessage()+".");
-        }
-      }
-*/
-      // build a map of feature types that exist per organism in the database, NOTE this also
-      // populates global featureTypesInOrgs set.
-      private Map<String, Set<String>> getFeatureTypesForOrgs(List<String> orgList,
-              List<String> excludedFeatureTypes) {
-          Query q = new Query();
-          q.setDistinct(true);
-
-          QueryClass qcOrg = new QueryClass(Organism.class);
-          QueryClass qcFeature = new QueryClass(SequenceFeature.class);
-
-          QueryField qfOrgName = new QueryField(qcOrg, "shortName");
-          QueryField qfFeatureClass = new QueryField(qcFeature, "class");
-
-          q.addToSelect(qfOrgName);
-          q.addToSelect(qfFeatureClass);
-
-          q.addFrom(qcOrg);
-          q.addFrom(qcFeature);
-
-          q.addToOrderBy(qfOrgName, "ascending");
-
-          ConstraintSet constraints = new ConstraintSet(ConstraintOp.AND);
-
-          q.setConstraint(constraints);
-
-          // SequenceFeature.organism = Organism
-          QueryObjectReference organism = new QueryObjectReference(qcFeature,
-                  "organism");
-          ContainsConstraint ccOrg = new ContainsConstraint(organism,
-                  ConstraintOp.CONTAINS, qcOrg);
-          constraints.addConstraint(ccOrg);
-
-          // constraints.addConstraint(new BagConstraint(qfOrgName,
-          // ConstraintOp.IN, orgList));
-
-          Results results = objectStore.execute(q, initBatchSize, true, true, true);
-
-          // Parse results data to a map
-          Map<String, Set<String>> orgFeatureMap = new LinkedHashMap<String, Set<String>>();
-          Set<String> featureTypeSet = new LinkedHashSet<String>();
-
-          // TODO this will be very slow when query too many features
-          if (results != null && results.size() > 0) {
-              for (Iterator<?> iter = results.iterator(); iter.hasNext();) {
-                  ResultsRow<?> row = (ResultsRow<?>) iter.next();
-
-                  String org = (String) row.get(0);
-                  @SuppressWarnings("rawtypes")
-                  // TODO exception - feature type is NULL
-                  String featureType = ((Class) row.get(1)).getSimpleName();
-                  if (!"Chromosome".equals(featureType) && orgList.contains(org)) {
-                      if (orgFeatureMap.size() < 1) {
-                          featureTypeSet.add(featureType);
-                          orgFeatureMap.put(org, featureTypeSet);
-                      } else {
-                          if (orgFeatureMap.keySet().contains(org)) {
-                              orgFeatureMap.get(org).add(featureType);
-                          } else {
-                              Set<String> s = new LinkedHashSet<String>();
-                              s.add(featureType);
-                              orgFeatureMap.put(org, s);
-                          }
-                      }
-                  }
-              }
 
             // Get all feature types
             for (Set<String> ftSet : orgFeatureMap.values()) {
@@ -419,14 +309,7 @@ public class GenomicRegionSearchService
         }
         return orgFeatureMap;
     }
-/*
- * problem with the merge
-        long elapsed = (new Date()).getTime() - start;
-        LOG.info("Created featureTypeInOrgMap in "+elapsed+" milliseconds.");
 
-        getFeatureTypeToSOTermMap();
-        getOrganismToTaxonMap();
-*/
     // build JSON string to display region search options
     private String buildJSONString(List<String> orgList, Map<String, Set<String>> resultsMap) {
         // Parse data to JSON string
@@ -473,11 +356,11 @@ public class GenomicRegionSearchService
             mgb.put("organism", e.getKey());
             mgb.put("genomeBuild",
                     (OrganismGenomeBuildLookup
-                            .getGenomeBuildbyOrganismAbbreviation(e.getKey(),objectStore) == null)
+                            .getGenomeBuildbyOrgansimAbbreviation(e.getKey()) == null)
                             ? "not available"
                             : OrganismGenomeBuildLookup
-                                    .getGenomeBuildbyOrganismAbbreviation(e
-                                            .getKey(),objectStore));
+                                    .getGenomeBuildbyOrgansimAbbreviation(e
+                                            .getKey()));
 
             gb.add(mgb);
         }
@@ -875,7 +758,7 @@ public class GenomicRegionSearchService
      * @return chrInfoMap
      */
     public Map<String, Map<String, ChromosomeInfo>> getChromosomeInfomationMap() {
-        return GenomicRegionSearchQueryRunner.getChromosomeInfo(interMineAPI, initBatchSize,webProperties);
+        return GenomicRegionSearchQueryRunner.getChromosomeInfo(interMineAPI, initBatchSize);
     }
 
     /**
@@ -884,58 +767,36 @@ public class GenomicRegionSearchService
      */
     public Map<String, List<String>> getFeatureTypeToSOTermMap() {
         if (featureTypeToSOTermMap == null) {
-          
-          //TODO: figure out how to configure this path more better.
-          
-          File featureSOMapFile = new File("webapps/"+webProperties.getProperty("webapp.path")+"/featureSOMap.obj");
-          if (featureSOMapFile.exists() && featureSOMapFile.canRead()) {
-            try {
-              ObjectInputStream ois = new ObjectInputStream(new FileInputStream(featureSOMapFile));
-              featureTypeToSOTermMap = (Map<String, List<String>>)ois.readObject();
-              ois.close();
-            } catch( Exception e) {
-              LOG.warn("Exception thrown while reading chrInfoMap: "+e.getMessage()+". Regenerating...");
-              featureSOMapFile.delete();
+            long startTime = System.currentTimeMillis();
+
+            featureTypeToSOTermMap = GenomicRegionSearchQueryRunner
+                    .getFeatureAndSOInfo(interMineAPI, classDescrs, initBatchSize);
+
+            if (!(featureTypesInOrgs.size() == featureTypeToSOTermMap.size() && featureTypesInOrgs
+                    .containsAll(featureTypeToSOTermMap.keySet()))) {
+                Map<String, List<String>> newFeatureTypeToSOTermMap =
+                    new HashMap<String, List<String>>();
+
+                for (String ft : featureTypesInOrgs) {
+                    if (featureTypeToSOTermMap.keySet().contains(ft)) {
+                        newFeatureTypeToSOTermMap.put(ft,
+                                featureTypeToSOTermMap.get(ft));
+                    } else {
+                        List<String> ftInfo = new ArrayList<String>();
+                        ftInfo.add(ft);
+
+                        String des = (classDescrs.get(ft) == null) ? "description not avaliable"
+                                : classDescrs.get(ft);
+
+                        des = des.replaceAll("'", "&apos;");
+                        des = des.replaceAll("\"", "&quot;");
+                        ftInfo.add(des);
+                        newFeatureTypeToSOTermMap.put(ft, ftInfo);
+                    }
+                }
+
+                featureTypeToSOTermMap = newFeatureTypeToSOTermMap;
             }
-            LOG.info("Read featureTypeToSOTermMap.");
-            return featureTypeToSOTermMap;
-          }
-          featureTypeToSOTermMap = GenomicRegionSearchQueryRunner
-              .getFeatureAndSOInfo(interMineAPI, classDescrs, initBatchSize);
-
-          if (!(featureTypesInOrgs.size() == featureTypeToSOTermMap.size() && featureTypesInOrgs
-              .containsAll(featureTypeToSOTermMap.keySet()))) {
-            Map<String, List<String>> newFeatureTypeToSOTermMap =
-                new HashMap<String, List<String>>();
-
-            for (String ft : featureTypesInOrgs) {
-              if (featureTypeToSOTermMap.keySet().contains(ft)) {
-                newFeatureTypeToSOTermMap.put(ft,
-                    featureTypeToSOTermMap.get(ft));
-              } else {
-                List<String> ftInfo = new ArrayList<String>();
-                ftInfo.add(ft);
-
-                String des = (classDescrs.get(ft) == null) ? "description not avaliable"
-                    : classDescrs.get(ft);
-
-                des = des.replaceAll("'", "&apos;");
-                des = des.replaceAll("\"", "&quot;");
-                ftInfo.add(des);
-                newFeatureTypeToSOTermMap.put(ft, ftInfo);
-              }
-            }
-
-            featureTypeToSOTermMap = newFeatureTypeToSOTermMap;
-          }
-          try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(featureSOMapFile));
-            oos.writeObject(featureTypeToSOTermMap);
-            oos.flush();
-            oos.close();
-          } catch( IOException e) {
-            LOG.warn("Exception thrown while writing chrInfoMap: "+e.getMessage()+".");
-          }
         }
 
         return featureTypeToSOTermMap;

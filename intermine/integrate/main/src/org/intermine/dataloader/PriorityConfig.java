@@ -106,22 +106,13 @@ public class PriorityConfig
                             + "model, check priorities configuration file - bad entry is "
                             + key + ".");
                 }
-                if( "*".equals(fieldName) ) {
-                  for( FieldDescriptor field : cld.getAllFieldDescriptors()) {
-                    Class<? extends FastPathObject> clazz = cld.getType();
-                    if ( !field.isCollection()) {
-                        getPriorities(clazz, field.getName());
-                    }
-                  }
-                } else {
-                  Class<? extends FastPathObject> clazz = cld.getType();
-                  FieldDescriptor field = cld.getFieldDescriptorByName(fieldName);
-                  if ((field != null) && (!field.isCollection())) {
+                Class<? extends FastPathObject> clazz = cld.getType();
+                FieldDescriptor field = cld.getFieldDescriptorByName(fieldName);
+                if ((field != null) && (!field.isCollection())) {
                     getPriorities(clazz, fieldName);
-                  } else {
+                } else {
                     throw new IllegalArgumentException("Bad entry in priorities file: " + key
-                        + " - " + className + " does not have a field " + fieldName);
-                  }
+                            + " - " + className + " does not have a field " + fieldName);
                 }
             }
         }

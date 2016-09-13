@@ -344,6 +344,19 @@
     </fields>
   </class>
 
+  <class className="org.intermine.model.bio.Pathway">
+    <headerconfig>
+      <titles>
+         <title mainTitles="Identifier" numberOfMainTitlesToShow="1" />
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="json" label="JSON"
+            showInResults="false" showInInlineCollection="false" showInSummary="false"
+                     displayer="model/pathwayDisplayer.jsp" />
+    </fields>
+  </class>
+
 
 <!-- exporters -->
   <tableExportConfig id="sequence" className="org.intermine.bio.web.export.SequenceHttpExporter"/>

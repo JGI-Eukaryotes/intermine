@@ -526,64 +526,12 @@
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
       <property name="src.data.dir.includes" value="table.392.fa-*.fa" />
     </source>
-
-    <source name="chlamy-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Creinhardtii_KEGG.cre_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="C.reinhardtii KEGG Pathway" />
+ 
+    <source name="pathologic-pathway-A.thaliana" type="biopax-pathway">
+      <property name="proteomeId" value="167" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="src.data.dir.includes" value="A.thaliana.owl" />
     </source>
-    <source name="soybean-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="275" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Gmax_KEGG.gmx_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="G.max KEGG Pathway" />
-    </source>
-    <source name="medicago-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="285" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Mtruncatula_KEGG.mtr_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="M.truncatula KEGG Pathway" />
-    </source>
-    <source name="hallii-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="300" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Phallii_KEGG.ath_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="P.hallii KEGG Pathway" />
-    </source>
-    <source name="physco-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="251" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Ppatens_KEGG.ppp_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="P.patens Pathway" />
-    </source>
-    <source name="poplar-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Ptrichocarpa_KEGG.pop_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="P.trichocarpa KEGG Pathway" />
-    </source>
-    <source name="switchgrass-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="273" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Pvirgatum_KEGG.ath_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="P.virgatum KEGG Pathway" />
-    </source>
-    <source name="sorghum-kegg-pathways" type="plantcyc-pathway">
-      <property name="proteomeId" value="255" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kegg-pathway/" />
-      <property name="src.data.dir.includes" value="Sbicolor_KEGG.sbi_Pathway2Gene.csv" />
-      <property name="dataSourcename" value="KEGG" />
-      <property name="dataSetTitle" value="S.bicolor KEGG Pathway" />
-    </source>
-
 
     <source name="synonyms" type="tsv-synonyms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/synonyms/" />
