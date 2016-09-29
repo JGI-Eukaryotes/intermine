@@ -97,16 +97,6 @@
     </fields>
   </class>
 
-  <class className="org.intermine.model.bio.Pathway">
-    <inlinelist>
-      <table path="dataSets.name" showLinksToObjects="false" />
-    </inlinelist>
-    <fields>
-      <fieldconfig fieldExpr="identifier" label="Identifier" />
-      <fieldconfig fieldExpr="name" label="Name" />
-    </fields>
-  </class>
-
   <class className="org.intermine.model.bio.SequenceFeature">
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier"/>
@@ -351,9 +341,8 @@
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="json" label="JSON"
-            showInResults="false" showInInlineCollection="false" showInSummary="false"
-                     displayer="model/pathwayDisplayer.jsp" />
+      <fieldconfig fieldExpr="identifier" label="Pathway Identifier" />
+      <fieldconfig fieldExpr="name" label="Pathway Name" />
     </fields>
   </class>
 
@@ -432,6 +421,12 @@
                      replacesFields=""
                      placement="summary"
                      types="MSA"/>
+
+    <reportdisplayer javaClass="org.intermine.bio.web.displayer.BiopaxPathwayDisplayer"
+                     jspName="model/pathwayDisplayer.jsp"
+                     replacesFields=""
+                     placement="summary"
+                     types="OrganismPathway"/>
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.ProteinFamilyDisplayer"
                      jspName="model/proteinFamilyDisplayer.jsp"
@@ -540,7 +535,7 @@
                                 homolog.gene2.organism.shortName,
                                 homolog.relationship" />
 
-      <enrichmentwidgetdisplayer id="pathway_enrichment"
+      <!--enrichmentwidgetdisplayer id="pathway_enrichment"
 					 title="Pathway Enrichment"
 					 description="Pathways enriched for genes in this list - data from KEGG and PlantCyc"
 					 label="Pathways"
@@ -552,7 +547,7 @@
 					 enrichIdentifier="pathways.identifier"
 					 constraints="pathways.dataSets.name=[DataSet],organism.proteomeId=[list], primaryIdentifier != null"
 					 typeClass="Gene"
-		 views="secondaryIdentifier,symbol,organism.name,pathways.identifier,pathways.name,pathways.dataSets.name"/>
+		 views="secondaryIdentifier,symbol,organism.name,pathways.identifier,pathways.name,pathways.dataSets.name"/-->
 
       <graphdisplayer id="chromosome_distribution_for_gene"
                       title="Chromosome Distribution"

@@ -1,0 +1,61 @@
+/* tooltip related and any other html styling goes here. styles to control svg with its native attributes treated as variables in head of pathway.js and called inline. */
+
+#tooltip-container {
+    font-family: "courier new", courier, monospace;
+    color: #333;
+}
+h1 {
+    font-size: 1.5rem;
+}
+/*svg path {
+    stroke: #666;
+    stroke-width: 2;
+    fill: transparent;
+}
+
+svg marker path {
+    stroke-width: 0.95;
+    fill: transparent;
+}*/
+
+svg .reaction {
+  cursor: pointer;
+}
+/*#pathway_div {
+    position: relative;
+    display: inline-block;
+}*/
+#tooltip-container {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: .85rem;
+}
+#tooltip-container:before,
+#tooltip-container:after {
+  top: 100%;
+  left: 44%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+#tooltip-container:before {
+  border-color: #fff;
+  border-top-color: #b9b9b9;
+  border-width: 11px;
+  margin-left: -11px;
+}
+#tooltip-container:after {
+  border-color: transparent;
+  border-top-color: #fff;
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+.grid_10 { position:static; }
+#header_wrap { display: none; }
