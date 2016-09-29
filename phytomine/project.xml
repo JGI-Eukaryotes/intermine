@@ -512,6 +512,11 @@
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
 
+    <source name="phytozome-homologs-442" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.442.fa-*.fa" />
+    </source>
+
     <source name="phytozome-homologs-383" type="inparanoid-homologs" >
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
       <property name="src.data.dir.includes" value="table.383.fa-*.fa" />
@@ -529,6 +534,7 @@
  
     <source name="pathologic-pathway-A.thaliana" type="biopax-pathway">
       <property name="proteomeId" value="167" />
+      <property name="method" value="pathologic" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
       <property name="src.data.dir.includes" value="A.thaliana.owl" />
     </source>

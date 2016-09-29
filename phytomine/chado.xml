@@ -1973,3 +1973,20 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>
+  <source name="phytozome-chado-P.vulgaris-442" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="common bean" />
+    <property name="genus" value="Phaseolus" />
+    <property name="name" value="Phaseolus vulgaris" />
+    <property name="species" value="vulgaris" />
+    <property name="assemblyDbxrefId" value="13493483" />
+    <property name="proteomeId" value="442" />
+    <property name="taxonId" value="3885" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-P.vulgaris" />
+    <property name="shortName" value="P. vulgaris early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="13493485" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>

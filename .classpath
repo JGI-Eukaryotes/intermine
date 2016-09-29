@@ -74,6 +74,7 @@
 	<classpathentry kind="src" path="intermine/web/main/src"/>
 	<classpathentry kind="src" path="intermine/webapp/main/src"/>
 	<classpathentry kind="src" path="bio/sources/biopax-pathway/main/src"/>
+	<classpathentry kind="src" path="phytomine/webapp/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/phytomine-load/dbmodel/build/classes" sourcepath="phytomine-load/dbmodel/build/gen/src"/>
 	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/imbuild/lib/im-ant-tasks.jar"/>
