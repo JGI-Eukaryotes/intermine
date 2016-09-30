@@ -79,11 +79,13 @@ public class PhytozomeDbProcessor {
     System.out.println("Properties...");
     fillProperties();
     System.out.println("Synonyms...");
-    //fillSynonyms();
+    fillSynonyms();
     System.out.println("Relationships...");
     fillRelationships();
     System.out.println("Analyses...");
     fillAnalyses();
+    System.out.println("Gene Annotations...");
+    fillGeneAnnotations();
     System.out.println("Done.");
     converter.getDatabase().getConnection().createStatement().execute(
         "DROP TABLE "+ tempChromosomeTableName+";DROP TABLE "+ tempFeatureTableName);
@@ -304,6 +306,56 @@ public class PhytozomeDbProcessor {
       count++;
     }
     LOG.info("created " + count + " synonyms.");
+    res.close();
+  
+  }
+  
+  private void fillGeneAnnotations() throws ObjectStoreException, SQLException {
+    // analysis results, GO terms and IPR domains attached to genes and proteins
+
+    String query =
+            "SELECT DISTINCT" +
+            "f.feature_id," +
+            "d.name, " +
+            "x.accession " +
+            "FROM " +
+            tempFeatureTableName + " f," +
+            "feature_dbxref fd, dbxref x " +
+            "WHERE f.feature_id=fd.feature_id " +
+            "AND fd.dbxref_id=x.dbxref_id " +
+            "ORDER BY feature_id, db, accession";
+            
+    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    ResultSet res = stmt.executeQuery(query);
+    int count = 0;
+    while (res.next()) {
+      Integer featureId = res.getInt("feature_id");
+      String dbName = res.getString("name");
+      String accession = res.getString("accession");
+      // this db should have been registers already!
+      if (!ontologyMap.containsKey(dbName)) {
+        LOG.warn("Unexpected new db for a xref: "+dbName);
+        Item newOntology = converter.createItem("Ontology");
+        newOntology.setAttribute("name",dbName);
+        converter.store(newOntology);
+        ontologyMap.put(dbName,newOntology.getIdentifier());
+      }
+      if (!ontologyTermMap.get(dbName).containsKey(accession)) {
+        // and ontology term.
+        LOG.warn("Unexpected new accession "+accession+" in db "+dbName);
+        Item newTerm = converter.createItem("OntologyTerm");
+        newTerm.setReference("ontology", ontologyMap.get(dbName));
+        newTerm.setAttribute("identifier", accession);
+        converter.store(newTerm);
+        ontologyTermMap.get(dbName).put(accession, newTerm);
+      }
+      Item oA = converter.createItem("OntologyAnnotation");
+      oA.setReference("subject",converter.objectIdentifier(featureId));
+      oA.setReference("ontologyTerm",ontologyTermMap.get(dbName).get(accession));
+      converter.store(oA);
+      count++;
+    }
+    LOG.info("Created " + count + " OntologyAnnotations.");
     res.close();
   
   }
