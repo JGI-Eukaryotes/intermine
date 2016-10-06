@@ -539,6 +539,20 @@
       <property name="src.data.dir.includes" value="A.thaliana.owl" />
     </source>
 
+    <source name="pathologic-pathway-A.thaliana-metacyc" type="biopax-pathway">
+      <property name="proteomeId" value="167" />
+      <property name="method" value="metacyc" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="src.data.dir.includes" value="A.thaliana_metacyc.owl" />
+    </source>
+
+    <source name="pathologic-pathway-C.reinhardtii" type="biopax-pathway">
+      <property name="proteomeId" value="281" />
+      <property name="method" value="pathologic" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="src.data.dir.includes" value="C.reinhardtii.owl" />
+    </source>
+
     <source name="synonyms" type="tsv-synonyms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/synonyms/" />
       <property name="src.data.file" value="synonyms.tsv" />

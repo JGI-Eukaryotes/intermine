@@ -115,8 +115,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
       LOG.info("Processing current pathway id "+pathwayID+" name is "+pathwayName);
 
       Item pathway = createItem("Pathway");
-      pathway.setAttribute("identifier", pathwayID);
-      pathway.setAttribute("name", pathwayName);
+      if (pathwayID != null) pathway.setAttribute("identifier", pathwayID);
+      if (pathwayName != null) pathway.setAttribute("name", pathwayName);
       // the first walk of the pathway just gets the reactions
       HashMap<String,Node> nodeMap = getReactionSteps(pathwayObj);
 

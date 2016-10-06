@@ -87,10 +87,12 @@ public class PhytozomeDbProcessor {
     System.out.println("Gene Annotations...");
     fillGeneAnnotations();
     System.out.println("Done.");
-    converter.getDatabase().getConnection().createStatement().execute(
-        "DROP TABLE "+ tempChromosomeTableName+";DROP TABLE "+ tempFeatureTableName);
-    //converter.getDatabase().getConnection().createStatement().execute(
-    //    "DROP TABLE "+ tempFeatureTableName);
+    Connection conn = converter.getDatabase().getConnection();
+    conn.createStatement().execute(
+        "DROP TABLE "+ tempChromosomeTableName);
+    conn.createStatement().execute(
+        "DROP TABLE "+ tempFeatureTableName);
+    conn.close();
   }
   
   private void fillAnalyses() throws SQLException, ObjectStoreException {
@@ -108,7 +110,8 @@ public class PhytozomeDbProcessor {
     LOG.info("executing analysis_id query: " + query);
     ResultSet aRes = null;
     try {
-      Statement stmt = converter.getDatabase().getConnection().createStatement();
+      Connection conn = converter.getDatabase().getConnection();
+      Statement stmt = conn.createStatement();
       aRes = stmt.executeQuery(query);
     } catch (SQLException e) {
       throw new BuildException("Problem when querying analyses " + e);
@@ -166,7 +169,8 @@ public class PhytozomeDbProcessor {
         "AND dbx.db_id=db.db_id";
 
     LOG.info("executing getProteinFeatureResultSet(): " + pQuery);
-    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    Connection conn = converter.getDatabase().getConnection();
+    Statement stmt = conn.createStatement();
     ResultSet res = stmt.executeQuery(pQuery);
     LOG.info("Got resultset.");
 
@@ -206,6 +210,8 @@ public class PhytozomeDbProcessor {
     }
     LOG.info("processed " + count + " ProteinAnalysisFeature records");
     res.close();
+    stmt.close();
+    conn.close();
   }
   
   private boolean processAndStoreProteinAnalysisFeature(Integer matchId,
@@ -293,7 +299,8 @@ public class PhytozomeDbProcessor {
             "AND fs.synonym_id=s.synonym_id " +
             "ORDER BY feature_id, synonym";
             
-    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    Connection conn = converter.getDatabase().getConnection();
+    Statement stmt = conn.createStatement();
     ResultSet res = stmt.executeQuery(query);
     int count = 0;
     while (res.next()) {
@@ -307,6 +314,8 @@ public class PhytozomeDbProcessor {
     }
     LOG.info("created " + count + " synonyms.");
     res.close();
+    stmt.close();
+    conn.close();
   
   }
   
@@ -314,18 +323,21 @@ public class PhytozomeDbProcessor {
     // analysis results, GO terms and IPR domains attached to genes and proteins
 
     String query =
-            "SELECT DISTINCT" +
-            "f.feature_id," +
+            "SELECT DISTINCT " +
+            "f.feature_id, " +
             "d.name, " +
             "x.accession " +
             "FROM " +
             tempFeatureTableName + " f," +
-            "feature_dbxref fd, dbxref x " +
+            "feature_dbxref fd, dbxref x, db d " +
             "WHERE f.feature_id=fd.feature_id " +
             "AND fd.dbxref_id=x.dbxref_id " +
-            "ORDER BY feature_id, db, accession";
+            "AND x.db_id=d.db_id " +
+            "AND d.name NOT like 'PAC%' " +
+            "ORDER BY 1,2,3";
             
-    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    Connection conn = converter.getDatabase().getConnection();
+    Statement stmt = conn.createStatement();
     ResultSet res = stmt.executeQuery(query);
     int count = 0;
     while (res.next()) {
@@ -339,6 +351,7 @@ public class PhytozomeDbProcessor {
         newOntology.setAttribute("name",dbName);
         converter.store(newOntology);
         ontologyMap.put(dbName,newOntology.getIdentifier());
+        ontologyTermMap.put(dbName,new HashMap<String,Item>());
       }
       if (!ontologyTermMap.get(dbName).containsKey(accession)) {
         // and ontology term.
@@ -357,6 +370,8 @@ public class PhytozomeDbProcessor {
     }
     LOG.info("Created " + count + " OntologyAnnotations.");
     res.close();
+    stmt.close();
+    conn.close();
   
   }
   
@@ -386,7 +401,8 @@ public class PhytozomeDbProcessor {
             hack.toString() +
             ") ORDER by feature_id, property_type_id, rank";
             
-    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    Connection conn = converter.getDatabase().getConnection();
+    Statement stmt = conn.createStatement();
     ResultSet res = stmt.executeQuery(query);
     int count = 0;
     while (res.next()) {
@@ -400,6 +416,8 @@ public class PhytozomeDbProcessor {
     }
     LOG.info("created " + count + " properties.");
     res.close();
+    stmt.close();
+    conn.close();
   
   }
   private void fillRelationships() throws ObjectStoreException, SQLException {
@@ -467,7 +485,8 @@ public class PhytozomeDbProcessor {
             "AND s.feature_id=r1.subject_id " +
             "AND s.type_id != o.type_id";
 
-    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    Connection conn = converter.getDatabase().getConnection();
+    Statement stmt = conn.createStatement();
     ResultSet res = stmt.executeQuery(query);
     int count = 0;
     // make a hash of things that go into collections. The MultiKey is 
@@ -523,6 +542,8 @@ public class PhytozomeDbProcessor {
     }
     LOG.info("created " + count + " relationships");
     res.close();
+    stmt.close();
+    conn.close();
 
   }
   private void fillAnnotationTable() throws ObjectStoreException, SQLException {
@@ -548,7 +569,8 @@ public class PhytozomeDbProcessor {
             "AND f.feature_id = l.feature_id " +
             "AND f.organism_id =" + organismId;
     
-    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    Connection conn = converter.getDatabase().getConnection();
+    Statement stmt = conn.createStatement();
     LOG.info("Creating Feature temp table(): " + query);
     try {
       stmt.execute(query);
@@ -627,6 +649,8 @@ public class PhytozomeDbProcessor {
     }
     LOG.info("created " + count + " features");
     res.close();
+    stmt.close();
+    conn.close();
     
   }
   
@@ -680,7 +704,8 @@ public class PhytozomeDbProcessor {
             + "  AND g.organism_id="+organismId
             + "  AND c.organism_id="+organismId;         
 
-    Statement stmt = converter.getDatabase().getConnection().createStatement();
+    Connection conn = converter.getDatabase().getConnection();
+    Statement stmt = conn.createStatement();
     LOG.info("executing createChromosomeTempTable(): " + query);
     try {
       stmt.execute(query);
@@ -733,6 +758,8 @@ public class PhytozomeDbProcessor {
     }
     LOG.info("Created " + count + " chromosomes");
     res.close();
+    stmt.close();
+    conn.close();
     
   }
 }
