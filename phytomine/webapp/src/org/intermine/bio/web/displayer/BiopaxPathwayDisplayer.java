@@ -273,10 +273,10 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     String currentGroup = null;
     // this will hold the results for 1 gene in 1 group
     // the key is the sample name and value the fpkm
-    HashMap<String,Float> geneResults = null;
+    HashMap<String,String> geneResults = null;
     // this will hold the results for all genes in 1 group
     // the key is the gene name and value the geneResults hash
-    HashMap<String,HashMap<String,Float>> groupResults = null;
+    HashMap<String,HashMap<String,String>> groupResults = null;
     // a map of gene name to EC.
     HashMap<String,HashSet<String>> ecMap = new HashMap<String,HashSet<String>>();
     while (result.hasNext()) {
@@ -294,17 +294,17 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         }
         currentGene = gene;
         currentGroup = group;
-        geneResults = new HashMap<String,Float>();
-        groupResults = new HashMap<String,HashMap<String,Float>>();
+        geneResults = new HashMap<String,String>();
+        groupResults = new HashMap<String,HashMap<String,String>>();
       } else if (!currentGene.equals(gene)) {
         // same group, different gene.
         groupResults.put(currentGene,geneResults);
-        geneResults = new HashMap<String,Float>();
+        geneResults = new HashMap<String,String>();
         currentGene = gene;
       }
       ecMap.get(gene).add(row.get(2).getField().toString());
-      //              |--------- sample name ---------|----------- fpkm -----------|
-      geneResults.put(row.get(3).getField().toString(),(Float)row.get(4).getField());
+      //              |--------- sample name ---------|-------------- fpkm ---------------|
+      geneResults.put(row.get(3).getField().toString(),sigFig((Float)row.get(4).getField()));
     }
     if(geneResults.keySet().size() > 0) {
       // final insertion
@@ -316,7 +316,18 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     jj.put("data",jsonArr);
     return jj.toString();
   }
-  private void addGroupNode(JSONArray j, String groupName, HashMap<String,HashMap<String,Float>> results,HashMap<String,HashSet<String>> ecMap) throws JSONException {
+  
+  private String sigFig(Float a) {
+    // convert a Float to 3 significant figures
+    long leftWidth = Math.round(Math.ceil(Math.log10(Math.abs(a))));
+    if (leftWidth < 4) {
+      return String.format("%1."+(3-leftWidth)+"f",a);
+    } else {
+      return String.format("%1.0f",a);
+    }
+
+  }
+  private void addGroupNode(JSONArray j, String groupName, HashMap<String,HashMap<String,String>> results,HashMap<String,HashSet<String>> ecMap) throws JSONException {
     JSONObject groupNode = new JSONObject();
     groupNode.put("group",groupName);
     JSONArray geneArray = new JSONArray();
@@ -325,7 +336,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       geneNode.put("gene",g);
       geneNode.put("enzyme",StringUtils.join(ecMap.get(g)," "));
       JSONArray expArray = new JSONArray();
-      HashMap<String,Float> fpkm = results.get(g);
+      HashMap<String,String> fpkm = results.get(g);
       for(String e: fpkm.keySet()) {
         JSONObject n = new JSONObject();
         n.put("sample",e);

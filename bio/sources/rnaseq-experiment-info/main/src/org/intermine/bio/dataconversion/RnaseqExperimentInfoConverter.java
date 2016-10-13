@@ -34,6 +34,8 @@ public class RnaseqExperimentInfoConverter extends BioFileConverter
   private static final String DATA_SOURCE_NAME = "RNAseq Experiment";
   private static final Logger LOG = Logger.getLogger(RnaseqExperimentInfoConverter.class);
   private Integer proteomeId = null;
+  private Item org = null;
+  String organismIdentifier = null;
 
   /**
     /**
@@ -58,9 +60,13 @@ public class RnaseqExperimentInfoConverter extends BioFileConverter
         LOG.info("Ignoring file " + theFile.getName() + ". Not a vcf sample info file.");
       } else {
         // one organism (at most) per file
-        String organismIdentifier = null;
-        if (proteomeId != null) {
-          Item org = createItem("Organism");
+        if (proteomeId == null ) {
+          throw new BuildException("Proteome Id must be set for rna-seq experiment.");
+        }
+
+        // see if we need to register the organism
+        if( org == null) {
+          org = createItem("Organism");
           org.setAttribute("proteomeId",proteomeId.toString());
           try {
             store(org);
@@ -68,10 +74,8 @@ public class RnaseqExperimentInfoConverter extends BioFileConverter
             throw new BuildException("Cannot store organism: "+e.getMessage());
           }
           organismIdentifier = org.getIdentifier();
-        } else {
-          throw new BuildException("Proteome Id must be set for rna-seq experiment.");
         }
-
+        
         Iterator<?> tsvIter;
         try {
           tsvIter = FormattedTextParser.parseTabDelimitedReader(reader);

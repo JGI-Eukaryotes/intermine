@@ -13,19 +13,19 @@
 <script type="text/javascript" src="model/pathway.js" charset="utf-8"/>
 <link rel="stylesheet" type="text/css" href="model/pathway.css" />
 
-<div class="body" id="pathway_div"/>
-
-<div id="pathway_expression_div" class="collection-table">
-<h3>Gene Expression </h3>
-</div>
-
+<div id="pathway-widget" align="center">
+  <div id="pathway-diagram"/><!--#pathway-diagram-->
+  <div id="pathway-expression-table" class="collection-table">
+    <h3>Gene Expression</h3>
+  </div><!--#pathway-expression-table-->
+</div><!--pathway-widget-->
 <script type="text/javascript" charset="utf-8">
 
   jQuery(window).load(function () {
-     loadPathway("#pathway_div",${jsonPathway});
-     jQuery("#pathway_div").show();
-     loadExpressionTable("#pathway_expression_div",${jsonExpression});
-     jQuery("#pathway_expression_div").show();
+     loadPathway("#pathway-diagram",${jsonPathway});
+     jQuery("#pathway-diagram").show();
+     loadExpressionTable("#pathway-expression-table",${jsonExpression});
+     jQuery("#pathway-expression-table").show();
   });
 </script>
 

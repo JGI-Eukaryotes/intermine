@@ -1,30 +1,53 @@
 /* tooltip related and any other html styling goes here. styles to control svg with its native attributes treated as variables in head of pathway.js and called inline. */
 
+/*#pathway-widget,
+#pathway-widget button,
+#pathway-widget select {
+  font-family: "courier-new", courier, monospace;
+  font-weight: 300;
+}*/
+
+#pathway-widget select {
+  padding: .5rem;
+}
+
+#pathway-widget h3, #pathway-widget th {
+  font-weight: 400;
+}
+
 #tooltip-container {
-    font-family: "courier new", courier, monospace;
+    /*font-family: "courier new", courier, monospace;*/
     color: #333;
 }
-h1 {
-    font-size: 1.5rem;
-}
-/*svg path {
-    stroke: #666;
-    stroke-width: 2;
-    fill: transparent;
-}
 
-svg marker path {
-    stroke-width: 0.95;
-    fill: transparent;
-}*/
-
-svg .reaction {
+#pathway-widget svg .reaction {
   cursor: pointer;
 }
-/*#pathway_div {
-    position: relative;
-    display: inline-block;
-}*/
+
+#pathway-widget #group-tip {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  padding: 0.5rem 1rem;
+  font-size: .85rem;
+  z-index: 1000;
+  position: absolute;
+}
+#pathway-widget #group-menu {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  padding: 0.5rem 1rem;
+  font-size: .85rem;
+  z-index: 1000;
+  position: absolute;
+}
+
+#pathway-widget #pathway-diagram {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
 #tooltip-container {
   position: absolute;
   background: #fff;
@@ -57,5 +80,110 @@ svg .reaction {
   margin-left: -10px;
 }
 
-.grid_10 { position:static; }
-#header_wrap { display: none; }
+#dismiss-text {
+    font-size: xx-small;
+    float: right;
+    font-style: italic;
+}
+#pathway-expression-table table {
+    overflow: scroll;
+    margin: 1rem 0 1rem 155px;
+    border-collapse: collapse;
+    padding-bottom: 1rem;
+}
+#pathway-expression-table .gene,
+#pathway-expression-table .ec {
+    position: absolute;
+    top: auto;
+}
+#pathway-expression-table .gene {
+    left: 0;
+    width: 100px;
+}
+#pathway-expression-table .ec {
+    left: 100px;
+    width: 55px;
+}
+#pathway-expression-table th,
+#pathway-expression-table td {
+    text-align: left;
+    /*border: 1px solid #ccc;*/
+    box-sizing: border-box;
+    padding: .3rem;
+}
+
+/* courtesy Patrick Gillespie, https://github.com/patorjk/d3-context-menu. MIT license in d3-context-menu.js */
+
+.d3-context-menu {
+	position: absolute;
+	display: none;
+	background-color: #fff;
+	border-radius: 4px;
+
+	min-width: 150px;
+	border: 1px solid #ccc;
+
+	z-index:1200;
+}
+
+.d3-context-menu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	cursor: default;
+}
+
+.d3-context-menu ul li {
+	padding: 4px 16px;
+
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+	-khtml-user-select: none;    /* Konqueror */
+	-moz-user-select: none;      /* Firefox */
+	-ms-user-select: none;       /* Internet Explorer/Edge */
+	user-select: none;
+}
+
+.d3-context-menu ul li:hover {
+	background-color: #ced;
+	color: #fefefe;
+}
+
+/*
+	Header
+*/
+
+.d3-context-menu ul li.is-header,
+.d3-context-menu ul li.is-header:hover {
+	color: #444;
+}
+
+/*
+	Disabled
+*/
+
+.d3-context-menu ul li.is-disabled,
+.d3-context-menu ul li.is-disabled:hover {
+	background-color: #f2f2f2;
+	color: #888;
+	cursor: not-allowed;
+}
+
+/*
+	Divider
+*/
+
+.d3-context-menu ul li.is-divider {
+	padding: 0px 0px;
+}
+
+.d3-context-menu ul li.is-divider:hover {
+	background-color: #f2f2f2;
+}
+
+.d3-context-menu ul hr {
+	border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}

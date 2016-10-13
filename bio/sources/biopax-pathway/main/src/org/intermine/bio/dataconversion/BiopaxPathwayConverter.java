@@ -16,10 +16,15 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.TreeMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.Vector;
 
 import org.apache.commons.io.input.ReaderInputStream;
@@ -102,8 +107,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
     ontology.setAttribute("name","ENZYME ");
     store(ontology);
     // hashes for enzymes and proteins that we register along the way.
-    HashMap<String,Item> enzymeHash = new HashMap<String,Item>();
-    HashMap<String,Item> proteinHash = new HashMap<String,Item>();
+    TreeMap<String,Item> enzymeHash = new TreeMap<String,Item>();
+    TreeMap<String,Item> proteinHash = new TreeMap<String,Item>();
 
     for (Pathway pathwayObj : pathwaySet) {
 
@@ -118,7 +123,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
       if (pathwayID != null) pathway.setAttribute("identifier", pathwayID);
       if (pathwayName != null) pathway.setAttribute("name", pathwayName);
       // the first walk of the pathway just gets the reactions
-      HashMap<String,Node> nodeMap = getReactionSteps(pathwayObj);
+      TreeMap<String,Node> nodeMap = getReactionSteps(pathwayObj);
 
       // we'll need the initial nodes.
       // First, determine the reverse links
@@ -220,14 +225,15 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
         // Now build the json.
         // this connects the node key to an integer
-        HashMap<String,Integer> nodeToId = new HashMap<String,Integer>();
+        TreeMap<String,Integer> nodeToId = new TreeMap<String,Integer>();
         Integer currentId = new Integer(0);
         // various buffers for holding things.
         StringBuffer nodes = new StringBuffer();
         StringBuffer links = new StringBuffer();
         StringBuffer groups = new StringBuffer();
 
-        for( String key : nodeMap.keySet() ) {
+
+        for( String key : nodeMap.keySet()) {
           Node activeNode = nodeMap.get(key);
           if( activeNode.column() != null && activeNode.row() != null) {
             nodeToId.put(key,currentId);
@@ -312,9 +318,21 @@ public class BiopaxPathwayConverter extends BioFileConverter
           }
         }
 
-        pathway.setAttribute("json","{\"nodes\":["+nodes.toString()+
-                                   "],\"links\":["+links.toString()+
-                                   "],\"groups\":["+groups.toString()+"]}");
+        String json = "{\"nodes\":["+nodes.toString()+"],\"links\":["+links.toString()+
+                       "],\"groups\":["+groups.toString()+"]}";
+ 
+        String md5sum = "";
+        try {
+          MessageDigest md;
+          md = MessageDigest.getInstance("MD5");
+          BigInteger bI = new BigInteger(1,md.digest(json.getBytes()));
+          md5sum = String.format("%1$032x",bI);
+        } catch (NoSuchAlgorithmException e) {
+          throw new BuildException("No such algorithm!");
+        }
+
+        pathway.setAttribute("json",json);
+        pathway.setAttribute("json_md5",md5sum);
 
 
         LOG.info("Storing pathway "+pathwayName+" ("+pathway.getIdentifier()+") with "+components.size()+" components.");
@@ -342,9 +360,9 @@ public class BiopaxPathwayConverter extends BioFileConverter
    * through everything to find the inputs, outputs and substrates.
    * */
 
-  HashMap<String,Node> getReactionSteps(Pathway pathway) {
+  TreeMap<String,Node> getReactionSteps(Pathway pathway) {
 
-    HashMap<String,Node> retSet = new HashMap<String,Node>();
+    TreeMap<String,Node> retSet = new TreeMap<String,Node>();
 
     for( PathwayStep step: pathway.getPathwayOrder() ) {
       ReactionNode activeNode = new ReactionNode();
@@ -396,29 +414,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
           System.err.println("Step process is neither reaction nor catalysis. Is "+proc);
         }
       }
-     /* // re-label to include EC's and proteins.
-      StringBuffer fullLabel = new StringBuffer();
-      for(String ec: activeNode.ec) {
-        if ( fullLabel.length() > 0) {
-          fullLabel.append("<br>");
-        }
-        fullLabel.append("EC:"+ec);
-      }
-      boolean firstProtein = true;
-      for(String protein: activeNode.proteins) {
-        if(fullLabel.length() > 0) fullLabel.append("<br>");
-        if (firstProtein) {
-          if (activeNode.proteins.size() > 1) {
-            fullLabel.append("Proteins<br>");
-          } else {
-            fullLabel.append("Protein<br>");
-          }
-          firstProtein = false;
-        }
-        fullLabel.append(protein);
-      }
-      activeNode.label(fullLabel.toString());
-      activeNode.info(activeNode.info()+"<br>"+activeNode.label().toString());*/
+  
       // determine the next reaction step(s)
       for( PathwayStep nS: step.getNextStep() ) {
         activeNode.nextNode.add(simplifyKey(nS.toString()));
@@ -440,7 +436,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     return retSet;
   }
   private void walk(Integer rowI, Integer columnI,ReactionNode prevNode,ReactionNode currentNode,
-      HashSet<Node[]> linkSet,HashMap<String,Node> nodeMap) {
+      HashSet<Node[]> linkSet,TreeMap<String,Node> nodeMap) {
 
     // if we've seen both the current and previous nodes, we've walked this section
     // of the graph already. Do no double walk.
@@ -553,8 +549,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
           outputN.label(label.toString());
           // this output is put on the next row of the previous.
           outputN.row(new Integer(prevNode.row() + 1));
-          // and one column over. EXCEPT for the last node.
-          //outputN.column(iN.row().equals(0)?new Integer(currentNode.column()):new Integer(currentNode.column() + 1));
+          // and one column over.
           outputN.column(new Integer(prevNode.column() + 1));
           nodeMap.put(outputN.uniqueName,outputN);
         }
@@ -586,7 +581,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
    * Look for the maximum column (so far) of all nodes.
    */
 
-  int maxColumn(HashMap<String,Node> nodeMap) {
+  int maxColumn(TreeMap<String,Node> nodeMap) {
     int ml = 0;
     for(Node node: nodeMap.values()) {
       if (node.column() != null && node.column().intValue() > ml) {
@@ -605,7 +600,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
   }
   private StringBuffer makeComponentNodeLabel(Set<String> exclude,Vector<String> components) {
 
-    HashMap<String,Integer> componentCtr = new HashMap<String,Integer>();
+    TreeMap<String,Integer> componentCtr = new TreeMap<String,Integer>();
     for(String component: components) {
       if (!exclude.contains(component)) {
         if (!componentCtr.containsKey(component)) {
