@@ -573,14 +573,13 @@ var getMinMaxFpkm = function(data) {
   var fpkmArr = [];
   for (key in flattenedData) {
     if (flattenedData.hasOwnProperty(key) && /fpkm/.test(key)) {
-      fpkmArr.push(flattenedData[key]);
+	fpkmArr.push(parseFloat(flattenedData[key]));
     }
   }
   return d3.extent(fpkmArr);
 };
 
 var setColorScale = function(minMaxVal, minMaxColors) {
-  //console.log(minMaxVal[1]);
   return d3.scaleLinear()
            .domain(minMaxVal)
            .range(minMaxColors);
@@ -676,54 +675,28 @@ var loadExpressionTable = function(container,json) {
                          if (/result/.test(d.class)) {
                            return colorScale(d.content);
                          }
-                     });
+                       })
 
-                    //    .on("mouseover",function(d) { if (d3.select(this).classed('highlighter')) {
-                    //                                  d3.select(this).style('color','red');
-                    //                                  d3.selectAll('text')
-                    //                                  .each( function(dd) {
-                    //                                      if(dd.label.match(d.content)) {
-                    //                                        d3.select(this).style('stroke','red');
-                    //                                      }
-                    //                                   });
-                    //                                 }})
-                    //    .on("mouseout", function(d) {  if (/highlighter/.test(d.class)) {
-                    //                                  d3.select(this).style('color','black');
-                    //                                  d3.selectAll('text')
-                    //                                    .each( function(dd) {
-                    //                                     if(dd.label.match(d.content)) {
-                    //                                        d3.select(this).style('stroke', null);
-                    //                                     }
-                    //                                  });
-                    //                                }})
-                    //   .on("contextmenu", function(d) { if (d3.select(this).classed('highlighter')) {
-                    //                                        console.log(menu);
-                    //                                        return d3.contextMenu(menu);
-                    //                                        console.log(m);
-                    //                                    }
-                    //                                });
-
-      body.selectAll('td').classed('highlighter').enter()
-                                      .on("mouseover",function(d) {
-                                                  d3.select(this).style('color','red');
-                                                  d3.selectAll('text')
-                                                  .each( function(dd) {
-                                                      if(dd.label.match(d.content)) {
-                                                        d3.select(this).style('stroke','red');
-                                                      }
-                                                   });
-                                                 })
-                                      .on("mouseout", function(d) {
-                                                  d3.select(this).style('color','black');
-                                                  d3.selectAll('text')
-                                                    .each( function(dd) {
-                                                     if(dd.label.match(d.content)) {
-                                                        d3.select(this).style('stroke', null);
-                                                     }
-                                                  });
-                                                })
-                                      .on("contextmenu", d3.contextMenu(menu));
-
+      body.selectAll('td.highlighter')
+                      .on("mouseover", function(d) {
+                        d3.select(this).style('color', 'red');
+                        d3.selectAll('text')
+                          .each( function(dd){
+                            if (dd.label.match(d.content)) {
+                              d3.select(this).style('stroke', 'red');
+                            }
+                          });
+                      })
+                      .on("mouseout", function(d) {
+                        d3.select(this).style('color', 'black');
+                        d3.selectAll('text')
+                          .each( function(dd){
+                            if (dd.label.match(d.content)) {
+                              d3.select(this).style('stroke', null);
+                            }
+                          });
+                      })
+                      .on("contextmenu", d3.contextMenu(menu));
 
     }
 
