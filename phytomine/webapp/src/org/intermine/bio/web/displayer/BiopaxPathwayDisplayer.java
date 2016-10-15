@@ -1,5 +1,7 @@
 package org.intermine.bio.web.displayer;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +47,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   Profile profile;
   PathQueryExecutor exec;
   String pathwayName = null;
+
+  protected static final Logger LOG = Logger.getLogger(BiopaxPathwayDisplayer.class);
   /**
    * Construct with config and the InterMineAPI.
    * @param config to describe the report displayer
@@ -176,6 +181,11 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       request.setAttribute("jsonExpression",jE);
       
     } catch (Exception e) {
+      LOG.warn("Caught an exception: "+e.getMessage());
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      e.printStackTrace(pw);
+      LOG.warn("stack trace "+sw.toString());
       // some problem retrieving data or processing the JSON
     }
   }
@@ -283,6 +293,12 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       List<ResultElement> row = result.next();
       String group = row.get(0).getField().toString();
       String gene = row.get(1).getField().toString();
+  /*    if (row.get(2)==null || row.get(2).getField() == null) {
+        LOG.info("EC is null");
+      } else {
+      LOG.info("Processing row "+group+" "+ gene +" "+row.get(2).getField().toString()+" "+
+          row.get(3).getField().toString()+" "+(Float)row.get(4).getField());
+      }*/
       if (!ecMap.containsKey(gene)) ecMap.put(gene,new HashSet<String>()); 
       if (currentGroup==null || !currentGroup.equals(group)) {
         // this is either the first pass through or different group
@@ -302,7 +318,11 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         geneResults = new HashMap<String,String>();
         currentGene = gene;
       }
+      if( row.get(2) != null && row.get(2).getField() != null) {
       ecMap.get(gene).add(row.get(2).getField().toString());
+      }else {
+        ecMap.get(gene).add("N/A");
+      }
       //              |--------- sample name ---------|-------------- fpkm ---------------|
       geneResults.put(row.get(3).getField().toString(),sigFig((Float)row.get(4).getField()));
     }
@@ -319,6 +339,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   
   private String sigFig(Float a) {
     // convert a Float to 3 significant figures
+    // small is small. Just call it 0
+    if ( Math.abs(a) < 1e-6) return "0.00";
     long leftWidth = Math.round(Math.ceil(Math.log10(Math.abs(a))));
     if (leftWidth < 4) {
       return String.format("%1."+(3-leftWidth)+"f",a);
