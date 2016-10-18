@@ -102,16 +102,22 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         if (node.getString("type").equals("reaction")) {
           StringBuffer newLabel = new StringBuffer();
           if ( enzymes.containsKey(label) ) {
+            JSONArray ecList = new JSONArray();
             for( String enzyme: enzymes.get(label)) {
               if (newLabel.length() > 0) newLabel.append("<br>");
               newLabel.append(enzyme);
+              ecList.put(enzyme);
             }
+            node.put("ec",ecList);
           }
           if ( genes.containsKey(label) ) {
-            for( String protein: genes.get(label)) {
+            JSONArray geneList = new JSONArray();
+            for( String gene: genes.get(label)) {
               if (newLabel.length() > 0) newLabel.append("<br>");
-              newLabel.append(protein);
+              newLabel.append(gene);
+              geneList.put(gene);
             }
+            node.put("gene",geneList);
           }
           label = newLabel.toString();
           node.put("label",label);
@@ -175,10 +181,12 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         request.setAttribute("pathwayName","unknown");
       }
       
-      String jE = makeExpressionJSON(pathwayObj.getId());
-     
+      String jE = makeExpressionJSON(pathwayObj.getId());   
       // now get the corresponding expression data
       request.setAttribute("jsonExpression",jE);
+      
+      // now the URLs
+      String jU = makeUrlJSON(jE);
       
     } catch (Exception e) {
       LOG.warn("Caught an exception: "+e.getMessage());
@@ -326,7 +334,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       //              |--------- sample name ---------|-------------- fpkm ---------------|
       geneResults.put(row.get(3).getField().toString(),sigFig((Float)row.get(4).getField()));
     }
-    if(geneResults.keySet().size() > 0) {
+    if(geneResults != null && geneResults.keySet() != null && geneResults.keySet().size() > 0) {
       // final insertion
       groupResults.put(currentGene,geneResults);
       // and add all old results to the JSON
@@ -347,8 +355,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     } else {
       return String.format("%1.0f",a);
     }
-
   }
+  
   private void addGroupNode(JSONArray j, String groupName, HashMap<String,HashMap<String,String>> results,HashMap<String,HashSet<String>> ecMap) throws JSONException {
     JSONObject groupNode = new JSONObject();
     groupNode.put("group",groupName);
@@ -370,5 +378,16 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     }
     groupNode.put("genes",geneArray);
     j.put(groupNode);
+  }
+
+
+  private String makeUrlJSON(String jE) throws ObjectStoreException, JSONException  {
+
+    JSONArray jsonArr = new JSONArray();
+    JSONObject urlNode = new JSONObject();
+    urlNode.put("url",jsonArr);
+    return urlNode.toString();
+    
+    
   }
 }

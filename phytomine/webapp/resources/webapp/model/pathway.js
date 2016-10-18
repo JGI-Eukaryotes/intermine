@@ -18,7 +18,7 @@ var markerPathAttrs = {
 var fontAttrs = {
   family: "courier new, courier, monospace",
   color: "#222"
-}
+};
 
 var loadPathway = function(container,json) {
 
@@ -35,8 +35,8 @@ var loadPathway = function(container,json) {
     var svg = document.getElementById("pathway-svg");
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-    var blob = new Blob(['<?xml version="1.0" standalone="no"?>' +
-                         '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' +
+    var blob = new Blob(["<?xml version=\"1.0\" standalone=\"no\"?>" +
+                         "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" +
                          svg.outerHTML],
                          { type: "image/svg+xml"});
     var url = URL.createObjectURL(blob);
@@ -46,10 +46,10 @@ var loadPathway = function(container,json) {
     document.body.appendChild(link);
     link.click();
     setTimeout(function() {
-       document.body.removeChild(link);
-       window.URL.revokeObjectURL(url);
-       }, 0);
-    });
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  });
 
   // the drag handler
   var eventStart;
@@ -80,7 +80,7 @@ var loadPathway = function(container,json) {
                  d3.select(this).attr("d",lineFunction(dd));
                  setElementDimensions(svgContainer);
                });
-             })
+             });
 
   // arrowheads
   var refX = 7;
@@ -118,7 +118,8 @@ var loadPathway = function(container,json) {
                      .append("div")
                      .attr("id","tooltip-container")
                      .attr("align", "start")
-                     .style("opacity",0);
+                     .style("opacity",0)
+                     .style("display", "none");
 
 
 
@@ -126,7 +127,7 @@ var loadPathway = function(container,json) {
   var containerData = [];
   var parents = {};
   json.groups.forEach( function(d) {
-    var thisId = d[0]+':'+d[1]+':'+d[2];
+    var thisId = d[0] + ":" + d[1] + ":" + d[2];
     containerData.push({"id":thisId,"x":0,"y":0});
     d.forEach( function(e) { parents[e] = thisId; });
   });
@@ -141,18 +142,18 @@ var loadPathway = function(container,json) {
 
     // every node is already part of a group, even if the
     // group only has 1 node in it. The json was generated this way.
-    var parentGroupId = parents[d.id]
+    var parentGroupId = parents[d.id];
 
     // the group that owns this node has already been registered
     var parentGroup = masterGroup.selectAll("g")
-                                 .filter(function(dd){return dd.id===parentGroupId;});
+                                 .filter(function(dd){return dd.id === parentGroupId;});
 
     // each node has a rectangle and text. These will be their own group one level lower.
-    var nodeGroup = parentGroup.selectAll('g')
-                               .filter(function(dd) { return dd.id==d.id; })
+    var nodeGroup = parentGroup.selectAll("g")
+                               .filter(function(dd) { return dd.id === d.id; })
                                .data([{id:d.id}])
                                .enter()
-                               .append('g')
+                               .append("g")
                                .attr("id",d.id);
 
     // put a rectangle in the group, and with tooltip if it's a reaction
@@ -171,31 +172,31 @@ var loadPathway = function(container,json) {
                .data([{"id":d.id,"label":d.label, "type":d.type, "xCoor":d.x, "yCoor":d.y, "labelHeight":d.height,"tooltip":d.tooltip}])
                .enter().append("text")
                .attr("x", function(d){
-                                 if (d.type === "reaction" || d.type === "link") {
-                                   return 5 * d.xCoor;
-                                 }
-                                   return 5*d.xCoor + 10;
-                                 })
+                 if (d.type === "reaction" || d.type === "link") {
+                   return 5 * d.xCoor;
+                 }
+                 return 5*d.xCoor + 10;
+               })
                .attr("y", function(d){
-                if (d.labelHeight === 1) {
-                  return 15 * d.yCoor + 8;
-                }
-                return 15 * d.yCoor;
-              })
+                 if (d.labelHeight === 1) {
+                   return 15 * d.yCoor + 8;
+                 }
+                 return 15 * d.yCoor;
+               })
                .attr("text-anchor", function(d){
-                if (d.type === "link") {
-                  return "beginning";
-                }
-                return "end";
-              })
+                 if (d.type === "link") {
+                   return "beginning";
+                 }
+                 return "end";
+               })
                .attr("text-anchor",(d.type==="input"||d.type==="output")?"beginning":"end")
                .attr("alignment-baseline","middle")
                .attr("class", function(dd){
-                if (dd.type === "reaction") {
-                  return "label reaction";
-                }
-                return "label";
-              })
+                 if (dd.type === "reaction") {
+                   return "label reaction";
+                 }
+                 return "label";
+               })
               .on("mouseover",function() {
                 if ( d.tooltip ){
                   tooltipDiv.html("<span id='tooltip-text'>" + d.tooltip + "</span><br/>" +
@@ -205,25 +206,28 @@ var loadPathway = function(container,json) {
                   var pagex = d3.event.pageX;
                   var pagey = d3.event.pageY;
                   tooltipDiv.style("left", pagex - (w / 2) + "px")
-                     .style("top",d3.event.pageY -h - 50 + "px");
+                     .style("top", pagey -h - 50 + "px");
                   tooltipDiv.transition()
                      .duration(200)
-                     .style("opacity", 1);
+                     .style("opacity", 1)
+                     .style("display", "block");
                   tooltipDiv.select("#dismiss-text").on("click", function() {
-                              tooltipDiv.transition()
-                                 .duration(500)
-                                 .style("opacity",0); });
+                    tooltipDiv.transition()
+                    .duration(500)
+                    .style("opacity",0); })
+                    .style("display", "none");
                 }
               })
               .on("click", function() {
                 tooltipDiv.transition()
                    .duration(500)
-                   .style("opacity", 0);
+                   .style("opacity", 0)
+                   .style("display", "none");
               });
   });
 
   // create a drag handler for every group inside the master group that has an 'id'
-  masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)) }).call(drag);
+  masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
 
   d3.selectAll("text.label").each(insertLineBreaks);
   // was thinking of pushing the addTooltip event handler here...
@@ -351,20 +355,16 @@ var loadPathway = function(container,json) {
 
 };
 
-(function(){
-  this.loadPathway = loadPathway;
-})();
-
 var setElementDimensions = function (element) {
-    var bbox = element.node().getBBox();
-    var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
-    var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
-    var x = Math.floor(bbox.x) - 50;
-    var y = Math.floor(bbox.y) - 50;
-    element.attr("width", w)
-           .attr("height", h)
-           .attr("viewBox",x+ " "+ y + " " + w + " " + h);
-}
+  var bbox = element.node().getBBox();
+  var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
+  var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
+  var x = Math.floor(bbox.x) - 50;
+  var y = Math.floor(bbox.y) - 50;
+  element.attr("width", w)
+         .attr("height", h)
+         .attr("viewBox",x+ " "+ y + " " + w + " " + h);
+};
 
 
 var insertLineBreaks = function (d) {
@@ -382,37 +382,8 @@ var insertLineBreaks = function (d) {
     handleShifts(el,(15*i)+"px",lines[i],d);
   }
 };
-function addTooltips(tooltipDiv,ele) {
-  if (!ele.tooltip) return;
-  d3.select(this).on("mouseover",function() {
-                  tooltipDiv.html("<span id='tooltip-text'>" + ele.tooltip + "</span><br/>"+
-                  "<span id=\"dismiss_text\">"+
-          "<style type=\"text/css\">#dismiss_text {font-size:xx-small;float:right;font-style:italic}"+
-                  "</style>Click to dismiss &#x2715;</span>");
-                  var w = document.getElementById("tooltip-text").offsetWidth;
-                  var h = document.getElementById("tooltip-text").offsetHeight;
-                  var pagex = d3.event.pageX;
-                  var pagey = d3.event.pageY;
-                  tooltipDiv.style("left", pagex - (w / 2) + "px")
-                     .style("top",d3.event.pageY -h - 50 + "px");
-                  tooltipDiv.transition()
-                     .duration(200)
-                     .style("opacity", 1);
-                  tooltipDiv.select("#dismiss_text").on("click", function() {
-                              tooltipDiv.transition()
-                                 .duration(500)
-                                 .style("opacity",0); });
-                }
-              )
-               .on("click", function() {
-                tooltipDiv.transition()
-                   .duration(500)
-                   .style("opacity", 0);
-               });
-    }
 
-
-function handleShifts(ele,dy,line,d) {
+function handleShifts(ele, dy, line) {
   // this does rudimentary parsing of html tags <sub>, <sup> and <i>
   // take the line and break it into raised or lowered tokens.
   // The first function returns a list of the form
@@ -502,78 +473,81 @@ function makeTokens(line) {
 
 // TODO: replace other characters. like the greeks.
 function replaceHTMLchar(w) {
-  return w.replace(/&harr;/i,"\u21D4")
-          .replace(/&larr;/i,"\u21D0")
-          .replace(/&rarr;/i,"\u21D2");
+  return w.replace(/&harr;/i, "\u21D4")
+          .replace(/&larr;/i, "\u21D0")
+          .replace(/&rarr;/i, "\u21D2")
+          .replace(/&beta;/i, "\u03B2");
 }
 
 var toLowerCaseAndSpacesToDashes = function (string) {
-    return string.toLowerCase().replace(/ /g, "-");
+  return string.toLowerCase().replace(/ /g, "-");
 };
 
 var showTable = function(tableId) {
-    d3.selectAll("table")
-      .style("display", "none");
+  d3.selectAll("table")
+    .style("display", "none");
 
-    d3.select("#" + tableId)
-      .style("display", "block");
+  d3.select("#" + tableId)
+    .style("display", "block");
 };
 
 var createExperimentGroupSelect = function (container, json) {
 
-    var select = d3.select(container)
-                   .append("label")
-                   .text("Experiment Group: ")
-                   .append("select")
-                   .attr("id", "experiments-select");
+  var select = d3.select(container)
+                 .append("label")
+                 .text("Experiment Group: ")
+                 .append("select")
+                 .attr("id", "experiments-select");
 
-    var options = select
-                  .selectAll('option')
-                  .data(json.data)
-                  .enter()
-                  .append('option')
-                  .attr("value", function(d) { return "table-" + toLowerCaseAndSpacesToDashes(d.group);})
-                  .text(function(d) {return d.group});
+  select.selectAll("option")
+        .data(json.data)
+        .enter()
+        .append("option")
+        .attr("value", function(d) {
+          return "table-" + toLowerCaseAndSpacesToDashes(d.group);
+        })
+        .text(function(d) {
+          return d.group;
+        });
 
+  select.on("change", function(){
+    var newTableId = d3.select(this).node().value;
+    showTable(newTableId);
+  });
 
-    select.on("change", function(){
-	     var newTableId = d3.select(this).node().value;
-	     showTable(newTableId);
-    });
 };
 
 
 var flattenJson = function(data) {
-    var result = {};
-    function recurse (cur, prop) {
-        if (Object(cur) !== cur) {
-            result[prop] = cur;
-        } else if (Array.isArray(cur)) {
-             for(var i=0, l=cur.length; i<l; i++)
-                 recurse(cur[i], prop ? prop+"."+i : ""+i);
-            if (l == 0)
-                result[prop] = [];
-        } else {
-            var isEmpty = true;
-            for (var p in cur) {
-                isEmpty = false;
-                recurse(cur[p], prop ? prop+"."+p : p);
-            }
-            if (isEmpty)
-                result[prop] = {};
-        }
+  var result = {};
+  function recurse (cur, prop) {
+    if (Object(cur) !== cur) {
+      result[prop] = cur;
+    } else if (Array.isArray(cur)) {
+      for (var i=0, l=cur.length; i<l; i++) {
+        recurse(cur[i], prop ? prop + "." + i : "" + i);
+      }
+      if (l === 0) result[prop] = [];
+    } else {
+      var isEmpty = true;
+      for (var p in cur) {
+        isEmpty = false;
+        recurse(cur[p], prop ? prop + "." + p : p);
+      }
+      if (isEmpty) result[prop] = {};
     }
-    recurse(data, "");
-    return result;
-}
+  }
+  recurse(data, "");
+  return result;
+};
 
 
 var getMinMaxFpkm = function(data) {
   var flattenedData = flattenJson(data);
   var fpkmArr = [];
-  for (key in flattenedData) {
+  for (var key in flattenedData) {
     if (flattenedData.hasOwnProperty(key) && /fpkm/.test(key)) {
-	fpkmArr.push(parseFloat(flattenedData[key]));
+      fpkmArr.push(parseFloat(flattenedData[key]));
     }
   }
   return d3.extent(fpkmArr);
@@ -586,8 +560,6 @@ var setColorScale = function(minMaxVal, minMaxColors) {
 };
 
 var loadExpressionTable = function(container,json) {
-
-
 
   if (json.data.length > 1) createExperimentGroupSelect(container, json);
 
@@ -607,7 +579,7 @@ var loadExpressionTable = function(container,json) {
     d.idName = d.group.toLowerCase().replace(/ /g, "-");
     //groupNames.push(d.group);
     d.genes.forEach( function(e) {
-      e.samples.forEach( function(f) { sampleNames[f.sample] = 1; })
+      e.samples.forEach( function(f) { sampleNames[f.sample] = 1; });
       geneData[e.gene] = e.samples;
       ec[e.gene] = e.enzyme;
     });
@@ -617,82 +589,82 @@ var loadExpressionTable = function(container,json) {
     //console.log(minMaxFkpm);
     var colorScale = setColorScale(minMaxFkpm, ["#dfe", "#4b7"]);
 
-
-
     // now process the group.
     var table = d3.select(container)
-                  .append('table')
-                  .attr('class','collection-table')
-                  .attr('id','table-'+d.idName);
+                  .append("table")
+                  .attr("class","collection-table")
+                  .attr("id","table-"+d.idName);
     var cols =[{"label":"Gene", "class": "gene"},{"label":"EC(s)", "class": "ec"}];
-    for( var s in sampleNames ) { cols.push( { "label":s}) };
+    for( var s in sampleNames ) { cols.push( { "label":s}); }
 
     // create the caption and header for this table if only one table
     if (json.data.length === 1) {
-	     table.selectAll('caption')
-	          .data([{'caption':'Experiment Group: '+d.group,'id':'caption-'+d.idName}])
-	          .enter()
-	          .append('caption')
-	          .text(function(d) { return d.caption;});
-          }
+      table.selectAll("caption")
+           .data([{"caption":"Experiment Group: "+d.group,"id":"caption-"+d.idName}])
+           .enter()
+           .append("caption")
+           .text(function(d) { return d.caption;});
+    }
 
-    table.append('thead').append('tr')
-         .selectAll('th')
+    table.append("thead").append("tr")
+         .selectAll("th")
          .data(cols)
          .enter()
-         .append('th')
-	       .attr("class", function(d) {return d.class})
-         .text(function(d) { return d.label;});
+         .append("th")
+         .attr("class", function(d) { return d.class; })
+         .text(function(d) { return d.label; });
 
 
-    var body = table.append('tbody');
+    var body = table.append("tbody");
     // and now the rows
-    for( gene in geneData ) {
-      var cols = [{"content":gene,"class":"highlighter gene"},{"content":ec[gene],"class":"highlighter ec"}];
+    for( var gene in geneData ) {
+      cols = [{"content":gene,"class":"highlighter gene"},{"content":ec[gene],"class":"highlighter ec"}];
       var lookup = {};
       // hash the results
       geneData[gene].forEach( function(e) { lookup[e.sample] = e.fpkm; });
       for( s in sampleNames ) {
         if (s in lookup) {
-           cols.push({"content":lookup[s], "class": "fpkm result"});
+          cols.push({"content":lookup[s], "class": "fpkm result"});
         } else {
-           cols.push({"content":"N/A", "class": "fpkm not-available"});
+          cols.push({"content":"N/A", "class": "fpkm not-available"});
         }
       }
-      var menu = [{
-                     title: "gene link out to Pz gene page"
-                   },
-                   {
-                     title: "gene link out to JBrowse"
-                   }];
-      body.append('tr').selectAll('td')
+      var menu = [
+        {title: "gene link out to Pz gene page"},
+        {title: "gene link out to JBrowse"}
+      ];
+      body.append("tr").selectAll("td")
                        .data(cols)
                        .enter()
-                       .append('td')
-                       .text( function(d) { return d.content;})
+                       .append("td")
+                       .html( function(d) {
+                         if (Array.isArray(d.content)) {
+                           return d.content.join("<br />");
+                         }
+                        return d.content;})
                        .attr("class",function(d) { return d.class;})
                        .style("background-color", function(d){
                          if (/result/.test(d.class)) {
                            return colorScale(d.content);
                          }
-                       })
+                       });
 
-      body.selectAll('td.highlighter')
+      body.selectAll("td.highlighter")
                       .on("mouseover", function(d) {
-                        d3.select(this).style('color', 'red');
-                        d3.selectAll('text')
+                        d3.select(this).style("color", "red");
+                        d3.selectAll("text")
                           .each( function(dd){
                             if (dd.label.match(d.content)) {
-                              d3.select(this).style('stroke', 'red');
+                              d3.select(this).style("stroke", "red");
                             }
                           });
                       })
                       .on("mouseout", function(d) {
-                        d3.select(this).style('color', 'black');
-                        d3.selectAll('text')
+                        d3.select(this).style("color", "black");
+                        d3.selectAll("text")
                           .each( function(dd){
                             if (dd.label.match(d.content)) {
-                              d3.select(this).style('stroke', null);
+                              d3.select(this).style("stroke", null);
                             }
                           });
                       })
@@ -705,7 +677,10 @@ var loadExpressionTable = function(container,json) {
 
   // show the initial table and hide the rest
   if (json.data.length > 1) {
-      var initialTable = d3.select("#experiments-select").node().value;
-      showTable(initialTable);
+    var initialTable = d3.select("#experiments-select").node().value;
+    showTable(initialTable);
   }
-}
+};
+
+module.exports.loadPathway = loadPathway;
+module.exports.loadExpressionTable = loadExpressionTable;

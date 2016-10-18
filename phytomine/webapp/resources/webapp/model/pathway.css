@@ -45,7 +45,13 @@
 
 #pathway-widget #pathway-diagram {
   position: relative;
-  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+}
+
+#pathway-widget #pathway-diagram button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 }
 
 #tooltip-container {
@@ -85,9 +91,15 @@
     float: right;
     font-style: italic;
 }
+
+#pathway-expression-table {
+  position: relative;
+}
+
 #pathway-expression-table table {
-    overflow: scroll;
-    margin: 1rem 0 1rem 155px;
+    /*position:relative*/
+    overflow-x: scroll;
+    margin: 1rem 0 1rem 175px;
     border-collapse: collapse;
     padding-bottom: 1rem;
 }
@@ -96,6 +108,7 @@
     position: absolute;
     top: auto;
 }
+
 #pathway-expression-table .gene {
     left: 0;
     width: 100px;
@@ -110,6 +123,8 @@
     /*border: 1px solid #ccc;*/
     box-sizing: border-box;
     padding: .3rem;
+    min-width: 7rem;
+    max-width: 10rem;
 }
 
 /* courtesy Patrick Gillespie, https://github.com/patorjk/d3-context-menu. MIT license in d3-context-menu.js */
@@ -186,4 +201,56 @@
     height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Split pane styling */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  box-sizing: border-box;
+}
+
+body #pathway-widget {
+  height: 100%;
+  box-sizing: border-box;
+}
+.split {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.content {
+    border: 1px solid #C0C0C0;
+    box-shadow: inset 0 1px 2px #e4e4e4;
+    background-color: #fff;
+}
+
+.gutter {
+    background-color: transparent;
+    box-shadow: inset 0px 0px 10px #dedede;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+    cursor: col-resize;
+    /*background-image: url('../grips/vertical.png');*/
+}
+
+.gutter.gutter-vertical {
+    cursor: row-resize;
+    /*background-image: url('../grips/horizontal.png');*/
+}
+
+.split.split-horizontal, .gutter.gutter-horizontal {
+    height: 100%;
+    float: left;
 }
