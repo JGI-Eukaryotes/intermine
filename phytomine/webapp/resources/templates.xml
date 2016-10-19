@@ -271,4 +271,9 @@
     <constraint path="Homolog.gene2.organism.shortName" code="B" editable="true" op="=" value="G. max"/>
   </query>
 </template>
+<template name="Organism_Pathways" title="All Pathways for an organism" comment="">
+  <query name="Organism_Pathways" model="genomic" view="OrganismPathway.id OrganismPathway.pathway.identifier OrganismPathway.pathway.name" longDescription="Click on the Id column for the viewer." sortOrder="OrganismPathway.pathway.identifier asc">
+    <constraint path="OrganismPathway.organism.shortName" editable="true" op="=" value="A. thaliana"/>
+  </query>
+</template>
 </template-queries>
