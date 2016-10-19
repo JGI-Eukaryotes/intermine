@@ -47,5 +47,7 @@
   });
 </script>
 
+<html> ${jsonUrl} </html>
+
 
 <!-- /pathwayDisplayer.jsp -->

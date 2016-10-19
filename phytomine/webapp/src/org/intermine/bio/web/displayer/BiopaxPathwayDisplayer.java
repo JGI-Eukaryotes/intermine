@@ -3,11 +3,16 @@ package org.intermine.bio.web.displayer;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
+import java.util.TreeMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +28,7 @@ import org.intermine.api.query.PathQueryExecutor;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.bio.Organism;
 import org.intermine.model.bio.OrganismPathway;
 import org.intermine.model.bio.Pathway;
 import org.intermine.model.bio.PathwayComponent;
@@ -67,10 +73,15 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     profile = SessionMethods.getProfile(session);
     exec = im.getPathQueryExecutor(profile);
     OrganismPathway pathwayObj = (OrganismPathway)reportObject.getObject();
+    Organism org = pathwayObj.getOrganism();
+    Integer protId = org.getProteomeId();
 
-    String json;
-    HashMap<String,HashSet<String>> enzymes;
-    HashMap<String,HashSet<String>> genes;
+    ServletContext servletContext = session.getServletContext();
+    final Properties webProperties = SessionMethods.getWebProperties(servletContext);
+
+    String json = null;
+    HashMap<String,HashSet<String>> enzymes = null;
+    HashMap<String,TreeMap<String,Integer>> genes = null;
     try {
       json = getJSON(pathwayObj.getId());
       enzymes = getEnzymes(pathwayObj.getId());
@@ -79,6 +90,14 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       return;
     }
 
+    // this is a simplified map of gene -> intermine id
+    TreeMap<String,Integer> geneIds = new TreeMap<String,Integer>();
+    for(String label: genes.keySet() ) {
+      for(String gene: genes.get(label).keySet() ) {
+        geneIds.put(gene,genes.get(label).get(gene));
+      }
+    }
+    
     try {
       // now we need to process the pathway json template. Add the enzyme/proteins
       // and calculate positions.
@@ -104,18 +123,23 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
           if ( enzymes.containsKey(label) ) {
             JSONArray ecList = new JSONArray();
             for( String enzyme: enzymes.get(label)) {
-              if (newLabel.length() > 0) newLabel.append("<br>");
-              newLabel.append(enzyme);
+              /* if (newLabel.length() > 0) newLabel.append("<br>");
+              newLabel.append(enzyme);*/
               ecList.put(enzyme);
             }
             node.put("ec",ecList);
           }
           if ( genes.containsKey(label) ) {
             JSONArray geneList = new JSONArray();
-            for( String gene: genes.get(label)) {
-              if (newLabel.length() > 0) newLabel.append("<br>");
-              newLabel.append(gene);
-              geneList.put(gene);
+            List<String> gL = new ArrayList<String>();
+            gL.addAll(genes.get(label).keySet());
+            Collections.sort(gL);
+            for( String gene: gL ) {
+              /*if (newLabel.length() > 0) newLabel.append("<br>");
+              newLabel.append(gene);*/
+              JSONObject jj = new JSONObject();
+              jj.put("name",gene);
+              geneList.put(jj);
             }
             node.put("gene",geneList);
           }
@@ -174,20 +198,19 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         node.put("x",xPlace.get(Integer.valueOf(node.getInt("x"))));
         node.put("y",yPlace.get(Integer.valueOf(node.getInt("y"))));
       }
+      addUrlJSON(jObj,webProperties,protId,geneIds);
       request.setAttribute("jsonPathway",jObj.toString());
       if (pathwayName != null) {
         request.setAttribute("pathwayName",pathwayName);
       } else {
         request.setAttribute("pathwayName","unknown");
       }
-      
-      String jE = makeExpressionJSON(pathwayObj.getId());   
+
+      JSONObject jE = makeExpressionJSON(pathwayObj.getId());   
       // now get the corresponding expression data
-      request.setAttribute("jsonExpression",jE);
-      
-      // now the URLs
-      String jU = makeUrlJSON(jE);
-      
+      request.setAttribute("jsonExpression",jE.toString());
+
+      // 
     } catch (Exception e) {
       LOG.warn("Caught an exception: "+e.getMessage());
       StringWriter sw = new StringWriter();
@@ -247,13 +270,13 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     return makeHash(query);
   }
 
-  private HashMap<String,HashSet<String>> getGenes(Integer id) throws ObjectStoreException {
-    HashMap<String,HashSet<String>> enzymes = new HashMap<String,HashSet<String>>();
+  private HashMap<String,TreeMap<String,Integer>> getGenes(Integer id) throws ObjectStoreException {
     PathQuery query = new PathQuery(im.getModel());
     query.addViews("OrganismPathway.pathway.components.identifier",
-        "OrganismPathway.pathway.components.proteins.genes.primaryIdentifier");
+        "OrganismPathway.pathway.components.proteins.genes.primaryIdentifier",
+        "OrganismPathway.pathway.components.proteins.genes.id");
     query.addConstraint(Constraints.eq("OrganismPathway.id",id.toString()));
-    return makeHash(query);
+    return makeHashPair(query);
   }
 
   private HashMap<String,HashSet<String>> makeHash(PathQuery q) throws ObjectStoreException {
@@ -269,7 +292,21 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     }
     return map;
   }
-  private String makeExpressionJSON(Integer id) throws ObjectStoreException, JSONException  {
+
+  private HashMap<String,TreeMap<String,Integer>> makeHashPair(PathQuery q) throws ObjectStoreException {
+    ExportResultsIterator result = exec.execute(q);
+    HashMap<String,TreeMap<String,Integer>> map = new HashMap<String,TreeMap<String,Integer>>();
+    while (result.hasNext()) {
+      List<ResultElement> row = result.next();
+      String node = row.get(0).getField().toString();
+      if (!map.containsKey(node)) {
+        map.put(node,new TreeMap<String,Integer>());
+      }
+      map.get(node).put(row.get(1).getField().toString(),(Integer)row.get(2).getField());
+    }
+    return map;
+  }
+  private JSONObject makeExpressionJSON(Integer id) throws ObjectStoreException, JSONException  {
     // query for the genes and fpkm's associated with the proteins in
     // an organismpathway with this id.
     // this is organized in order of group (first), then gene
@@ -301,12 +338,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       List<ResultElement> row = result.next();
       String group = row.get(0).getField().toString();
       String gene = row.get(1).getField().toString();
-  /*    if (row.get(2)==null || row.get(2).getField() == null) {
-        LOG.info("EC is null");
-      } else {
-      LOG.info("Processing row "+group+" "+ gene +" "+row.get(2).getField().toString()+" "+
-          row.get(3).getField().toString()+" "+(Float)row.get(4).getField());
-      }*/
+
       if (!ecMap.containsKey(gene)) ecMap.put(gene,new HashSet<String>()); 
       if (currentGroup==null || !currentGroup.equals(group)) {
         // this is either the first pass through or different group
@@ -327,7 +359,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         currentGene = gene;
       }
       if( row.get(2) != null && row.get(2).getField() != null) {
-      ecMap.get(gene).add(row.get(2).getField().toString());
+        ecMap.get(gene).add(row.get(2).getField().toString());
       }else {
         ecMap.get(gene).add("N/A");
       }
@@ -342,9 +374,9 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     }
     JSONObject jj = new JSONObject();
     jj.put("data",jsonArr);
-    return jj.toString();
+    return jj;
   }
-  
+
   private String sigFig(Float a) {
     // convert a Float to 3 significant figures
     // small is small. Just call it 0
@@ -356,7 +388,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       return String.format("%1.0f",a);
     }
   }
-  
+
   private void addGroupNode(JSONArray j, String groupName, HashMap<String,HashMap<String,String>> results,HashMap<String,HashSet<String>> ecMap) throws JSONException {
     JSONObject groupNode = new JSONObject();
     groupNode.put("group",groupName);
@@ -381,13 +413,30 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   }
 
 
-  private String makeUrlJSON(String jE) throws ObjectStoreException, JSONException  {
+  private void addUrlJSON(JSONObject jE,Properties p,Integer orgId,TreeMap<String,Integer> genes) throws ObjectStoreException, JSONException {
+
+    //parse our beautiful json for the identifiers.
 
     JSONArray jsonArr = new JSONArray();
-    JSONObject urlNode = new JSONObject();
-    urlNode.put("url",jsonArr);
-    return urlNode.toString();
-    
-    
+    // the data
+    JSONArray jData = jE.getJSONArray("nodes");
+
+    // hack
+    String jBTem = p.getProperty("attributelink.JBrowse.Gene."+orgId+".chromosomeLocation.paddedRegion.url");
+    String pWTem = p.getProperty("attributelink.Phytozome.Gene."+orgId+".primaryIdentifier.url");
+    String pMTem = p.getProperty("webapp.path");
+
+    for( int i = 0; i < jData.length(); i++) {
+      JSONObject jNode = jData.getJSONObject(i);
+      if (jNode.get("type").equals("reaction") && jNode.has("gene") )  {
+        JSONArray geneArray = jNode.getJSONArray("gene");
+        for( int j=0; j<geneArray.length(); j++) {
+          JSONObject jj = geneArray.getJSONObject(j);
+          if ( genes.containsKey(jj.get("name")) && pMTem != null ) jj.put("phytomine","/"+pMTem+"/report.do?id="+genes.get(jj.get("name")));
+          if (pWTem != null) jj.put("phytoweb",pWTem.replace("<<attributeValue>>",(String)jj.getString("name")));
+          if (jBTem != null) jj.put("jbrowse",jBTem.replace("<<attributeValue>>",jj.getString("name")));
+        }
+      }
+    }
   }
 }
