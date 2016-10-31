@@ -10,6 +10,7 @@
 <h2> Pathway ${pathwayName} </h2>
 
 <script type="text/javascript" src="model/d3.v4.min.js" charset="utf-8"/>
+<script type="text/javascript" src="model/pathway-helpers.js" charset="utf-8"/>
 <script type="text/javascript" src="model/pathway.js" charset="utf-8"/>
 <link rel="stylesheet" type="text/css" href="model/pathway.css" />
 
@@ -28,24 +29,30 @@
 <script type="text/javascript" charset="utf-8">
 
   jQuery(window).load(function () {
-     loadPathway("#pathway-diagram",${jsonPathway});
-     loadExpressionTable("#pathway-expression-table",${jsonExpression});
-     Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
-	                                      direction: "vertical",
-                                              sizes: [65, 35],
-	                                      gutterSize: 8,
-                                              cursor: "row-resize"
-	                            	      });
-     Split(["#pathway-diagram", "#pathway-ancillary-info"], {
-	                                     direction: "horizontal",
-                                       	     sizes: [50, 50],
-	                                     gutterSize: 8,
-                                      	     cursor: "col-resize"
-	                            	     });
-     jQuery("#pathway-diagram").show();
-     jQuery("#pathway-expression-table").show();
+
+    var ensureDataReceived = function(dataName){
+      var deferred = jQuery.Deferred();
+      var wait = setTimeout(function () {
+        if (typeof dataName !== "undefined"){
+      	  return deferred.resolve();
+        } else {
+          wait();
+        }
+      }, 200);
+      return deferred.promise();
+    };
+
+    jQuery.when(ensureDataReceived(${jsonPathway}), 
+    		ensureDataReceived(${jsonExpression}))
+	  .done(function () {
+    		loadPathway("#pathway-diagram",${jsonPathway});
+    		loadExpressionTable("#pathway-expression-table",${jsonExpression});
+    });
+
   });
 </script>
+
+<!--html> ${jsonUrl} </html-->
 
 
 <!-- /pathwayDisplayer.jsp -->
