@@ -532,32 +532,18 @@
       <property name="src.data.dir.includes" value="table.392.fa-*.fa" />
     </source>
  
-    <source name="pathologic-pathway-A.thaliana" type="biopax-pathway">
+    <source name="pathologic-pathway-A.thaliana3" type="biopax-pathway">
       <property name="proteomeId" value="167" />
       <property name="method" value="pathologic" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
-      <property name="src.data.dir.includes" value="A.thaliana.owl" />
+      <property name="src.data.dir.includes" value="A.thaliana_167.owl" />
     </source>
 
-    <source name="pathologic-pathway-A.thaliana-metacyc" type="biopax-pathway">
-      <property name="proteomeId" value="167" />
-      <property name="method" value="metacyc" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
-      <property name="src.data.dir.includes" value="A.thaliana_metacyc.owl" />
-    </source>
-
-    <source name="pathologic-pathway-A.thaliana-kegg" type="biopax-pathway">
-      <property name="proteomeId" value="167" />
-      <property name="method" value="ec-from-kegg" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
-      <property name="src.data.dir.includes" value="A.thaliana_kegg.owl" />
-    </source>
-
-    <source name="pathologic-pathway-C.reinhardtii" type="biopax-pathway">
+    <source name="pathologic-pathway-C.reinhardtii3" type="biopax-pathway">
       <property name="proteomeId" value="281" />
       <property name="method" value="pathologic" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
-      <property name="src.data.dir.includes" value="C.reinhardtii.owl" />
+      <property name="src.data.dir.includes" value="C.reinhardtii_281.owl" />
     </source>
 
     <source name="synonyms" type="tsv-synonyms">

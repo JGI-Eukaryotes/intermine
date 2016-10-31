@@ -295,7 +295,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
         }
 
-        // keekp track of who is in a group. We'll construct groups
+        // keep track of who is in a group. We'll construct groups
         // of single elements for those not otherwise in a group.
         TreeSet<Node> inAGroup = new TreeSet<Node>();
         for( String key : nodeMap.keySet() ) {
@@ -407,6 +407,13 @@ public class BiopaxPathwayConverter extends BioFileConverter
               }
             }
           }
+          for ( Entity e: cat.getController() ) {
+            if (e instanceof Named) {
+              if ( ((Named)e).getModelInterface().getSimpleName().equalsIgnoreCase("Protein"))  {
+                activeNode.proteins.add(e.getStandardName());
+              }
+            }
+          }
         } else if (proc instanceof Transport) {
           Transport b = (Transport) proc;
           if (activeNode.label() != null) {
@@ -495,7 +502,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
           linkN = (LinkingNode) nodeMap.get(label.toString());
         } else {
           linkN = new LinkingNode();
-          linkN.uniqueName = label.toString();//prevNode.uniqueName +":"+ currentNode.uniqueName;
+          linkN.uniqueName = prevNode.uniqueName +":"+ currentNode.uniqueName;//label.toString();//
           linkN.label(label.toString());
           linkN.row((prevNode.row() + currentNode.row())/2);
           linkN.column((prevNode.column() + currentNode.column())/2);
@@ -683,7 +690,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     public void y(Integer yy) { y = yy;}
     public int compareTo(Object other) {
       if(other instanceof Node) {
-        return label.compareTo(((Node)other).label);
+        return uniqueName.compareTo(((Node)other).uniqueName);
       }else {
         return 0;
       }
