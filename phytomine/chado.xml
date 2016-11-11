@@ -1,3 +1,20 @@
+  <source name="phytozome-chado-T.aestivum-early-release" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="wheat" />
+    <property name="genus" value="Triticum" />
+    <property name="name" value="Triticum aestivum" />
+    <property name="species" value="aestivum" />
+    <property name="assemblyDbxrefId" value="7522542" />
+    <property name="proteomeId" value="296" />
+    <property name="taxonId" value="4565" />
+    <property name="annotationVersion" value="v2.2" />
+    <property name="dataSourceName" value="phytozome-T.aestivum" />
+    <property name="shortName" value="T. aestivum early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="7522543" />
+    <property name="assemblyVersion" value="v2" />
+    <property name="dataSetTitle" value="Phytozome v10" />
+  </source>
   <source name="phytozome-chado-A.trichopoda" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="amborella" />
@@ -14,20 +31,6 @@
     <property name="annotationDbxrefId" value="7414416" />
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-A.trichopoda_291" type="interflowscan">
-    <property name="proteomeId" value="291" />
-    <property name="src.data.file" value="A.trichopoda_291.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.trichopoda_291-pp" type="interflowscan">
-    <property name="proteomeId" value="291" />
-    <property name="src.data.file" value="A.trichopoda_291_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-A.coerulea" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -46,28 +49,6 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-A.coerulea_195" type="interflowscan">
-    <property name="proteomeId" value="195" />
-    <property name="src.data.file" value="A.coerulea_195.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.coerulea_195-pp" type="interflowscan">
-    <property name="proteomeId" value="195" />
-    <property name="src.data.file" value="A.coerulea_195_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.coerulea_195_pp" type="interflowscan">
-    <property name="proteomeId" value="195" />
-    <property name="src.data.file" value="A.coerulea_195_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-
   <source name="phytozome-chado-A.lyrata" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Lyrate rockcress" />
@@ -84,38 +65,6 @@
     <property name="annotationDbxrefId" value="950428" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="phytozome-chado-A.lyrata-corrected" type="phytozome-db">
-    <property name="source.db.name" value="phytozome" />
-    <property name="commonName" value="Lyrate rockcress" />
-    <property name="genus" value="Arabidopsis" />
-    <property name="name" value="Arabidopsis lyrata" />
-    <property name="species" value="lyrata" />
-    <property name="assemblyDbxrefId" value="3455682" />
-    <property name="proteomeId" value="107" />
-    <property name="taxonId" value="59689" />
-    <property name="annotationVersion" value="v1.0" />
-    <property name="dataSourceName" value="phytozome-A.lyrata" />
-    <property name="shortName" value="A. lyrata" />
-    <property name="version" value="current" />
-    <property name="annotationDbxrefId" value="950428" />
-    <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-
-  <source name="interflowscan-A.lyrata_107" type="interflowscan">
-    <property name="proteomeId" value="107" />
-    <property name="src.data.file" value="A.lyrata_107.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.lyrata_107-pp" type="interflowscan">
-    <property name="proteomeId" value="107" />
-    <property name="src.data.file" value="A.lyrata_107_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-A.thaliana" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -134,20 +83,6 @@
     <property name="assemblyVersion" value="TAIR9" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-A.thaliana_167" type="interflowscan">
-    <property name="proteomeId" value="167" />
-    <property name="src.data.file" value="A.thaliana_167.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.thaliana_167-pp" type="interflowscan">
-    <property name="proteomeId" value="167" />
-    <property name="src.data.file" value="A.thaliana_167_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-B.stricta" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Drummond's rockcress" />
@@ -164,20 +99,6 @@
     <property name="annotationDbxrefId" value="7341466" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-B.stricta_278" type="interflowscan">
-    <property name="proteomeId" value="278" />
-    <property name="src.data.file" value="B.stricta_278.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-B.stricta_278-pp" type="interflowscan">
-    <property name="proteomeId" value="278" />
-    <property name="src.data.file" value="B.stricta_278_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-B.distachyon" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -196,20 +117,6 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-B.distachyon_314" type="interflowscan">
-    <property name="proteomeId" value="314" />
-    <property name="src.data.file" value="B.distachyon_314.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-B.distachyon_314-pp" type="interflowscan">
-    <property name="proteomeId" value="314" />
-    <property name="src.data.file" value="B.distachyon_314_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-B.stacei" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium stacei" />
@@ -226,20 +133,6 @@
     <property name="annotationDbxrefId" value="9259421" />
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-B.stacei_316" type="interflowscan">
-    <property name="proteomeId" value="316" />
-    <property name="src.data.file" value="B.stacei_316.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-B.stacei_316-pp" type="interflowscan">
-    <property name="proteomeId" value="316" />
-    <property name="src.data.file" value="B.stacei_316_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-B.rapa_FPsc" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -258,27 +151,6 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-B.rapa_FPsc_277" type="interflowscan">
-    <property name="proteomeId" value="277" />
-    <property name="src.data.file" value="B.rapa_FPsc_277.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-B.rapa_FPsc_277-pp" type="interflowscan">
-    <property name="proteomeId" value="277" />
-    <property name="src.data.file" value="B.rapa_FPsc_277_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-B.rapa_FPsc_277_pp" type="interflowscan">
-    <property name="proteomeId" value="277" />
-    <property name="src.data.file" value="B.rapa_FPsc_277_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-C.grandiflora" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Capsella grandiflora" />
@@ -295,20 +167,6 @@
     <property name="annotationDbxrefId" value="7314903" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-C.grandiflora_266" type="interflowscan">
-    <property name="proteomeId" value="266" />
-    <property name="src.data.file" value="C.grandiflora_266.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.grandiflora_266-pp" type="interflowscan">
-    <property name="proteomeId" value="266" />
-    <property name="src.data.file" value="C.grandiflora_266_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-C.rubella" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -327,20 +185,6 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-C.rubella_183" type="interflowscan">
-    <property name="proteomeId" value="183" />
-    <property name="src.data.file" value="C.rubella_183.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.rubella_183-pp" type="interflowscan">
-    <property name="proteomeId" value="183" />
-    <property name="src.data.file" value="C.rubella_183_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-C.papaya" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="papaya" />
@@ -357,20 +201,6 @@
     <property name="annotationDbxrefId" value="950438" />
     <property name="assemblyVersion" value="r.Dec2008" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-C.papaya_113" type="interflowscan">
-    <property name="proteomeId" value="113" />
-    <property name="src.data.file" value="C.papaya_113.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.papaya_113-pp" type="interflowscan">
-    <property name="proteomeId" value="113" />
-    <property name="src.data.file" value="C.papaya_113_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-C.clementina" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -389,20 +219,6 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-C.clementina_182" type="interflowscan">
-    <property name="proteomeId" value="182" />
-    <property name="src.data.file" value="C.clementina_182.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.clementina_182-pp" type="interflowscan">
-    <property name="proteomeId" value="182" />
-    <property name="src.data.file" value="C.clementina_182_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-C.sinensis" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="sweet orange" />
@@ -419,20 +235,6 @@
     <property name="annotationDbxrefId" value="950443" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-C.sinensis_154" type="interflowscan">
-    <property name="proteomeId" value="154" />
-    <property name="src.data.file" value="C.sinensis_154.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.sinensis_154-pp" type="interflowscan">
-    <property name="proteomeId" value="154" />
-    <property name="src.data.file" value="C.sinensis_154_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-C.subellipsoidea_C-169" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -451,27 +253,6 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-C.subellipsoidea_C-169_227" type="interflowscan">
-    <property name="proteomeId" value="227" />
-    <property name="src.data.file" value="C.subellipsoidea_C-169_227.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.subellipsoidea_C-169_227-pp" type="interflowscan">
-    <property name="proteomeId" value="227" />
-    <property name="src.data.file" value="C.subellipsoidea_C-169_227_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.subellipsoidea_C-169_227_pp" type="interflowscan">
-    <property name="proteomeId" value="227" />
-    <property name="src.data.file" value="C.subellipsoidea_C-169_227_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-C.sativus" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cucumber" />
@@ -488,20 +269,6 @@
     <property name="annotationDbxrefId" value="950445" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-C.sativus_122" type="interflowscan">
-    <property name="proteomeId" value="122" />
-    <property name="src.data.file" value="C.sativus_122.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.sativus_122-pp" type="interflowscan">
-    <property name="proteomeId" value="122" />
-    <property name="src.data.file" value="C.sativus_122_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-E.grandis" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -520,20 +287,6 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-E.grandis_297" type="interflowscan">
-    <property name="proteomeId" value="297" />
-    <property name="src.data.file" value="E.grandis_297.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-E.grandis_297-pp" type="interflowscan">
-    <property name="proteomeId" value="297" />
-    <property name="src.data.file" value="E.grandis_297_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-E.salsugineum" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="salt cress" />
@@ -550,20 +303,6 @@
     <property name="annotationDbxrefId" value="6656198" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-E.salsugineum_173" type="interflowscan">
-    <property name="proteomeId" value="173" />
-    <property name="src.data.file" value="E.salsugineum_173.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-E.salsugineum_173-pp" type="interflowscan">
-    <property name="proteomeId" value="173" />
-    <property name="src.data.file" value="E.salsugineum_173_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-F.vesca" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -582,20 +321,6 @@
     <property name="assemblyVersion" value="v1.1" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-F.vesca_226" type="interflowscan">
-    <property name="proteomeId" value="226" />
-    <property name="src.data.file" value="F.vesca_226.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-F.vesca_226-pp" type="interflowscan">
-    <property name="proteomeId" value="226" />
-    <property name="src.data.file" value="F.vesca_226_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-G.max" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="soybean" />
@@ -612,20 +337,6 @@
     <property name="annotationDbxrefId" value="7136635" />
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-G.max_275" type="interflowscan">
-    <property name="proteomeId" value="275" />
-    <property name="src.data.file" value="G.max_275.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-G.max_275-pp" type="interflowscan">
-    <property name="proteomeId" value="275" />
-    <property name="src.data.file" value="G.max_275_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-G.raimondii" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -644,20 +355,6 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-G.raimondii_221" type="interflowscan">
-    <property name="proteomeId" value="221" />
-    <property name="src.data.file" value="G.raimondii_221.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-G.raimondii_221-pp" type="interflowscan">
-    <property name="proteomeId" value="221" />
-    <property name="src.data.file" value="G.raimondii_221_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-K.marnieriana" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Kalanchoe marnieriana" />
@@ -674,20 +371,6 @@
     <property name="annotationDbxrefId" value="9140341" />
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-K.marnieriana_309" type="interflowscan">
-    <property name="proteomeId" value="309" />
-    <property name="src.data.file" value="K.marnieriana_309.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-K.marnieriana_309-pp" type="interflowscan">
-    <property name="proteomeId" value="309" />
-    <property name="src.data.file" value="K.marnieriana_309_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-L.usitatissimum" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -706,20 +389,6 @@
     <property name="assemblyVersion" value="BGIv1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-L.usitatissimum_200" type="interflowscan">
-    <property name="proteomeId" value="200" />
-    <property name="src.data.file" value="L.usitatissimum_200.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-L.usitatissimum_200-pp" type="interflowscan">
-    <property name="proteomeId" value="200" />
-    <property name="src.data.file" value="L.usitatissimum_200_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-M.domestica" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="apple" />
@@ -736,20 +405,6 @@
     <property name="annotationDbxrefId" value="3505888" />
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-M.domestica_196" type="interflowscan">
-    <property name="proteomeId" value="196" />
-    <property name="src.data.file" value="M.domestica_196.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.domestica_196-pp" type="interflowscan">
-    <property name="proteomeId" value="196" />
-    <property name="src.data.file" value="M.domestica_196_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-M.esculenta" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -768,20 +423,6 @@
     <property name="assemblyVersion" value="v6.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-M.esculenta_305" type="interflowscan">
-    <property name="proteomeId" value="305" />
-    <property name="src.data.file" value="M.esculenta_305.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.esculenta_305-pp" type="interflowscan">
-    <property name="proteomeId" value="305" />
-    <property name="src.data.file" value="M.esculenta_305_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-M.truncatula" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="barrel medic" />
@@ -798,20 +439,6 @@
     <property name="annotationDbxrefId" value="7016637" />
     <property name="assemblyVersion" value="Mt4.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-M.truncatula_285" type="interflowscan">
-    <property name="proteomeId" value="285" />
-    <property name="src.data.file" value="M.truncatula_285.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowscan" />
-  </source>
-  <source name="interflowscan-M.truncatula_285-pp" type="interflowscan">
-    <property name="proteomeId" value="285" />
-    <property name="src.data.file" value="M.truncatula_285_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowscan" />
   </source>
   <source name="phytozome-chado-M.pusilla_CCMP1545" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -830,27 +457,6 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-M.pusilla_CCMP1545_228" type="interflowscan">
-    <property name="proteomeId" value="228" />
-    <property name="src.data.file" value="M.pusilla_CCMP1545_228.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.pusilla_CCMP1545_228-pp" type="interflowscan">
-    <property name="proteomeId" value="228" />
-    <property name="src.data.file" value="M.pusilla_CCMP1545_228_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.pusilla_CCMP1545_228_pp" type="interflowscan">
-    <property name="proteomeId" value="228" />
-    <property name="src.data.file" value="M.pusilla_CCMP1545_228_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-M.sp_RCC299" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Micromonas sp. RCC299" />
@@ -867,27 +473,6 @@
     <property name="annotationDbxrefId" value="3506189" />
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-M.sp_RCC299_229" type="interflowscan">
-    <property name="proteomeId" value="229" />
-    <property name="src.data.file" value="M.sp_RCC299_229.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.sp_RCC299_229-pp" type="interflowscan">
-    <property name="proteomeId" value="229" />
-    <property name="src.data.file" value="M.sp_RCC299_229_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.sp_RCC299_229_pp" type="interflowscan">
-    <property name="proteomeId" value="229" />
-    <property name="src.data.file" value="M.sp_RCC299_229_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-M.guttatus" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -906,20 +491,6 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-M.guttatus_256" type="interflowscan">
-    <property name="proteomeId" value="256" />
-    <property name="src.data.file" value="M.guttatus_256.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.guttatus_256-pp" type="interflowscan">
-    <property name="proteomeId" value="256" />
-    <property name="src.data.file" value="M.guttatus_256_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-M.acuminata" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="banana" />
@@ -936,20 +507,6 @@
     <property name="annotationDbxrefId" value="9012391" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-M.acuminata_304" type="interflowscan">
-    <property name="proteomeId" value="304" />
-    <property name="src.data.file" value="M.acuminata_304.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-M.acuminata_304-pp" type="interflowscan">
-    <property name="proteomeId" value="304" />
-    <property name="src.data.file" value="M.acuminata_304_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-O.sativa" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -968,20 +525,6 @@
     <property name="assemblyVersion" value="v7.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-O.sativa_323" type="interflowscan">
-    <property name="proteomeId" value="323" />
-    <property name="src.data.file" value="O.sativa_323.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-O.sativa_323-pp" type="interflowscan">
-    <property name="proteomeId" value="323" />
-    <property name="src.data.file" value="O.sativa_323_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-O.lucimarinus" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Ostreococcus lucimarinus" />
@@ -998,20 +541,6 @@
     <property name="annotationDbxrefId" value="3518630" />
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-O.lucimarinus_231" type="interflowscan">
-    <property name="proteomeId" value="231" />
-    <property name="src.data.file" value="O.lucimarinus_231.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-O.lucimarinus_231-pp" type="interflowscan">
-    <property name="proteomeId" value="231" />
-    <property name="src.data.file" value="O.lucimarinus_231_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-P.hallii" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1030,20 +559,6 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-P.hallii_308" type="interflowscan">
-    <property name="proteomeId" value="308" />
-    <property name="src.data.file" value="P.hallii_308.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-P.hallii_308-pp" type="interflowscan">
-    <property name="proteomeId" value="308" />
-    <property name="src.data.file" value="P.hallii_308_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-P.virgatum" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="switchgrass" />
@@ -1060,20 +575,6 @@
     <property name="annotationDbxrefId" value="6788276" />
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-P.virgatum_273" type="interflowscan">
-    <property name="proteomeId" value="273" />
-    <property name="src.data.file" value="P.virgatum_273.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-P.virgatum_273-pp" type="interflowscan">
-    <property name="proteomeId" value="273" />
-    <property name="src.data.file" value="P.virgatum_273_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-P.vulgaris" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1092,20 +593,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-P.vulgaris_218" type="interflowscan">
-    <property name="proteomeId" value="218" />
-    <property name="src.data.file" value="P.vulgaris_218.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-P.vulgaris_218-pp" type="interflowscan">
-    <property name="proteomeId" value="218" />
-    <property name="src.data.file" value="P.vulgaris_218_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
+
   <source name="phytozome-chado-P.patens" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="moss" />
@@ -1123,20 +611,58 @@
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-P.patens_318" type="interflowscan">
+  <source name="phytozome-chado-P.patens-2" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="moss" />
+    <property name="genus" value="Physcomitrella" />
+    <property name="name" value="Physcomitrella patens" />
+    <property name="species" value="patens" />
+    <property name="assemblyDbxrefId" value="4417255" />
     <property name="proteomeId" value="318" />
-    <property name="src.data.file" value="P.patens_318.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
+    <property name="taxonId" value="3218" />
+    <property name="annotationVersion" value="v3.3" />
+    <property name="dataSourceName" value="phytozome-P.patens" />
+    <property name="shortName" value="P. patens" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9559456" />
+    <property name="assemblyVersion" value="v3" />
+    <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-P.patens_318-pp" type="interflowscan">
+  <source name="phytozome-chado-P.patens-3" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="moss" />
+    <property name="genus" value="Physcomitrella" />
+    <property name="name" value="Physcomitrella patens" />
+    <property name="species" value="patens" />
+    <property name="assemblyDbxrefId" value="4417255" />
     <property name="proteomeId" value="318" />
-    <property name="src.data.file" value="P.patens_318_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
+    <property name="taxonId" value="3218" />
+    <property name="annotationVersion" value="v3.3" />
+    <property name="dataSourceName" value="phytozome-P.patens" />
+    <property name="shortName" value="P. patens" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9559456" />
+    <property name="assemblyVersion" value="v3" />
+    <property name="dataSetTitle" value="Phytozome v10" />
   </source>
+  <source name="phytozome-chado-P.patens-4" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="moss" />
+    <property name="genus" value="Physcomitrella" />
+    <property name="name" value="Physcomitrella patens" />
+    <property name="species" value="patens" />
+    <property name="assemblyDbxrefId" value="4417255" />
+    <property name="proteomeId" value="318" />
+    <property name="taxonId" value="3218" />
+    <property name="annotationVersion" value="v3.3" />
+    <property name="dataSourceName" value="phytozome-P.patens" />
+    <property name="shortName" value="P. patens" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="9559456" />
+    <property name="assemblyVersion" value="v3" />
+    <property name="dataSetTitle" value="Phytozome v10" />
+  </source>
+
   <source name="phytozome-chado-P.trichocarpa" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="western poplar" />
@@ -1153,20 +679,6 @@
     <property name="annotationDbxrefId" value="3505779" />
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-P.trichocarpa_210" type="interflowscan">
-    <property name="proteomeId" value="210" />
-    <property name="src.data.file" value="P.trichocarpa_210.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-P.trichocarpa_210-pp" type="interflowscan">
-    <property name="proteomeId" value="210" />
-    <property name="src.data.file" value="P.trichocarpa_210_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-P.persica" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1185,20 +697,6 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-P.persica_298" type="interflowscan">
-    <property name="proteomeId" value="298" />
-    <property name="src.data.file" value="P.persica_298.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-P.persica_298-pp" type="interflowscan">
-    <property name="proteomeId" value="298" />
-    <property name="src.data.file" value="P.persica_298_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-R.communis" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="castor bean plant" />
@@ -1215,20 +713,6 @@
     <property name="annotationDbxrefId" value="950484" />
     <property name="assemblyVersion" value="TIGR.0.1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-R.communis_119" type="interflowscan">
-    <property name="proteomeId" value="119" />
-    <property name="src.data.file" value="R.communis_119.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-R.communis_119-pp" type="interflowscan">
-    <property name="proteomeId" value="119" />
-    <property name="src.data.file" value="R.communis_119_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-S.purpurea" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1247,20 +731,6 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-S.purpurea_289" type="interflowscan">
-    <property name="proteomeId" value="289" />
-    <property name="src.data.file" value="S.purpurea_289.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.purpurea_289-pp" type="interflowscan">
-    <property name="proteomeId" value="289" />
-    <property name="src.data.file" value="S.purpurea_289_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-S.moellendorffii" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="spikemoss" />
@@ -1277,20 +747,6 @@
     <property name="annotationDbxrefId" value="3455678" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-S.moellendorffii_91" type="interflowscan">
-    <property name="proteomeId" value="91" />
-    <property name="src.data.file" value="S.moellendorffii_91.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.moellendorffii_91-pp" type="interflowscan">
-    <property name="proteomeId" value="91" />
-    <property name="src.data.file" value="S.moellendorffii_91_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-S.italica" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1309,20 +765,6 @@
     <property name="assemblyVersion" value="v2" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-S.italica_312" type="interflowscan">
-    <property name="proteomeId" value="312" />
-    <property name="src.data.file" value="S.italica_312.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.italica_312-pp" type="interflowscan">
-    <property name="proteomeId" value="312" />
-    <property name="src.data.file" value="S.italica_312_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-S.viridis" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Setaria viridis" />
@@ -1339,20 +781,6 @@
     <property name="annotationDbxrefId" value="9328080" />
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-S.viridis_311" type="interflowscan">
-    <property name="proteomeId" value="311" />
-    <property name="src.data.file" value="S.viridis_311.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.viridis_311-pp" type="interflowscan">
-    <property name="proteomeId" value="311" />
-    <property name="src.data.file" value="S.viridis_311_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-S.lycopersicum" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1371,20 +799,6 @@
     <property name="assemblyVersion" value="iTAGv2.40" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-S.lycopersicum_225" type="interflowscan">
-    <property name="proteomeId" value="225" />
-    <property name="src.data.file" value="S.lycopersicum_225.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.lycopersicum_225-pp" type="interflowscan">
-    <property name="proteomeId" value="225" />
-    <property name="src.data.file" value="S.lycopersicum_225_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-S.tuberosum" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="potato" />
@@ -1401,20 +815,6 @@
     <property name="annotationDbxrefId" value="950455" />
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-S.tuberosum_206" type="interflowscan">
-    <property name="proteomeId" value="206" />
-    <property name="src.data.file" value="S.tuberosum_206.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.tuberosum_206-pp" type="interflowscan">
-    <property name="proteomeId" value="206" />
-    <property name="src.data.file" value="S.tuberosum_206_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-S.bicolor" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1433,20 +833,6 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-S.bicolor_313" type="interflowscan">
-    <property name="proteomeId" value="313" />
-    <property name="src.data.file" value="S.bicolor_313.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.bicolor_313-pp" type="interflowscan">
-    <property name="proteomeId" value="313" />
-    <property name="src.data.file" value="S.bicolor_313_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-S.fallax" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Sphagnum fallax" />
@@ -1463,20 +849,6 @@
     <property name="annotationDbxrefId" value="9295780" />
     <property name="assemblyVersion" value="v0.5" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-S.fallax_310" type="interflowscan">
-    <property name="proteomeId" value="310" />
-    <property name="src.data.file" value="S.fallax_310.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.fallax_310-pp" type="interflowscan">
-    <property name="proteomeId" value="310" />
-    <property name="src.data.file" value="S.fallax_310_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-S.polyrhiza" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1495,20 +867,6 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-S.polyrhiza_290" type="interflowscan">
-    <property name="proteomeId" value="290" />
-    <property name="src.data.file" value="S.polyrhiza_290.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-S.polyrhiza_290-pp" type="interflowscan">
-    <property name="proteomeId" value="290" />
-    <property name="src.data.file" value="S.polyrhiza_290_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-T.cacao" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cocoa bean" />
@@ -1525,20 +883,6 @@
     <property name="annotationDbxrefId" value="3678653" />
     <property name="assemblyVersion" value="CGDv1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-T.cacao_233" type="interflowscan">
-    <property name="proteomeId" value="233" />
-    <property name="src.data.file" value="T.cacao_233.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-T.cacao_233-pp" type="interflowscan">
-    <property name="proteomeId" value="233" />
-    <property name="src.data.file" value="T.cacao_233_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-V.vinifera" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1557,20 +901,6 @@
     <property name="assemblyVersion" value="Genoscope.12X" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-V.vinifera_145" type="interflowscan">
-    <property name="proteomeId" value="145" />
-    <property name="src.data.file" value="V.vinifera_145.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-V.vinifera_145-pp" type="interflowscan">
-    <property name="proteomeId" value="145" />
-    <property name="src.data.file" value="V.vinifera_145_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-V.carteri" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="volvox" />
@@ -1587,20 +917,6 @@
     <property name="annotationDbxrefId" value="9543380" />
     <property name="assemblyVersion" value="v2" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-V.carteri_317" type="interflowscan">
-    <property name="proteomeId" value="317" />
-    <property name="src.data.file" value="V.carteri_317.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-V.carteri_317-pp" type="interflowscan">
-    <property name="proteomeId" value="317" />
-    <property name="src.data.file" value="V.carteri_317_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-Z.mays" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1619,20 +935,6 @@
     <property name="assemblyVersion" value="AGPv3" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-Z.mays_284" type="interflowscan">
-    <property name="proteomeId" value="284" />
-    <property name="src.data.file" value="Z.mays_284.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-Z.mays_284-pp" type="interflowscan">
-    <property name="proteomeId" value="284" />
-    <property name="src.data.file" value="Z.mays_284_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-A.halleri-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Arabidopsis halleri" />
@@ -1649,20 +951,6 @@
     <property name="annotationDbxrefId" value="7079026" />
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-A.halleri_264" type="interflowscan">
-    <property name="proteomeId" value="264" />
-    <property name="src.data.file" value="A.halleri_264.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.halleri_264-pp" type="interflowscan">
-    <property name="proteomeId" value="264" />
-    <property name="src.data.file" value="A.halleri_264_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-A.hypochondriacus-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1681,44 +969,8 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-A.hypochondriacus_315" type="interflowscan">
-    <property name="proteomeId" value="315" />
-    <property name="src.data.file" value="A.hypochondriacus_315.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.hypochondriacus_315-pp" type="interflowscan">
-    <property name="proteomeId" value="315" />
-    <property name="src.data.file" value="A.hypochondriacus_315_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="phytozome-chado-T.aestivum-early-release" type="phytozome-db">
-    <property name="source.db.name" value="phytozome" />
-    <property name="commonName" value="wheat" />
-    <property name="genus" value="Triticum" />
-    <property name="name" value="Triticum aestivum" />
-    <property name="species" value="aestivum" />
-    <property name="assemblyDbxrefId" value="7522542" />
-    <property name="proteomeId" value="296" />
-    <property name="taxonId" value="4565" />
-    <property name="annotationVersion" value="v2.2" />
-    <property name="dataSourceName" value="phytozome-T.aestivum" />
-    <property name="shortName" value="T. aestivum early-release" />
-    <property name="version" value="early-release" />
-    <property name="annotationDbxrefId" value="7522543" />
-    <property name="assemblyVersion" value="v2" />
-    <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-T.aestivum_296" type="interflowscan">
-    <property name="proteomeId" value="296" />
-    <property name="src.data.file" value="T.aestivum_296.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
+
+
   <source name="phytozome-chado-A.comosus-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="pineapple" />
@@ -1735,20 +987,6 @@
     <property name="annotationDbxrefId" value="9647471" />
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-A.comosus_321" type="interflowscan">
-    <property name="proteomeId" value="321" />
-    <property name="src.data.file" value="A.comosus_321.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.comosus_321-pp" type="interflowscan">
-    <property name="proteomeId" value="321" />
-    <property name="src.data.file" value="A.comosus_321_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-A.coerulea-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1767,20 +1005,6 @@
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v10" />
   </source>
-  <source name="interflowscan-A.coerulea_322" type="interflowscan">
-    <property name="proteomeId" value="322" />
-    <property name="src.data.file" value="A.coerulea_322.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-A.coerulea_322-pp" type="interflowscan">
-    <property name="proteomeId" value="322" />
-    <property name="src.data.file" value="A.coerulea_322_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-C.reinhardtii" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="green algae" />
@@ -1797,20 +1021,6 @@
     <property name="annotationDbxrefId" value="9779212" />
     <property name="assemblyVersion" value="v5.0" />
     <property name="dataSetTitle" value="Phytozome v10" />
-  </source>
-  <source name="interflowscan-C.reinhardtii_281" type="interflowscan">
-    <property name="proteomeId" value="281" />
-    <property name="src.data.file" value="C.reinhardtii_281.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.reinhardtii_281-pp" type="interflowscan">
-    <property name="proteomeId" value="281" />
-    <property name="src.data.file" value="C.reinhardtii_281_pp.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-Z.marina-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1829,13 +1039,6 @@
     <property name="assemblyVersion" value="v2.2" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>
-  <source name="interflowscan-Z.marina_324" type="interflowscan">
-    <property name="proteomeId" value="324" />
-    <property name="src.data.file" value="Z.marina_324.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
   <source name="phytozome-chado-P.virgatum-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="switchgrass" />
@@ -1852,13 +1055,6 @@
     <property name="annotationDbxrefId" value="12725052" />
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v11" />
-  </source>
-  <source name="interflowscan-P.virgatum_383" type="interflowscan">
-    <property name="proteomeId" value="383" />
-    <property name="src.data.file" value="P.virgatum_383.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-K.laxiflora-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
@@ -1927,34 +1123,6 @@
     <property name="annotationDbxrefId" value="13078579" />
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v11" />
-  </source>
-  <source name="interflowscan-K.laxiflora_382" type="interflowscan">
-    <property name="proteomeId" value="382" />
-    <property name="src.data.file" value="K.laxiflora_382.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-T.pratense_385" type="interflowscan">
-    <property name="proteomeId" value="385" />
-    <property name="src.data.file" value="T.pratense_385.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-O.thomaeum_386" type="interflowscan">
-    <property name="proteomeId" value="386" />
-    <property name="src.data.file" value="O.thomaeum_386.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-D.carota_388" type="interflowscan">
-    <property name="proteomeId" value="388" />
-    <property name="src.data.file" value="D.carota_388.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
   </source>
   <source name="phytozome-chado-C.quinoa-early-release" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />

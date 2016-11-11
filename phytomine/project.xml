@@ -633,13 +633,6 @@
       <property name="converter.class" value="org.intermine.bio.dataconversion.ProdomTermsConverter" />
       <property name="dataSetURL" value="http:://prodom.prabi.fr" />
     </source>
-    <source name="Hamap-terms" type="ontology-terms">
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/hamap-terms/" />
-      <property name="dataSetTitle" value="HAMAP" />
-      <property name="dataSourceName" value="HAMAP" />
-      <property name="converter.class" value="org.intermine.bio.dataconversion.HamapTermsConverter" />
-      <property name="dataSetURL" value="http://hamap.expasy.org" />
-    </source>
     <source name="Kog-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/kog-terms/" />
       <property name="src.data.file" value="kog" />
