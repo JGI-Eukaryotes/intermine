@@ -17,18 +17,29 @@ var markerPathAttrs = {
 
 var fontAttrs = {
   family: "courier new, courier, monospace",
-  color: "#222"
+  color: "#222",
+  size: "12px",
+  baselineShift: "4px"
 };
 
+var smallFontAttrs = {
+  family: "courier new, courier, monospace",
+  color: "#222",
+  size: "10px"
+};
+
+
+/* just because we can */
+var ecLabelAttrs = {
+  color: "orange"
+};
+
+var geneLabelAttrs = {
+  color: "purple"
+};
+
+var svgContainer;
 var loadPathway = function(container,json) {
-
-  // make the SVG Container, we'll add height and width when everything's constructed
-  var svgContainer = d3.select(container).append("svg")
-                                         .attr("id","pathway-svg")
-                                         .style("font-family", fontAttrs.family)
-                                         .style("color", fontAttrs.color);
-
-  console.log(JSON.stringify(json, null, 1));
 
   // the 'save svg' handler.
   d3.select("#save").on("click",function() {
@@ -54,7 +65,6 @@ var loadPathway = function(container,json) {
   // the drag handler
   var eventStart;
   var moveablePath;
-
   var drag = d3.drag()
              .on("start",function() {
                eventStart = d3.mouse(this);
@@ -81,6 +91,21 @@ var loadPathway = function(container,json) {
                  setElementDimensions(svgContainer);
                });
              });
+  //
+  // the zoom handler
+  var zoom = d3.zoom().scaleExtent([.25, 10]).on("zoom",function() {
+	                              masterGroup.attr("transform",
+	                            		  "translate(" + d3.event.transform.x+","+d3.event.transform.y +
+			                               ")scale(" + d3.event.transform.k + ")");
+	                              setElementDimensions(svgContainer);
+	                              });
+
+  // make the SVG Container, we'll add height and width when everything's constructed
+  svgContainer = d3.select(container).append("svg")
+                                         .attr("id","pathway-svg")
+                                         .style("font-family", fontAttrs.family)
+                                         .style("color", fontAttrs.color);
+  console.log(JSON.stringify(json));
 
   // arrowheads
   var refX = 7;
@@ -94,7 +119,7 @@ var loadPathway = function(container,json) {
     .attr("orient", "auto")
     .style("stroke", markerPathAttrs.stroke)
     .style("stroke-width", markerPathAttrs.strokeWidth)
-    .style("fill", markerPathAttrs.fill)
+    .style("fill", markerPathAttrs.fill) 
     .append("path").attr("d", "M0," + 2 * refY + "L" + refX + "," + refY + "L0,0");
 
   svgContainer.append("defs").append("marker")
@@ -122,15 +147,17 @@ var loadPathway = function(container,json) {
                      .style("display", "none");
 
 
-
-  // Make a <g> for the parents and associate each node with its parent.
+  // Make a <g> for the node groups and associate each node with its node group
   var containerData = [];
   var parents = {};
   json.groups.forEach( function(d) {
+    // each group has up to 3 members. This will generate a name
+    // that is unique enough
     var thisId = d[0] + ":" + d[1] + ":" + d[2];
     containerData.push({"id":thisId,"x":0,"y":0});
     d.forEach( function(e) { parents[e] = thisId; });
   });
+  // and insert them
   masterGroup.selectAll("g")
               .data(containerData)
               .enter()
@@ -169,7 +196,10 @@ var loadPathway = function(container,json) {
 
     // and the text holder, with a tooltip that will show up if it's in the data
     nodeGroup.selectAll("text")
-               .data([{"id":d.id,"label":d.label, "type":d.type, "xCoor":d.x, "yCoor":d.y, "labelHeight":d.height,"tooltip":d.tooltip}])
+               .data([{"id":d.id,"label":d.label,
+                        "type":d.type, "xCoor":d.x,
+                        "yCoor":d.y, "labelHeight":d.height,
+                        "tooltip":d.tooltip, "genes":d.genes, "ecs":d.ecs}])
                .enter().append("text")
                .attr("x", function(d){
                  if (d.type === "reaction" || d.type === "link") {
@@ -203,10 +233,11 @@ var loadPathway = function(container,json) {
                   "<span id='dismiss-text'>Click to dismiss &#x2715;</span>");
                   var w = document.getElementById("tooltip-text").offsetWidth;
                   var h = document.getElementById("tooltip-text").offsetHeight;
-                  var pagex = d3.event.pageX;
-                  var pagey = d3.event.pageY;
-                  tooltipDiv.style("left", pagex - (w / 2) + "px")
-                     .style("top", pagey -h - 50 + "px");
+                  var nodeBB = this.getBoundingClientRect();
+           
+                  tooltipDiv.style("left", ((nodeBB.left+nodeBB.right-w)/2)+"px")
+                     .style("top", (this.getBoundingClientRect().top-h-40)+"px");
+
                   tooltipDiv.transition()
                      .duration(200)
                      .style("opacity", 1)
@@ -214,8 +245,8 @@ var loadPathway = function(container,json) {
                   tooltipDiv.select("#dismiss-text").on("click", function() {
                     tooltipDiv.transition()
                     .duration(500)
-                    .style("opacity",0); })
-                    .style("display", "none");
+                    .style("opacity",0)
+                    .style("display", "none")});;
                 }
               })
               .on("click", function() {
@@ -226,10 +257,14 @@ var loadPathway = function(container,json) {
               });
   });
 
-  // create a drag handler for every group inside the master group that has an 'id'
+  // install a drag handler for every group inside the master group that has an 'id'
   masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
+  // install a zoom handler for the whole thing
+  zoom(masterGroup);
 
   d3.selectAll("text.label").each(insertLineBreaks);
+  d3.selectAll("text.reaction").each(labelReactions);
+
   // was thinking of pushing the addTooltip event handler here...
   //d3.selectAll("text").each(function(e) { addTooltips(tooltipDiv,e)});
 
@@ -367,19 +402,49 @@ var setElementDimensions = function (element) {
 };
 
 
+var labelReactions = function (d) {
+  var el = d3.select(this);
+  // do not touch the label if there are no ECs and no genes.
+  if (d.ecs.length == 0 && d.genes.length == 0 ) return;
+
+  el.text("");
+
+  var ecData = [];
+  d.ecs.forEach( function(dd) {
+    ecData.push({"ec":dd});});
+  var pData = [];
+  d.genes.forEach( function(dd) {
+    pData.push({"gene":dd.name});});
+  el.selectAll("tspan").data(ecData).enter().append("tspan")
+                                  .attr("x",el.attr("x"))
+                                  .attr("dy","1em")
+                                  .attr("class","highlighter")
+                                  .text(function(dd) { return dd.ec })
+                                  .style("fill",ecLabelAttrs.color);
+  el.selectAll("tspan").filter(function (e) { return 0;}).data(pData).enter().append("tspan")
+                                  .attr("x",el.attr("x"))
+                                  .attr("dy","1em")
+                                  .attr("class","highlighter")
+                                  .text(function(dd) { return dd.gene })
+                                  .style("fill",geneLabelAttrs.color);
+
+}
+
 var insertLineBreaks = function (d) {
   var el = d3.select(this);
   el.text("");
+  // process label if defined.
+  if (d.label) {
+    // split on <br>"s
+    var lines = d.label.split("<br>");
+    for (var i = 0; i < lines.length; i++) {
+      // first replace html char codes...
+      lines[i] = replaceHTMLchar(lines[i]);
 
-  // split on <br>"s
-  var lines = d.label.split("<br>");
-  for (var i = 0; i < lines.length; i++) {
-    // first replace html char codes...
-    lines[i] = replaceHTMLchar(lines[i]);
-
-    // now deal with <sub>, <sup> and <i> tags.
-    // I hope they're not overlapping
-    handleShifts(el,(15*i)+"px",lines[i],d);
+      // now deal with <sub>, <sup> and <i> tags.
+      // I hope they're not overlapping
+      handleShifts(el,(15*i)+"px",lines[i],d);
+    }
   }
 };
 
@@ -405,15 +470,15 @@ function handleShifts(ele, dy, line) {
     // semantic tooltip?
 
     if(i===0) {
-      tspan.attr("font-size","12px")
+      tspan.attr("font-size",fontAttrs.size)
            .attr("font-style","normal");
     } else {
       tspan.attr("dx","0");
       var this_shift = token_list[i][1];
       if (this_shift === 0) {
-        tspan.attr("font-size","12px");
+        tspan.attr("font-size",fontAttrs.size);
       } else {
-        tspan.attr("font-size","10px");
+        tspan.attr("font-size",smallFontAttrs.size);
       }
 
     // baseline-shift appears not to work. Here is
@@ -430,10 +495,10 @@ function handleShifts(ele, dy, line) {
       // and harder-to-follow code until baseline-shift
       if ( (this_shift - last_shift) > 0) {
         // going up...
-        tspan.attr("dy","-6px");
+        tspan.attr("dy","-"+fontAttrs.baselineShift);
       } else if ( (this_shift - last_shift) < 0) {
         // going down...
-        tspan.attr("dy","6px");
+        tspan.attr("dy",fontAttrs.baselineShift);
       } else {
         tspan.attr("dy",0);
       }
@@ -473,11 +538,11 @@ function makeTokens(line) {
 
 // TODO: replace other characters. like the greeks.
 function replaceHTMLchar(w) {
-  return w.replace(/&harr;/i, "\u21D4")
-          .replace(/&larr;/i, "\u21D0")
-          .replace(/&rarr;/i, "\u21D2")
-          .replace(/&alpha;/i, "\u03B1")
-          .replace(/&beta;/i, "\u03B2");
+  return w.replace(/&harr;/ig, "\u21D4")
+          .replace(/&larr;/ig, "\u21D0")
+          .replace(/&rarr;/ig, "\u21D2")
+          .replace(/&alpha;/ig, "\u03B1")
+          .replace(/&beta;/ig, "\u03B2");
 }
 
 var toLowerCaseAndSpacesToDashes = function (string) {
@@ -562,6 +627,8 @@ var setColorScale = function(minMaxVal, minMaxColors) {
 
 var loadExpressionTable = function(container,json) {
 
+    console.log(JSON.stringify(json, null, 1));
+
   if (json.data.length > 1) createExperimentGroupSelect(container, json);
 
   //console.log(JSON.stringify(json, null, 2));
@@ -631,8 +698,12 @@ var loadExpressionTable = function(container,json) {
         }
       }
       var menu = [
-        {title: "gene link out to Pz gene page"},
-        {title: "gene link out to JBrowse"}
+        {title: "gene link out to Pz gene page",
+         action: function(e,d,i) { doLinkout(1,e,d,i)}},
+        {title: "gene link out to JBrowse",
+         action: function(e,d,i) { doLinkout(2,e,d,i)}},
+        {title: "Plot Expression",
+         action: makeBarplot}
       ];
       body.append("tr").selectAll("td")
                        .data(cols)
@@ -653,21 +724,23 @@ var loadExpressionTable = function(container,json) {
       body.selectAll("td.highlighter")
                       .on("mouseover", function(d) {
                         d3.select(this).style("color", "red");
-                        d3.selectAll("text")
-                          .each( function(dd){
-                            if (dd.label.match(d.content)) {
-                              d3.select(this).style("stroke", "red");
-                            }
-                          });
+                        var geneToFind = d.content;
+                        svgContainer.selectAll("tspan.highlighter")
+                                    .filter( function(dd) {
+                                               return dd.gene && dd.gene.match(geneToFind)})
+                                    .each( function(e) {
+                                        d3.select(this).style("fill","red");
+                                           });
                       })
                       .on("mouseout", function(d) {
                         d3.select(this).style("color", "black");
-                        d3.selectAll("text")
-                          .each( function(dd){
-                            if (dd.label.match(d.content)) {
-                              d3.select(this).style("stroke", null);
-                            }
-                          });
+                        var geneToFind = d.content;
+                        svgContainer.selectAll("tspan.highlighter")
+                                    .filter( function(dd) {
+                                               return dd.gene && dd.gene.match(geneToFind)})
+                                    .each( function(e) {
+                                        d3.select(this).style("fill",geneLabelAttrs.color);
+                                           });
                       })
                       .on("contextmenu", d3.contextMenu(menu));
 
@@ -678,10 +751,17 @@ var loadExpressionTable = function(container,json) {
 
   // show the initial table and hide the rest
   if (json.data.length > 1) {
+
+
     var initialTable = d3.select("#experiments-select").node().value;
     showTable(initialTable);
   }
 };
 
-module.exports.loadPathway = loadPathway;
-module.exports.loadExpressionTable = loadExpressionTable;
+var doLinkout = function(n,e,d,i) { console.log("doing linkout "+n+" for "+JSON.stringify(e)+" "+JSON.stringify(d)+" "+JSON.stringify(i))};
+
+var makeBarplot = function(e,d,i) { console.log("making bar plot "+JSON.stringify(e)+" "+JSON.stringify(d)+" "+JSON.stringify(i))};
+
+
+//module.exports.loadPathway = loadPathway;
+//module.exports.loadExpressionTable = loadExpressionTable;

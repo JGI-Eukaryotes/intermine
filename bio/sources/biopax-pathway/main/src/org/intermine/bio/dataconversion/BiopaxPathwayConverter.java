@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.HashSet;
@@ -73,6 +74,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
   private String method = null;
   private Item organism = null;
   HashSet<String> beenThereDoneThat = null;
+  HashMap<String,Integer> componentCounter = null;
+
   protected static final Logger LOG =
       Logger.getLogger(BiopaxPathwayConverter.class);
 
@@ -83,6 +86,29 @@ public class BiopaxPathwayConverter extends BioFileConverter
    */
   public BiopaxPathwayConverter(ItemWriter writer, Model model) {
     super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
+  }
+  HashMap<String,Integer> countComponents(org.biopax.paxtools.model.Model model) {
+    HashMap<String,Integer> retHash = new HashMap<String,Integer>();
+    Set<BiochemicalReaction> rSet = model.getObjects(BiochemicalReaction.class);
+    for (BiochemicalReaction r: rSet) {
+
+      for (PhysicalEntity pe: r.getLeft() ) {
+        String n = ((Named)pe).getStandardName();
+        if(!retHash.containsKey(n) ) {
+          retHash.put(n,new Integer(0));
+        }
+        retHash.put(n,retHash.get(n).intValue()+1);
+      }
+
+      for (PhysicalEntity pe: r.getRight() ) {
+        String n = ((Named)pe).getStandardName();
+        if(!retHash.containsKey(n) ) {
+          retHash.put(n,new Integer(0));
+        }
+        retHash.put(n,retHash.get(n).intValue()+1);
+      }
+    }
+    return retHash;
   }
 
   /**
@@ -101,6 +127,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
     SimpleIOHandler handler = new SimpleIOHandler(BioPAXLevel.L3);
     org.biopax.paxtools.model.Model model = handler.convertFromOWL(new ReaderInputStream(reader));
+    componentCounter = countComponents(model);
     Set<Pathway> pathwaySet = model.getObjects(Pathway.class);
 
     // record the EC ontology and make a map to store the observed entries
@@ -158,22 +185,23 @@ public class BiopaxPathwayConverter extends BioFileConverter
       HashSet<Node[]> linkSet = new HashSet<Node[]>();
       if(initialNodes.size() > 0) {
         // we need to track node pairs we've visited to avoid double tracking
-        beenThereDoneThat= new HashSet<String>();
+        beenThereDoneThat = new HashSet<String>();
 
         // this will be used for the row of the node
-        // we set this to 1 (rather than 0) to have a
+        // we set this to 2 (rather than 0) to have a
         // row for the inputs.
-        Integer rowI = new Integer(1);
+        Integer rowI = new Integer(2);
         // and this will be the column.
         Integer columnI = new Integer(0);
         // TODO: look for problems with this algorithm. If there are
         // multiple branches in a walk, the second will cross the column
         // created by the first. This is a problem.
+        HashMap<String,LinkingNode> linkNodeMap = new HashMap<String,LinkingNode>();
         for( String initial: initialNodes) {
           ReactionNode prevNode = null;
           ReactionNode currentNode = (ReactionNode) nodeMap.get(initial);
           // this walk is recursive
-          walk(rowI,columnI,(ReactionNode)prevNode,(ReactionNode)currentNode,linkSet,nodeMap);
+          walk(rowI,columnI,(ReactionNode)prevNode,(ReactionNode)currentNode,linkSet,nodeMap,linkNodeMap);
           columnI = new Integer(maxColumn(nodeMap) + 1);
         }
 
@@ -466,7 +494,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     return retSet;
   }
   private void walk(Integer rowI, Integer columnI,ReactionNode prevNode,ReactionNode currentNode,
-      HashSet<Node[]> linkSet,TreeMap<String,Node> nodeMap) {
+      HashSet<Node[]> linkSet,TreeMap<String,Node> nodeMap,HashMap<String,LinkingNode> linkNodeMap) {
 
     // if we've seen both the current and previous nodes, we've walked this section
     // of the graph already. Do no double walk.
@@ -489,24 +517,33 @@ public class BiopaxPathwayConverter extends BioFileConverter
           linkingComponent.add(component);
         }
       }
+      // if there are multiple linking components, only use the one with the
+      // lowest counter.
       if (linkingComponent.size() > 0) {
-        StringBuffer label = new StringBuffer();
-        for( String c: linkingComponent) {
-          //TODO: do we want to sort these so that the longest names are first?
-          if (label.length() > 0) label.append("<br>");
-          label.append(c);
+        String label = null;
+        Integer lowestCount = null;
+        String uniqueName = null;
+        for(String comp: linkingComponent) {
+          if (label==null || componentCounter.get(comp) < lowestCount) {
+            label = comp;
+            lowestCount = componentCounter.get(comp);
+          }
         }
+        linkingComponent.clear();
+        linkingComponent.add(label);
         // try to reuse linking nodes.
         LinkingNode linkN;
-        if (nodeMap.containsKey(label.toString()) && nodeMap.get(label.toString()) instanceof LinkingNode) {
-          linkN = (LinkingNode) nodeMap.get(label.toString());
+        uniqueName = prevNode.uniqueName +":"+ currentNode.uniqueName;
+        if (linkNodeMap.containsKey(label) ) {
+          linkN = linkNodeMap.get(label);;
         } else {
           linkN = new LinkingNode();
-          linkN.uniqueName = prevNode.uniqueName +":"+ currentNode.uniqueName;//label.toString();//
-          linkN.label(label.toString());
+          linkN.uniqueName(uniqueName);
+          linkN.label(label);
           linkN.row((prevNode.row() + currentNode.row())/2);
           linkN.column((prevNode.column() + currentNode.column())/2);
           nodeMap.put(linkN.uniqueName,linkN);
+          linkNodeMap.put(label,linkN);
         }
         // add both links
         Node [] a = new Node[2];
@@ -520,7 +557,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
       } else {
         SpontaneousNode sN = new SpontaneousNode();
         sN.uniqueName = prevNode.uniqueName + ":" + currentNode.uniqueName;
-        sN.label("spontaneous");
+        sN.label("<i>spontaneous</i>");
         sN.row((prevNode.row() + currentNode.row())/2);
         sN.column((prevNode.column() + currentNode.column())/2);
         nodeMap.put(sN.uniqueName,sN);
@@ -531,6 +568,58 @@ public class BiopaxPathwayConverter extends BioFileConverter
         a = new Node[2];
         a[0] = prevNode;
         a[1] = sN;
+        linkSet.add(a);
+      }
+    } else if ( prevNode == null && currentNode != null) {
+      // take the component from the left with the lowest count and
+      // call it the link
+      if( currentNode.leftComponents.size() > 0) {
+        String useThisOne = null;
+        Integer lowestCount = null;
+        for(String comp: currentNode.leftComponents) {
+          if (useThisOne==null || componentCounter.get(comp) < lowestCount) {
+            useThisOne = comp;
+            lowestCount = componentCounter.get(comp);
+          }
+        }
+        currentNode.leftComponents.remove(useThisOne);
+        linkingComponent.clear();
+        linkingComponent.add(useThisOne);
+        LinkingNode linkN= new LinkingNode();
+        linkN.uniqueName = "start:"+ currentNode.uniqueName;
+        linkN.label(useThisOne);
+        linkN.row((-2 + currentNode.row())/2);
+        linkN.column(currentNode.column());
+        nodeMap.put(linkN.uniqueName,linkN);
+        Node[] a = new Node[2];
+        a[0] = linkN;
+        a[1] = currentNode;
+        linkSet.add(a);
+      }
+    } else if (prevNode != null && currentNode == null) {
+      // repeat for the last node
+      // call it the link
+      if( prevNode.rightComponents.size() > 0) {
+        String useThisOne = null;
+        Integer lowestCount = null;
+        for(String comp: prevNode.rightComponents) {
+          if (useThisOne==null || componentCounter.get(comp) < lowestCount) {
+            useThisOne = comp;
+            lowestCount = componentCounter.get(comp);
+          }
+        }
+        prevNode.rightComponents.remove(useThisOne);
+        linkingComponent.clear();
+        linkingComponent.add(useThisOne);
+        LinkingNode linkN= new LinkingNode();
+        linkN.uniqueName = prevNode.uniqueName+":end";
+        linkN.label(useThisOne);
+        linkN.row((+2 + prevNode.row()));
+        linkN.column(prevNode.column());
+        nodeMap.put(linkN.uniqueName,linkN);
+        Node[] a = new Node[2];
+        a[0] = prevNode;
+        a[1] = linkN;
         linkSet.add(a);
       }
     }
@@ -553,7 +642,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
           // the input is put on the previous row of the current
           inputN.row(new Integer(currentNode.row() - 1));
           // and one column over. EXCEPT for the first row.
-          inputN.column(inputN.row().equals(0)?new Integer(currentNode.column()):new Integer(currentNode.column() + 1));
+          inputN.column(new Integer(currentNode.column() + 1));
           nodeMap.put(inputN.uniqueName,inputN);
         }
         inputN = (InputNode) nodeMap.get(key);
@@ -598,11 +687,11 @@ public class BiopaxPathwayConverter extends BioFileConverter
     if(currentNode != null ) {
       if (currentNode.nextNode.size()>0) {
         for( String nextNodeLabel: currentNode.nextNode) {
-          walk(nextrowI,nextcolumnI,currentNode,(ReactionNode) nodeMap.get(nextNodeLabel),linkSet,nodeMap);
+          walk(nextrowI,nextcolumnI,currentNode,(ReactionNode) nodeMap.get(nextNodeLabel),linkSet,nodeMap,linkNodeMap);
           nextcolumnI = new Integer(maxColumn(nodeMap)+1);
         }
       } else {
-        walk(nextrowI,nextcolumnI,currentNode,null,linkSet,nodeMap);
+        walk(nextrowI,nextcolumnI,currentNode,null,linkSet,nodeMap,linkNodeMap);
       }
     }
   }
@@ -677,6 +766,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     public String linkType(String s) { return s;}
 
     public void label(String lab) { label = lab;}
+    public void uniqueName(String uname) { uniqueName=uname; }
     public void info(String s) { info=s;}
     public String info() { return info; }
     public void row(Integer s) { row = s; }

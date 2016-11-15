@@ -117,33 +117,27 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         maxY = (y>maxY)?y:maxY;
         String label = node.getString("label");
 
-        // replace the label if this is a reaction node
+        // add genes and enzymes if this is a reaction node
         if (node.getString("type").equals("reaction")) {
-          StringBuffer newLabel = new StringBuffer();
+          JSONArray ecList = new JSONArray();
           if ( enzymes.containsKey(label) ) {
-            JSONArray ecList = new JSONArray();
             for( String enzyme: enzymes.get(label)) {
-              /* if (newLabel.length() > 0) newLabel.append("<br>");
-              newLabel.append(enzyme);*/
               ecList.put(enzyme);
             }
-            node.put("ec",ecList);
           }
+          node.put("ecs",ecList);
+          JSONArray geneList = new JSONArray();
           if ( genes.containsKey(label) ) {
-            JSONArray geneList = new JSONArray();
             List<String> gL = new ArrayList<String>();
             gL.addAll(genes.get(label).keySet());
             Collections.sort(gL);
             for( String gene: gL ) {
-              /*if (newLabel.length() > 0) newLabel.append("<br>");
-              newLabel.append(gene);*/
               JSONObject jj = new JSONObject();
               jj.put("name",gene);
               geneList.put(jj);
             }
-            node.put("gene",geneList);
           }
-          label = newLabel.toString();
+          node.put("genes",geneList);
           node.put("label",label);
         }
 
