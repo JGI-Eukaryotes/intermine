@@ -246,6 +246,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
             }
           } else if (activeNode instanceof SpontaneousNode) {
             component.setAttribute("type","spontaneous");
+            component.setAttribute("name","<i>spontaneous</i>");
           } else {
             throw new BuildException("Unknow node type is this node? "+key+" "+nodeMap.get(key));
           }
