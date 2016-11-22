@@ -12,14 +12,20 @@
 <script type="text/javascript" src="model/d3.v4.min.js" charset="utf-8"/>
 <script type="text/javascript" src="model/pathway-helpers.js" charset="utf-8"/>
 <script type="text/javascript" src="model/pathway.js" charset="utf-8"/>
+<script type="text/javascript" src="model/canvasXpress/js/canvasXpress.min.js" charset="utf-8"/>
+
 <link rel="stylesheet" type="text/css" href="model/pathway.css" />
+<link rel="stylesheet" type="text/css" href="model/canvasXpress/css/canvasXpress.css" />
 
 <div id="pathway-widget" align="start">
      <div id="diagram-and-ancillary" class="split split-vertical">
        	  <div id="pathway-diagram" class="split split-horizontal">
 	       <button id="save">Save SVG</button>
 	  </div>
-	  <div id="pathway-ancillary-info" class="split split-horizontal"></div>
+	  <div id="pathway-ancillary-info" class="split split-horizontal">
+             <canvas id="canvas" width="200" height="200"></canvas>
+
+      </div>
       </div>
       <div id="pathway-expression-table" class="split split-vertical">
 	<h3>Gene Expression</h3>

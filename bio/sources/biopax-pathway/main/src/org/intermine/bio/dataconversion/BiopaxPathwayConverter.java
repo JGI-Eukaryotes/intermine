@@ -244,9 +244,6 @@ public class BiopaxPathwayConverter extends BioFileConverter
               }
               component.addToCollection("ontologyTerms",enzymeHash.get(ec));
             }
-          } else if (activeNode instanceof SpontaneousNode) {
-            component.setAttribute("type","spontaneous");
-            component.setAttribute("name","<i>spontaneous</i>");
           } else {
             throw new BuildException("Unknow node type is this node? "+key+" "+nodeMap.get(key));
           }
@@ -299,15 +296,6 @@ public class BiopaxPathwayConverter extends BioFileConverter
                   "\",\"x\":"+activeNode.column() +
                   ",\"y\":"+activeNode.row() +
                   ",\"type\":\"reaction\""+"}");
-
-            } else if (activeNode instanceof SpontaneousNode) {
-              if (nodes.length() > 0 ) nodes.append(",");
-              nodes.append("{\"id\":"+currentId +
-                  ",\"label\":\""+activeNode.label+"\"" +
-                  ",\"x\":"+activeNode.column() +
-                  ",\"y\":"+activeNode.row() +
-                  ",\"type\":\"spontaneous\""+
-                  "}");
             } else {
               throw new BuildException("What is this node? "+key+" "+activeNode);
             }
@@ -412,6 +400,12 @@ public class BiopaxPathwayConverter extends BioFileConverter
       for( org.biopax.paxtools.model.level3.Process proc: step.getStepProcess()) {
         if (proc instanceof BiochemicalReaction) {
           BiochemicalReaction b = (BiochemicalReaction) proc;
+          // PAXTools or pathway-tools bug. spontaneous nodes re
+          // returning 'false'. Take any non-null to be true.
+          if (b.getSpontaneous() != null) {
+            activeNode.label = "<i>spontaneous</i>";
+            activeNode.isSpontaneous = true;
+          }
           if (activeNode.info() != null) {
             System.err.println("Step "+activeNode.info()+" has multiple reactions!");
           }
@@ -556,7 +550,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
         a[1] = linkN;
         linkSet.add(a);
       } else {
-        SpontaneousNode sN = new SpontaneousNode();
+        /*SpontaneousNode sN = new SpontaneousNode();
         sN.uniqueName = prevNode.uniqueName + ":" + currentNode.uniqueName;
         sN.label("<i>spontaneous</i>");
         sN.row((prevNode.row() + currentNode.row())/2);
@@ -569,7 +563,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
         a = new Node[2];
         a[0] = prevNode;
         a[1] = sN;
-        linkSet.add(a);
+        linkSet.add(a);*/
       }
     } else if ( prevNode == null && currentNode != null) {
       // take the component from the left with the lowest count and
@@ -820,6 +814,5 @@ public class BiopaxPathwayConverter extends BioFileConverter
   }
   private class LinkingNode extends Node {
   }
-  private class SpontaneousNode extends Node {
-  }
+
 }

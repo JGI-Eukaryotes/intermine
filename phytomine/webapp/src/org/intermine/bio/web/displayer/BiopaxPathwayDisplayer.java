@@ -422,15 +422,31 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
 
     for( int i = 0; i < jData.length(); i++) {
       JSONObject jNode = jData.getJSONObject(i);
-      if (jNode.get("type").equals("reaction") && jNode.has("gene") )  {
-        JSONArray geneArray = jNode.getJSONArray("gene");
+      if (jNode.get("type").equals("reaction") && jNode.has("genes") )  {
+        JSONArray geneArray = jNode.getJSONArray("genes");
         for( int j=0; j<geneArray.length(); j++) {
           JSONObject jj = geneArray.getJSONObject(j);
-          if ( genes.containsKey(jj.get("name")) && pMTem != null ) jj.put("phytomine","/"+pMTem+"/report.do?id="+genes.get(jj.get("name")));
-          if (pWTem != null) jj.put("phytoweb",pWTem.replace("<<attributeValue>>",(String)jj.getString("name")));
-          if (jBTem != null) jj.put("jbrowse",jBTem.replace("<<attributeValue>>",jj.getString("name")));
+          JSONArray jLinks = new JSONArray();
+          if ( genes.containsKey(jj.get("name")) && pMTem != null ) {
+            jLinks.put(makeJL("Phytomine Gene Report","/"+pMTem+"/report.do?id="+genes.get(jj.get("name"))));
+          }
+          if (pWTem != null) {{
+            jLinks.put(makeJL("PhytoWeb Gene Report",pWTem.replace("<<attributeValue>>",(String)jj.getString("name"))));
+          }
+          if (jBTem != null){
+            jLinks.put(makeJL("View in jBrowse",jBTem.replace("<<attributeValue>>",jj.getString("name"))));
+          }
+          jj.put("links",jLinks);
+          }
         }
       }
     }
+  }
+
+  private JSONObject makeJL(String a, String b) throws JSONException {
+    JSONObject jl = new JSONObject();
+    jl.put("label",a);
+    jl.put("url",b);
+    return jl;
   }
 }

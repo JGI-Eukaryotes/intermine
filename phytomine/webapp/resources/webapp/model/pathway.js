@@ -39,6 +39,11 @@ var geneLabelAttrs = {
 };
 
 var svgContainer;
+
+// the gene menu links are in the pathway json.
+// but we use them in expression json
+var geneLinks = {};
+
 var loadPathway = function(container,json) {
 
   // the 'save svg' handler.
@@ -119,7 +124,7 @@ var loadPathway = function(container,json) {
     .attr("orient", "auto")
     .style("stroke", markerPathAttrs.stroke)
     .style("stroke-width", markerPathAttrs.strokeWidth)
-    .style("fill", markerPathAttrs.fill) 
+    .style("fill", markerPathAttrs.fill)
     .append("path").attr("d", "M0," + 2 * refY + "L" + refX + "," + refY + "L0,0");
 
   svgContainer.append("defs").append("marker")
@@ -134,10 +139,13 @@ var loadPathway = function(container,json) {
     .style("fill", markerPathAttrs.fill)
     .append("path").attr("d", "M0," + 2 * refY + "L" + refX + "," + refY + "L0,0");
 
-  // Make an all-encompassing group
-  var masterGroup = svgContainer.selectAll("g").data([{"id":"master"}]).enter().append("g").attr("id","master");
-
-
+  // Make an all-encompassing group in the svg
+  var masterGroup = svgContainer.selectAll("g")
+                                .data([{"id":"master"}])
+                                .enter()
+                                .append("g")
+                                .attr("id",function(d) { return d.id});
+  
   // and a div for the tooltip
   var tooltipDiv = d3.select("body")
                      .append("div")
@@ -234,7 +242,7 @@ var loadPathway = function(container,json) {
                   var w = document.getElementById("tooltip-text").offsetWidth;
                   var h = document.getElementById("tooltip-text").offsetHeight;
                   var nodeBB = this.getBoundingClientRect();
-           
+
                   tooltipDiv.style("left", ((nodeBB.left+nodeBB.right-w)/2)+"px")
                      .style("top", (this.getBoundingClientRect().top-h-40)+"px");
 
@@ -264,6 +272,7 @@ var loadPathway = function(container,json) {
 
   d3.selectAll("text.label").each(insertLineBreaks);
   d3.selectAll("text.reaction").each(labelReactions);
+  d3.selectAll("text.reaction").each(extractMenuItems);
 
   // was thinking of pushing the addTooltip event handler here...
   //d3.selectAll("text").each(function(e) { addTooltips(tooltipDiv,e)});
@@ -401,6 +410,16 @@ var setElementDimensions = function (element) {
          .attr("viewBox",x+ " "+ y + " " + w + " " + h);
 };
 
+
+var extractMenuItems = function (d) {
+  d.genes.forEach( function(e) {
+    var gN = e.name;
+    geneLinks[gN] = [];
+    e.links.forEach( function(f) {
+      geneLinks[gN].push({"label":f.label,"url":f.url});
+    } )
+  });
+}
 
 var labelReactions = function (d) {
   var el = d3.select(this);
@@ -624,6 +643,7 @@ var setColorScale = function(minMaxVal, minMaxColors) {
            .domain(minMaxVal)
            .range(minMaxColors);
 };
+    var geneData = {};
 
 var loadExpressionTable = function(container,json) {
 
@@ -641,7 +661,6 @@ var loadExpressionTable = function(container,json) {
     // prescan to find all sample names/EC. There may be holes in the table
     // so we do not want to just push onto a list
 
-    var geneData = {};
     var sampleNames = {};
     var ec = {};
     d.idName = d.group.toLowerCase().replace(/ /g, "-");
@@ -697,14 +716,14 @@ var loadExpressionTable = function(container,json) {
           cols.push({"content":"N/A", "class": "fpkm not-available"});
         }
       }
-      var menu = [
-        {title: "gene link out to Pz gene page",
-         action: function(e,d,i) { doLinkout(1,e,d,i)}},
-        {title: "gene link out to JBrowse",
-         action: function(e,d,i) { doLinkout(2,e,d,i)}},
-        {title: "Plot Expression",
-         action: makeBarplot}
-      ];
+      var menu = [];
+      geneLinks[gene].forEach( function(f) {
+        menu.push({title: f.label,
+                   action: function() { doLinkout(f.url)}});
+      });
+      menu.push({ title: "Plot",
+                  action: function() { makeBarplot(gene)}});
+
       body.append("tr").selectAll("td")
                        .data(cols)
                        .enter()
@@ -758,9 +777,21 @@ var loadExpressionTable = function(container,json) {
   }
 };
 
-var doLinkout = function(n,e,d,i) { console.log("doing linkout "+n+" for "+JSON.stringify(e)+" "+JSON.stringify(d)+" "+JSON.stringify(i))};
+var doLinkout = function(n) { console.log("doing linkout "+n);
+                              window.open(n,"_blank");}
 
-var makeBarplot = function(e,d,i) { console.log("making bar plot "+JSON.stringify(e)+" "+JSON.stringify(d)+" "+JSON.stringify(i))};
+var makeBarplot = function(e) { console.log("making bar plot for "+e);
+                                var data = [];
+                                var samples = [];
+                                geneData[e].forEach( function(ff) {
+                                            data.push(ff.fpkm);
+                                            samples.push(ff.sample);
+                                            });
+                                var plotData = { "y": { "vars": [e],
+                                                        "smps": samples,
+                                                        "data": [data]}};
+                                var cX = new CanvasXpress("canvas",plotData,{"graphType":"Bar"});
+                               }
 
 
 //module.exports.loadPathway = loadPathway;
