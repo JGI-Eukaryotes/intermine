@@ -1,3 +1,11 @@
+  <source name="phytozome-cluster-node-5085" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5085" />
+  </source>
+
   <source name="phytozome-cluster-crown-nodes" type="phytozome-clusters">
     <property name="source.db.name" value="PAC" />
     <property name="dataSourceName" value="pac-clusters" />
