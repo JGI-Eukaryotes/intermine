@@ -1990,3 +1990,20 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>
+  <source name="phytozome-chado-Z.mays_PH207-443" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="maize" />
+    <property name="genus" value="Zea" />
+    <property name="name" value="Zea mays PH207" />
+    <property name="species" value="mays PH207" />
+    <property name="assemblyDbxrefId" value="13620692" />
+    <property name="proteomeId" value="443" />
+    <property name="taxonId" value="4577" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-Z.mays_PH207" />
+    <property name="shortName" value="Z. mays PH207" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="13620694" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>

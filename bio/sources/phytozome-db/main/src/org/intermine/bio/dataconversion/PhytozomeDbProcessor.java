@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.metadata.TypeUtil;
+import org.intermine.model.bio.Protein;
 import org.intermine.xml.full.Attribute;
 import org.intermine.xml.full.Item;
 import org.intermine.xml.full.Reference;
@@ -48,6 +49,8 @@ public class PhytozomeDbProcessor {
   // and we're also going to make an entry in the ontology term table.
   protected Map<String,String> ontologyMap;
   protected Map<String,HashMap<String,Item>> ontologyTermMap;
+  // and entered protein domains
+  protected Map<String,Item> proteindomainMap;
   
   PhytozomeDbConverter converter;  // the caller
   String orgId;       // the intermine object id
@@ -67,6 +70,7 @@ public class PhytozomeDbProcessor {
     dataHitMap = new HashMap<String,HashMap<String,Item>>();
     ontologyMap = new HashMap<String,String>();
     ontologyTermMap = new HashMap<String,HashMap<String,Item>>();
+    proteindomainMap = new HashMap<String,Item>();
     config = new PhytozomeDbConfig(converter);
   }
   
@@ -325,6 +329,7 @@ public class PhytozomeDbProcessor {
     String query =
             "SELECT DISTINCT " +
             "f.feature_id, " +
+            "f.type_id, " +
             "d.name, " +
             "x.accession " +
             "FROM " +
@@ -340,8 +345,14 @@ public class PhytozomeDbProcessor {
     Statement stmt = conn.createStatement();
     ResultSet res = stmt.executeQuery(query);
     int count = 0;
+    
+    // for storing protein domains, we add these to the protein collections.
+    // Storage happens after all processing
+    // the key is the chado feature id.
+    HashMap<Integer,ReferenceList> collections = new HashMap<Integer,ReferenceList>();
     while (res.next()) {
       Integer featureId = res.getInt("feature_id");
+      Integer typeId = res.getInt("type_id");
       String dbName = res.getString("name");
       String accession = res.getString("accession");
       // this db should have been registers already!
@@ -352,6 +363,21 @@ public class PhytozomeDbProcessor {
         converter.store(newOntology);
         ontologyMap.put(dbName,newOntology.getIdentifier());
         ontologyTermMap.put(dbName,new HashMap<String,Item>());
+      }
+      // we handle InterPro (protein domains) slightly differently. In addition
+      // to a ontology annotation, we add a protein domain.
+      if (dbName.equals("InterPro") && PhytozomeDbConfig.getIntermineType(config.cvTermInv(typeId)).equals("Protein")) {
+        if (!proteindomainMap.containsKey(accession)) {
+          Item pD = converter.createItem("ProteinDomain");
+          pD.setAttribute("primaryIdentifier",accession);
+          converter.store(pD);
+          proteindomainMap.put(accession,pD);
+        }
+        Item pD = proteindomainMap.get(accession);
+        if (!collections.containsKey(featureId)) {
+          collections.put(featureId,new ReferenceList("proteinDomains"));
+        }
+        collections.get(featureId).addRefId(pD.getIdentifier());
       }
       if (!ontologyTermMap.get(dbName).containsKey(accession)) {
         // and ontology term.
@@ -372,6 +398,11 @@ public class PhytozomeDbProcessor {
     res.close();
     stmt.close();
     conn.close();
+    
+    // Now store all the collections
+    for(Integer key : collections.keySet()) {
+      converter.store(collections.get(key),converter.objectId(key));
+    }
   
   }
   
