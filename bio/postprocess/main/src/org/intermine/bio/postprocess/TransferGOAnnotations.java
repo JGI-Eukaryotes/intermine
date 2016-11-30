@@ -161,7 +161,7 @@ public class TransferGOAnnotations {
 
       // this is an opportune place to hack in an if statement if we know only
       // some things need to be done.
-      // if ( proteomeId.intValue() >= 310) {
+      if ( proteomeId.intValue() == 443) {
 
       LOG.info("Making query for "+proteomeId);
 
@@ -219,6 +219,8 @@ public class TransferGOAnnotations {
             geneAnnotationSet.add(thisAnnotation);
             knownGO.get(thisGene.getOrganism().getId()).get(thisGene.getPrimaryIdentifier()).add(thisGOTerm.getIdentifier());
             count++;
+          } else if (thisGene.getPrimaryIdentifier().equals("Zm00008a026830")) {
+            LOG.info("26830 knows about "+thisGOTerm.getIdentifier());
           }
         }
 
@@ -274,7 +276,7 @@ public class TransferGOAnnotations {
       }
       
       // end of opportune hack
-      //}
+      }
 
       osw.commitTransaction();
     }
@@ -331,7 +333,7 @@ public class TransferGOAnnotations {
       Gene thisGene = (Gene) rr.get(0);
       GOTerm thisTerm = (GOTerm) rr.get(1);
       if (thisGene.getOrganism() != null ) {
-        LOG.debug("There is a known annotation for "+thisGene.getPrimaryIdentifier() + 
+        LOG.info("There is a known annotation for "+thisGene.getPrimaryIdentifier() + 
             " organism "+thisGene.getOrganism() + " to " + thisTerm.getIdentifier());
         prepareHash(knownGO,thisGene.getOrganism().getId(),thisGene.getPrimaryIdentifier());
         knownGO.get(thisGene.getOrganism().getId()).get(thisGene.getPrimaryIdentifier()).add(thisTerm.getIdentifier());

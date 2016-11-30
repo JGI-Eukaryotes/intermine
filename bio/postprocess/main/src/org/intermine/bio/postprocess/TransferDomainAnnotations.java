@@ -63,7 +63,6 @@ public class TransferDomainAnnotations {
 
     Protein lastProtein = null;
 
-    int count = 0;
 
     ArrayList<Integer> proteomes = new ArrayList<Integer>();
     HashSet<ProteinDomain> domains = new HashSet<ProteinDomain>();
@@ -87,10 +86,11 @@ public class TransferDomainAnnotations {
 
       // this is an opportune place to hack in an if statement if we know only
       // some things need to be done.
-      // if ( proteomeId.intValue() != 324) {
+      //if ( proteomeId.intValue() == 443) {
 
       LOG.info("Making query for "+proteomeId);
 
+      int count = 0;
       Iterator<?> resIter = findProteinDomains(proteomeId);
       while (resIter.hasNext()  ) {
         ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
@@ -99,6 +99,7 @@ public class TransferDomainAnnotations {
         // now process the protein. 
 
         LOG.info("Adding domain "+thisDomain.getName()+" to protein "+thisProtein.getName());
+        count++;
         if (lastProtein == null) {
           // first pass through
           domains.add(thisDomain);
@@ -109,6 +110,7 @@ public class TransferDomainAnnotations {
           // new protein. Save the old set
           saveDomains(lastProtein,domains);
           domains.clear();
+          domains.add(thisDomain);
           lastProtein = thisProtein;
 
         }
@@ -123,16 +125,16 @@ public class TransferDomainAnnotations {
       // clean up the last one
       saveDomains(lastProtein,domains);
 
+      LOG.info("Created " + count + " new Domains objects for Proteins"
+          + " - took " + (System.currentTimeMillis() - startTime) + " ms.");
       // end of opportune hack
       //}
 
       osw.commitTransaction();
+
     }
 
 
-
-    LOG.info("Created " + count + " new Domains objects for Proteins"
-        + " - took " + (System.currentTimeMillis() - startTime) + " ms.");
 
   }
 
