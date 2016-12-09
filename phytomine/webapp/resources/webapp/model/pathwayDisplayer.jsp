@@ -9,11 +9,6 @@
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
 <h2> Pathway ${pathwayName} </h2>
 
-<script type="text/javascript" src="model/d3.v4.min.js" charset="utf-8"/>
-<script type="text/javascript" src="model/pathway-helpers.js" charset="utf-8"/>
-<script type="text/javascript" src="model/pathway.js" charset="utf-8"/>
-<script type="text/javascript" src="model/canvasXpress/js/canvasXpress.min.js" charset="utf-8"/>
-
 <link rel="stylesheet" type="text/css" href="model/pathway.css" />
 <link rel="stylesheet" type="text/css" href="model/canvasXpress/css/canvasXpress.css" />
 
@@ -36,6 +31,15 @@
 
   jQuery(window).load(function () {
 
+    var getScripts = function (scripts, callback) {
+      var progress = 0;
+      scripts.forEach(function(script) { 
+        jQuery.getScript(script, function () {
+          if (++progress === scripts.length) callback();
+	}); 
+      });
+    };
+
     var ensureDataReceived = function(dataName){
       var deferred = jQuery.Deferred();
       var wait = setTimeout(function () {
@@ -48,12 +52,22 @@
       return deferred.promise();
     };
 
-    jQuery.when(ensureDataReceived(${jsonPathway}), 
-    		ensureDataReceived(${jsonExpression}))
-	  .done(function () {
-    		loadPathway("#pathway-diagram",${jsonPathway});
-    		loadExpressionTable("#pathway-expression-table",${jsonExpression});
-    });
+
+    jQuery.ajaxSetup({ cache: true });
+
+    var pathwayScripts = [ "model/d3.v4.min.js",
+  		    	   "model/pathway.js",
+		    	   "model/canvasXpress/js/canvasXpress.min.js"];
+
+    getScripts(pathwayScripts, function(){
+                jQuery.getScript("model/pathway-helpers.js"); // contains d3 plugins that are immediately invoked, so execute in callback to ensure d3's loaded
+		jQuery.when(ensureDataReceived(${jsonPathway}), 
+    			    ensureDataReceived(${jsonExpression}))
+	  	      .done(function () {
+    		      		     	 loadPathway("#pathway-diagram",${jsonPathway});
+    					 loadExpressionTable("#pathway-expression-table",${jsonExpression});
+    					 });
+      });
 
   });
 </script>
