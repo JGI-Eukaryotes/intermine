@@ -158,6 +158,8 @@ public class PhytozomeDbProcessor {
         "AND fm.type_id = " + config.cvTerm("relationship","contained_in") + " " +
         "AND mp.type_id = " + config.cvTerm("relationship","part_of") + " " +
         "AND afp.type_id = " + config.cvTerm("sequence","evidence_for_feature") + " " +
+        "AND m.is_obsolete='f' " +
+        "AND p.is_obsolete='f' " +
         "AND afp.rank=0 " +
         "AND m.organism_id=" + organismId + " " +
         "AND p.organism_id=" + organismId + " " +
@@ -337,6 +339,7 @@ public class PhytozomeDbProcessor {
             "feature_dbxref fd, dbxref x, db d " +
             "WHERE f.feature_id=fd.feature_id " +
             "AND fd.dbxref_id=x.dbxref_id " +
+            "AND fd.is_current " +
             "AND x.db_id=d.db_id " +
             "AND d.name NOT like 'PAC%' " +
             "ORDER BY 1,2,3";

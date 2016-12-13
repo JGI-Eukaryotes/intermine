@@ -239,17 +239,19 @@ var loadPathway = function(container,json) {
                 if ( d.tooltip ){
                   tooltipDiv.html("<span id='tooltip-text'>" + d.tooltip + "</span><br/>" +
                   "<span id='dismiss-text'>Click to dismiss &#x2715;</span>");
-                  var w = document.getElementById("tooltip-text").offsetWidth;
-                  var h = document.getElementById("tooltip-text").offsetHeight;
                   var nodeBB = this.getBoundingClientRect();
+                  var yloc = nodeBB.y + window.pageYOffset;
+                  var xloc = nodeBB.x + window.pageXOffset;
 
-                  tooltipDiv.style("left", ((nodeBB.left+nodeBB.right-w)/2)+"px")
-                     .style("top", (this.getBoundingClientRect().top-h-40)+"px");
+                  var w = document.getElementById("tooltip-text").parentElement.clientWidth;
+                  tooltipDiv.style("left", (xloc -w/2)+"px")
+                     .style("top", (yloc - 60)+"px");
 
                   tooltipDiv.transition()
                      .duration(200)
                      .style("opacity", 1)
                      .style("display", "block");
+
                   tooltipDiv.select("#dismiss-text").on("click", function() {
                     tooltipDiv.transition()
                     .duration(500)

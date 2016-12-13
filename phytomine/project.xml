@@ -539,12 +539,41 @@
       <property name="src.data.dir.includes" value="A.thaliana_167.owl" />
     </source>
 
+    <source name="pathologic-pathway-A.thaliana_meta" type="biopax-pathway">
+      <property name="proteomeId" value="167" />
+      <property name="method" value="pathologic-meta" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="src.data.dir.includes" value="A.thaliana_metacyc_167.owl" />
+    </source>
+
+    <source name="pathologic-pathway-A.thaliana_ec" type="biopax-pathway">
+      <property name="proteomeId" value="167" />
+      <property name="method" value="pathologic-ec" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="src.data.dir.includes" value="A.thaliana_ec_167.owl" />
+    </source>
+
     <source name="pathologic-pathway-C.reinhardtii" type="biopax-pathway">
       <property name="proteomeId" value="281" />
       <property name="method" value="pathologic" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
       <property name="src.data.dir.includes" value="C.reinhardtii_281.owl" />
     </source>
+
+    <source name="pathologic-pathway-O.sativa-ec" type="biopax-pathway">
+      <property name="proteomeId" value="323" />
+      <property name="method" value="pathologic-ec" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="src.data.dir.includes" value="Osative_323.owl" />
+    </source>
+
+    <source name="pathologic-pathway-O.sativa-metacyc" type="biopax-pathway">
+      <property name="proteomeId" value="323" />
+      <property name="method" value="pathologic-metacyc" />
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="src.data.dir.includes" value="Osative_meta_323.owl" />
+    </source>
+
 
     <source name="synonyms" type="tsv-synonyms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/synonyms/" />
