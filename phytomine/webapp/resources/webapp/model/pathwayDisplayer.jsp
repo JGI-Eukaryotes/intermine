@@ -29,8 +29,6 @@
 
 <script type="text/javascript" charset="utf-8">
 
-  jQuery(window).load(function () {
-
     var getScripts = function (scripts, callback) {
       var progress = 0;
       scripts.forEach(function(script) { 
@@ -69,7 +67,6 @@
     					 });
       });
 
-  });
 </script>
 
 <!--html> ${jsonUrl} </html-->
