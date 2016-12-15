@@ -337,12 +337,13 @@
   <class className="org.intermine.model.bio.Pathway">
     <headerconfig>
       <titles>
-         <title mainTitles="Identifier" numberOfMainTitlesToShow="1" />
+         <title mainTitles="pathwayInfo.name" numberOfMainTitlesToShow="1" />
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="identifier" label="Pathway Identifier" />
-      <fieldconfig fieldExpr="name" label="Pathway Name" />
+      <fieldconfig fieldExpr="pathwayInfo.identifier" label="Pathway Identifier" />
+      <fieldconfig fieldExpr="organism.name" label="Organism Name" />
+      <fieldconfig fieldExpr="method" label="Analysis Method" />
     </fields>
   </class>
 
@@ -426,7 +427,7 @@
                      jspName="model/pathwayDisplayer.jsp"
                      replacesFields=""
                      placement="summary"
-                     types="OrganismPathway"/>
+                     types="Pathway"/>
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.ProteinFamilyDisplayer"
                      jspName="model/proteinFamilyDisplayer.jsp"
@@ -537,7 +538,7 @@
 
       <!--enrichmentwidgetdisplayer id="pathway_enrichment"
 					 title="Pathway Enrichment"
-					 description="Pathways enriched for genes in this list - data from KEGG and PlantCyc"
+					 description="Pathways enriched for genes in this list - data computed using Pathologic"
 					 label="Pathways"
 					 filterLabel="DataSet"
 					 filters="All,KEGG,PlantCyc"

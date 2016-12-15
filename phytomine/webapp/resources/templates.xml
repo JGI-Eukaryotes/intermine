@@ -179,6 +179,11 @@
     <constraint path="MRNA.organism.shortName" editable="true" op="=" value="P. trichocarpa"/>
   </query>
 </template>
+<template name="Organism_Pathways" title="All Pathways for an Organism" comment="">
+  <query name="Organism_Pathways" model="genomic" view="Pathway.id Pathway.method Pathway.pathwayInfo.identifier Pathway.pathwayInfo.name" longDescription="" sortOrder="Pathway.pathwayInfo.identifier asc">
+    <constraint path="Pathway.organism.shortName" editable="true" op="=" value="A. thaliana"/>
+  </query>
+</template>
 <template name="Organism_Protein" title="All proteins for a specific organism" comment="">
   <query name="Organism_Protein" model="genomic" view="Protein.primaryIdentifier Protein.primaryAccession" longDescription="Show all the proteins from a particular organism." sortOrder="Protein.primaryIdentifier asc">
     <constraint path="Protein.organism.name" editable="true" description="Show all the proteins from the organism:" op="=" value="Zea mays"/>
@@ -269,11 +274,6 @@
   <query name="Two_Species_Homologs" model="genomic" view="Homolog.gene1.primaryIdentifier Homolog.gene1.organism.shortName Homolog.gene2.primaryIdentifier Homolog.gene2.organism.shortName Homolog.relationship" longDescription="Finds all homologous pairs of genes as determined by inParanoid between two specified species" sortOrder="Homolog.gene1.primaryIdentifier asc" constraintLogic="A and B">
     <constraint path="Homolog.gene1.organism.shortName" code="A" editable="true" op="=" value="M. truncatula"/>
     <constraint path="Homolog.gene2.organism.shortName" code="B" editable="true" op="=" value="G. max"/>
-  </query>
-</template>
-<template name="Organism_Pathways" title="All Pathways for an organism" comment="">
-  <query name="Organism_Pathways" model="genomic" view="OrganismPathway.id OrganismPathway.pathway.identifier OrganismPathway.pathway.name" longDescription="Click on the Id column for the viewer." sortOrder="OrganismPathway.pathway.identifier asc">
-    <constraint path="OrganismPathway.organism.shortName" editable="true" op="=" value="A. thaliana"/>
   </query>
 </template>
 </template-queries>

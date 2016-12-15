@@ -29,7 +29,7 @@ import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.Organism;
-import org.intermine.model.bio.OrganismPathway;
+import org.intermine.model.bio.PathwayInfo;
 import org.intermine.model.bio.Pathway;
 import org.intermine.model.bio.PathwayComponent;
 import org.intermine.objectstore.ObjectStoreException;
@@ -72,7 +72,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
 
     profile = SessionMethods.getProfile(session);
     exec = im.getPathQueryExecutor(profile);
-    OrganismPathway pathwayObj = (OrganismPathway)reportObject.getObject();
+    Pathway pathwayObj = (Pathway)reportObject.getObject();
     Organism org = pathwayObj.getOrganism();
     Integer protId = org.getProteomeId();
 
@@ -244,8 +244,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   }
   private String getJSON(Integer id) throws ObjectStoreException {
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("OrganismPathway.pathway.json","OrganismPathway.pathway.name");
-    query.addConstraint(Constraints.eq("OrganismPathway.id",id.toString()));
+    query.addViews("PathwayJSON.json","PathwayJSON.pathway.pathwayInfo.name");
+    query.addConstraint(Constraints.eq("PathwayJSON.pathway.id",id.toString()));
     ExportResultsIterator result = exec.execute(query);
     String json = null;
     while (result.hasNext()) {
@@ -259,17 +259,17 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   private HashMap<String,HashSet<String>> getEnzymes(Integer id) throws ObjectStoreException {
     HashMap<String,HashSet<String>> enzymes = new HashMap<String,HashSet<String>>();
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("OrganismPathway.pathway.components.identifier","OrganismPathway.pathway.components.ontologyTerms.identifier");
-    query.addConstraint(Constraints.eq("OrganismPathway.id",id.toString()));
+    query.addViews("Pathway.components.identifier","Pathway.components.ontologyTerms.identifier");
+    query.addConstraint(Constraints.eq("Pathway.id",id.toString()));
     return makeHash(query);
   }
 
   private HashMap<String,TreeMap<String,Integer>> getGenes(Integer id) throws ObjectStoreException {
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("OrganismPathway.pathway.components.identifier",
-        "OrganismPathway.pathway.components.proteins.genes.primaryIdentifier",
-        "OrganismPathway.pathway.components.proteins.genes.id");
-    query.addConstraint(Constraints.eq("OrganismPathway.id",id.toString()));
+    query.addViews("Pathway.components.identifier",
+        "Pathway.components.proteins.genes.primaryIdentifier",
+        "Pathway.components.proteins.genes.id");
+    query.addConstraint(Constraints.eq("Pathway.id",id.toString()));
     return makeHashPair(query);
   }
 
@@ -302,20 +302,20 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   }
   private JSONObject makeExpressionJSON(Integer id) throws ObjectStoreException, JSONException  {
     // query for the genes and fpkm's associated with the proteins in
-    // an organismpathway with this id.
+    // a pathway with this id.
     // this is organized in order of group (first), then gene
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("OrganismPathway.pathway.components.proteins.genes.cufflinksscores.experiment.experimentGroup",
-        "OrganismPathway.pathway.components.proteins.genes.primaryIdentifier",
-        "OrganismPathway.pathway.components.ontologyTerms.identifier",
-        "OrganismPathway.pathway.components.proteins.genes.cufflinksscores.experiment.name",
-        "OrganismPathway.pathway.components.proteins.genes.cufflinksscores.fpkm");
-    query.addConstraint(Constraints.eq("OrganismPathway.id",id.toString()));
+    query.addViews("Pathway.components.proteins.genes.cufflinksscores.experiment.experimentGroup",
+        "Pathway.components.proteins.genes.primaryIdentifier",
+        "Pathway.components.ontologyTerms.identifier",
+        "Pathway.components.proteins.genes.cufflinksscores.experiment.name",
+        "Pathway.components.proteins.genes.cufflinksscores.fpkm");
+    query.addConstraint(Constraints.eq("Pathway.id",id.toString()));
     // probably not necessary to set the order direction...
-    query.addOrderBy("OrganismPathway.pathway.components.proteins.genes.cufflinksscores.experiment.experimentGroup", OrderDirection.ASC);
-    query.addOrderBy("OrganismPathway.pathway.components.proteins.genes.primaryIdentifier", OrderDirection.ASC);
+    query.addOrderBy("Pathway.components.proteins.genes.cufflinksscores.experiment.experimentGroup", OrderDirection.ASC);
+    query.addOrderBy("Pathway.components.proteins.genes.primaryIdentifier", OrderDirection.ASC);
     // some reactions have no EC's
-    query.setOuterJoinStatus("OrganismPathway.pathway.components.ontologyTerms", OuterJoinStatus.OUTER);
+    query.setOuterJoinStatus("Pathway.components.ontologyTerms", OuterJoinStatus.OUTER);
     ExportResultsIterator result = exec.execute(query);
     JSONArray jsonArr = new JSONArray();
     String currentGene = null;

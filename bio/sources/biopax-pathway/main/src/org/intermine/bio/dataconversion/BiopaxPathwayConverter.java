@@ -147,9 +147,9 @@ public class BiopaxPathwayConverter extends BioFileConverter
       }
       LOG.info("Processing current pathway id "+pathwayID+" name is "+pathwayName);
 
-      Item pathway = createItem("Pathway");
-      if (pathwayID != null) pathway.setAttribute("identifier", pathwayID);
-      if (pathwayName != null) pathway.setAttribute("name", pathwayName);
+      Item pathwayInfo = createItem("PathwayInfo");
+      if (pathwayID != null) pathwayInfo.setAttribute("identifier", pathwayID);
+      if (pathwayName != null) pathwayInfo.setAttribute("name", pathwayName);
       // the first walk of the pathway just gets the reactions
       TreeMap<String,Node> nodeMap = getReactionSteps(pathwayObj,pathwayID);
 
@@ -339,29 +339,19 @@ public class BiopaxPathwayConverter extends BioFileConverter
         String json = "{\"nodes\":["+nodes.toString()+"],\"links\":["+links.toString()+
             "],\"groups\":["+groups.toString()+"]}";
 
-        String md5sum = "";
-        try {
-          MessageDigest md;
-          md = MessageDigest.getInstance("MD5");
-          BigInteger bI = new BigInteger(1,md.digest(json.getBytes()));
-          md5sum = String.format("%1$032x",bI);
-        } catch (NoSuchAlgorithmException e) {
-          throw new BuildException("No such algorithm!");
-        }
-
-        pathway.setAttribute("json",json);
-        pathway.setAttribute("json_md5",md5sum);
-
-
-        LOG.info("Storing pathway "+pathwayName+" ("+pathway.getIdentifier()+") with "+components.size()+" components.");
+        LOG.info("Storing pathway "+pathwayName+" ("+pathwayInfo.getIdentifier()+") with "+components.size()+" components.");
         // store the pathway
-        store(pathway);
+        store(pathwayInfo);
         // and the specific instance
-        Item oP = createItem("OrganismPathway");
-        oP.setReference("pathway",pathway);
-        oP.setReference("organism",organism);
-        if (method != null) oP.setAttribute("method",method);
-        store(oP);
+        Item pathway = createItem("Pathway");
+        pathway.setReference("pathwayInfo",pathwayInfo);
+        pathway.setReference("organism",organism);
+        Item pJSON = createItem("PathwayJSON");
+        pJSON.setAttribute("json",json);
+        pJSON.setReference("pathway",pathway);
+        if (method != null) pathway.setAttribute("method",method);
+        store(pathway);
+        store(pJSON);
         // and its components
         for(Item component: components) {
           component.setReference("pathway",pathway.getIdentifier());

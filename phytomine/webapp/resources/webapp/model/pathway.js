@@ -145,7 +145,7 @@ var loadPathway = function(container,json) {
                                 .enter()
                                 .append("g")
                                 .attr("id",function(d) { return d.id});
-  
+
   // and a div for the tooltip
   var tooltipDiv = d3.select("body")
                      .append("div")
@@ -559,11 +559,13 @@ function makeTokens(line) {
 
 // TODO: replace other characters. like the greeks.
 function replaceHTMLchar(w) {
-  return w.replace(/&harr;/ig, "\u21D4")
-          .replace(/&larr;/ig, "\u21D0")
-          .replace(/&rarr;/ig, "\u21D2")
+  return w.replace(/&harr;/ig,  "\u21D4")
+          .replace(/&larr;/ig,  "\u21D0")
+          .replace(/&rarr;/ig,  "\u21D2")
           .replace(/&alpha;/ig, "\u03B1")
-          .replace(/&beta;/ig, "\u03B2");
+          .replace(/&beta;/ig,  "\u03B2")
+          .replace(/&gamma;/ig, "\u03B3")
+          .replace(/&delta;/ig, "\u03B4");
 }
 
 var toLowerCaseAndSpacesToDashes = function (string) {
@@ -641,11 +643,20 @@ var getMinMaxFpkm = function(data) {
 };
 
 var setColorScale = function(minMaxVal, minMaxColors) {
-  return d3.scaleLinear()
-           .domain(minMaxVal)
-           .range(minMaxColors);
+    if ( minMaxVal[0] === 0 ||
+         minMaxVal[1] === 0 ||
+         (minMaxVal[0] < 0 && minMaxVal[1] > 0) ||
+         (minMaxVal[0] > 0 && minMaxVal[1] < 0)) {
+        return d3.scaleLinear()
+                 .domain(minMaxVal)
+                 .range(minMaxColors);
+    }
+    return d3.scaleLog()
+             .domain(minMaxVal)
+             .range(minMaxColors);
 };
-    var geneData = {};
+
+var geneData = {};
 
 var loadExpressionTable = function(container,json) {
 
@@ -707,7 +718,21 @@ var loadExpressionTable = function(container,json) {
     var body = table.append("tbody");
     // and now the rows
     for( var gene in geneData ) {
-      cols = [{"content":gene,"class":"highlighter gene"},{"content":ec[gene],"class":"highlighter ec"}];
+
+      var makeBarplot = function(g) { console.log("making bar plot for " + g );
+                                        var data = [];
+                                        var samples = [];
+                                        geneData[g].forEach( function(ff) {
+                                                    data.push(ff.fpkm);
+                                                    samples.push(ff.sample);
+                                                    });
+                                        var plotData = { "y": { "vars": [gene],
+                                                                "smps": samples,
+                                                                "data": [data]}};
+                                        //var cX = new CanvasXpress("canvas",plotData,{"graphType":"Bar"});
+                                    }
+
+      var cols = [{"content":gene,"class":"highlighter gene"},{"content":ec[gene],"class":"highlighter ec"}];
       var lookup = {};
       // hash the results
       geneData[gene].forEach( function(e) { lookup[e.sample] = e.fpkm; });
@@ -718,52 +743,57 @@ var loadExpressionTable = function(container,json) {
           cols.push({"content":"N/A", "class": "fpkm not-available"});
         }
       }
+
       var menu = [];
       geneLinks[gene].forEach( function(f) {
         menu.push({title: f.label,
                    action: function() { doLinkout(f.url)}});
       });
-      menu.push({ title: "Plot",
-                  action: function() { makeBarplot(gene)}});
+      menu.push({ title: "Plot " + gene,
+                  action: function(elem, d, i) { makeBarplot(d.content) }});
 
-      body.append("tr").selectAll("td")
-                       .data(cols)
-                       .enter()
-                       .append("td")
-                       .html( function(d) {
-                         if (Array.isArray(d.content)) {
-                           return d.content.join("<br />");
-                         }
-                        return d.content;})
-                       .attr("class",function(d) { return d.class;})
-                       .style("background-color", function(d){
-                         if (/result/.test(d.class)) {
-                           return colorScale(d.content);
-                         }
-                       });
+      var tr = body.append("tr")
 
-      body.selectAll("td.highlighter")
-                      .on("mouseover", function(d) {
-                        d3.select(this).style("color", "red");
-                        var geneToFind = d.content;
-                        svgContainer.selectAll("tspan.highlighter")
-                                    .filter( function(dd) {
-                                               return dd.gene && dd.gene.match(geneToFind)})
-                                    .each( function(e) {
-                                        d3.select(this).style("fill","red");
-                                           });
-                      })
-                      .on("mouseout", function(d) {
-                        d3.select(this).style("color", "black");
-                        var geneToFind = d.content;
-                        svgContainer.selectAll("tspan.highlighter")
-                                    .filter( function(dd) {
-                                               return dd.gene && dd.gene.match(geneToFind)})
-                                    .each( function(e) {
-                                        d3.select(this).style("fill",geneLabelAttrs.color);
-                                           });
-                      })
-                      .on("contextmenu", d3.contextMenu(menu));
+      tr.selectAll("td")
+        .data(cols)
+        .enter()
+        .append("td")
+        .html( function(d) {
+            if (Array.isArray(d.content)) {
+                return d.content.join("<br />");
+            }
+            return d.content;})
+        .attr("class",function(d) { return d.class;})
+        .style("background-color", function(d){
+            if (/result/.test(d.class)) {
+                return colorScale(d.content);
+            }
+        });
+
+      tr.selectAll("td.highlighter")
+        .on("mouseover", function(d) {
+            d3.select(this).style("color", "red");
+            var geneToFind = d.content;
+            svgContainer.selectAll("tspan.highlighter")
+                        .filter( function(dd) {
+                            return dd.gene && dd.gene.match(geneToFind)})
+                        .each( function(e) {
+                            d3.select(this).style("fill","red");
+                         });
+        })
+        .on("mouseout", function(d) {
+            d3.select(this).style("color", "black");
+            var geneToFind = d.content;
+            svgContainer.selectAll("tspan.highlighter")
+                        .filter( function(dd) {
+                            return dd.gene && dd.gene.match(geneToFind)})
+                        .each( function(e) {
+                            d3.select(this).style("fill",geneLabelAttrs.color);
+                        });
+            });
+
+      tr.select("td.gene")
+          .on("contextmenu", d3.contextMenu(menu));
 
     }
 
@@ -772,8 +802,6 @@ var loadExpressionTable = function(container,json) {
 
   // show the initial table and hide the rest
   if (json.data.length > 1) {
-
-
     var initialTable = d3.select("#experiments-select").node().value;
     showTable(initialTable);
   }
@@ -782,18 +810,6 @@ var loadExpressionTable = function(container,json) {
 var doLinkout = function(n) { console.log("doing linkout "+n);
                               window.open(n,"_blank");}
 
-var makeBarplot = function(e) { console.log("making bar plot for "+e);
-                                var data = [];
-                                var samples = [];
-                                geneData[e].forEach( function(ff) {
-                                            data.push(ff.fpkm);
-                                            samples.push(ff.sample);
-                                            });
-                                var plotData = { "y": { "vars": [e],
-                                                        "smps": samples,
-                                                        "data": [data]}};
-                                var cX = new CanvasXpress("canvas",plotData,{"graphType":"Bar"});
-                               }
 
 
 //module.exports.loadPathway = loadPathway;

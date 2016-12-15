@@ -1,24 +1,25 @@
 <?xml version="1.0"?>
-<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
-
 <classes>
-<!-- add any <class> elements here -->
 
-<class name="OrganismPathway" is-interface="true">
+<class name="Pathway" is-interface="true">
   <attribute name="method" type="java.lang.String" />
   <reference name="organism" referenced-type="Organism" reverse-reference="pathways" />
-  <reference name="pathway" referenced-type="Pathway" reverse-reference="organismPathways" />
+  <reference name="pathwayInfo" referenced-type="PathwayInfo" reverse-reference="pathways" />
+  <collection name="components" referenced-type="PathwayComponent" reverse-reference="pathway"/>
+  <collection name="proteins" referenced-type="Protein" reverse-reference="pathways"/>
+  <collection name="genes" referenced-type="Gene" reverse-reference="pathways"/>
 </class>
-<class name="Pathway" is-interface="true" >
+<class name="PathwayJSON" is_interface="false" extends="java.lang.Object">
+  <attribute name="json" type="java.lang.String" />
+  <reference name="pathway" referenced-type="Pathway" />
+</class>
+
+
+<class name="PathwayInfo" is-interface="true" >
   <attribute name="identifier" type="java.lang.String"/>
   <attribute name="name" type="java.lang.String"/>
   <attribute name="description" type="java.lang.String"/>
-  <attribute name="json_md5" type="java.lang.String"/>
-  <attribute name="json" type="java.lang.String" />
-  <collection name="components" referenced-type="PathwayComponent" reverse-reference="pathway"/>
-  <collection name="proteins" referenced-type="Protein" reverse-reference="pathways"/>
-  <collection name="organismPathways" referenced-type="OrganismPathway" reverse-reference="pathway"/>
-  <collection name="dataSets" referenced-type="DataSet"/>
+  <collection name="pathways" referenced-type="Pathway" reverse-reference="pathwayInfo"/>
 </class>
 <class name="PathwayComponent" is-interface="true">
   <attribute name="identifier" type="java.lang.String"/>
@@ -31,7 +32,7 @@
   <collection name="ontologyTerms" referenced-type="OntologyTerm" reverse-reference="pathwayComponents" />
 </class>
 <class name="Organism" is-interface="true">
-  <collection name="pathways" referenced-type="OrganismPathway" reverse-reference="organism" />
+  <collection name="pathways" referenced-type="Pathway" reverse-reference="organism" />
 </class>
 <class name="OntologyTerm" is-interface="true">
   <collection name="pathwayComponents" referenced-type="PathwayComponent" reverse-reference="ontologyTerms" />
@@ -39,6 +40,9 @@
 <class name="Protein" is-interface="true">
   <collection name="pathwayComponents" referenced-type="PathwayComponent" reverse-reference="proteins" />
   <collection name="pathways" referenced-type="Pathway" reverse-reference="proteins" />
+</class>
+<class name="Gene" is-interface="true">
+  <collection name="pathways" referenced-type="Pathway" reverse-reference="genes" />
 </class>
 
 </classes>

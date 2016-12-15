@@ -31,24 +31,14 @@
     <tile-name>model/proteins.jsp</tile-name>
     <aspect-source name="Phytozome" url="http://phytozome.jgi.doe.gov"/>
   </aspect>
-  <aspect name="Orthology">
-    <subtitle>Orthologs and paralogs&lt;br/&gt;data</subtitle>
+  <aspect name="Comparative">
+    <subtitle>Orthologs, paralogs and protein families&lt;br/&gt;data</subtitle>
     <icon-image>model/images/proteins.png</icon-image>
     <large-image>model/images/proteins.png</large-image>
     <intro-text>
       Orthologs and Paralogs from Phytozome.
     </intro-text>
     <tile-name>model/homologs.jsp</tile-name>
-    <aspect-source name="Phytozome" url="http://phytozome.jgi.doe.gov"/>
-  </aspect>
-  <aspect name="Families">
-    <subtitle>Protein and proteomics&lt;br/&gt;data</subtitle>
-    <icon-image>model/images/families.png</icon-image>
-    <large-image>model/images/families.png</large-image>
-    <intro-text>
-      Protein clustering from Phytozome.
-    </intro-text>
-    <tile-name>model/families.jsp</tile-name>
     <aspect-source name="Phytozome" url="http://phytozome.jgi.doe.gov"/>
   </aspect>
   <aspect name="Diversity">
@@ -71,5 +61,4 @@
     <tile-name>model/expression.jsp</tile-name>
     <aspect-source name="Phytozome" url="http://phytozome.jgi.doe.gov"/>
   </aspect>
-
 </aspects>
