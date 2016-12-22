@@ -1,0 +1,226 @@
+#pathway #pathway-widget {
+  /* remember to define focus styles! */
+  /* tables still need 'cellspacing="0"' in the markup */ }
+  #pathway #pathway-widget div, #pathway #pathway-widget span, #pathway #pathway-widget applet, #pathway #pathway-widget object, #pathway #pathway-widget iframe,
+  #pathway #pathway-widget h1, #pathway #pathway-widget h2, #pathway #pathway-widget h3, #pathway #pathway-widget h4, #pathway #pathway-widget h5, #pathway #pathway-widget h6, #pathway #pathway-widget p, #pathway #pathway-widget blockquote, #pathway #pathway-widget pre,
+  #pathway #pathway-widget a, #pathway #pathway-widget abbr, #pathway #pathway-widget acronym, #pathway #pathway-widget address, #pathway #pathway-widget big, #pathway #pathway-widget cite, #pathway #pathway-widget code,
+  #pathway #pathway-widget del, #pathway #pathway-widget dfn, #pathway #pathway-widget em, #pathway #pathway-widget font, #pathway #pathway-widget img, #pathway #pathway-widget ins, #pathway #pathway-widget kbd, #pathway #pathway-widget q, #pathway #pathway-widget s, #pathway #pathway-widget samp,
+  #pathway #pathway-widget small, #pathway #pathway-widget strike, #pathway #pathway-widget strong, #pathway #pathway-widget sub, #pathway #pathway-widget sup, #pathway #pathway-widget tt, #pathway #pathway-widget var,
+  #pathway #pathway-widget dl, #pathway #pathway-widget dt, #pathway #pathway-widget dd, #pathway #pathway-widget ol, #pathway #pathway-widget ul, #pathway #pathway-widget li,
+  #pathway #pathway-widget fieldset, #pathway #pathway-widget form, #pathway #pathway-widget label, #pathway #pathway-widget legend,
+  #pathway #pathway-widget table, #pathway #pathway-widget caption, #pathway #pathway-widget tbody, #pathway #pathway-widget tfoot, #pathway #pathway-widget thead, #pathway #pathway-widget tr, #pathway #pathway-widget th, #pathway #pathway-widget td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline; }
+  #pathway #pathway-widget :focus {
+    outline: 0; }
+  #pathway #pathway-widget body {
+    line-height: 1;
+    color: black;
+    background: white; }
+  #pathway #pathway-widget ol, #pathway #pathway-widget ul {
+    list-style: none; }
+  #pathway #pathway-widget table {
+    border-collapse: separate;
+    border-spacing: 0; }
+  #pathway #pathway-widget caption, #pathway #pathway-widget th, #pathway #pathway-widget td {
+    text-align: left;
+    font-weight: normal; }
+  #pathway #pathway-widget blockquote:before, #pathway #pathway-widget blockquote:after,
+  #pathway #pathway-widget q:before, #pathway #pathway-widget q:after {
+    content: ""; }
+  #pathway #pathway-widget blockquote, #pathway #pathway-widget q {
+    quotes: "" ""; }
+
+/* tooltip related and any other html styling goes here. styles to control svg with its native attributes treated as variables in head of pathway.js and called inline. */
+html, body {
+  height: 100%; }
+
+#pathway {
+  height: 90vh;
+  border: 1px solid #999;
+}
+
+#pathway #pathway-widget {
+  /* Split pane styling */
+  height: 100%;
+  box-sizing: border-box; }
+  #pathway #pathway-widget select {
+    padding: .5rem; }
+  #pathway #pathway-widget h3, #pathway #pathway-widget th {
+    font-weight: 400; }
+  #pathway #pathway-widget svg .reaction {
+    cursor: pointer; }
+  #pathway #pathway-widget #group-tip {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    padding: 0.5rem 1rem;
+    font-size: .85rem;
+    z-index: 1000;
+    position: absolute; }
+  #pathway #pathway-widget #pathway-widget #group-menu {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    padding: 0.5rem 1rem;
+    font-size: .85rem;
+    z-index: 1000;
+    position: absolute; }
+  #pathway #pathway-widget #pathway-widget #pathway-diagram {
+    position: relative;
+    padding-bottom: 3rem; }
+  #pathway #pathway-widget #pathway-widget #pathway-diagram button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem; }
+  #pathway #pathway-widget #pathway-expression-table {
+    position: relative; }
+  #pathway #pathway-widget #pathway-expression-table table {
+    /*position:relative*/
+    overflow-x: scroll;
+    margin: 1rem 0 1rem 195px;
+    border-collapse: collapse;
+    padding-bottom: 1rem; }
+  #pathway #pathway-widget #pathway-expression-table .gene,
+  #pathway #pathway-widget #pathway-expression-table .ec {
+    position: absolute;
+    top: auto;
+    cursor: pointer;
+    min-width: 0;
+    /* otherwise mouseover bleeds into right adjacent expression result */ }
+  #pathway #pathway-widget #pathway-expression-table .gene {
+    left: 0;
+    width: 120px; }
+  #pathway #pathway-widget #pathway-expression-table .ec {
+    left: 120px;
+    width: 75px; }
+  #pathway #pathway-widget #pathway-expression-table th,
+  #pathway #pathway-widget #pathway-expression-table td {
+    text-align: left;
+    /*border: 1px solid #ccc;*/
+    box-sizing: border-box;
+    padding: .3rem;
+    min-width: 7rem;
+    max-width: 10rem; }
+  #pathway #pathway-widget .split {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden; }
+  #pathway #pathway-widget .content {
+    border: 1px solid #C0C0C0;
+    box-shadow: inset 0 1px 2px #e4e4e4;
+    background-color: #fff; }
+  #pathway #pathway-widget .gutter {
+    background-color: transparent;
+    box-shadow: inset 0px 0px 10px #dedede;
+    background-repeat: no-repeat;
+    background-position: 50%; }
+  #pathway #pathway-widget .gutter.gutter-horizontal {
+    cursor: col-resize;
+    /*background-image: url('../grips/vertical.png');*/ }
+  #pathway #pathway-widget .gutter.gutter-vertical {
+    cursor: row-resize;
+    /*background-image: url('../grips/horizontal.png');*/ }
+  #pathway #pathway-widget .split.split-horizontal, #pathway #pathway-widget .gutter.gutter-horizontal {
+    height: 100%;
+    float: left; }
+
+/* end #pathway #pathway-widget nesting */
+#tooltip-container {
+  /*font-family: "courier new", courier, monospace;*/
+  color: #333; }
+
+#tooltip-container {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: .85rem; }
+
+#tooltip-container:before,
+#tooltip-container:after {
+  top: 100%;
+  left: 44%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none; }
+
+#tooltip-container:before {
+  border-color: #fff;
+  border-top-color: #b9b9b9;
+  border-width: 11px;
+  margin-left: -11px; }
+
+#tooltip-container:after {
+  border-color: transparent;
+  border-top-color: #fff;
+  border-width: 10px;
+  margin-left: -10px; }
+
+#dismiss-text {
+  font-size: x-small;
+  float: right;
+  font-style: italic; }
+
+.d3-context-menu {
+  /* courtesy Patrick Gillespie, https://github.com/patorjk/d3-context-menu. MIT license in d3-context-menu.js */
+  position: absolute;
+  display: none;
+  background-color: #fff;
+  border-radius: 4px;
+  min-width: 150px;
+  border: 1px solid #ccc;
+  z-index: 1200; }
+  .d3-context-menu > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    cursor: default; }
+  .d3-context-menu > ul li {
+    padding: 4px 16px;
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Chrome/Safari/Opera */
+    -khtml-user-select: none;
+    /* Konqueror */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none; }
+  .d3-context-menu > ul li:hover {
+    background-color: #ced;
+    color: #fefefe; }
+  .d3-context-menu > ul li.is-header,
+  .d3-context-menu > ul li.is-header:hover {
+    color: #444; }
+  .d3-context-menu > ul li.is-disabled,
+  .d3-context-menu > ul li.is-disabled:hover {
+    background-color: #f2f2f2;
+    color: #888;
+    cursor: not-allowed; }
+  .d3-context-menu > ul li.is-divider {
+    padding: 0px 0px; }
+  .d3-context-menu > ul li.is-divider:hover {
+    background-color: #f2f2f2; }
+  .d3-context-menu > ul hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+
+/* end .d3-context-menu nesting */
