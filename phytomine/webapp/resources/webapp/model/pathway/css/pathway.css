@@ -1,3 +1,17 @@
+div.container_12 {
+    padding-top: 0;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.grid_10 {
+    margin-left: 0;
+    margin-right: 0;
+}
+.container_12 .grid_10 {
+    width: 100%;
+}
+
 #pathway #pathway-widget {
   /* remember to define focus styles! */
   /* tables still need 'cellspacing="0"' in the markup */ }
@@ -44,7 +58,7 @@ html, body {
 
 #pathway {
   height: 90vh;
-  border: 1px solid #999;
+/*  border: 1px solid #999;*/
 }
 
 #pathway #pathway-widget {
@@ -114,7 +128,7 @@ html, body {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     overflow-y: auto;
-    overflow-x: hidden; }
+    overflow-x: auto; }
   #pathway #pathway-widget .content {
     border: 1px solid #C0C0C0;
     box-shadow: inset 0 1px 2px #e4e4e4;
@@ -179,6 +193,7 @@ html, body {
   /* courtesy Patrick Gillespie, https://github.com/patorjk/d3-context-menu. MIT license in d3-context-menu.js */
   position: absolute;
   display: none;
+  font-size: 12px;
   background-color: #fff;
   border-radius: 4px;
   min-width: 150px;
@@ -191,6 +206,7 @@ html, body {
     cursor: default; }
   .d3-context-menu > ul li {
     padding: 4px 16px;
+    margin: 0;
     -webkit-touch-callout: none;
     /* iOS Safari */
     -webkit-user-select: none;
@@ -203,8 +219,8 @@ html, body {
     /* Internet Explorer/Edge */
     user-select: none; }
   .d3-context-menu > ul li:hover {
-    background-color: #ced;
-    color: #fefefe; }
+    /*background-color: #ced;*/
+    color: #8a9; }
   .d3-context-menu > ul li.is-header,
   .d3-context-menu > ul li.is-header:hover {
     color: #444; }
