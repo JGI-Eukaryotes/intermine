@@ -7,7 +7,6 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="im" %>
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
-<h2> Pathway ${pathwayName} </h2>
 
 <link rel="stylesheet" type="text/css" href="model/pathway/css/pathway.css" />
 
@@ -73,7 +72,7 @@
           					  });
           				 Split(["#pathway-diagram", "#pathway-ancillary-info"], {
                    			 	  direction: "horizontal",
-                   				  sizes: [50, 50],
+                   				  sizes: [65, 35],
                    				  gutterSize: 8,
                    				  cursor: "col-resize"
           				 });
