@@ -3,6 +3,7 @@
 
 <class name="Pathway" is-interface="true">
   <attribute name="method" type="java.lang.String" />
+  <attribute name="status" type="java.lang.String" />
   <reference name="organism" referenced-type="Organism" reverse-reference="pathways" />
   <reference name="pathwayInfo" referenced-type="PathwayInfo" reverse-reference="pathways" />
   <collection name="components" referenced-type="PathwayComponent" reverse-reference="pathway"/>

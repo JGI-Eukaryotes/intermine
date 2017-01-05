@@ -1,6 +1,3 @@
 #!/bin/bash
-../bio/scripts/project_build -l -v -a phytozome-chado-A.trichopoda--interflowscan-A.coerulea_195 localhost ${BSCRATCH}/phytomine
-  
-
-
+../bio/scripts/project_build -l -v -a phytozome-chado-S.moellendorffii-91--phytozome-chado-P.virgatum-450 localhost ${BSCRATCH}/phytomine
   

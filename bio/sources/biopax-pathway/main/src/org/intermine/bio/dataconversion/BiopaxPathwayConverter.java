@@ -390,9 +390,9 @@ public class BiopaxPathwayConverter extends BioFileConverter
       for( org.biopax.paxtools.model.level3.Process proc: step.getStepProcess()) {
         if (proc instanceof BiochemicalReaction) {
           BiochemicalReaction b = (BiochemicalReaction) proc;
-          // PAXTools or pathway-tools bug. spontaneous nodes re
-          // returning 'false'. Take any non-null to be true.
-          if (b.getSpontaneous() != null) {
+          // was a PAXTools or pathway-tools bug. spontaneous nodes never
+          // return 'false'. They were returning 'L-R' Take any non-null to be true.
+          if (b.getSpontaneous() != null  && !b.getSpontaneous() ) {
             activeNode.label = "<i>spontaneous</i>";
             activeNode.isSpontaneous = true;
           }

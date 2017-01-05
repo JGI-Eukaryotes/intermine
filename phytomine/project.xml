@@ -13,23 +13,6 @@
     &chado;
     &family;
 
-  <source name="ec-assignments" type="e2p2-enzymes">
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="E2P2" />
-  </source>
-
-  <source name="ec-assignments-plus" type="e2p2-enzymes">
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="E2P2" />
-  </source>
-  <source name="ec-assignments-383" type="e2p2-enzymes">
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/e2p2-enzymes/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="E2P2" />
-  </source>
-
     <source name="cufflinks-A.hypochondriacus" type="cufflinks">
       <property name="proteomeId" value="315" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Ahypochondriacus/" />
@@ -277,24 +260,24 @@
     </source>
 
     <source name="cufflinks-P.vulgaris" type="cufflinks">
-      <property name="proteomeId" value="218" />
+      <property name="proteomeId" value="442" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
       <property name="dataSourceName" value="rnaseq-P.vulgaris" />
       <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
     </source>
     <source name="coexpression-P.vulgaris" type="coexpression">
-      <property name="proteomeId" value="218" />
+      <property name="proteomeId" value="442" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
       <property name="dataSourceName" value="rnaseq-P.vulgaris" />
       <property name="dataSetTitle" value="P.vulgaris RNA-seq" />
     </source>
-    <source name="cufflinks-P.vulgaris-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="218" />
+    <!--source name="cufflinks-P.vulgaris-info" type="rnaseq-experiment-info">
+      <property name="proteomeId" value="442" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Pvulgaris/" />
       <property name="dataSourceName" value="rnaseq-P.vulgaris" />
       <property name="dataSetTitle" value="P.vulgaris RNA-seq Info" />
-    </source>
+    </source-->
 
     <source name="cufflinks-S.bicolor-geneAtlas" type="cufflinks">
       <property name="proteomeId" value="313" />
@@ -359,147 +342,8 @@
     <source name="provisional-defline" type="gene-defline">
       <property name="src.data.file" value="defline.tsv" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/defline/" />
-      <property name="dataSourceName" value="Phytozome v11" />
-      <property name="dataSetTitle" value="Phytozome v11" />
-    </source>
-
-
-    <source name="diversity-B.distachyon" type="gatkvcf">
-      <property name="proteomeId" value="314" />
-      <property name="sampleGroup" value="Gordon2014_7" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Bdistachyon/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-B.distachyon" />
-      <property name="dataSetTitle" value="B.distachyon Natural Diversity" />
-    </source>
-
-    <source name="diversity-D.carota" type="gatkvcf">
-      <property name="proteomeId" value="388" />
-      <property name="sampleGroup" value="Senalik2016_43" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Dcarota/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-D.carota" />
-      <property name="dataSetTitle" value="D.carota Natural Diversity" />
-    </source>
-
-    <source name="diversity-C.reinhardtii-short" type="gatkvcf">
-      <property name="proteomeId" value="281" />
-      <property name="sampleGroup" value="Gallaher2015_short_39" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Creinhardtii-short/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-C.reinhardtii" />
-      <property name="dataSetTitle" value="C.reinhardtii Natural Diversity" />
-    </source>
-    <source name="diversity-E.grandis" type="gatkvcf">
-      <property name="proteomeId" value="297" />
-      <property name="sampleGroup" value="Myburg2014_G7J1_M35D2_36" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Egrandis/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis Natural Diversity" />
-    </source>
-    <source name="diversity-G.max" type="gatkvcf">
-      <property name="proteomeId" value="275" />
-      <property name="sampleGroup" value="Zhou2015_302" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Gmax/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-G.max" />
-      <property name="dataSetTitle" value="G.max Natural Diversity" />
-    </source>
-    <source name="diversity-M.esculenta" type="gatkvcf">
-      <property name="proteomeId" value="305" />
-      <property name="sampleGroup" value="prelim_61" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Mesculenta/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-M.esculenta" />
-      <property name="dataSetTitle" value="M.esculenta Natural Diversity" />
-    </source>
-    <source name="diversity-P.trichocarpa" type="gatkvcf">
-      <property name="proteomeId" value="210" />
-      <property name="sampleGroup" value="Evans2014_549" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-P.trichocarpa" />
-      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity" />
-    </source>
-    <source name="diversity-P.vulgaris" type="gatkvcf">
-      <property name="proteomeId" value="218" />
-      <property name="sampleGroup" value="Schmutz2014_8" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Pvulgaris/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris Natural Diversity" />
-    </source>
-    <source name="diversity-S.bicolor-mace" type="gatkvcf">
-      <property name="proteomeId" value="313" />
-      <property name="sampleGroup" value="Mace2013_48" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-mace/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-S.bicolor" />
-      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
-    </source>
-    <source name="diversity-S.bicolor-patterson" type="gatkvcf">
-      <property name="proteomeId" value="313" />
-      <property name="sampleGroup" value="Patterson2009_23" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-patterson/" />
-      <property name="src.data.dir.includes" value="*.vcf" />
-      <property name="dataSourcename" value="diversity-S.bicolor" />
-      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
-    </source>
-
-    <source name="diversity-B.distachyon-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="314" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Bdistachyon/" />
-      <property name="dataSourcename" value="diversity-B.distachyon" />
-      <property name="dataSetTitle" value="B.distachyon Natural Diversity" />
-    </source>
-    <source name="diversity-C.reinhardtii-short-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="281" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Creinhardtii-short/" />
-      <property name="dataSourcename" value="diversity-C.reinhardtii" />
-      <property name="dataSetTitle" value="C.reinhardtii Natural Diversity" />
-    </source>
-    <source name="diversity-E.grandis-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="297" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Egrandis/" />
-      <property name="dataSourcename" value="diversity-E.grandis" />
-      <property name="dataSetTitle" value="E.grandis Natural Diversity" />
-    </source>
-    <source name="diversity-G.max-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="275" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Gmax/" />
-      <property name="dataSourcename" value="diversity-G.max" />
-      <property name="dataSetTitle" value="G.max Natural Diversity" />
-    </source>
-    <source name="diversity-M.esculenta-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="305" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Mesculenta/" />
-      <property name="dataSourcename" value="diversity-M.esculenta" />
-      <property name="dataSetTitle" value="M.esculenta Natural Diversity" />
-    </source>
-    <source name="diversity-P.trichocarpa-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="210" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Ptrichocarpa/" />
-      <property name="dataSourcename" value="diversity-P.trichocarpa" />
-      <property name="dataSetTitle" value="P.trichocarpa Natural Diversity" />
-    </source>
-    <source name="diversity-P.vulgaris-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="218" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Pvulgaris/" />
-      <property name="dataSourcename" value="diversity-P.vulgaris" />
-      <property name="dataSetTitle" value="P.vulgaris Natural Diversity" />
-    </source>
-    <source name="diversity-S.bicolor-mace-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="313" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-mace/" />
-      <property name="dataSourcename" value="diversity-S.bicolor" />
-      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
-    </source>
-    <source name="diversity-S.bicolor-patterson-samples" type="vcfsampleinfo">
-      <property name="proteomeId" value="313" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/diversity/Sbicolor-patterson/" />
-      <property name="dataSourcename" value="diversity-S.bicolor" />
-      <property name="dataSetTitle" value="S.bicolor Natural Diversity" />
+      <property name="dataSourceName" value="Phytozome V12" />
+      <property name="dataSetTitle" value="Phytozome V12" />
     </source>
 
     <source name="phytozome-homologs" type="inparanoid-homologs" >
@@ -507,57 +351,373 @@
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
 
-    <source name="phytozome-homologs-extra" type="inparanoid-homologs" >
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
-      <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    <source name="pathologic-pathway-Acoerulea_322" type="biopax-pathway">
+      <property name="proteomeId" value="322"/>
+      <property name="src.data.dir.includes" value="Acoerulea_322.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Acomosus_321" type="biopax-pathway">
+      <property name="proteomeId" value="321"/>
+      <property name="src.data.dir.includes" value="Acomosus_321.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Ahalleri_264" type="biopax-pathway">
+      <property name="proteomeId" value="264"/>
+      <property name="src.data.dir.includes" value="Ahalleri_264.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Ahypochondriacus_315" type="biopax-pathway">
+      <property name="proteomeId" value="315"/>
+      <property name="src.data.dir.includes" value="Ahypochondriacus_315.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Alyrata_384" type="biopax-pathway">
+      <property name="proteomeId" value="384"/>
+      <property name="src.data.dir.includes" value="Alyrata_384.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Aoccidentale_449" type="biopax-pathway">
+      <property name="proteomeId" value="449"/>
+      <property name="src.data.dir.includes" value="Aoccidentale_449.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Athaliana_167" type="biopax-pathway">
+      <property name="proteomeId" value="167"/>
+      <property name="src.data.dir.includes" value="Athaliana_167.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Athaliana_447" type="biopax-pathway">
+      <property name="proteomeId" value="447"/>
+      <property name="src.data.dir.includes" value="Athaliana_447.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Atrichopoda_291" type="biopax-pathway">
+      <property name="proteomeId" value="291"/>
+      <property name="src.data.dir.includes" value="Atrichopoda_291.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Boleracea_capitata_446" type="biopax-pathway">
+      <property name="proteomeId" value="446"/>
+      <property name="src.data.dir.includes" value="Boleracea_capitata_446.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Brapa_FPsc_277" type="biopax-pathway">
+      <property name="proteomeId" value="277"/>
+      <property name="src.data.dir.includes" value="Brapa_FPsc_277.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Bstricta_278" type="biopax-pathway">
+      <property name="proteomeId" value="278"/>
+      <property name="src.data.dir.includes" value="Bstricta_278.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Cclementina_182" type="biopax-pathway">
+      <property name="proteomeId" value="182"/>
+      <property name="src.data.dir.includes" value="Cclementina_182.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Cgrandiflora_266" type="biopax-pathway">
+      <property name="proteomeId" value="266"/>
+      <property name="src.data.dir.includes" value="Cgrandiflora_266.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Cpapaya_113" type="biopax-pathway">
+      <property name="proteomeId" value="113"/>
+      <property name="src.data.dir.includes" value="Cpapaya_113.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Creinhardtii_281" type="biopax-pathway">
+      <property name="proteomeId" value="281"/>
+      <property name="src.data.dir.includes" value="Creinhardtii_281.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Crubella_183" type="biopax-pathway">
+      <property name="proteomeId" value="183"/>
+      <property name="src.data.dir.includes" value="Crubella_183.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Csativus_122" type="biopax-pathway">
+      <property name="proteomeId" value="122"/>
+      <property name="src.data.dir.includes" value="Csativus_122.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Csinensis_154" type="biopax-pathway">
+      <property name="proteomeId" value="154"/>
+      <property name="src.data.dir.includes" value="Csinensis_154.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Csubellipsoidea_C-169_227" type="biopax-pathway">
+      <property name="proteomeId" value="227"/>
+      <property name="src.data.dir.includes" value="Csubellipsoidea_C-169_227.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Dcarota_388" type="biopax-pathway">
+      <property name="proteomeId" value="388"/>
+      <property name="src.data.dir.includes" value="Dcarota_388.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Dsalina_325" type="biopax-pathway">
+      <property name="proteomeId" value="325"/>
+      <property name="src.data.dir.includes" value="Dsalina_325.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Egrandis_297" type="biopax-pathway">
+      <property name="proteomeId" value="297"/>
+      <property name="src.data.dir.includes" value="Egrandis_297.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Esalsugineum_173" type="biopax-pathway">
+      <property name="proteomeId" value="173"/>
+      <property name="src.data.dir.includes" value="Esalsugineum_173.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Fvesca_226" type="biopax-pathway">
+      <property name="proteomeId" value="226"/>
+      <property name="src.data.dir.includes" value="Fvesca_226.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Gmax_275" type="biopax-pathway">
+      <property name="proteomeId" value="275"/>
+      <property name="src.data.dir.includes" value="Gmax_275.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Kfedtschenkoi_382" type="biopax-pathway">
+      <property name="proteomeId" value="382"/>
+      <property name="src.data.dir.includes" value="Kfedtschenkoi_382.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Klaxiflora_309" type="biopax-pathway">
+      <property name="proteomeId" value="309"/>
+      <property name="src.data.dir.includes" value="Klaxiflora_309.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Lusitatissimum_200" type="biopax-pathway">
+      <property name="proteomeId" value="200"/>
+      <property name="src.data.dir.includes" value="Lusitatissimum_200.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Macuminata_304" type="biopax-pathway">
+      <property name="proteomeId" value="304"/>
+      <property name="src.data.dir.includes" value="Macuminata_304.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Mdomestica_196" type="biopax-pathway">
+      <property name="proteomeId" value="196"/>
+      <property name="src.data.dir.includes" value="Mdomestica_196.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Mesculenta_305" type="biopax-pathway">
+      <property name="proteomeId" value="305"/>
+      <property name="src.data.dir.includes" value="Mesculenta_305.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Mguttatus_256" type="biopax-pathway">
+      <property name="proteomeId" value="256"/>
+      <property name="src.data.dir.includes" value="Mguttatus_256.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Mpolymorpha_320" type="biopax-pathway">
+      <property name="proteomeId" value="320"/>
+      <property name="src.data.dir.includes" value="Mpolymorpha_320.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Mpusilla_CCMP1545_228" type="biopax-pathway">
+      <property name="proteomeId" value="228"/>
+      <property name="src.data.dir.includes" value="Mpusilla_CCMP1545_228.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Msp_RCC299_229" type="biopax-pathway">
+      <property name="proteomeId" value="229"/>
+      <property name="src.data.dir.includes" value="Msp_RCC299_229.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Mtruncatula_285" type="biopax-pathway">
+      <property name="proteomeId" value="285"/>
+      <property name="src.data.dir.includes" value="Mtruncatula_285.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Olucimarinus_231" type="biopax-pathway">
+      <property name="proteomeId" value="231"/>
+      <property name="src.data.dir.includes" value="Olucimarinus_231.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Othomaeum_386" type="biopax-pathway">
+      <property name="proteomeId" value="386"/>
+      <property name="src.data.dir.includes" value="Othomaeum_386.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Pdeltoides_WV94_445" type="biopax-pathway">
+      <property name="proteomeId" value="445"/>
+      <property name="src.data.dir.includes" value="Pdeltoides_WV94_445.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Ppatens_318" type="biopax-pathway">
+      <property name="proteomeId" value="318"/>
+      <property name="src.data.dir.includes" value="Ppatens_318.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Ppersica_298" type="biopax-pathway">
+      <property name="proteomeId" value="298"/>
+      <property name="src.data.dir.includes" value="Ppersica_298.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Ptrichocarpa_210" type="biopax-pathway">
+      <property name="proteomeId" value="210"/>
+      <property name="src.data.dir.includes" value="Ptrichocarpa_210.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Ptrichocarpa_444" type="biopax-pathway">
+      <property name="proteomeId" value="444"/>
+      <property name="src.data.dir.includes" value="Ptrichocarpa_444.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Pvirgatum_273" type="biopax-pathway">
+      <property name="proteomeId" value="273"/>
+      <property name="src.data.dir.includes" value="Pvirgatum_273.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Pvirgatum_450" type="biopax-pathway">
+      <property name="proteomeId" value="450"/>
+      <property name="src.data.dir.includes" value="Pvirgatum_450.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Pvulgaris_442" type="biopax-pathway">
+      <property name="proteomeId" value="442"/>
+      <property name="src.data.dir.includes" value="Pvulgaris_442.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Rcommunis_119" type="biopax-pathway">
+      <property name="proteomeId" value="119"/>
+      <property name="src.data.dir.includes" value="Rcommunis_119.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Sbicolor_313" type="biopax-pathway">
+      <property name="proteomeId" value="313"/>
+      <property name="src.data.dir.includes" value="Sbicolor_313.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Sitalica_312" type="biopax-pathway">
+      <property name="proteomeId" value="312"/>
+      <property name="src.data.dir.includes" value="Sitalica_312.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Slycopersicum_390" type="biopax-pathway">
+      <property name="proteomeId" value="390"/>
+      <property name="src.data.dir.includes" value="Slycopersicum_390.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Smoellendorffii_91" type="biopax-pathway">
+      <property name="proteomeId" value="91"/>
+      <property name="src.data.dir.includes" value="Smoellendorffii_91.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Spolyrhiza_290" type="biopax-pathway">
+      <property name="proteomeId" value="290"/>
+      <property name="src.data.dir.includes" value="Spolyrhiza_290.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Spurpurea_289" type="biopax-pathway">
+      <property name="proteomeId" value="289"/>
+      <property name="src.data.dir.includes" value="Spurpurea_289.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Stuberosum_448" type="biopax-pathway">
+      <property name="proteomeId" value="448"/>
+      <property name="src.data.dir.includes" value="Stuberosum_448.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Taestivum_296" type="biopax-pathway">
+      <property name="proteomeId" value="296"/>
+      <property name="src.data.dir.includes" value="Taestivum_296.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Tcacao_233" type="biopax-pathway">
+      <property name="proteomeId" value="233"/>
+      <property name="src.data.dir.includes" value="Tcacao_233.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Tpratense_385" type="biopax-pathway">
+      <property name="proteomeId" value="385"/>
+      <property name="src.data.dir.includes" value="Tpratense_385.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Vvinifera_145" type="biopax-pathway">
+      <property name="proteomeId" value="145"/>
+      <property name="src.data.dir.includes" value="Vvinifera_145.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Zmays_284" type="biopax-pathway">
+      <property name="proteomeId" value="284"/>
+      <property name="src.data.dir.includes" value="Zmays_284.owl"/>
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
 
-    <source name="phytozome-homologs-442" type="inparanoid-homologs" >
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
-      <property name="src.data.dir.includes" value="table.442.fa-*.fa" />
-    </source>
-
-    <source name="phytozome-homologs-383" type="inparanoid-homologs" >
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
-      <property name="src.data.dir.includes" value="table.383.fa-*.fa" />
-    </source>
-
-    <source name="phytozome-homologs-11-0-5" type="inparanoid-homologs" >
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
-      <property name="src.data.dir.includes" value="table.38*.fa-*.fa" />
-    </source>
-
-    <source name="phytozome-homologs-11-0-7" type="inparanoid-homologs" >
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
-      <property name="src.data.dir.includes" value="table.392.fa-*.fa" />
-    </source>
- 
-    <source name="pathologic-pathway-A.thaliana" type="biopax-pathway">
-      <property name="proteomeId" value="167" />
-      <property name="method" value="pathologic" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
-      <property name="src.data.dir.includes" value="A.thaliana_167.owl" />
-    </source>
-
-    <source name="pathologic-pathway-C.reinhardtii" type="biopax-pathway">
-      <property name="proteomeId" value="281" />
-      <property name="method" value="pathologic" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
-      <property name="src.data.dir.includes" value="C.reinhardtii_281.owl" />
-    </source>
-
-    <source name="pathologic-pathway-O.sativa" type="biopax-pathway">
-      <property name="proteomeId" value="323" />
-      <property name="method" value="pathologic-ec" />
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
-      <property name="src.data.dir.includes" value="Osativa_323.owl" />
-    </source>
-
-    <source name="synonyms" type="tsv-synonyms">
-      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/synonyms/" />
-      <property name="src.data.file" value="synonyms.tsv" />
-      <property name="dataSetTitle" value="Phytozome V10" />
-      <property name="dataSourceName" value="Phytozome V10" />
+    <source name="TAIR-GO" type="go-annotation">
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/go/" />
+      <property name="src.data.dir.includes" value="gene_association.tair" />
+      <property name="dataSetTitle" value="TAIR10 GO_SLIM" />
+      <property name="dataSourceName" value="TAIR10" />
+      <property name="taxonId" value="3702" />
     </source>
 
     <source name="interpro" type="interpro">

@@ -16,7 +16,6 @@ import org.apache.tools.ant.BuildException;
 import org.intermine.bio.util.Constants;
 import org.intermine.model.bio.BioEntity;
 import org.intermine.model.bio.CufflinksScore;
-import org.intermine.model.bio.DiversitySample;
 import org.intermine.model.bio.Organism;
 import org.intermine.model.bio.RNAseqExperiment;
 import org.intermine.objectstore.ObjectStore;

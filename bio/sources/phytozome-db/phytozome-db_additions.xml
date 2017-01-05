@@ -31,5 +31,11 @@
   </class>
   <class name="Gene" is-interface="true">
     <attribute name="genomicOrder" type="java.lang.Integer" />
+    <reference name="alternateDescription" referenced-type="AlternateDescription" reverse-reference="gene" />
+  </class>
+
+  <class name="AlternateDescription" is-interface="true">
+    <attribute name="value" type="java.lang.String" />
+    <reference name="gene" referenced-type="Gene" reverse-reference="alternateDescription" />
   </class>
 </classes>
