@@ -1,7 +1,11 @@
-/* This lets the linter know d3 is defined globally and so not throw an error        */
+/* This lets the linter know d3 is defined globally and so not throw an error */
 /*global d3:true*/
 
-/* style attributes */
+// Initialize shared objects, variables //
+
+var geneLinks = {}; // derived from pathway diagram's json, needed in expression table.
+
+// Styles for svg or other html manipulated by d3 (e.g. expression tables). Use and manipulate this as the single source (don't inline raw styles!!). Why inline? Because we want a pathway diagram downloaded as a single, dependency free file. //
 
 var pathAttrs = {
   stroke: "#666",
@@ -28,21 +32,208 @@ var smallFontAttrs = {
   size: "10px"
 };
 
-
-/* just because we can */
 var ecLabelAttrs = {
-  color: "orange"
+  diagramColor: "orange",
+  tableColor: "#222",
+  highlightedColor: "red"
 };
 
 var geneLabelAttrs = {
-  color: "purple"
+  diagramColor: "purple",
+  tableColor: "#222",
+  highlightedColor: "red"
 };
 
-var svgContainer;
+var expTableAttrs = {
+  minFkpmColor: "#dfe",
+  maxFkpmColor: "#2a6"
+};
 
-// the gene menu links are in the pathway json.
-// but we use them in expression json
-var geneLinks = {};
+var barGraphAttrs = {
+  titleFontSize: "12px",
+  labelFontSize: "12px"
+};
+
+// PATHWAY DIAGRAM //
+
+// Helper functions for pathway diagram //
+
+var setElementDimensions = function (element) {
+  var bbox = element.node().getBBox();
+  var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
+  var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
+  var x = Math.floor(bbox.x) - 50;
+  var y = Math.floor(bbox.y) - 50;
+  element.attr("width", w)
+         .attr("height", h)
+         .attr("viewBox",x+ " "+ y + " " + w + " " + h);
+};
+
+var extractMenuItems = function (d) {
+  d.genes.forEach( function(e) {
+    var gN = e.name;
+    geneLinks[gN] = [];
+    e.links.forEach( function(f) {
+      geneLinks[gN].push({"label":f.label,"url":f.url});
+    } )
+  });
+}
+
+var labelReactions = function (d) {
+  var el = d3.select(this);
+  // do not touch the label if there are no ECs and no genes.
+  if (d.ecs.length == 0 && d.genes.length == 0 ) return;
+
+  el.text("");
+
+  var ecData = [];
+  d.ecs.forEach( function(dd) {
+    ecData.push({ content: dd,
+                  class: "highlighter diagram ec",
+                  baseColor: ecLabelAttrs.diagramColor,
+                  highlightedColor: ecLabelAttrs.highlightedColor }
+                );
+  });
+  var pData = [];
+  d.genes.forEach( function(dd) {
+    pData.push({ content: dd.name,
+                 class: "highlighter diagram gene",
+                 baseColor: geneLabelAttrs.diagramColor,
+                 highlightedColor: geneLabelAttrs.highlightedColor}
+               );
+  });
+  el.selectAll("tspan").data(ecData).enter().append("tspan")
+                                  .attr("x",el.attr("x"))
+                                  .attr("dy","1em")
+                                  .attr("class", function (dd) { return dd.class })
+                                  .text(function(dd) { return dd.content })
+                                  .style("fill", function(dd) { return dd.baseColor });
+  el.selectAll("tspan").filter(function (e) { return 0;}).data(pData).enter().append("tspan")
+                                  .attr("x",el.attr("x"))
+                                  .attr("dy","1em")
+                                  .attr("class", function(dd) { return dd.class })
+                                  .text(function(dd) { return dd.content })
+                                  .style("fill", function(dd) { return dd.baseColor } );
+
+}
+
+var insertLineBreaks = function (d) {
+  var el = d3.select(this);
+  el.text("");
+  // process label if defined.
+  if (d.label) {
+    // split on <br>"s
+    var lines = d.label.split("<br>");
+    for (var i = 0; i < lines.length; i++) {
+      // first replace html char codes...
+      lines[i] = replaceHTMLchar(lines[i]);
+
+      // now deal with <sub>, <sup> and <i> tags.
+      // I hope they're not overlapping
+      handleShifts(el,(15*i)+"px",lines[i],d);
+    }
+  }
+};
+
+function handleShifts(ele, dy, line) {
+  // this does rudimentary parsing of html tags <sub>, <sup> and <i>
+  // take the line and break it into raised or lowered tokens.
+  // The first function returns a list of the form
+  // [ [<text> ,-1||0||1, 0||1 ] , [ <text>, -1||0||1 , 0||1 ] , ...]
+
+  // For the second field, "0" means baseline. "1" means
+  // superscript, "-1" means subscript. If a subscript is
+  // nested in a superscript or vice versa, you get back to the
+  // baseline. This ain't TeX.
+  // For the third field field, 0 means normal font, 1 means italic
+
+  var token_list = makeTokens(line);
+  // now append tokens
+  var last_shift= 0;
+  var last_style = 0;
+  var parentTspan = ele.append("tspan").attr("x",ele.attr("x")).attr("y",ele.attr("y")).attr("dy",dy);
+  for ( var i = 0; i < token_list.length; i++) {
+    var tspan = parentTspan.append("tspan").text(token_list[i][0]);
+    // semantic tooltip?
+
+    if(i===0) {
+      tspan.attr("font-size",fontAttrs.size)
+           .attr("font-style","normal");
+    } else {
+      tspan.attr("dx","0");
+      var this_shift = token_list[i][1];
+      if (this_shift === 0) {
+        tspan.attr("font-size",fontAttrs.size);
+      } else {
+        tspan.attr("font-size",smallFontAttrs.size);
+      }
+
+    // baseline-shift appears not to work. Here is
+    // easier code in case this ever works...
+    //switch( token_list[i][1]) {
+    //  case 1:
+    //    tspan.style("baseline-shift","super");
+    //    break;
+    //  case -1:
+    //    tspan.style("baseline-shift","sub");
+    //    break;
+    //}
+
+      // and harder-to-follow code until baseline-shift
+      if ( (this_shift - last_shift) > 0) {
+        // going up...
+        tspan.attr("dy","-"+fontAttrs.baselineShift);
+      } else if ( (this_shift - last_shift) < 0) {
+        // going down...
+        tspan.attr("dy",fontAttrs.baselineShift);
+      } else {
+        tspan.attr("dy",0);
+      }
+      last_shift = this_shift;
+
+      if ( token_list[i][2] !== last_style) {
+        last_style = token_list[i][2];
+        switch (token_list[i][2]) {
+        case 0:
+          tspan.attr("font-style","normal");
+          break;
+        case 1:
+          tspan.attr("font-style","italic");
+          break;
+        }
+      }
+    }
+  }
+}
+
+function makeTokens(line) {
+  var retList = [];
+  var subs = line.split(/<\/?sub>/i);
+  for( var j = 0; j<subs.length; j++) {
+    var supers =  subs[j].split(/<\/?sup>/i);
+    for ( var l = 0; l < supers.length; l++) {
+      var this_shift = ((j%2===0) && (l%2===0))?0:(j%2===1)?-1:1;
+      // now split on <i> tokens
+      var italics = supers[l].split(/<\/?i>/i);
+      for (var k = 0; k < italics.length; k++ ) {
+        retList.push([italics[k],this_shift,k%2]);
+      }
+    }
+  }
+  return retList;
+}
+
+function replaceHTMLchar(w) {
+  return w.replace(/&harr;/ig, "\u21D4")
+          .replace(/&larr;/ig, "\u21D0")
+          .replace(/&rarr;/ig, "\u21D2")
+          .replace(/&alpha;/ig, "\u03B1")
+          .replace(/&beta;/ig, "\u03B2")
+          .replace(/&gamma;/ig, "\u03B3")
+          .replace(/&delta;/ig, "\u03B4");
+}
+
+// Pathway diagram main function //
 
 var loadPathway = function(container,json) {
 
@@ -96,21 +287,21 @@ var loadPathway = function(container,json) {
                  setElementDimensions(svgContainer);
                });
              });
-  //
+
   // the zoom handler
-  var zoom = d3.zoom().scaleExtent([.25, 10]).on("zoom",function() {
-	                              masterGroup.attr("transform",
-	                            		  "translate(" + d3.event.transform.x+","+d3.event.transform.y +
-			                               ")scale(" + d3.event.transform.k + ")");
-	                              setElementDimensions(svgContainer);
-	                              });
+  // var zoom = d3.zoom().scaleExtent([.25, 10]).on("zoom",function() {
+  // 	                              masterGroup.attr("transform",
+  // 	                            		  "translate(" + d3.event.transform.x+","+d3.event.transform.y +
+  // 			                               ")scale(" + d3.event.transform.k + ")");
+  // 	                              setElementDimensions(svgContainer);
+  // 	                              });
 
   // make the SVG Container, we'll add height and width when everything's constructed
-  svgContainer = d3.select(container).append("svg")
+  var svgContainer = d3.select(container).append("svg")
                                          .attr("id","pathway-svg")
                                          .style("font-family", fontAttrs.family)
                                          .style("color", fontAttrs.color);
-  console.log(JSON.stringify(json));
+  //console.log(JSON.stringify(json));
 
   // arrowheads
   var refX = 7;
@@ -270,7 +461,7 @@ var loadPathway = function(container,json) {
   // install a drag handler for every group inside the master group that has an 'id'
   masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
   // install a zoom handler for the whole thing
-  zoom(masterGroup);
+  //zoom(masterGroup);
 
   d3.selectAll("text.label").each(insertLineBreaks);
   d3.selectAll("text.reaction").each(labelReactions);
@@ -395,178 +586,14 @@ var loadPathway = function(container,json) {
 
   });
 
-
   // discover how large the svg is and explicitly set it on the root <svg> node
   setElementDimensions(svgContainer);
-
-};
-
-var setElementDimensions = function (element) {
-  var bbox = element.node().getBBox();
-  var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
-  var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
-  var x = Math.floor(bbox.x) - 50;
-  var y = Math.floor(bbox.y) - 50;
-  element.attr("width", w)
-         .attr("height", h)
-         .attr("viewBox",x+ " "+ y + " " + w + " " + h);
 };
 
 
-var extractMenuItems = function (d) {
-  d.genes.forEach( function(e) {
-    var gN = e.name;
-    geneLinks[gN] = [];
-    e.links.forEach( function(f) {
-      geneLinks[gN].push({"label":f.label,"url":f.url});
-    } )
-  });
-}
+// EXPRESSION TABLE //
 
-var labelReactions = function (d) {
-  var el = d3.select(this);
-  // do not touch the label if there are no ECs and no genes.
-  if (d.ecs.length == 0 && d.genes.length == 0 ) return;
-
-  el.text("");
-
-  var ecData = [];
-  d.ecs.forEach( function(dd) {
-    ecData.push({"ec":dd});});
-  var pData = [];
-  d.genes.forEach( function(dd) {
-    pData.push({"gene":dd.name});});
-  el.selectAll("tspan").data(ecData).enter().append("tspan")
-                                  .attr("x",el.attr("x"))
-                                  .attr("dy","1em")
-                                  .attr("class","highlighter")
-                                  .text(function(dd) { return dd.ec })
-                                  .style("fill",ecLabelAttrs.color);
-  el.selectAll("tspan").filter(function (e) { return 0;}).data(pData).enter().append("tspan")
-                                  .attr("x",el.attr("x"))
-                                  .attr("dy","1em")
-                                  .attr("class","highlighter")
-                                  .text(function(dd) { return dd.gene })
-                                  .style("fill",geneLabelAttrs.color);
-
-}
-
-var insertLineBreaks = function (d) {
-  var el = d3.select(this);
-  el.text("");
-  // process label if defined.
-  if (d.label) {
-    // split on <br>"s
-    var lines = d.label.split("<br>");
-    for (var i = 0; i < lines.length; i++) {
-      // first replace html char codes...
-      lines[i] = replaceHTMLchar(lines[i]);
-
-      // now deal with <sub>, <sup> and <i> tags.
-      // I hope they're not overlapping
-      handleShifts(el,(15*i)+"px",lines[i],d);
-    }
-  }
-};
-
-function handleShifts(ele, dy, line) {
-  // this does rudimentary parsing of html tags <sub>, <sup> and <i>
-  // take the line and break it into raised or lowered tokens.
-  // The first function returns a list of the form
-  // [ [<text> ,-1||0||1, 0||1 ] , [ <text>, -1||0||1 , 0||1 ] , ...]
-
-  // For the second field, "0" means baseline. "1" means
-  // superscript, "-1" means subscript. If a subscript is
-  // nested in a superscript or vice versa, you get back to the
-  // baseline. This ain't TeX.
-  // For the third field field, 0 means normal font, 1 means italic
-
-  var token_list = makeTokens(line);
-  // now append tokens
-  var last_shift= 0;
-  var last_style = 0;
-  var parentTspan = ele.append("tspan").attr("x",ele.attr("x")).attr("y",ele.attr("y")).attr("dy",dy);
-  for ( var i = 0; i < token_list.length; i++) {
-    var tspan = parentTspan.append("tspan").text(token_list[i][0]);
-    // semantic tooltip?
-
-    if(i===0) {
-      tspan.attr("font-size",fontAttrs.size)
-           .attr("font-style","normal");
-    } else {
-      tspan.attr("dx","0");
-      var this_shift = token_list[i][1];
-      if (this_shift === 0) {
-        tspan.attr("font-size",fontAttrs.size);
-      } else {
-        tspan.attr("font-size",smallFontAttrs.size);
-      }
-
-    // baseline-shift appears not to work. Here is
-    // easier code in case this ever works...
-    //switch( token_list[i][1]) {
-    //  case 1:
-    //    tspan.style("baseline-shift","super");
-    //    break;
-    //  case -1:
-    //    tspan.style("baseline-shift","sub");
-    //    break;
-    //}
-
-      // and harder-to-follow code until baseline-shift
-      if ( (this_shift - last_shift) > 0) {
-        // going up...
-        tspan.attr("dy","-"+fontAttrs.baselineShift);
-      } else if ( (this_shift - last_shift) < 0) {
-        // going down...
-        tspan.attr("dy",fontAttrs.baselineShift);
-      } else {
-        tspan.attr("dy",0);
-      }
-      last_shift = this_shift;
-
-      if ( token_list[i][2] !== last_style) {
-        last_style = token_list[i][2];
-        switch (token_list[i][2]) {
-        case 0:
-          tspan.attr("font-style","normal");
-          break;
-        case 1:
-          tspan.attr("font-style","italic");
-          break;
-        }
-      }
-    }
-  }
-}
-
-function makeTokens(line) {
-  var retList = [];
-  var subs = line.split(/<\/?sub>/i);
-  for( var j = 0; j<subs.length; j++) {
-    var supers =  subs[j].split(/<\/?sup>/i);
-    for ( var l = 0; l < supers.length; l++) {
-      var this_shift = ((j%2===0) && (l%2===0))?0:(j%2===1)?-1:1;
-      // now split on <i> tokens
-      var italics = supers[l].split(/<\/?i>/i);
-      for (var k = 0; k < italics.length; k++ ) {
-        retList.push([italics[k],this_shift,k%2]);
-      }
-    }
-  }
-  return retList;
-}
-
-// TODO: replace other characters. like the greeks.
-function replaceHTMLchar(w) {
-  return w.replace(/&harr;/ig,  "\u21D4")
-          .replace(/&larr;/ig,  "\u21D0")
-          .replace(/&rarr;/ig,  "\u21D2")
-          .replace(/&alpha;/ig, "\u03B1")
-          .replace(/&beta;/ig,  "\u03B2")
-          .replace(/&gamma;/ig, "\u03B3")
-          .replace(/&delta;/ig, "\u03B4");
-}
+//* Helper functions for displaying the expression table *//
 
 var toLowerCaseAndSpacesToDashes = function (string) {
   return string.toLowerCase().replace(/ /g, "-");
@@ -606,7 +633,6 @@ var createExperimentGroupSelect = function (container, json) {
 
 };
 
-
 var flattenJson = function(data) {
   var result = {};
   function recurse (cur, prop) {
@@ -630,7 +656,6 @@ var flattenJson = function(data) {
   return result;
 };
 
-
 var getMinMaxFpkm = function(data) {
   var flattenedData = flattenJson(data);
   var fpkmArr = [];
@@ -645,8 +670,8 @@ var getMinMaxFpkm = function(data) {
 var setColorScale = function(minMaxVal, minMaxColors) {
     if ( minMaxVal[0] === 0 ||
          minMaxVal[1] === 0 ||
-         (minMaxVal[0] < 0 && minMaxVal[1] > 0) ||
-         (minMaxVal[0] > 0 && minMaxVal[1] < 0)) {
+         ( minMaxVal[0] < 0 && minMaxVal[1] > 0) ||
+         ( minMaxVal[0] > 0 && minMaxVal[1] < 0)) {
         return d3.scaleLinear()
                  .domain(minMaxVal)
                  .range(minMaxColors);
@@ -656,24 +681,173 @@ var setColorScale = function(minMaxVal, minMaxColors) {
              .range(minMaxColors);
 };
 
-var geneData = {};
+var doLinkout = function(n) {
+  console.log("doing linkout "+n);
+  window.open(n,"_blank");
+};
+
+var makeBarplot = function (d, geneData, minMaxFkpm, colorScale) {
+
+
+    var plotType = d.plotType;
+    var data = [];
+    // this should be part of prepping data where called
+    var longestName = 0;
+    if (plotType === "Condition") {
+        for ( var gene in geneData ) {
+          if (geneData.hasOwnProperty(gene)) {
+            var result = geneData[gene].filter( function (obj) { return obj.sample === d.content })[0];
+            if (gene.length > longestName) longestName = gene.length;
+            data.push({name: gene, value: result.fpkm});
+          }
+        }
+    } else {
+        geneData[d.content].forEach( function (condition) {
+            if (condition.sample.length > longestName) longestName = condition.sample.length;
+            data.push({name: condition.sample, value: condition.fpkm});
+        });
+    }
+
+
+    // console.log(data);
+
+    var container = document.getElementById("pathway-ancillary-info");
+    var containerWidth = container.offsetWidth;
+    var containerHeight = container.offsetHeight;
+    var margin = {top: 75, right: 50, bottom: 100, left: (longestName * 5) + 10}; // revisit these magic numbers with a better calculation based on font size
+    var width =  containerWidth - margin.left - margin.right;
+    // var height = (containerHeight) - margin.top - margin.bottom;
+
+    // d3's bandwidth method for range [0, height] produces height / 1.333333
+    // so, to get a bandwidth of n pixels:  (height / 1.333333) / data.length = n, aka
+    var heightWMaxBand = 25 * data.length * 1.333333;
+    var heightWMinBand = 15 * data.length * 1.333333;
+
+    //console.log(containerHeight, heightWMinBand, heightWMaxBand);
+
+    var plotHeight;
+    var svgHeight;
+    var yOffset = margin.top;
+
+    if ( heightWMinBand + 100 > containerHeight ) {
+      // lots of data relative to pane size: let it scroll
+      plotHeight = heightWMaxBand;
+      svgHeight = heightWMaxBand + 200;
+    } else if ( heightWMaxBand + 100 < containerHeight ) {
+      // data fits comfortably in pane
+      plotHeight = heightWMaxBand;
+      svgHeight = containerHeight - 5;
+      // center it vertically
+      yOffset = ( containerHeight - plotHeight ) / 2;
+    } else {
+      // something in between what demands min or max bandwidth
+      plotHeight = containerHeight - margin.top - margin.bottom;
+      svgHeight = containerHeight - 5;
+    }
+
+    // var x = d3.scaleBand().rangeRound([0, width]).padding(0.05);
+    // var y = d3.scaleLinear().rangeRound([height, 0]);
+    var x = d3.scaleLinear().rangeRound([0, width - 10]);
+    var y = d3.scaleBand().rangeRound([0, plotHeight]).padding(0.25);
+
+
+    // console.log('containerHeight:', containerHeight, 'plotHeight:', plotHeight, 'containerWidth:', containerWidth, 'width:', width);
+
+    // x.domain(data.map(function(d) { return d.name; }));
+    // y.domain([0, minMaxFkpm[1]]);
+    x.domain([0, minMaxFkpm[1]]);
+    y.domain(data.map(function(d) { return d.name; }));
+
+    var barGraph = document.getElementById("bar-graph");
+    if (barGraph) barGraph.parentNode.removeChild(barGraph);
+
+    var xOffset = ( margin.left + containerWidth - width ) / 2 ;
+
+    var chart = d3.select("#pathway-ancillary-info")
+                  .append("svg")
+                  .attr("id", "bar-graph")
+                  .attr("height", svgHeight)
+                  .attr("width", "100%")
+                  .append("g")
+                  .attr("transform", "translate(" + xOffset + "," + yOffset + ")")
+
+
+    chart.append("g")
+         .attr("class", "axis axis--x")
+         .attr("transform", "translate(0," + plotHeight + ")")
+         .call(d3.axisBottom(x))
+         .append("text")
+         .attr("x", width / 2)
+         .attr("dy", "2em")
+         .attr("text-anchor", "middle")
+         .text("FPKM");
+
+    chart.append("g")
+         .attr("class", "axis axis--y")
+         .call(d3.axisLeft(y))
+         .append("text")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 6)
+         .attr("dy", "0.71em")
+         .attr("text-anchor", "end")
+        //  .text(plotType);
+
+    chart.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .style("fill", function(d) { return colorScale(d.value); })
+        // .attr("x", function(d) { return x(d.name); })
+        // .attr("y", function(d) { return y(d.value); })
+        // .attr("height", function(d) { return height - y(d.value); })
+        // .attr("width", x.bandwidth());
+        .attr("x", 1)
+        .attr("y", function(d) { return y(d.name); })
+        .attr("width", function(d) { return x(d.value); })
+        .attr("height", y.bandwidth());
+
+    chart.append("text")
+         .attr("x", width / 2)
+         .attr("y", 0 - ( margin.top / 2 ))
+         .attr("text-anchor", "middle")
+         .style("font-size", barGraphAttrs.titleFontSize)
+         .append("tspan")
+         .text(plotType + " ")
+         .append("tspan")
+         .attr("font-style", "italic")
+         .text(d.content)
+         .append("tspan")
+         .attr("font-style", "normal")
+         .text(" in the ")
+         .append("tspan")
+         .attr("font-style", "italic")
+         .text(d.experimentDisplayName)
+         .append("tspan")
+         .attr("font-style", "normal")
+         .text(" experiment group");
+
+    chart.append("text")
+         .attr("transform", "translate(" + (width / 2) + "," + (plotHeight + 40) + ")")
+         .attr("text-anchor", "middle")
+         .attr("font-size", barGraphAttrs.labelFontSize)
+         .text("FPKM");
+
+};
+
 
 var loadExpressionTable = function(container,json) {
 
-    console.log(JSON.stringify(json, null, 1));
-
   if (json.data.length > 1) createExperimentGroupSelect(container, json);
 
-  //console.log(JSON.stringify(json, null, 2));
   // the highest level is an experiment group. We'll process each
   // of these and generate a separate table for each.
-
 
   json.data.forEach( function(d) {
 
     // prescan to find all sample names/EC. There may be holes in the table
     // so we do not want to just push onto a list
 
+    var geneData = {};
     var sampleNames = {};
     var ec = {};
     d.idName = d.group.toLowerCase().replace(/ /g, "-");
@@ -681,58 +855,78 @@ var loadExpressionTable = function(container,json) {
     d.genes.forEach( function(e) {
       e.samples.forEach( function(f) { sampleNames[f.sample] = 1; });
       geneData[e.gene] = e.samples;
-      ec[e.gene] = e.enzyme;
+      ec[e.gene] = e.enzyme.split(" ");
     });
 
-    // find minimum and maximum fpkm values for the experiment for purposes of setting ranges
+    // find minimum and maximum fpkm values for the experiment for setting a color scale.
     var minMaxFkpm = getMinMaxFpkm(d);
-    //console.log(minMaxFkpm);
-    var colorScale = setColorScale(minMaxFkpm, ["#dfe", "#4b7"]);
+    var colorScale = setColorScale(minMaxFkpm, [expTableAttrs.minFkpmColor, expTableAttrs.maxFkpmColor]);
 
-    // now process the group.
+    // put the experiment's data into a table.
     var table = d3.select(container)
                   .append("table")
                   .attr("class","collection-table")
                   .attr("id","table-"+d.idName);
-    var cols =[{"label":"Gene", "class": "gene"},{"label":"EC(s)", "class": "ec"}];
-    for( var s in sampleNames ) { cols.push( { "label":s}); }
+
+    // make the data structure for the table headings
+    var cols =[ { content: "Gene",
+                  class: "gene" },
+                { content: "EC(s)",
+                  class: "ec" }
+              ];
+    for( var s in sampleNames ) {
+      cols.push( { content: s,
+                   class: "condition",
+                   experiment: d.idName,
+                   experimentDisplayName: d.group,
+                   plotType: "Condition" }
+               );
+    }
 
     // create the caption and header for this table if only one table
     if (json.data.length === 1) {
       table.selectAll("caption")
-           .data([{"caption":"Experiment Group: "+d.group,"id":"caption-"+d.idName}])
+           .data([{ caption: "Experiment Group: " + d.group,
+                    id: "caption-" + d.idName }])
            .enter()
            .append("caption")
-           .text(function(d) { return d.caption;});
+           .text(function(d) { return d.caption; });
     }
 
-    table.append("thead").append("tr")
-         .selectAll("th")
-         .data(cols)
-         .enter()
-         .append("th")
-         .attr("class", function(d) { return d.class; })
-         .text(function(d) { return d.label; });
+    var thead = table.append("thead")
+                     .append("tr")
+                     .selectAll("th")
+                     .data(cols)
+                     .enter()
+                     .append("th")
+                     .attr("class", function(d) { return d.class; })
+                     .text(function(d) { return d.content; });
 
+
+    table.selectAll(".condition")
+         .each( function (d) {
+           var menu = [{ title: "Plot " + d.content,
+                         action: function (elem, d, i) { makeBarplot( d, geneData, minMaxFkpm, colorScale ) }}];
+           var thisCondition = d3.select(this);
+           thisCondition.on("contextmenu", d3.contextMenu(menu));
+         })
 
     var body = table.append("tbody");
     // and now the rows
     for( var gene in geneData ) {
 
-      var makeBarplot = function(g) { console.log("making bar plot for " + g );
-                                        var data = [];
-                                        var samples = [];
-                                        geneData[g].forEach( function(ff) {
-                                                    data.push(ff.fpkm);
-                                                    samples.push(ff.sample);
-                                                    });
-                                        var plotData = { "y": { "vars": [gene],
-                                                                "smps": samples,
-                                                                "data": [data]}};
-                                        //var cX = new CanvasXpress("canvas",plotData,{"graphType":"Bar"});
-                                    }
-
-      var cols = [{"content":gene,"class":"highlighter gene"},{"content":ec[gene],"class":"highlighter ec"}];
+      var cols = [{ content: gene,
+                    class: "highlighter table gene",
+                    experiment: d.idName,
+                    experimentDisplayName: d.group,
+                    baseColor: geneLabelAttrs.tableColor,
+                    highlightedColor: geneLabelAttrs.highlightedColor,
+                    plotType: "Gene" },
+                  { content: ec[gene],
+                    class: "highlighter table ec",
+                    baseColor: ecLabelAttrs.tableColor,
+                    highlightedColor: ecLabelAttrs.highlightedColor }
+                  ];
       var lookup = {};
       // hash the results
       geneData[gene].forEach( function(e) { lookup[e.sample] = e.fpkm; });
@@ -750,7 +944,7 @@ var loadExpressionTable = function(container,json) {
                    action: function() { doLinkout(f.url)}});
       });
       menu.push({ title: "Plot " + gene,
-                  action: function(elem, d, i) { makeBarplot(d.content) }});
+                  action: function(elem, d, i) { makeBarplot(d, geneData, minMaxFkpm, colorScale) }});
 
       var tr = body.append("tr")
 
@@ -759,9 +953,12 @@ var loadExpressionTable = function(container,json) {
         .enter()
         .append("td")
         .html( function(d) {
-            if (Array.isArray(d.content)) {
-                return d.content.join("<br />");
-            }
+		if (Array.isArray(d.content)) {
+		    if (d.content.length > 1) {
+			return d.content.join("<br />");
+		    }
+		    return d.content[0];
+		}
             return d.content;})
         .attr("class",function(d) { return d.class;})
         .style("background-color", function(d){
@@ -769,28 +966,6 @@ var loadExpressionTable = function(container,json) {
                 return colorScale(d.content);
             }
         });
-
-      tr.selectAll("td.highlighter")
-        .on("mouseover", function(d) {
-            d3.select(this).style("color", "red");
-            var geneToFind = d.content;
-            svgContainer.selectAll("tspan.highlighter")
-                        .filter( function(dd) {
-                            return dd.gene && dd.gene.match(geneToFind)})
-                        .each( function(e) {
-                            d3.select(this).style("fill","red");
-                         });
-        })
-        .on("mouseout", function(d) {
-            d3.select(this).style("color", "black");
-            var geneToFind = d.content;
-            svgContainer.selectAll("tspan.highlighter")
-                        .filter( function(dd) {
-                            return dd.gene && dd.gene.match(geneToFind)})
-                        .each( function(e) {
-                            d3.select(this).style("fill",geneLabelAttrs.color);
-                        });
-            });
 
       tr.select("td.gene")
           .on("contextmenu", d3.contextMenu(menu));
@@ -805,12 +980,44 @@ var loadExpressionTable = function(container,json) {
     var initialTable = d3.select("#experiments-select").node().value;
     showTable(initialTable);
   }
+
+
 };
 
-var doLinkout = function(n) { console.log("doing linkout "+n);
-                              window.open(n,"_blank");}
+// Global event handlers
 
+var setPathwayEventHandlers = function () {
 
+  var setColor = function (elem, elemContent, thisDesiredColor, targetDesiredColor) {
+    var thisAttrib;
+    var targetAttrib;
+    var target;
+    if (elem.classed("table")) {
+      thisAttrib = "color";
+      targetAttrib = "fill";
+      target = "tspan.highlighter";
+    } else if (elem.classed("diagram")) {
+      thisAttrib = "fill";
+      targetAttrib = "color";
+      target = "td.highlighter";
+    }
+    elem.style(thisAttrib, thisDesiredColor);
+    d3.selectAll(target)
+      .filter( function (dd) {
+        return dd.content && dd.content.match(elemContent);
+      })
+      .each( function (e) {
+        d3.select(this).style(targetAttrib, e[targetDesiredColor]);
+      })
+  }
+
+  d3.selectAll(".highlighter")
+     .on("mouseover", function(d) {
+       setColor(d3.select(this), d.content, d.highlightedColor, "highlightedColor"); })
+    .on("mouseout", function(d) {
+       setColor(d3.select(this), d.content, d.baseColor, "baseColor"); });
+
+}
 
 //module.exports.loadPathway = loadPathway;
 //module.exports.loadExpressionTable = loadExpressionTable;

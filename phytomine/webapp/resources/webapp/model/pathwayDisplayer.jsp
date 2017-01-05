@@ -7,25 +7,23 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="im" %>
 <%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
-<h2> Pathway ${pathwayName} </h2>
 
-<link rel="stylesheet" type="text/css" href="model/pathway.css" />
-<link rel="stylesheet" type="text/css" href="model/canvasXpress/css/canvasXpress.css" />
+<link rel="stylesheet" type="text/css" href="model/pathway/css/pathway.css" />
 
-<div id="pathway-widget" align="start">
+<div id="pathway">
+  <div id="pathway-widget" align="start">
      <div id="diagram-and-ancillary" class="split split-vertical">
        	  <div id="pathway-diagram" class="split split-horizontal">
 	       <button id="save">Save SVG</button>
 	  </div>
 	  <div id="pathway-ancillary-info" class="split split-horizontal">
-             <canvas id="canvas" width="200" height="200"></canvas>
-
-      </div>
+          </div>
       </div>
       <div id="pathway-expression-table" class="split split-vertical">
 	<h3>Gene Expression</h3>
       </div>
-</div><!--#pathway-widget-->
+  </div><!--#pathway-widget-->
+</div><!--#pathway-->
 
 <script type="text/javascript" charset="utf-8">
 
@@ -51,20 +49,35 @@
     };
 
 
-    jQuery.ajaxSetup({ cache: true });
+    jQuery.ajaxSetup({ cache: false }); // flip to true for production!
 
-    var pathwayScripts = [ "model/d3.v4.min.js",
-  		    	   "model/pathway.js",
-		    	   "model/canvasXpress/js/canvasXpress.min.js"];
+    var pathwayScripts = [ "model/pathway/js/d3.v4.min.js",
+  		    	   "model/pathway/js/pathway.js"];
+
 
     getScripts(pathwayScripts, function(){
-                jQuery.getScript("model/pathway-helpers.js"); // contains d3 plugins that are immediately invoked, so execute in callback to ensure d3's loaded
+                jQuery.getScript("model/pathway/js/d3-context-menu.js");
+                jQuery.getScript("model/pathway/js/split.js");
 		jQuery.when(ensureDataReceived(${jsonPathway}), 
     			    ensureDataReceived(${jsonExpression}))
 	  	      .done(function () {
     		      		     	 loadPathway("#pathway-diagram",${jsonPathway});
     					 loadExpressionTable("#pathway-expression-table",${jsonExpression});
-    					 });
+          				 setPathwayEventHandlers();
+          				 Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
+                    			 	  direction: "vertical",
+                    				  sizes: [65, 35],
+                    				  gutterSize: 8,
+                    				  cursor: "row-resize"
+          					  });
+          				 Split(["#pathway-diagram", "#pathway-ancillary-info"], {
+                   			 	  direction: "horizontal",
+                   				  sizes: [65, 35],
+                   				  gutterSize: 8,
+                   				  cursor: "col-resize"
+          				 });
+
+    		      });
       });
 
 </script>
