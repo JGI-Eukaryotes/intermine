@@ -10,14 +10,16 @@
 
 <link rel="stylesheet" type="text/css" href="model/pathway/css/pathway.css" />
 
-<div id="pathway">
+<div id="pathway" align="left">
   <div id="pathway-widget" align="start">
-     <div id="diagram-and-ancillary" class="split split-vertical">
-       	  <div id="pathway-diagram" class="split split-horizontal">
+      <div id="diagram-and-ancillary" class="split split-vertical">
+      	  <div id="controls">
+	       <button id="zoom-in">+</button>
+	       <button id="zoom-out">-</button>
 	       <button id="save">Save SVG</button>
 	  </div>
-	  <div id="pathway-ancillary-info" class="split split-horizontal">
-          </div>
+       	  <div id="pathway-diagram" class="split split-horizontal"></div>
+	  <div id="pathway-ancillary-info" class="split split-horizontal"></div>
       </div>
       <div id="pathway-expression-table" class="split split-vertical">
 	<h3>Gene Expression</h3>
@@ -72,7 +74,7 @@
           					  });
           				 Split(["#pathway-diagram", "#pathway-ancillary-info"], {
                    			 	  direction: "horizontal",
-                   				  sizes: [65, 35],
+                   				  sizes: [50, 50],
                    				  gutterSize: 8,
                    				  cursor: "col-resize"
           				 });

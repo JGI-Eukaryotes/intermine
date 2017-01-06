@@ -58,8 +58,13 @@ var barGraphAttrs = {
 
 // Helper functions for pathway diagram //
 
+var getElementDimensions = function(element) {
+    return element.node().getBBox();
+};
+
+
 var setElementDimensions = function (element) {
-  var bbox = element.node().getBBox();
+  var bbox = getElementDimensions(element);
   var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
   var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
   var x = Math.floor(bbox.x) - 50;
@@ -288,20 +293,15 @@ var loadPathway = function(container,json) {
                });
              });
 
-  // the zoom handler
-  // var zoom = d3.zoom().scaleExtent([.25, 10]).on("zoom",function() {
-  // 	                              masterGroup.attr("transform",
-  // 	                            		  "translate(" + d3.event.transform.x+","+d3.event.transform.y +
-  // 			                               ")scale(" + d3.event.transform.k + ")");
-  // 	                              setElementDimensions(svgContainer);
-  // 	                              });
 
   // make the SVG Container, we'll add height and width when everything's constructed
   var svgContainer = d3.select(container).append("svg")
                                          .attr("id","pathway-svg")
                                          .style("font-family", fontAttrs.family)
                                          .style("color", fontAttrs.color);
+
   //console.log(JSON.stringify(json));
+
 
   // arrowheads
   var refX = 7;
@@ -458,10 +458,83 @@ var loadPathway = function(container,json) {
               });
   });
 
+
+  // the zoom handler
+
+  var zoomDiagram = d3.zoom()
+                      .scaleExtent([.75, 2])
+                      .on("zoom",function() {
+			      masterGroup.attr("transform", d3.event.transform);
+   	                      setElementDimensions(svgContainer);
+   	                   });
+
+
+  // var zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
+
+  // var zoomed = function () {
+  //     masterGroup.attr("transform",
+  // 	       "translate(" + zoom.translate() + ")" +
+  // 	       "scale(" + zoom.scale() + ")"
+  // 	       );
+  //     setElementDimensions(svgContainer);
+  // };
+
+  // var interpolateZoom = function (translate, scale) {
+  //     var self = this;
+  //     return d3.transition().duration(350).tween("zoom", function () {
+  // 	      var iTranslate = d3.interpolate(zoom.translate(), translate),
+  // 		  iScale = d3.interpolate(zoom.scale(), scale);
+  // 	      return function (t) {
+  // 		  zoom.scale(iScale(t))
+  // 		      .translate(iTranslate(t));
+  // 		  zoomed();
+  // 	      };
+  // 	  });
+  // };
+
+  // var zoomClick = function () {
+  //     var clicked = d3.event.target;
+  //     var direction = 1;
+  //     var factor = 0.2;
+  //     var target_zoom = 1;
+  //     var bbox = getElementDimensions(svgContainer);
+  //     var center = [bbox.width / 2, bbox.height / 2];
+  //     var extent = zoom.scaleExtent();
+  //     var translate = zoom.translate();
+  //     var translate0 = [];
+  //     var l = [];
+  //     var view = {x: translate[0], y: translate[1], k: zoom.scale()};
+
+  //     d3.event.preventDefault();
+  //     direction = (this.id === 'zoom-in') ? 1 : -1;
+  //     target_zoom = zoom.scale() * (1 + factor * direction);
+
+  //     if (target_zoom < extent[0] || target_zoom > extent[1]) { return false; }
+
+  //     translate0 = [(center[0] - view.x) / view.k, (center[1] - view.y) / view.k];
+  //     view.k = target_zoom;
+  //     l = [translate0[0] * view.k + view.x, translate0[1] * view.k + view.y];
+
+  //     view.x += center[0] - l[0];
+  //     view.y += center[1] - l[1];
+
+  //     interpolateZoom([view.x, view.y], view.k);
+  // };
+
   // install a drag handler for every group inside the master group that has an 'id'
   masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
-  // install a zoom handler for the whole thing
-  //zoom(masterGroup);
+
+  // install the zoom handler on the zoom buttons 
+  
+  d3.select("#zoom-in").on("click", function() {
+	  zoomDiagram.scaleBy(svgContainer, 1.2); 
+      });
+
+  d3.select("#zoom-out").on("click", function() {
+	  zoomDiagram.scaleBy(svgContainer, 0.8); 
+      });
+
+
 
   d3.selectAll("text.label").each(insertLineBreaks);
   d3.selectAll("text.reaction").each(labelReactions);
@@ -835,14 +908,26 @@ var makeBarplot = function (d, geneData, minMaxFkpm, colorScale) {
 };
 
 
-var loadExpressionTable = function(container,json) {
+var loadExpressionTable = function(container, json) {
 
-  if (json.data.length > 1) createExperimentGroupSelect(container, json);
+
+  if (json.data.length > 1) createExperimentGroupSelect(container, json); 
 
   // the highest level is an experiment group. We'll process each
   // of these and generate a separate table for each.
 
   json.data.forEach( function(d) {
+
+    // create the label for this table if only one table
+    if (json.data.length === 1) {
+	d3.select(container)
+          .selectAll("label")
+          .data([{ caption: "Experiment Group: " + d.group,
+                    id: "caption-" + d.idName }])
+          .enter()
+          .append("label")
+          .text(function(d) { return d.caption; });
+    }
 
     // prescan to find all sample names/EC. There may be holes in the table
     // so we do not want to just push onto a list
@@ -883,16 +968,6 @@ var loadExpressionTable = function(container,json) {
                );
     }
 
-    // create the caption and header for this table if only one table
-    if (json.data.length === 1) {
-      table.selectAll("caption")
-           .data([{ caption: "Experiment Group: " + d.group,
-                    id: "caption-" + d.idName }])
-           .enter()
-           .append("caption")
-           .text(function(d) { return d.caption; });
-    }
-
     var thead = table.append("thead")
                      .append("tr")
                      .selectAll("th")
@@ -922,11 +997,7 @@ var loadExpressionTable = function(container,json) {
                     baseColor: geneLabelAttrs.tableColor,
                     highlightedColor: geneLabelAttrs.highlightedColor,
                     plotType: "Gene" },
-                  { content: ec[gene],
-                    class: "highlighter table ec",
-                    baseColor: ecLabelAttrs.tableColor,
-                    highlightedColor: ecLabelAttrs.highlightedColor }
-                  ];
+	          { class: "ec" }];
       var lookup = {};
       // hash the results
       geneData[gene].forEach( function(e) { lookup[e.sample] = e.fpkm; });
@@ -946,26 +1017,52 @@ var loadExpressionTable = function(container,json) {
       menu.push({ title: "Plot " + gene,
                   action: function(elem, d, i) { makeBarplot(d, geneData, minMaxFkpm, colorScale) }});
 
+      var trHeight = ec[gene].length;
+
       var tr = body.append("tr")
+	           .style("height", function () {
+			   if (trHeight > 1) {
+			       var h = trHeight + 0.5;
+			       return h + "rem";
+			   }
+			   return;
+		       });
 
       tr.selectAll("td")
         .data(cols)
         .enter()
         .append("td")
         .html( function(d) {
-		if (Array.isArray(d.content)) {
-		    if (d.content.length > 1) {
-			return d.content.join("<br />");
-		    }
-		    return d.content[0];
+		if (/ec/.test(d.class)) {
+		  return;
 		}
             return d.content;})
-        .attr("class",function(d) { return d.class;})
+        .attr("class", function(d) { return d.class;})
         .style("background-color", function(d){
             if (/result/.test(d.class)) {
                 return colorScale(d.content);
             }
         });
+
+      var ecs = [];
+      ec[gene].forEach( function (el) {
+	      ecs.push(
+		       { content: el,
+			 class: "highlighter table",
+			 baseColor: ecLabelAttrs.tableColor,
+			 highlightedColor: ecLabelAttrs.highlightedColor });
+	  });
+
+      tr.select("td.ec")
+	  .append("ul")
+	  .selectAll("li")
+	  .data(ecs)
+	  .enter()
+	  .append("li")
+	  .html( function(d) {
+		  return d.content; })
+	  .attr("class", function(d) {
+		  return d.class; });
 
       tr.select("td.gene")
           .on("contextmenu", d3.contextMenu(menu));
@@ -999,11 +1096,12 @@ var setPathwayEventHandlers = function () {
     } else if (elem.classed("diagram")) {
       thisAttrib = "fill";
       targetAttrib = "color";
-      target = "td.highlighter";
+      target = "tr .highlighter";
     }
     elem.style(thisAttrib, thisDesiredColor);
     d3.selectAll(target)
       .filter( function (dd) {
+	      //console.log('target', target, 'dd', dd, 'elemContent', elemContent)        
         return dd.content && dd.content.match(elemContent);
       })
       .each( function (e) {
