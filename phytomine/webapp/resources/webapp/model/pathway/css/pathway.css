@@ -38,7 +38,7 @@
   #pathway #pathway-widget blockquote, #pathway #pathway-widget q {
     quotes: "" ""; }
 
-/* tooltip related and any other html styling goes here. styles to control pathway diagram svg with its native attributes treated as variables in head of pathway.js and called inline. However, zoom-in / zoom-out icons are in svg and dealt wih in the icon.scss file. */
+/* tooltip related and any other html styling goes here. styles to control pathway diagram svg with its native attributes treated as variables in head of pathway.js and called inline. */
 html, body {
   height: 100%; }
 
@@ -97,20 +97,17 @@ div.container_12 {
     #pathway #pathway-widget #diagram-and-ancillary #controls button {
       float: left;
       margin-right: .5rem;
-      padding: .35rem .5rem;
+      padding: 0;
       border: 1px solid #ccc;
       border-radius: 5px;
       background: #fff; }
     #pathway #pathway-widget #diagram-and-ancillary #controls button#save {
       padding: .3rem .5rem .4rem; }
-    #pathway #pathway-widget #diagram-and-ancillary #controls #zoom-in {
-      background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg fill="#222" height="22" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg>');
-      background-repeat: no-repeat;
-      color: transparent; }
-    #pathway #pathway-widget #diagram-and-ancillary #controls #zoom-out {
-      background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg fill="#222" height="22" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM7 9h5v1H7z"/></svg>');
-      background-repeat: no-repeat;
-      color: transparent; }
+    #pathway #pathway-widget #diagram-and-ancillary #controls #zoom-in svg,
+    #pathway #pathway-widget #diagram-and-ancillary #controls #zoom-out svg {
+      fill: #222;
+      width: 22px;
+      height: 22px; }
   #pathway #pathway-widget #pathway-expression-table {
     margin: 1rem 0;
     position: relative; }
