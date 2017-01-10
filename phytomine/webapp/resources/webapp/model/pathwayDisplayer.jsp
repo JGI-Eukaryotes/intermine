@@ -77,6 +77,7 @@
     		      		     	 loadPathway("#pathway-diagram",${jsonPathway});
     					 loadExpressionTable("#pathway-expression-table",${jsonExpression});
           				 setPathwayEventHandlers();
+          				 console.log(${jsonLinks});
           				 Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
                     			 	  direction: "vertical",
                     				  sizes: [65, 35],
