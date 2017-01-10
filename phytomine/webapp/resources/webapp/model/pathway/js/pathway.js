@@ -120,6 +120,10 @@ var labelReactions = function (d) {
                                   .text(function(dd) { return dd.content })
                                   .style("fill", function(dd) { return dd.baseColor } );
 
+  //  if ((d.ecs.length + d.genes.length) > 3) {
+  console.log(el.selectAll("tspan"));
+		  //}
+
 }
 
 var insertLineBreaks = function (d) {
@@ -228,7 +232,7 @@ function makeTokens(line) {
   return retList;
 }
 
-function replaceHTMLchar(w) {
+var replaceHTMLchar = function (w) {
   return w.replace(/&harr;/ig, "\u21D4")
           .replace(/&larr;/ig, "\u21D0")
           .replace(/&rarr;/ig, "\u21D2")
@@ -236,7 +240,27 @@ function replaceHTMLchar(w) {
           .replace(/&beta;/ig, "\u03B2")
           .replace(/&gamma;/ig, "\u03B3")
           .replace(/&delta;/ig, "\u03B4");
-}
+};
+
+var getCoords = function (elem) { // crossbrowser version
+    var box = elem.getBoundingClientRect();
+
+    var body = document.body;
+    var docEl = document.documentElement;
+
+    var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+    var clientTop = docEl.clientTop || body.clientTop || 0;
+    var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+    var top  = Math.round(box.top +  scrollTop - clientTop);
+    var left = Math.round(box.left + scrollLeft - clientLeft);
+
+    return { top: top, left: left, midX: Math.round(box.width / 2) + left, midY: Math.round(box.height / 2) + top };
+};
+
+
 
 // Pathway diagram main function //
 
@@ -361,7 +385,7 @@ var loadPathway = function(container,json) {
               .data(containerData)
               .enter()
               .append("g")
-              .attr("id",function(d){return d.id; })
+              .attr("id",function(d){return "mastergroup-" + d.id; })
               .attr("transform","translate(0,0)");
 
   json.nodes.forEach( function(d) {
@@ -380,14 +404,14 @@ var loadPathway = function(container,json) {
                                .data([{id:d.id}])
                                .enter()
                                .append("g")
-                               .attr("id",d.id);
+                               .attr("id", "g-" + d.id);
 
     // put a rectangle in the group, and with tooltip if it's a reaction
     nodeGroup.selectAll("rect")
                .data([{"id":d.id,"groupId":parentGroupId,"tooltip":d.tooltip}])
                .enter()
                .append("rect")
-               .attr("id", d.id)
+               .attr("id", "rect-" + d.id)
                .attr("class","rects")
                .attr("x", 5*d.x)
                .attr("y", 15*d.y);
@@ -427,16 +451,15 @@ var loadPathway = function(container,json) {
                  return "label";
                })
               .on("mouseover",function() {
-                if ( d.tooltip ){
-                  tooltipDiv.html("<span id='tooltip-text'>" + d.tooltip + "</span><br/>" +
-                  "<span id='dismiss-text'>Click to dismiss &#x2715;</span>");
-                  var nodeBB = this.getBoundingClientRect();
-                  var yloc = nodeBB.y + window.pageYOffset;
-                  var xloc = nodeBB.x + window.pageXOffset;
+                if ( d.tooltip ) {
+                  tooltipDiv.html("<span id='tooltip-text'>" + d.tooltip + "</span>" +
+                  "<span id='dismiss-text'>X</span>");
+		  var coords = getCoords(this);
+                  var yloc = coords.top - 60;
+                  var xloc = coords.midX - 50;
 
-                  var w = document.getElementById("tooltip-text").parentElement.clientWidth;
-                  tooltipDiv.style("left", (xloc -w/2)+"px")
-                     .style("top", (yloc - 60)+"px");
+                  tooltipDiv.style("left", xloc + "px")
+                     .style("top", yloc + "px");
 
                   tooltipDiv.transition()
                      .duration(200)
@@ -455,7 +478,7 @@ var loadPathway = function(container,json) {
                    .duration(500)
                    .style("opacity", 0)
                    .style("display", "none");
-              });
+	      });
   });
 
 
@@ -468,62 +491,6 @@ var loadPathway = function(container,json) {
    	                      setElementDimensions(svgContainer);
    	                   });
 
-
-  // var zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
-
-  // var zoomed = function () {
-  //     masterGroup.attr("transform",
-  // 	       "translate(" + zoom.translate() + ")" +
-  // 	       "scale(" + zoom.scale() + ")"
-  // 	       );
-  //     setElementDimensions(svgContainer);
-  // };
-
-  // var interpolateZoom = function (translate, scale) {
-  //     var self = this;
-  //     return d3.transition().duration(350).tween("zoom", function () {
-  // 	      var iTranslate = d3.interpolate(zoom.translate(), translate),
-  // 		  iScale = d3.interpolate(zoom.scale(), scale);
-  // 	      return function (t) {
-  // 		  zoom.scale(iScale(t))
-  // 		      .translate(iTranslate(t));
-  // 		  zoomed();
-  // 	      };
-  // 	  });
-  // };
-
-  // var zoomClick = function () {
-  //     var clicked = d3.event.target;
-  //     var direction = 1;
-  //     var factor = 0.2;
-  //     var target_zoom = 1;
-  //     var bbox = getElementDimensions(svgContainer);
-  //     var center = [bbox.width / 2, bbox.height / 2];
-  //     var extent = zoom.scaleExtent();
-  //     var translate = zoom.translate();
-  //     var translate0 = [];
-  //     var l = [];
-  //     var view = {x: translate[0], y: translate[1], k: zoom.scale()};
-
-  //     d3.event.preventDefault();
-  //     direction = (this.id === 'zoom-in') ? 1 : -1;
-  //     target_zoom = zoom.scale() * (1 + factor * direction);
-
-  //     if (target_zoom < extent[0] || target_zoom > extent[1]) { return false; }
-
-  //     translate0 = [(center[0] - view.x) / view.k, (center[1] - view.y) / view.k];
-  //     view.k = target_zoom;
-  //     l = [translate0[0] * view.k + view.x, translate0[1] * view.k + view.y];
-
-  //     view.x += center[0] - l[0];
-  //     view.y += center[1] - l[1];
-
-  //     interpolateZoom([view.x, view.y], view.k);
-  // };
-
-  // install a drag handler for every group inside the master group that has an 'id'
-  masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
-
   // install the zoom handler on the zoom buttons 
   
   d3.select("#zoom-in").on("click", function() {
@@ -534,7 +501,8 @@ var loadPathway = function(container,json) {
 	  zoomDiagram.scaleBy(svgContainer, 0.8); 
       });
 
-
+  // install a drag handler for every group inside the master group that has an 'id'
+  masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
 
   d3.selectAll("text.label").each(insertLineBreaks);
   d3.selectAll("text.reaction").each(labelReactions);
@@ -731,6 +699,7 @@ var flattenJson = function(data) {
 
 var getMinMaxFpkm = function(data) {
   var flattenedData = flattenJson(data);
+  // console.log(flattenedData);
   var fpkmArr = [];
   for (var key in flattenedData) {
     if (flattenedData.hasOwnProperty(key) && /fpkm/.test(key)) {
@@ -759,8 +728,7 @@ var doLinkout = function(n) {
   window.open(n,"_blank");
 };
 
-var makeBarplot = function (d, geneData, minMaxFkpm, colorScale) {
-
+var makeBarplot = function (d, geneData, colorScale) {
 
     var plotType = d.plotType;
     var data = [];
@@ -771,18 +739,17 @@ var makeBarplot = function (d, geneData, minMaxFkpm, colorScale) {
           if (geneData.hasOwnProperty(gene)) {
             var result = geneData[gene].filter( function (obj) { return obj.sample === d.content })[0];
             if (gene.length > longestName) longestName = gene.length;
-            data.push({name: gene, value: result.fpkm});
+            data.push({name: gene, fpkm: result.fpkm});
           }
         }
     } else {
         geneData[d.content].forEach( function (condition) {
             if (condition.sample.length > longestName) longestName = condition.sample.length;
-            data.push({name: condition.sample, value: condition.fpkm});
+            data.push({name: condition.sample, fpkm: condition.fpkm});
         });
     }
 
-
-    // console.log(data);
+    var minMaxFkpm = getMinMaxFpkm(data);
 
     var container = document.getElementById("pathway-ancillary-info");
     var containerWidth = container.offsetWidth;
@@ -869,14 +836,14 @@ var makeBarplot = function (d, geneData, minMaxFkpm, colorScale) {
         .data(data)
         .enter().append("rect")
         .attr("class", "bar")
-        .style("fill", function(d) { return colorScale(d.value); })
+        .style("fill", function(d) { return colorScale(d.fpkm); })
         // .attr("x", function(d) { return x(d.name); })
         // .attr("y", function(d) { return y(d.value); })
         // .attr("height", function(d) { return height - y(d.value); })
         // .attr("width", x.bandwidth());
         .attr("x", 1)
         .attr("y", function(d) { return y(d.name); })
-        .attr("width", function(d) { return x(d.value); })
+        .attr("width", function(d) { return x(d.fpkm); })
         .attr("height", y.bandwidth());
 
     chart.append("text")
@@ -940,7 +907,7 @@ var loadExpressionTable = function(container, json) {
     d.genes.forEach( function(e) {
       e.samples.forEach( function(f) { sampleNames[f.sample] = 1; });
       geneData[e.gene] = e.samples;
-      ec[e.gene] = e.enzyme.split(" ");
+      ec[e.gene] = e.enzyme;
     });
 
     // find minimum and maximum fpkm values for the experiment for setting a color scale.
@@ -981,7 +948,7 @@ var loadExpressionTable = function(container, json) {
     table.selectAll(".condition")
          .each( function (d) {
            var menu = [{ title: "Plot " + d.content,
-                         action: function (elem, d, i) { makeBarplot( d, geneData, minMaxFkpm, colorScale ) }}];
+                         action: function (elem, d, i) { makeBarplot( d, geneData, colorScale ) }}];
            var thisCondition = d3.select(this);
            thisCondition.on("contextmenu", d3.contextMenu(menu));
          })
@@ -1015,7 +982,7 @@ var loadExpressionTable = function(container, json) {
                    action: function() { doLinkout(f.url)}});
       });
       menu.push({ title: "Plot " + gene,
-                  action: function(elem, d, i) { makeBarplot(d, geneData, minMaxFkpm, colorScale) }});
+                  action: function(elem, d, i) { makeBarplot(d, geneData, colorScale) }});
 
       var trHeight = ec[gene].length;
 
