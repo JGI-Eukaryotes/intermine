@@ -154,6 +154,8 @@ div.container_12 {
     #pathway #pathway-widget #pathway-expression-table .ec {
       left: 120px;
       width: 75px; }
+    #pathway #pathway-widget #pathway-expression-table .condition {
+      cursor: pointer; }
   #pathway #pathway-widget .split {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -195,7 +197,7 @@ div.container_12 {
 #tooltip-container:before,
 #tooltip-container:after {
   top: 100%;
-  left: 44%;
+  left: 50px;
   border: solid transparent;
   content: " ";
   height: 0;
@@ -204,7 +206,7 @@ div.container_12 {
   pointer-events: none; }
 
 #tooltip-container:before {
-  border-color: #fff;
+  border-color: transparent;
   border-top-color: #b9b9b9;
   border-width: 11px;
   margin-left: -11px; }
@@ -216,9 +218,16 @@ div.container_12 {
   margin-left: -10px; }
 
 #dismiss-text {
-  font-size: x-small;
-  float: right;
-  font-style: italic; }
+  font-size: 85%;
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+  color: #d66; }
 
 .d3-context-menu {
   /* courtesy Patrick Gillespie, https://github.com/patorjk/d3-context-menu. MIT license in d3-context-menu.js */
