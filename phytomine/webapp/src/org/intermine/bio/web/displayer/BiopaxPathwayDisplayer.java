@@ -79,15 +79,51 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     ServletContext servletContext = session.getServletContext();
     final Properties webProperties = SessionMethods.getWebProperties(servletContext);
 
+    JSONObject jP = makePathwayJSON(pathwayObj,webProperties,protId);
+    // there was a problem when making the json....
+    if (jP == null) return;
+
+    request.setAttribute("jsonPathway",jP.toString());
+    if (pathwayName != null) {
+      request.setAttribute("pathwayName",pathwayName);
+    } else {
+      request.setAttribute("pathwayName","unknown");
+    }
+
+    try {
+      // now get the corresponding expression data
+      JSONObject jE = makeExpressionJSON(pathwayObj.getId());
+      request.setAttribute("jsonExpression",jE.toString());
+      // if this throws an exception, we'll still display the pathway
+    } catch (ObjectStoreException e) {
+      LOG.warn("Caught an objectstore exception when constructing expression: "+e.getMessage());
+    } catch (JSONException e) {
+      LOG.warn("Caught a json exception when constructing expression: "+e.getMessage());
+    }
+    
+
+    try {
+      JSONArray jOo = makeOtherOrgJSON(pathwayObj,webProperties,protId);
+      request.setAttribute("jsonLinks",jOo.toString());
+    } catch (ObjectStoreException e) {
+      LOG.warn("Caught an objectstore exception when constructing links: "+e.getMessage());
+    } catch (JSONException e) {
+      LOG.warn("Caught a json exception when constructing links: "+e.getMessage());
+    }
+  }
+
+  private JSONObject makePathwayJSON(Pathway pathwayObj,Properties webProperties,Integer protId) {
+
     String json = null;
     HashMap<String,HashSet<String>> enzymes = null;
     HashMap<String,TreeMap<String,Integer>> genes = null;
+    // first, extract the template JSON and enzyme/gene components.
     try {
-      json = getJSON(pathwayObj.getId());
+      json = getJSONRecord(pathwayObj.getId());
       enzymes = getEnzymes(pathwayObj.getId());
       genes = getGenes(pathwayObj.getId());
     } catch (ObjectStoreException e) {
-      return;
+      return null;
     }
 
     // this is a simplified map of gene -> intermine id
@@ -97,7 +133,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         geneIds.put(gene,genes.get(label).get(gene));
       }
     }
-    
+
     try {
       // now we need to process the pathway json template. Add the enzyme/proteins
       // and calculate positions.
@@ -193,27 +229,14 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         node.put("y",yPlace.get(Integer.valueOf(node.getInt("y"))));
       }
       addUrlJSON(jObj,webProperties,protId,geneIds);
-      request.setAttribute("jsonPathway",jObj.toString());
-      if (pathwayName != null) {
-        request.setAttribute("pathwayName",pathwayName);
-      } else {
-        request.setAttribute("pathwayName","unknown");
-      }
-
-      JSONObject jE = makeExpressionJSON(pathwayObj.getId());   
-      // now get the corresponding expression data
-      request.setAttribute("jsonExpression",jE.toString());
-
-      // 
-    } catch (Exception e) {
-      LOG.warn("Caught an exception: "+e.getMessage());
-      StringWriter sw = new StringWriter();
-      PrintWriter pw = new PrintWriter(sw);
-      e.printStackTrace(pw);
-      LOG.warn("stack trace "+sw.toString());
-      // some problem retrieving data or processing the JSON
+      return jObj;
+    } catch (JSONException e) {
+      return null;
+    } catch (ObjectStoreException e) {
+      return null;
     }
   }
+
   private Integer getHeight(String l) {
     // the height of a label. Count <br>'s and add 1
     return new Integer(1 + l.split("<br>").length);
@@ -242,7 +265,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       return width;
     }
   }
-  private String getJSON(Integer id) throws ObjectStoreException {
+  private String getJSONRecord(Integer id) throws ObjectStoreException {
     PathQuery query = new PathQuery(im.getModel());
     query.addViews("PathwayJSON.json","PathwayJSON.pathway.pathwayInfo.name");
     query.addConstraint(Constraints.eq("PathwayJSON.pathway.id",id.toString()));
@@ -300,6 +323,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     }
     return map;
   }
+  
   private JSONObject makeExpressionJSON(Integer id) throws ObjectStoreException, JSONException  {
     // query for the genes and fpkm's associated with the proteins in
     // a pathway with this id.
@@ -309,7 +333,10 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         "Pathway.components.proteins.genes.primaryIdentifier",
         "Pathway.components.ontologyTerms.identifier",
         "Pathway.components.proteins.genes.cufflinksscores.experiment.name",
-        "Pathway.components.proteins.genes.cufflinksscores.fpkm");
+        "Pathway.components.proteins.genes.cufflinksscores.fpkm",
+        "Pathway.components.proteins.genes.cufflinksscores.libraryExpressionLevel",
+        "Pathway.components.proteins.genes.cufflinksscores.locusExpressionLevel"
+        );
     query.addConstraint(Constraints.eq("Pathway.id",id.toString()));
     // probably not necessary to set the order direction...
     query.addOrderBy("Pathway.components.proteins.genes.cufflinksscores.experiment.experimentGroup", OrderDirection.ASC);
@@ -322,10 +349,10 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     String currentGroup = null;
     // this will hold the results for 1 gene in 1 group
     // the key is the sample name and value the fpkm
-    HashMap<String,String> geneResults = null;
+    HashMap<String,ArrayList<String>> geneResults = null;
     // this will hold the results for all genes in 1 group
     // the key is the gene name and value the geneResults hash
-    HashMap<String,HashMap<String,String>> groupResults = null;
+    HashMap<String,HashMap<String,ArrayList<String>>> groupResults = null;
     // a map of gene name to EC.
     HashMap<String,HashSet<String>> ecMap = new HashMap<String,HashSet<String>>();
     while (result.hasNext()) {
@@ -344,12 +371,12 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         }
         currentGene = gene;
         currentGroup = group;
-        geneResults = new HashMap<String,String>();
-        groupResults = new HashMap<String,HashMap<String,String>>();
+        geneResults = new HashMap<String,ArrayList<String>>();
+        groupResults = new HashMap<String,HashMap<String,ArrayList<String>>>();
       } else if (!currentGene.equals(gene)) {
         // same group, different gene.
         groupResults.put(currentGene,geneResults);
-        geneResults = new HashMap<String,String>();
+        geneResults = new HashMap<String,ArrayList<String>>();
         currentGene = gene;
       }
       if( row.get(2) != null && row.get(2).getField() != null) {
@@ -357,8 +384,14 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
       }else {
         ecMap.get(gene).add("N/A");
       }
-      //              |--------- sample name ---------|-------------- fpkm ---------------|
-      geneResults.put(row.get(3).getField().toString(),sigFig((Float)row.get(4).getField()));
+      //              |--------- sample name ---------|
+      geneResults.put(row.get(3).getField().toString(),new ArrayList<String>());
+      //                                                |-------------- fpkm ---------------|
+      geneResults.get(row.get(3).getField().toString()).add(sigFig((Float)row.get(4).getField()));
+      //                                                |-------------- library ------------>
+      geneResults.get(row.get(3).getField().toString()).add((row.get(5)==null || row.get(5).getField()==null)?"":row.get(5).getField().toString());
+      //                                                |-------------- locus -------------->
+      geneResults.get(row.get(3).getField().toString()).add((row.get(6)==null || row.get(6).getField()==null)?"":row.get(6).getField().toString());
     }
     if(geneResults != null && geneResults.keySet() != null && geneResults.keySet().size() > 0) {
       // final insertion
@@ -383,20 +416,27 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     }
   }
 
-  private void addGroupNode(JSONArray j, String groupName, HashMap<String,HashMap<String,String>> results,HashMap<String,HashSet<String>> ecMap) throws JSONException {
+  private void addGroupNode(JSONArray j, String groupName, HashMap<String,HashMap<String,ArrayList<String>>> results,
+      HashMap<String,HashSet<String>> ecMap) throws JSONException {
     JSONObject groupNode = new JSONObject();
     groupNode.put("group",groupName);
     JSONArray geneArray = new JSONArray();
     for(String g: results.keySet()) {
       JSONObject geneNode = new JSONObject();
       geneNode.put("gene",g);
-      geneNode.put("enzyme",StringUtils.join(ecMap.get(g)," "));
+      JSONArray ecArray = new JSONArray();
+      for(String ec: ecMap.get(g)) {
+        ecArray.put(ec);
+      }
+      geneNode.put("enzyme",ecArray);
       JSONArray expArray = new JSONArray();
-      HashMap<String,String> fpkm = results.get(g);
+      HashMap<String,ArrayList<String>> fpkm = results.get(g);
       for(String e: fpkm.keySet()) {
         JSONObject n = new JSONObject();
         n.put("sample",e);
-        n.put("fpkm",fpkm.get(e));
+        n.put("fpkm",fpkm.get(e).toArray()[0]);
+        n.put("library",fpkm.get(e).toArray()[1]);
+        n.put("locus",fpkm.get(e).toArray()[2]);
         expArray.put(n);
       }
       geneNode.put("samples",expArray);
@@ -448,5 +488,26 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     jl.put("label",a);
     jl.put("url",b);
     return jl;
+  }
+
+  private JSONArray makeOtherOrgJSON(Pathway pathway,Properties p,Integer id) throws ObjectStoreException, JSONException  {
+    String pMTem = p.getProperty("webapp.path");
+    
+    PathQuery query = new PathQuery(im.getModel());
+    query.addViews("Pathway.id",
+        "Pathway.organism.shortName"
+        );
+    query.addConstraint(Constraints.eq("Pathway.pathwayInfo.id",pathway.getPathwayInfo().getId().toString()));
+    query.addConstraint(Constraints.neq("Pathway.organism.id",pathway.getOrganism().getId().toString()));
+    ExportResultsIterator result = exec.execute(query);
+    
+    JSONArray jLinks = new JSONArray();
+    while (result.hasNext()) {
+      List<ResultElement> row = result.next();
+      Integer pId = (Integer)row.get(0).getField();
+      String orgName = row.get(1).getField().toString();
+      jLinks.put(makeJL(orgName,"/"+pMTem+"/report.do?id="+pId));
+    }
+    return jLinks;
   }
 }

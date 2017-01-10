@@ -712,6 +712,73 @@
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
 
+    <source name="pathologic-pathway-Bdistachyon_314" type="biopax-pathway">
+      <property name="proteomeId" value="314" />
+      <property name="src.data.dir.includes" value="Bdistachyon_314.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Bstacei_316" type="biopax-pathway">
+      <property name="proteomeId" value="316" />
+      <property name="src.data.dir.includes" value="Bstacei_316.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Cquinoa_392" type="biopax-pathway" >
+      <property name="proteomeId" value="392" />
+      <property name="src.data.dir.includes" value="Cquinoa_392.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Graimondii_221" type="biopax-pathway">
+      <property name="proteomeId" value="221" />
+      <property name="src.data.dir.includes" value="Graimondii_221.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Osativa_323" type="biopax-pathway">
+      <property name="proteomeId" value="323" />
+      <property name="src.data.dir.includes" value="Osativa_323.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Phallii_308" type="biopax-pathway">
+      <property name="proteomeId" value="308" />
+      <property name="src.data.dir.includes" value="Phallii_308.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Sfallax_310" type="biopax-pathway">
+      <property name="proteomeId" value="310" />
+      <property name="src.data.dir.includes" value="Sfallax_310.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Sviridis_311" type="biopax-pathway">
+      <property name="proteomeId" value="311" />
+      <property name="src.data.dir.includes" value="Sviridis_311.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Vcarteri_317" type="biopax-pathway">
+      <property name="proteomeId" value="317" />
+      <property name="src.data.dir.includes" value="Vcarteri_317.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Zmarina_324" type="biopax-pathway">
+      <property name="proteomeId" value="324" />
+      <property name="src.data.dir.includes" value="Zmarina_324.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-ZmaysPH207_443" type="biopax-pathway">
+      <property name="proteomeId" value="443" />
+      <property name="src.data.dir.includes" value="ZmaysPH207_443.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+
     <source name="TAIR-GO" type="go-annotation">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/go/" />
       <property name="src.data.dir.includes" value="gene_association.tair" />
