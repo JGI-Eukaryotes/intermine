@@ -77,7 +77,7 @@
     		      		     	 loadPathway("#pathway-diagram",${jsonPathway});
     					 loadExpressionTable("#pathway-expression-table",${jsonExpression});
           				 setPathwayEventHandlers();
-          				 console.log(${jsonLinks});
+
           				 Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
                     			 	  direction: "vertical",
                     				  sizes: [65, 35],
@@ -90,6 +90,20 @@
                    				  gutterSize: 8,
                    				  cursor: "col-resize"
           				 });
+          				 //
+          				 // construct a menu out of the jsonLinks and stash it in #external-links
+                         var linkMenu = "<h3 class=\"goog\">This pathway in other organisms</h3><select onchange=\"openPathway(this.selectedIndex-1)\">";
+                         linkMenu = linkMenu.concat("<option>-- Select another organism --</option>");
+                         var url = [];
+                         for( link in ${jsonLinks}) {
+                           url.push(${jsonLinks}[link].url);
+                           linkMenu = linkMenu.concat("<option>",${jsonLinks}[link].label ,"</option>");
+                         }
+                         linkMenu = linkMenu.concat("</select>");
+          				 jQuery("#external-links").html(linkMenu);
+                         var urlArrayString = "\"".concat(url.join("\",\"")).concat("\"");
+                         var linkScript = "<script> url=[".concat(urlArrayString).concat("]; function openPathway(i) { window.open(url[i]); }<\/script>");
+                         jQuery("#external-links").append(jQuery(linkScript));
 
     		      });
       });
