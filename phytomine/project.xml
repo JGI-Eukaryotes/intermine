@@ -711,7 +711,6 @@
       <property name="method" value="pathologic"/>
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
-
     <source name="pathologic-pathway-Bdistachyon_314" type="biopax-pathway">
       <property name="proteomeId" value="314" />
       <property name="src.data.dir.includes" value="Bdistachyon_314.owl" />
@@ -775,6 +774,12 @@
     <source name="pathologic-pathway-ZmaysPH207_443" type="biopax-pathway">
       <property name="proteomeId" value="443" />
       <property name="src.data.dir.includes" value="ZmaysPH207_443.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Carabica_453" type="biopax-pathway">
+      <property name="proteomeId" value="453" />
+      <property name="src.data.dir.includes" value="Carabica_453.owl" />
       <property name="method" value="pathologic"/>
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
