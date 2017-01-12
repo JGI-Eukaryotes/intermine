@@ -20,28 +20,27 @@ var markerPathAttrs = {
 };
 
 var fontAttrs = {
-  family: "courier new, courier, monospace",
+  family: "'Lucida Grande', Geneva, Lucida, Helvetica, Arial, sans-serif",
   color: "#222",
   size: "12px",
   baselineShift: "4px"
 };
 
 var smallFontAttrs = {
-  family: "courier new, courier, monospace",
   color: "#222",
   size: "10px"
 };
 
 var ecLabelAttrs = {
-  diagramColor: "orange",
+  diagramColor: "#d80",
   tableColor: "#222",
-  highlightedColor: "red"
+  highlightedColor: "#f63"
 };
 
 var geneLabelAttrs = {
-  diagramColor: "purple",
+  diagramColor: "#86a",
   tableColor: "#222",
-  highlightedColor: "red"
+  highlightedColor: "#f63"
 };
 
 var expTableAttrs = {
@@ -120,9 +119,31 @@ var labelReactions = function (d) {
                                   .text(function(dd) { return dd.content })
                                   .style("fill", function(dd) { return dd.baseColor } );
 
-  //  if ((d.ecs.length + d.genes.length) > 3) {
-  console.log(el.selectAll("tspan"));
-		  //}
+
+  // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
+  // see setPathwayEventHandlers() below for the click handlers.
+  if (el.selectAll("tspan").size() > 3) {
+          el.classed("has-ellipse", true);
+
+	  el.append("tspan")
+	      .attr("x", el.attr("x"))
+	      .attr("dy", "1em")
+	      .attr("text-decoration", "underline")
+	      .classed("reaction-control", true)
+	      .text("less...")
+	      .style("fill", fontAttrs.color);
+
+          el.selectAll("tspan:nth-child(n+4)")
+	      .classed("no-display hidable", true);
+ 
+	  el.insert("tspan", ":nth-child(4)")
+	      .attr("x", el.attr("x"))
+	      .attr("dy", "1em")
+	      .attr("text-decoration", "underline")
+	      .classed("reaction-control hidable", true)
+	      .text("more...")
+	      .style("fill", fontAttrs.color);
+  }
 
 }
 
@@ -327,7 +348,7 @@ var loadPathway = function(container,json) {
   //console.log(JSON.stringify(json));
 
 
-  // arrowheads
+  // defs: arrowheads, dropshadows
   var refX = 7;
   var refY = 2.5;
   svgContainer.append("defs").append("marker")
@@ -342,7 +363,7 @@ var loadPathway = function(container,json) {
     .style("fill", markerPathAttrs.fill)
     .append("path").attr("d", "M0," + 2 * refY + "L" + refX + "," + refY + "L0,0");
 
-  svgContainer.append("defs").append("marker")
+  svgContainer.select("defs").append("marker")
     .attr("id", "n_degree_arrowend")
     .attr("refX", refX)
     .attr("refY", refY)
@@ -353,6 +374,35 @@ var loadPathway = function(container,json) {
     .style("stroke-width", markerPathAttrs.strokeWidth)
     .style("fill", markerPathAttrs.fill)
     .append("path").attr("d", "M0," + 2 * refY + "L" + refX + "," + refY + "L0,0");
+
+  svgContainer.select("defs").append("filter")
+      .attr("id", "dropshadow")
+      .attr("height", "120%")
+    .append("feGaussianBlur")
+      .attr("in", "SourceAlpha")
+      .attr("stdDeviation", "3"); // how much to blur
+
+  svgContainer.select("filter")
+    .append("feComponentTransfer") 
+      .attr("xmlns", "http://www.w3.org/2000/svg")
+    .append("feFuncA") 
+      .attr("type", "linear")
+      .attr("slope", "0.15"); // tweak the opacity 
+
+  svgContainer.select("filter")
+    .append("feOffset") 
+      .attr("dx", "-2")
+      .attr("dy", "2")
+      .attr("result", "offsetblur"); // how much to offset
+
+  svgContainer.select("filter")
+    .append("feMerge")
+    .append("feMergeNode"); // contains the offset blurred image
+
+  svgContainer.select("feMerge")
+    .append("feMergeNode") 
+      .attr("in", "SourceGraphic") // contains the element that the filter is applied to
+
 
   // Make an all-encompassing group in the svg
   var masterGroup = svgContainer.selectAll("g")
@@ -412,10 +462,9 @@ var loadPathway = function(container,json) {
                .enter()
                .append("rect")
                .attr("id", "rect-" + d.id)
-               .attr("class","rects")
+               .attr("class","rect no-display")
                .attr("x", 5*d.x)
-               .attr("y", 15*d.y);
-
+	       .attr("y", 15*d.y);
 
     // and the text holder, with a tooltip that will show up if it's in the data
     nodeGroup.selectAll("text")
@@ -433,7 +482,9 @@ var loadPathway = function(container,json) {
                .attr("y", function(d){
                  if (d.labelHeight === 1) {
                    return 15 * d.yCoor + 8;
-                 }
+                 } else if (d.type === "reaction" && ( d.genes.length + d.ecs.length > 3)) {
+		   return 15 * (d.yCoor - 1.5);
+		 }
                  return 15 * d.yCoor;
                })
                .attr("text-anchor", function(d){
@@ -472,14 +523,20 @@ var loadPathway = function(container,json) {
                     .style("opacity",0)
                     .style("display", "none")});;
                 }
-              })
-              .on("click", function() {
+	      });
+
+  });
+
+
+  // dismiss the tooltip if the pathway diagram is scrolled
+
+  d3.select("#pathway-diagram").on("scroll", function() {
                 tooltipDiv.transition()
                    .duration(500)
                    .style("opacity", 0)
                    .style("display", "none");
 	      });
-  });
+
 
 
   // the zoom handler
@@ -644,9 +701,22 @@ var showTable = function(tableId) {
   d3.selectAll("table")
     .style("display", "none");
 
-  d3.select("#" + tableId)
+  var tableToDisplay = "#" + tableId;
+
+  d3.select(tableToDisplay)
     .style("display", "block");
+
+  // show the coefficient of variation from the expression table in the diagram too
+  showCoefficientsOfVariation(tableToDisplay);
+
 };
+
+var showCoefficientsOfVariation = function(table) {
+    d3.selectAll(table + " td.gene").each(function(d, i) {
+	    console.log(d.content, d.coeffVar)	    
+	});
+};
+
 
 var createExperimentGroupSelect = function (container, json) {
 
@@ -875,8 +945,46 @@ var makeBarplot = function (d, geneData, colorScale) {
 };
 
 
+
+var mean = function (data){
+    var sum = data.reduce(function(sum, value){
+	    return sum + value;
+	}, 0);
+
+    return sum / data.length;
+};
+
+var standardDeviation = function (values){
+    var avg = mean(values);
+  
+    var squareDiffs = values.map(function(value){
+	    var diff = value - avg;
+	    var sqrDiff = diff * diff;
+	    return sqrDiff;
+	});
+  
+    var avgSquareDiff = mean(squareDiffs);
+
+    var stdDev = Math.sqrt(avgSquareDiff);
+    return stdDev;
+};
+
+var coefficientOfVariation = function (values) {
+    var stdDev = standardDeviation(values) / mean(values);
+    return parseFloat(stdDev.toFixed(3));
+};
+
+
+//var setInitialGraphInfo = function (){
+
+    //    d3.select("#pathway-ancillary-info").
+
+//};
+
+
 var loadExpressionTable = function(container, json) {
 
+    //setInitialGraphInfo();
 
   if (json.data.length > 1) createExperimentGroupSelect(container, json); 
 
@@ -957,17 +1065,23 @@ var loadExpressionTable = function(container, json) {
     // and now the rows
     for( var gene in geneData ) {
 
-      var cols = [{ content: gene,
-                    class: "highlighter table gene",
+      var lookup = {};
+      var fpkmArr = []
+      // hash the results, also make an array of the fpkms
+      geneData[gene].forEach( function(e) { 
+	      lookup[e.sample] = e.fpkm;
+	      fpkmArr.push(parseFloat(e.fpkm));
+      });
+
+      var cols = [{ class: "highlighter table gene",
+                    content: gene,
+		    coeffVar: coefficientOfVariation(fpkmArr),
                     experiment: d.idName,
                     experimentDisplayName: d.group,
                     baseColor: geneLabelAttrs.tableColor,
                     highlightedColor: geneLabelAttrs.highlightedColor,
                     plotType: "Gene" },
 	          { class: "ec" }];
-      var lookup = {};
-      // hash the results
-      geneData[gene].forEach( function(e) { lookup[e.sample] = e.fpkm; });
       for( s in sampleNames ) {
         if (s in lookup) {
           cols.push({"content":lookup[s], "class": "fpkm result"});
@@ -975,7 +1089,7 @@ var loadExpressionTable = function(container, json) {
           cols.push({"content":"N/A", "class": "fpkm not-available"});
         }
       }
-
+      
       var menu = [];
       geneLinks[gene].forEach( function(f) {
         menu.push({title: f.label,
@@ -1040,11 +1154,13 @@ var loadExpressionTable = function(container, json) {
   });
 
   // show the initial table and hide the rest
+  var initialTable;
   if (json.data.length > 1) {
-    var initialTable = d3.select("#experiments-select").node().value;
-    showTable(initialTable);
+    initialTable = d3.select("#experiments-select").node().value;
+  }  else {
+    initialTable = d3.select(".collection-table").attr("id");
   }
-
+  showTable(initialTable);
 
 };
 
@@ -1052,7 +1168,7 @@ var loadExpressionTable = function(container, json) {
 
 var setPathwayEventHandlers = function () {
 
-  var setColor = function (elem, elemContent, thisDesiredColor, targetDesiredColor) {
+    var setColor = function (elem, elemContent, thisDesiredColor, targetDesiredColor, clicked) {
     var thisAttrib;
     var targetAttrib;
     var target;
@@ -1065,22 +1181,99 @@ var setPathwayEventHandlers = function () {
       targetAttrib = "color";
       target = "tr .highlighter";
     }
-    elem.style(thisAttrib, thisDesiredColor);
+    elem.style(thisAttrib, thisDesiredColor)
+        .classed("clicked", clicked);
     d3.selectAll(target)
       .filter( function (dd) {
 	      //console.log('target', target, 'dd', dd, 'elemContent', elemContent)        
         return dd.content && dd.content.match(elemContent);
       })
       .each( function (e) {
-        d3.select(this).style(targetAttrib, e[targetDesiredColor]);
+        d3.select(this).style(targetAttrib, e[targetDesiredColor])
+	               .classed("clicked", clicked);
       })
-  }
+  };
+
+  var resetColor = function (elems) {
+     elems.each(function (elem) {
+	      e = d3.select(this);
+	      var attrib = "fill"
+	      if (e.classed("table")) attrib = "color";
+	      e.style(attrib, elem.baseColor);
+	  })
+  };
+
+  var putAsTopLayer = function (mastergroup) {
+      document.getElementById("master").appendChild(mastergroup);
+  };
 
   d3.selectAll(".highlighter")
-     .on("mouseover", function(d) {
-       setColor(d3.select(this), d.content, d.highlightedColor, "highlightedColor"); })
+    .on("mouseover", function(d) {
+       if ( ! d3.select(this).classed("clicked")) {
+	   setColor(d3.select(this), d.content, d.highlightedColor, "highlightedColor", false); 
+       }})
     .on("mouseout", function(d) {
-       setColor(d3.select(this), d.content, d.baseColor, "baseColor"); });
+       if ( ! d3.select(this).classed("clicked")) {
+	   setColor(d3.select(this), d.content, d.baseColor, "baseColor", false); 
+       }})
+    .on("click", function(d) {
+       resetColor(d3.selectAll(".highlighter"));
+       setColor(d3.select(this), d.content, d.highlightedColor, "highlightedColor", true);	    
+    });
+
+
+  d3.selectAll(".reaction-control")
+    .on("click", function(d){
+	    var parent = d3.select(this.parentNode);
+	    var previousUncle = d3.select(this.parentNode.previousSibling); // the rect to be used as a background, text's previous sibling
+	    var masterGroup= this.parentNode.parentNode.parentNode; // (this = tspan) > text > g > g-mastergroup
+
+	    parent.selectAll(".hidable")
+	          .classed("no-display", function (dd, i) {
+			  return !d3.select(this).classed("no-display");
+		   });
+
+	    previousUncle.classed("no-display", function (dd, i) {
+			  return !d3.select(this).classed("no-display");
+		});
+
+	    var parentDimensions = getElementDimensions(parent); // values after the click
+
+	    if (previousUncle.classed("no-display")) {
+		previousUncle.attr("height", parentDimensions.height)
+		    .attr("width", parentDimensions.width)
+		    .attr("x", parentDimensions.x)
+		    .attr("y", parentDimensions.y)
+		    .attr("fill", "#fff")
+		    .style("filter", null);
+	    } else {
+		previousUncle.attr("x", parentDimensions.x - 8)
+		    .attr("y", parentDimensions.y - 5)
+		    .attr("height", parentDimensions.height + 10)
+		    .attr("width", parentDimensions.width + 10)
+		    .attr("fill", "#fff")
+		    .style("filter", "url(#dropshadow)");
+
+		// put the masterGroup containing the reaction as the last element in the diagram, i.e. as the top layer
+		putAsTopLayer(masterGroup);  
+	    }		
+    });
+
+    // d3.selectAll(".reaction.label")
+    //   .on("mouseover", function(d) {
+
+    // 	    var parent = d3.select(this.parentNode);
+    // 	    var previousUncle = d3.select(this.parentNode.previousSibling); // the rect to be used as a background, text's previous sibling
+    // 	    var parentDimensions = getElementDimensions(parent);
+    // 	    previousUncle.attr("height", parentDimensions.height)
+    // 		.attr("width", parentDimensions.width)
+    // 		.attr("x", parentDimensions.x)
+    // 		.attr("y", parentDimensions.y)
+    // 		.attr("fill", "#fff");
+
+    // 	    var masterGroup= this.parentNode.parentNode; // (this = text > g > g-mastergroup
+    // 	    putAsTopLayer(masterGroup);
+    // });
 
 }
 
