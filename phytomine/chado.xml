@@ -1158,3 +1158,20 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>
+  <source name="phytozome-chado-C.arabica-453" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="coffee" />
+    <property name="genus" value="Coffea" />
+    <property name="name" value="Coffea arabica" />
+    <property name="species" value="arabica" />
+    <property name="assemblyDbxrefId" value="14077758" />
+    <property name="proteomeId" value="453" />
+    <property name="taxonId" value="13443" />
+    <property name="annotationVersion" value="v0.5" />
+    <property name="dataSourceName" value="phytozome-C.arabica" />
+    <property name="shortName" value="C. arabica early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14077761" />
+    <property name="assemblyVersion" value="v0.5" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>

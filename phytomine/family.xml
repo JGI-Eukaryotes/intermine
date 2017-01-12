@@ -14,12 +14,12 @@
     <property name="methodIds" value="2290,2296,2297,2298,2299,2307,2312,2395,3123,3124,3127,3142,3246,3252,3253,3254,3299,3302,3304,3305,3306,3307,3308,3309,3352,3464,3467,4431,4432,4433,4434,4435,4436,4612,4614,4850,4851,4865,4907,4908,4909,4987,4988,5003,5004,5006,5007,5008,5009,5010,5011,5012,5013,5014,5015,5016,5017,5018" />
   </source>
 
-  <source name="phytozome-cluster-node-5024" type="phytozome-clusters">
+  <source name="phytozome-cluster-node-5095" type="phytozome-clusters">
     <property name="source.db.name" value="PAC" />
     <property name="dataSourceName" value="pac-clusters" />
     <property name="dataSetTitle" value="Phytozome v11" />
     <property name="createrelations" value="false" />
-    <property name="methodIds" value="5024" />
+    <property name="methodIds" value="5095" />
   </source>
 
   <source name="phytozome-cluster-node-5025" type="phytozome-clusters">
