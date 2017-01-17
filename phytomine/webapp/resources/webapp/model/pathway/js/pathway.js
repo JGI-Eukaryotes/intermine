@@ -1,3 +1,5 @@
+//* Copyright (c)2017 The Regents of The University Of California *// 
+
 /* This lets the linter know d3 is defined globally and so not throw an error */
 /*global d3:true*/
 
