@@ -73,7 +73,7 @@ div.container_12 {
   #pathway #pathway-widget .highlighter:hover,
   #pathway #pathway-widget .highlighted,
   #pathway #pathway-widget .clicked {
-    color: #f66;
+    color: #f66 !important;
     fill: #f66 !important; }
   #pathway #pathway-widget #group-tip {
     border: 1px solid #ccc;
@@ -120,7 +120,10 @@ div.container_12 {
       height: 22px; }
   #pathway #pathway-widget #pathway-expression-table {
     margin: 1rem 0;
-    position: relative; }
+    position: relative;
+    /*td.coeff-var {
+      text-shadow: #000 .2px .2px;
+    }*/ }
     #pathway #pathway-widget #pathway-expression-table h3 {
       font-size: 1.15rem;
       margin: 0 0 .5rem; }
@@ -140,8 +143,12 @@ div.container_12 {
     #pathway #pathway-widget #pathway-expression-table th,
     #pathway #pathway-widget #pathway-expression-table tr {
       vertical-align: middle; }
+    #pathway #pathway-widget #pathway-expression-table th.coeff-var,
+    #pathway #pathway-widget #pathway-expression-table th.condition,
     #pathway #pathway-widget #pathway-expression-table td {
       vertical-align: top; }
+    #pathway #pathway-widget #pathway-expression-table th.coeff-var {
+      cursor: help; }
     #pathway #pathway-widget #pathway-expression-table th,
     #pathway #pathway-widget #pathway-expression-table td {
       text-align: center;
