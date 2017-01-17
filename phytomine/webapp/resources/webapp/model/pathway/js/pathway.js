@@ -8,14 +8,14 @@ var geneLinks = {}; // derived from pathway diagram's json, needed in expression
 // Styles for svg or other html manipulated by d3 (e.g. expression tables). Use and manipulate this as the single source (don't inline raw styles!!). Why inline? Because we want a pathway diagram downloaded as a single, dependency free file. //
 
 var pathAttrs = {
-  stroke: "#444",
-  strokeWidth: 1.6,
+  stroke: "#666",
+  strokeWidth: 1.75,
   fill: "transparent"
 };
 
 var markerPathAttrs = {
-  stroke: "#444",
-  strokeWidth: 0.9,
+  stroke: "#666",
+  strokeWidth: 1,
   fill: "transparent"
 };
 
@@ -32,7 +32,7 @@ var smallFontAttrs = {
 };
 
 var ecLabelAttrs = {
-  diagramColor: "#222", //#d80",
+  diagramColor: "#d80",
   tableColor: "#222",
   highlightedColor: "#f63"
 };
@@ -52,11 +52,6 @@ var barGraphAttrs = {
   titleFontSize: "12px",
   labelFontSize: "12px"
 };
-
-var coefficientOfVariationAttrs = {
-  minCvColor: "#acd",
-  maxCvColor: "#00c"
-}
 
 // PATHWAY DIAGRAM //
 
@@ -89,7 +84,6 @@ var extractMenuItems = function (d) {
 }
 
 var labelReactions = function (d) {
-  // console.log(d);
   var el = d3.select(this);
   // do not touch the label if there are no ECs and no genes.
   if (d.ecs.length == 0 && d.genes.length == 0 ) return;
@@ -109,8 +103,7 @@ var labelReactions = function (d) {
     pData.push({ content: dd.name,
                  class: "highlighter diagram gene",
                  baseColor: geneLabelAttrs.diagramColor,
-                 highlightedColor: geneLabelAttrs.highlightedColor,
-                 coeffVar: null }
+                 highlightedColor: geneLabelAttrs.highlightedColor}
                );
   });
   el.selectAll("tspan").data(ecData).enter().append("tspan")
@@ -119,17 +112,12 @@ var labelReactions = function (d) {
                                   .attr("class", function (dd) { return dd.class })
                                   .text(function(dd) { return dd.content })
                                   .style("fill", function(dd) { return dd.baseColor });
-
-  var geneTspan = el.selectAll("tspan").filter(function (e) { return 0;}).data(pData).enter().append("tspan")
+  el.selectAll("tspan").filter(function (e) { return 0;}).data(pData).enter().append("tspan")
                                   .attr("x",el.attr("x"))
                                   .attr("dy","1em")
                                   .attr("class", function(dd) { return dd.class })
                                   .text(function(dd) { return dd.content })
-                                  .style("fill", function(dd) { return dd.baseColor } )
-                                  .append("tspan")
-                                  .classed("coeff-var", true);
-
-  geneTspan.text( function (dd) { return dd.coeffVar });
+                                  .style("fill", function(dd) { return dd.baseColor } );
 
 
   // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
@@ -145,9 +133,9 @@ var labelReactions = function (d) {
 	      .text("less...")
 	      .style("fill", fontAttrs.color);
 
-    el.selectAll("tspan:nth-child(n+4)")
+          el.selectAll("tspan:nth-child(n+4)")
 	      .classed("no-display hidable", true);
-
+ 
 	  el.insert("tspan", ":nth-child(4)")
 	      .attr("x", el.attr("x"))
 	      .attr("dy", "1em")
@@ -381,7 +369,7 @@ var loadPathway = function(container,json) {
     .attr("refY", refY)
     .attr("markerWidth", refX)
     .attr("markerHeight", 2 * refY)
-    .attr("orient", "5.5")
+    .attr("orient", "8")
     .style("stroke", markerPathAttrs.stroke)
     .style("stroke-width", markerPathAttrs.strokeWidth)
     .style("fill", markerPathAttrs.fill)
@@ -395,14 +383,14 @@ var loadPathway = function(container,json) {
       .attr("stdDeviation", "3"); // how much to blur
 
   svgContainer.select("filter")
-    .append("feComponentTransfer")
+    .append("feComponentTransfer") 
       .attr("xmlns", "http://www.w3.org/2000/svg")
-    .append("feFuncA")
+    .append("feFuncA") 
       .attr("type", "linear")
-      .attr("slope", "0.15"); // tweak the opacity
+      .attr("slope", "0.15"); // tweak the opacity 
 
   svgContainer.select("filter")
-    .append("feOffset")
+    .append("feOffset") 
       .attr("dx", "-2")
       .attr("dy", "2")
       .attr("result", "offsetblur"); // how much to offset
@@ -412,7 +400,7 @@ var loadPathway = function(container,json) {
     .append("feMergeNode"); // contains the offset blurred image
 
   svgContainer.select("feMerge")
-    .append("feMergeNode")
+    .append("feMergeNode") 
       .attr("in", "SourceGraphic") // contains the element that the filter is applied to
 
 
@@ -539,6 +527,7 @@ var loadPathway = function(container,json) {
 
   });
 
+
   // dismiss the tooltip if the pathway diagram is scrolled
 
   d3.select("#pathway-diagram").on("scroll", function() {
@@ -547,6 +536,8 @@ var loadPathway = function(container,json) {
                    .style("opacity", 0)
                    .style("display", "none");
 	      });
+
+
 
   // the zoom handler
 
@@ -557,14 +548,14 @@ var loadPathway = function(container,json) {
    	                      setElementDimensions(svgContainer);
    	                   });
 
-  // install the zoom handler on the zoom buttons
-
+  // install the zoom handler on the zoom buttons 
+  
   d3.select("#zoom-in").on("click", function() {
-	  zoomDiagram.scaleBy(svgContainer, 1.2);
+	  zoomDiagram.scaleBy(svgContainer, 1.2); 
       });
 
   d3.select("#zoom-out").on("click", function() {
-	  zoomDiagram.scaleBy(svgContainer, 0.8);
+	  zoomDiagram.scaleBy(svgContainer, 0.8); 
       });
 
   // install a drag handler for every group inside the master group that has an 'id'
@@ -721,24 +712,8 @@ var showTable = function(tableId) {
 };
 
 var showCoefficientsOfVariation = function(table) {
-    var allCoeffVar = [];
-    var genes = d3.selectAll(table + " td.gene")
-
-    genes.each(function(d, i) {
-        allCoeffVar.push(d.coeffVar);
-    });
-    var cvExtent = d3.extent(allCoeffVar);
-    var colorScale = setColorScale(cvExtent, [coefficientOfVariationAttrs.minCvColor,
-                                              coefficientOfVariationAttrs.maxCvColor]);
-
-    genes.each(function(d, i) {
-        d3.selectAll("tspan.highlighter")
-          .filter( function(dd) {
-            return dd.content && dd.content.match(d.content); })
-          .each( function (e) {
-            var target = d3.select(this).style("fill", function () { return colorScale(d.coeffVar)});
-          });
-
+    d3.selectAll(table + " td.gene").each(function(d, i) {
+	    console.log(d.content, d.coeffVar)	    
 	});
 };
 
@@ -981,13 +956,13 @@ var mean = function (data){
 
 var standardDeviation = function (values){
     var avg = mean(values);
-
+  
     var squareDiffs = values.map(function(value){
 	    var diff = value - avg;
 	    var sqrDiff = diff * diff;
 	    return sqrDiff;
 	});
-
+  
     var avgSquareDiff = mean(squareDiffs);
 
     var stdDev = Math.sqrt(avgSquareDiff);
@@ -1000,35 +975,18 @@ var coefficientOfVariation = function (values) {
 };
 
 
-var setInitialGraphInfo = function (){
+//var setInitialGraphInfo = function (){
 
-       var info = d3.select("#pathway-ancillary-info")
-                    .append("div")
-                      .attr("id", "bar-graph")
-                      .classed("initial-info", true)
-                      .html('<div class="flexed">' +
-                              "<h3>How-to</h3>" +
-  			                      "<h4>Gene and EC labels</h4>" +
-  			                      "<ul>" +
-    			                      "<li>Hover over a gene or ec label in the diagram to see it highlighted in the table and vice versa.</li>" +
-                      			    "<li>Left click to have that highlighting persist.</li>" +
-                    			    "</ul>" +
-                    			    "<h4>Expression experiment data</h4>" +
-                    			    "<ul>" +
-                      			     "<li>Tabular data expresses FPKM values in a heat map across conditions.</li>" +
-                      			     "<li>Right click on a gene or condition label to see a context menu.</li>" +
-                      			     "<li>For genes, context menus have links to reports in Phytoweb, Phytomine and JBrowse. Both gene and condition context menus have options to get a bar plot of expression levels.</li>" +
-                    			    "</ul>" +
-                            "</div>"
-                  			    );
-};
+    //    d3.select("#pathway-ancillary-info").
+
+//};
 
 
 var loadExpressionTable = function(container, json) {
 
-  setInitialGraphInfo();
+    //setInitialGraphInfo();
 
-  if (json.data.length > 1) createExperimentGroupSelect(container, json);
+  if (json.data.length > 1) createExperimentGroupSelect(container, json); 
 
   // the highest level is an experiment group. We'll process each
   // of these and generate a separate table for each.
@@ -1110,14 +1068,14 @@ var loadExpressionTable = function(container, json) {
       var lookup = {};
       var fpkmArr = []
       // hash the results, also make an array of the fpkms
-      geneData[gene].forEach( function(e) {
+      geneData[gene].forEach( function(e) { 
 	      lookup[e.sample] = e.fpkm;
 	      fpkmArr.push(parseFloat(e.fpkm));
       });
 
       var cols = [{ class: "highlighter table gene",
                     content: gene,
-		            coeffVar: coefficientOfVariation(fpkmArr),
+		    coeffVar: coefficientOfVariation(fpkmArr),
                     experiment: d.idName,
                     experimentDisplayName: d.group,
                     baseColor: geneLabelAttrs.tableColor,
@@ -1131,7 +1089,7 @@ var loadExpressionTable = function(container, json) {
           cols.push({"content":"N/A", "class": "fpkm not-available"});
         }
       }
-
+      
       var menu = [];
       geneLinks[gene].forEach( function(f) {
         menu.push({title: f.label,
@@ -1210,38 +1168,38 @@ var loadExpressionTable = function(container, json) {
 
 var setPathwayEventHandlers = function () {
 
-    var setColor = function (elem, elemContent, clicked) {
-    // var thisAttrib;
-    // var targetAttrib;
-    // var target;
-    // if (elem.classed("table")) {
-    //   thisAttrib = "color";
-    //   targetAttrib = "fill";
-    //   target = "tspan.highlighter";
-    // } else if (elem.classed("diagram")) {
-    //   thisAttrib = "fill";
-    //   targetAttrib = "color";
-    //   target = "tr .highlighter";
-    // }
-    // console.log("in the setColor fnc with", elem);
-    elem.classed("clicked", clicked);
-    d3.selectAll(".highlighter")
+    var setColor = function (elem, elemContent, thisDesiredColor, targetDesiredColor, clicked) {
+    var thisAttrib;
+    var targetAttrib;
+    var target;
+    if (elem.classed("table")) {
+      thisAttrib = "color";
+      targetAttrib = "fill";
+      target = "tspan.highlighter";
+    } else if (elem.classed("diagram")) {
+      thisAttrib = "fill";
+      targetAttrib = "color";
+      target = "tr .highlighter";
+    }
+    elem.style(thisAttrib, thisDesiredColor)
+        .classed("clicked", clicked);
+    d3.selectAll(target)
       .filter( function (dd) {
-	      //console.log('dd', dd, 'elemContent', elemContent)
+	      //console.log('target', target, 'dd', dd, 'elemContent', elemContent)        
         return dd.content && dd.content.match(elemContent);
       })
       .each( function (e) {
-        // console.log(e)
-        d3.select(this).classed("highlighted", function (dd, i) {
-                                return !d3.select(this).classed("highlighted");})
-	        .classed("clicked", clicked);
+        d3.select(this).style(targetAttrib, e[targetDesiredColor])
+	               .classed("clicked", clicked);
       })
   };
 
   var resetColor = function (elems) {
-    console.log("in the reset fnc")
      elems.each(function (elem) {
-       d3.select(this).classed("clicked", false);
+	      e = d3.select(this);
+	      var attrib = "fill"
+	      if (e.classed("table")) attrib = "color";
+	      e.style(attrib, elem.baseColor);
 	  })
   };
 
@@ -1251,23 +1209,16 @@ var setPathwayEventHandlers = function () {
 
   d3.selectAll(".highlighter")
     .on("mouseover", function(d) {
-       var el = d3.select(this);
-       if ( ! el.classed("clicked")) {
-	        setColor(el, d.content, false);
+       if ( ! d3.select(this).classed("clicked")) {
+	   setColor(d3.select(this), d.content, d.highlightedColor, "highlightedColor", false); 
        }})
     .on("mouseout", function(d) {
        if ( ! d3.select(this).classed("clicked")) {
-	        setColor(d3.select(this), d.content, false);
+	   setColor(d3.select(this), d.content, d.baseColor, "baseColor", false); 
        }})
     .on("click", function(d) {
-       d3.selectAll(".highlighter")
-         .filter( function (dd) {
-           return dd.content && !dd.content.match(d.content);})
-         .each(function(e) {
-           d3.select(this).classed("clicked", false);
-         })
-       var el = d3.select(this);
-       setColor(el, d.content, (!el.classed("clicked"))) ;
+       resetColor(d3.selectAll(".highlighter"));
+       setColor(d3.select(this), d.content, d.highlightedColor, "highlightedColor", true);	    
     });
 
 
@@ -1304,8 +1255,8 @@ var setPathwayEventHandlers = function () {
 		    .style("filter", "url(#dropshadow)");
 
 		// put the masterGroup containing the reaction as the last element in the diagram, i.e. as the top layer
-		putAsTopLayer(masterGroup);
-	    }
+		putAsTopLayer(masterGroup);  
+	    }		
     });
 
     // d3.selectAll(".reaction.label")
