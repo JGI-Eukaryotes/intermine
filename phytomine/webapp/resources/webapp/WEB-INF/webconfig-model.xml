@@ -341,9 +341,11 @@
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="pathwayInfo.identifier" label="Pathway Identifier" />
+      <fieldconfig fieldExpr="primaryIdentifier" label="Organism-Pathway Name" />
+      <fieldconfig fieldExpr="pathwayInfo.description" label="Descriptin" />
       <fieldconfig fieldExpr="organism.name" label="Organism Name" />
       <fieldconfig fieldExpr="method" label="Analysis Method" />
+      <fieldconfig fieldExpr="status" label="Analysis Status" />
     </fields>
   </class>
 
@@ -540,15 +542,23 @@
 					 title="Pathway Enrichment"
 					 description="Pathways enriched for genes in this list - data computed using Pathologic"
 					 label="Pathways"
-					 filterLabel="DataSet"
-					 filters="All,KEGG,PlantCyc"
 					 startClass="Gene"
 					 startClassDisplay="primaryIdentifier"
-					 enrich="pathways.name"
-					 enrichIdentifier="pathways.identifier"
+					 enrich="pathways.pathwayInfo.name"
+					 enrichIdentifier="pathways.pathwayInfo.identifier"
 					 constraints="pathways.dataSets.name=[DataSet],organism.proteomeId=[list], primaryIdentifier != null"
 					 typeClass="Gene"
-		 views="secondaryIdentifier,symbol,organism.name,pathways.identifier,pathways.name,pathways.dataSets.name"/-->
+		 views="secondaryIdentifier,symbol,organism.name,pathways.pathwayInfo.identifier,pathways.pathwayInfo.name"/-->
+
+      <enrichmentwidgetdisplayer id="pathway_enrichment"
+					 title="Pathway Enrichment"
+					 description="Pathways enriched for genes in this list - data computed using Pathologic"
+					 label="Pathways"
+					 startClass="Gene"
+					 startClassDisplay="primaryIdentifier"
+					 enrich="pathways.pathwayInfo.identifier"
+					 typeClass="Gene"
+		 views="secondaryIdentifier,symbol,organism.name,pathways.pathwayInfo.identifier,pathways.pathwayInfo.name"/>
 
       <graphdisplayer id="chromosome_distribution_for_gene"
                       title="Chromosome Distribution"

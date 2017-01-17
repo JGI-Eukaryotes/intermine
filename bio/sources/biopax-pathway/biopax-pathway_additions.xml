@@ -2,6 +2,7 @@
 <classes>
 
 <class name="Pathway" is-interface="true">
+  <attribute name="primaryIdentifier" type="java.lang.String" />
   <attribute name="method" type="java.lang.String" />
   <attribute name="status" type="java.lang.String" />
   <reference name="organism" referenced-type="Organism" reverse-reference="pathways" />

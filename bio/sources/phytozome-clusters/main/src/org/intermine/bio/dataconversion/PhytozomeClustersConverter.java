@@ -45,6 +45,7 @@ import org.intermine.model.bio.Protein;
 import org.intermine.model.bio.ProteinFamily;
 import org.intermine.model.bio.ProteinFamilyMember;
 import org.intermine.model.bio.Sequence;
+import org.intermine.model.fulldata.Reference;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.objectstore.query.ConstraintSet;
@@ -75,8 +76,8 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
   private Map<String,InterMineObject> geneMap = new HashMap<String, InterMineObject>();
   private Map<String,InterMineObject> protMap = new HashMap<String, InterMineObject>();
   private Map<Integer,Organism> organismHash = new HashMap<Integer,Organism>();
-  private Map<String,ProxyReference> crossRefProxy = new HashMap<String,ProxyReference>();
-  private Map<String,ProxyReference> dataSourceProxy = new HashMap<String,ProxyReference>();
+  private Map<String,CrossReference> crossRefHash = new HashMap<String,CrossReference>();
+  private Map<String,DataSource> dataSourceHash = new HashMap<String,DataSource>();
   private Set<Integer> alreadyGot = new HashSet<Integer>();
 
   
@@ -146,7 +147,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
       while (res.next()) {
 
         Integer clusterId = res.getInt("clusterId");
-        if (clusterId != null && !alreadyGot.contains(clusterId) ) {
+        if (clusterId != null ) { //&& !alreadyGot.contains(clusterId) ) {
         // uncompress and process msa and hmm
         String msaString = expandCompressedBlob(res.getBlob("zMSA"));
         String hmmString = expandCompressedBlob(res.getBlob("zHMM"));
@@ -187,13 +188,13 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
           consensusSequence = getPeptideSequence((String)idToName.keySet().toArray()[0]);
         }
         if (consensusSequence != null && !consensusSequence.isEmpty()) {
-          ProxyReference sequenceRef;
+          Sequence sequence;
           try {
-            sequenceRef = storeSequence(consensusSequence);
+            sequence = storeSequence(consensusSequence);
           } catch (ObjectStoreException e) {
             throw new BuildException("Problem trying to register proteins: "+e.getMessage());
           }
-          proFamily.proxyConsensus(sequenceRef);
+          proFamily.setConsensus(sequence);
         }
 
         if (msaString != null) {
@@ -213,12 +214,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
           } catch (ObjectStoreException e) {
             throw new BuildException("Problem storing MSA: " + e.getMessage());
           }
-          try {
-            proFamily.proxyMsa(new ProxyReference(getIntegrationWriter().getObjectStore(),
-                msa.getId(), MSA.class));
-          } catch (ObjectStoreException e) {
-            throw new BuildException("Trouble in objectstore exception: "+e.getMessage());
-          }
+          proFamily.setMsa(msa);
         }
         try {
           registerCrossReferences(clusterId,proFamily);
@@ -319,7 +315,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     return idToName;
   }
 
-  protected ProxyReference storeSequence(String residues)  throws ObjectStoreException {
+  protected Sequence storeSequence(String residues)  throws ObjectStoreException {
     if ( residues.length() == 0) {
       return null;
     }
@@ -337,7 +333,8 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     sequence.setResidues(new PendingClob(residues));
     try {
       getDirectDataLoader().store(sequence);
-      return new ProxyReference(getIntegrationWriter().getObjectStore(),sequence.getId(),Sequence.class);
+      return sequence;
+      //return new Reference(getIntegrationWriter().getObjectStore(),sequence.getId(),Sequence.class);
     } catch (ObjectStoreException e) {
       throw new BuildException("Problem storing sequence." + e.getMessage());
     }
@@ -394,7 +391,8 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     ResultSet res = null;
     try {
       Statement stmt = connection.createStatement();
-      String query = "SELECT zMSA,zHMM,sequence,clusterName,"
+      //String query = "SELECT zMSA,zHMM,sequence,clusterName,"
+      String query = "SELECT zMSA,zHMM,null as sequence,clusterName,"
           + " clusterDetail.id as clusterId,"
           + " methodId AS methodId"
           + " FROM"
@@ -422,20 +420,18 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     while( res.next()) {
       String value = res.getString("value");
       String dbName = res.getString("name");
-      if (!dataSourceProxy.containsKey(dbName)) {
+      if (!dataSourceHash.containsKey(dbName)) {
         DataSource source = getDirectDataLoader().createObject(DataSource.class);
         source.setName(dbName);
         getDirectDataLoader().store(source);
-        dataSourceProxy.put(dbName,new ProxyReference(getIntegrationWriter().getObjectStore(),
-            source.getId(),DataSource.class));
+        dataSourceHash.put(dbName,source);
       }
-      if (!crossRefProxy.containsKey(value)) {
+      if (!crossRefHash.containsKey(value)) {
         CrossReference crossref = getDirectDataLoader().createObject(CrossReference.class);
         crossref.setIdentifier(value);
-        crossref.proxySource(dataSourceProxy.get(dbName));
+        crossref.setSource(dataSourceHash.get(dbName));
         getDirectDataLoader().store(crossref);
-        crossRefProxy.put(value,new ProxyReference(getIntegrationWriter().getObjectStore(),
-            crossref.getId(),CrossReference.class));
+        crossRefHash.put(value,crossref);
       }
       // TODO figure out family.addToCollection("crossReferences",crossRefProxy.get(value));
     }

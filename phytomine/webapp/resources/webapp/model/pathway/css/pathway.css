@@ -57,7 +57,8 @@ div.container_12 {
 
 #pathway {
   height: 98vh;
-  /*  border: 1px solid #999;*/ }
+  font-family: "Lucida Grande", Geneva, Lucida, Helvetica, Arial, sans-serif;
+  font-size: 13px; }
 
 #pathway #pathway-widget {
   /* end #diagram-and-ancillary #controls */
@@ -69,6 +70,11 @@ div.container_12 {
     padding: .5rem; }
   #pathway #pathway-widget svg .reaction {
     cursor: pointer; }
+  #pathway #pathway-widget .highlighter:hover,
+  #pathway #pathway-widget .highlighted,
+  #pathway #pathway-widget .clicked {
+    color: #f66;
+    fill: #f66 !important; }
   #pathway #pathway-widget #group-tip {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -87,6 +93,10 @@ div.container_12 {
     position: absolute; }
   #pathway #pathway-widget #pathway-diagram {
     padding-bottom: 3rem; }
+    #pathway #pathway-widget #pathway-diagram .label.reaction .no-display {
+      display: none; }
+    #pathway #pathway-widget #pathway-diagram .reaction-control {
+      font-style: italic; }
   #pathway #pathway-widget #diagram-and-ancillary {
     position: relative; }
   #pathway #pathway-widget #diagram-and-ancillary #controls {
@@ -180,10 +190,27 @@ div.container_12 {
   #pathway #pathway-widget .split.split-horizontal, #pathway #pathway-widget .gutter.gutter-horizontal {
     height: 100%;
     float: left; }
+  #pathway #pathway-widget .initial-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; }
+    #pathway #pathway-widget .initial-info .flexed {
+      max-width: 40rem; }
+    #pathway #pathway-widget .initial-info h3 {
+      font-size: 1.15rem;
+      font-weight: bold; }
+    #pathway #pathway-widget .initial-info h4 {
+      font-size: 1rem; }
+    #pathway #pathway-widget .initial-info h3, #pathway #pathway-widget .initial-info h4 {
+      margin: 1.25rem 0 .5rem; }
+    #pathway #pathway-widget .initial-info li {
+      list-style-type: circle;
+      margin: .25rem 0 .25rem 1rem; }
 
 /* end #pathway #pathway-widget nesting */
 #tooltip-container {
-  /*font-family: "courier new", courier, monospace;*/
+  font-family: "Lucida Grande", Geneva, Lucida, Helvetica, Arial, sans-serif;
   color: #333; }
 
 #tooltip-container {

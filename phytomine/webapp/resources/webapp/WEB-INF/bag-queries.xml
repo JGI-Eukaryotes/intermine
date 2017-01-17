@@ -13,6 +13,11 @@
         SELECT DISTINCT a1_.id as a3_, a2_.value as a4_ FROM BioEntity AS a1_, Synonym AS a2_ WHERE (a1_.synonyms CONTAINS a2_ AND lower(a2_.value) in ?)
     </query>
   </bag-type>
+  <bag-type type="Pathway" matchOnFirst="true">
+    <query message="searching name fields for all types" matchesAreIssues="false" >
+        SELECT DISTINCT a1_.id as a2_, a1_.primaryIdentifier as a3_ FROM Pathway AS a1_ WHERE (lower(a1_.primaryIdentifier) in ?)
+    </query>
+  </bag-type>
   <!--additional-converter class-name="org.intermine.bio.web.logic.OrthologueConverter"
     urlField="orthologue,ortholog"
     constraint-path="Gene.homologues.homologue.organism.shortName"

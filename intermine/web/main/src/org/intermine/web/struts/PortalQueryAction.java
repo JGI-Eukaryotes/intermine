@@ -226,8 +226,8 @@ public class PortalQueryAction extends InterMineAction
             }
         }
 
-        attachMessages(actionMessages, className, bagQueryResult.getMatches().size(),
-                bagList.size(), extId);
+        //attachMessages(actionMessages, className, bagQueryResult.getMatches().size(),
+        //JWC        bagList.size(), extId);
 
         session.setAttribute(Constants.PORTAL_MSG, actionMessages);
 
