@@ -394,11 +394,11 @@
                      placement="Expression"
                      types="Gene,Transcript,MRNA" />
 
-    <reportdisplayer javaClass="org.intermine.bio.web.displayer.GeneSNPDisplayer"
+    <!--reportdisplayer javaClass="org.intermine.bio.web.displayer.GeneSNPDisplayer"
                      jspName="model/geneSNPDisplayer.jsp"
                      replacesFields=""
                      placement="Genomics"
-                     types="Gene"/>
+                     types="Gene"/-->
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.OntologyAnnotationDisplayer"
                      jspName="model/ontologyAnnotationDisplayer.jsp"
