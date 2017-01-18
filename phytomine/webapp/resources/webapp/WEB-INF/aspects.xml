@@ -41,16 +41,6 @@
     <tile-name>model/homologs.jsp</tile-name>
     <aspect-source name="Phytozome" url="http://phytozome.jgi.doe.gov"/>
   </aspect>
-  <aspect name="Diversity">
-    <subtitle>SNP&lt;br/&gt;data</subtitle>
-    <icon-image>model/images/diversity.png</icon-image>
-    <large-image>model/images/diversity.png</large-image>
-    <intro-text>
-      Population SNP data from Phytozome.
-    </intro-text>
-    <tile-name>model/diversity.jsp</tile-name>
-    <aspect-source name="Phytozome" url="http://phytozome.jgi.doe.gov"/>
-  </aspect>
   <aspect name="Expression">
     <subtitle>RNA-Seq&lt;br/&gt;data</subtitle>
     <icon-image>model/images/expression.png</icon-image>
