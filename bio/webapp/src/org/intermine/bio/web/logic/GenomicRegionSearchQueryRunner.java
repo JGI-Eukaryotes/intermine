@@ -313,7 +313,7 @@ public class GenomicRegionSearchQueryRunner implements Runnable
             // orgName
             for (String o : orgSet) {
                 // a map to store chrInfo for the same organism
-                Map<String, ChromosomeInfo> chrInfoSubMap = new HashMap<String, ChromosomeInfo>();
+                 Map<String, ChromosomeInfo> chrInfoSubMap = new HashMap<String, ChromosomeInfo>();
 
                 for (ChromosomeInfo chrInfo : chrInfoList) {
                     if (o.equals(chrInfo.getOrgName())) {
