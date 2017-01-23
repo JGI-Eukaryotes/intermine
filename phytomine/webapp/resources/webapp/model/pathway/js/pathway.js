@@ -1,4 +1,4 @@
-//* Copyright (c)2017 The Regents of The University Of California *// 
+//* Copyright (c)2017 The Regents of The University Of California *//
 
 /* This lets the linter know d3 is defined globally and so not throw an error */
 /*global d3:true*/
@@ -61,25 +61,74 @@ var coefficientOfVariationAttrs = {
   thresholdColors: ["#00a", "#99c", "#adf", "#cef"]
 }
 
+var paneSizeAttrs = {
+  mainVertical: [65, 35],
+  topHorizontal: [60, 40]
+}
+
+
+var splits = {};
+
+var loadPathway = function(json, expression) {
+  loadPathwayDiagram("#pathway-diagram", json);
+  if (expression.data.length > 0) {
+    loadExpressionTable("#pathway-expression-table", expression);
+    setPathwayEventHandlers(); // these needed for interaction between expression data table / graph and diagram
+    d3.select("#pathway-widget") // this makes Split happy, but don't want it only applied when there are split panes
+      .style("height", "100%")
+    splits.mainVertical = Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
+              direction: "vertical",
+              sizes: paneSizeAttrs.mainVertical,
+              gutterSize: 8,
+              cursor: "row-resize",
+              onDrag: setFlex
+    });
+    splits.topHorizontal = Split(["#pathway-diagram", "#pathway-ancillary-info"], {
+             direction: "horizontal",
+             sizes: paneSizeAttrs.topHorizontal,
+             gutterSize: 8,
+             cursor: "col-resize",
+             onDrag: setFlex
+    });
+  }
+
+};
+
 // PATHWAY DIAGRAM //
 
 // Helper functions for pathway diagram //
 
-var getElementDimensions = function(element) {
+var getSvgElementDimensions = function(element) {
     return element.node().getBBox();
 };
 
-
-var setElementDimensions = function (element) {
-  var bbox = getElementDimensions(element);
+var setSvgElementDimensions = function (element) {
+  var bbox = getSvgElementDimensions(element);
   var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
   var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
   var x = Math.floor(bbox.x) - 50;
   var y = Math.floor(bbox.y) - 50;
   element.attr("width", w)
          .attr("height", h)
+  //         .attr("viewBox", 0 + " " + 0 + " " + w + " " + h);
          .attr("viewBox",x+ " "+ y + " " + w + " " + h);
 };
+
+var setFlex = function() {
+  var pathwayDiagramDimensions = getHtmlElementDimensions("pathway-diagram");
+  var pd = d3.select("#pathway-diagram");
+  var pathwaySvgDimensions = getSvgElementDimensions(d3.select("#pathway-svg"));
+  //console.log(pathwayDiagramDimensions, pathwaySvgDimensions);
+  if ((pathwaySvgDimensions.height + 100 >= pathwayDiagramDimensions.height) ||
+      (pathwaySvgDimensions.width + 200 >= pathwayDiagramDimensions.width)) {
+    pd.style("display", "block")
+      .style("align-items", null);
+  } else {
+    pd.style("display", "flex")
+      .style("align-items", "center");
+  }
+}
+
 
 var extractMenuItems = function (d) {
   d.genes.forEach( function(e) {
@@ -97,7 +146,8 @@ var labelReactions = function (d) {
   // do not touch the label if there are no ECs and no genes.
   if (d.ecs.length == 0 && d.genes.length == 0 ) return;
 
-  el.text("");
+  el.text("")
+    .attr("font-size", fontAttrs.size);
 
   var ecData = [];
   d.ecs.forEach( function(dd) {
@@ -128,15 +178,12 @@ var labelReactions = function (d) {
                                   .attr("dy","1em")
                                   .attr("class", function(dd) { return dd.class })
                                   .text(function(dd) { return dd.content })
-                                  .style("fill", function(dd) { return dd.baseColor } )
-                                  .append("tspan")
-                                  .classed("coeff-var", true);
-
-  geneTspan.text( function (dd) { return dd.coeffVar });
+  .style("fill", function(dd) { return dd.baseColor } );
 
 
   // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
   // see setPathwayEventHandlers() below for the click handlers.
+
   if (el.selectAll("tspan").size() > 3) {
           el.classed("has-ellipse", true);
 
@@ -146,7 +193,8 @@ var labelReactions = function (d) {
 	      .attr("text-decoration", "underline")
 	      .classed("reaction-control", true)
 	      .text("less...")
-	      .style("fill", fontAttrs.color);
+	      .style("fill", fontAttrs.color)
+	      .style("font-style", "italic");
 
     el.selectAll("tspan:nth-child(n+4)")
 	      .classed("no-display hidable", true);
@@ -157,7 +205,8 @@ var labelReactions = function (d) {
 	      .attr("text-decoration", "underline")
 	      .classed("reaction-control hidable", true)
 	      .text("more...")
-	      .style("fill", fontAttrs.color);
+	      .style("fill", fontAttrs.color)
+	      .style("font-style", "italic");
   }
 
 }
@@ -201,7 +250,7 @@ function handleShifts(ele, dy, line) {
     var tspan = parentTspan.append("tspan").text(token_list[i][0]);
     // semantic tooltip?
 
-    if(i===0) {
+    if ( i === 0 ) {
       tspan.attr("font-size",fontAttrs.size)
            .attr("font-style","normal");
     } else {
@@ -293,18 +342,24 @@ var getCoords = function (elem) { // crossbrowser version
     var top  = Math.round(box.top +  scrollTop - clientTop);
     var left = Math.round(box.left + scrollLeft - clientLeft);
 
-    return { top: top, left: left, midX: Math.round(box.width / 2) + left, midY: Math.round(box.height / 2) + top };
+    return { top: top,
+             left: left,
+             midX: Math.round(box.width / 2) + left,
+             midY: Math.round(box.height / 2) + top };
 };
 
 
 
 // Pathway diagram main function //
 
-var loadPathway = function(container,json) {
+var loadPathwayDiagram = function(container,json) {
 
   // the 'save svg' handler.
   d3.select("#save").on("click",function() {
-    var svg = document.getElementById("pathway-svg");
+    var svg = document.getElementById("pathway-svg").cloneNode(true);
+    var toRemove = d3.select(svg)
+      .selectAll(".no-display")
+      .remove();
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
     var blob = new Blob(["<?xml version=\"1.0\" standalone=\"no\"?>" +
@@ -349,7 +404,7 @@ var loadPathway = function(container,json) {
                  if (!d.id || (""+d.id).split(":").indexOf(""+dd.targetId) === -1) return;
                  dd.endX += mouse[0]-eventStart[0]; dd.endY += mouse[1]-eventStart[1];
                  d3.select(this).attr("d",lineFunction(dd));
-                 setElementDimensions(svgContainer);
+                 setSvgElementDimensions(svgContainer);
                });
              });
 
@@ -554,16 +609,18 @@ var loadPathway = function(container,json) {
   // the zoom handler
 
   var zoomDiagram = d3.zoom()
-                      .scaleExtent([.75, 2])
+                      .scaleExtent([.512, 1.953125])
                       .on("zoom",function() {
-			      masterGroup.attr("transform", d3.event.transform);
-   	                      setElementDimensions(svgContainer);
+                           var transform = d3.zoomTransform(this);
+			                     masterGroup.attr("transform", "translate(30, 10) scale(" + transform.k + ")");
+   	                       setSvgElementDimensions(svgContainer);
+                           setFlex();
    	                   });
 
   // install the zoom handler on the zoom buttons
 
   d3.select("#zoom-in").on("click", function() {
-	  zoomDiagram.scaleBy(svgContainer, 1.2);
+	  zoomDiagram.scaleBy(svgContainer, 1.25);
       });
 
   d3.select("#zoom-out").on("click", function() {
@@ -697,7 +754,9 @@ var loadPathway = function(container,json) {
   });
 
   // discover how large the svg is and explicitly set it on the root <svg> node
-  setElementDimensions(svgContainer);
+  setSvgElementDimensions(svgContainer);
+  // set whether display: flex should be applied: if the diagram fits in the pane, center it vertically and horizontally. Toggled off if not, since messes up scrolling.
+  setFlex();
 };
 
 
@@ -843,6 +902,8 @@ var doLinkout = function(n) {
 };
 
 var makeBarplot = function (d, geneData, colorScale) {
+    // console.log(splits)
+    // console.log(splits.topHorizontal.getSizes());
 
     var plotType = d.plotType;
     var data = [];
@@ -864,11 +925,10 @@ var makeBarplot = function (d, geneData, colorScale) {
     }
 
     var minMaxFkpm = getMinMaxFpkm(data);
-
     var container = document.getElementById("pathway-ancillary-info");
     var containerWidth = container.offsetWidth;
     var containerHeight = container.offsetHeight;
-    var margin = {top: 75, right: 50, bottom: 100, left: (longestName * 5) + 10}; // revisit these magic numbers with a better calculation based on font size
+    var margin = {top: 100, right: 50, bottom: 100, left: (longestName * 5) + 10}; // revisit these magic numbers with a better calculation based on font size
     var width =  containerWidth - margin.left - margin.right;
     // var height = (containerHeight) - margin.top - margin.bottom;
 
@@ -912,8 +972,10 @@ var makeBarplot = function (d, geneData, colorScale) {
     x.domain([0, minMaxFkpm[1]]);
     y.domain(data.map(function(d) { return d.name; }));
 
-    var barGraph = document.getElementById("bar-graph");
-    if (barGraph) barGraph.parentNode.removeChild(barGraph);
+    clearBarGraphPane();
+
+    d3.select("#get-info")
+      .classed("no-display", false);
 
     var xOffset = ( margin.left + containerWidth - width ) / 2 ;
 
@@ -921,7 +983,7 @@ var makeBarplot = function (d, geneData, colorScale) {
                   .append("svg")
                   .attr("id", "bar-graph")
                   .attr("height", svgHeight)
-                  .attr("width", "100%")
+                  .attr("width", containerWidth)
                   .append("g")
                   .attr("transform", "translate(" + xOffset + "," + yOffset + ")")
 
@@ -961,7 +1023,8 @@ var makeBarplot = function (d, geneData, colorScale) {
         .attr("height", y.bandwidth());
 
     chart.append("text")
-         .attr("x", width / 2)
+         .attr("id", "bar-graph-title")
+         .attr("x", (width / 2) - (xOffset / 3) )
          .attr("y", 0 - ( margin.top / 2 ))
          .attr("text-anchor", "middle")
          .style("font-size", barGraphAttrs.titleFontSize)
@@ -986,9 +1049,26 @@ var makeBarplot = function (d, geneData, colorScale) {
          .attr("font-size", barGraphAttrs.labelFontSize)
          .text("FPKM");
 
+    var barGraphg = d3.select("#bar-graph g");
+    var targetWidth = getSvgElementDimensions(barGraphg).width;
+    var title = d3.select("#bar-graph-title");
+    var titleWidth = getSvgElementDimensions(title).width + (xOffset / 2) + margin.right;
+    if (titleWidth  > targetWidth) targetWidth = titleWidth;
+
+    var pathwayWidth = (getHtmlElementDimensions("pathway")).width;
+    var paneWidthTarget = Math.round( targetWidth / pathwayWidth * 100 );
+    var paneSize = Math.round( splits.topHorizontal.getSizes()[1]);
+    if ( paneWidthTarget > paneSize ) {
+      splits.topHorizontal.setSizes([100 - (paneWidthTarget + 5), paneWidthTarget + 5]);
+      makeBarplot(d, geneData, colorScale);
+    }
+
 };
 
-
+var getHtmlElementDimensions = function (element) {
+  var el = document.getElementById(element);
+  return {height: el.offsetHeight, width: el.offsetWidth};
+}
 
 var mean = function (data){
     var sum = data.reduce(function(sum, value){
@@ -1019,7 +1099,14 @@ var coefficientOfVariation = function (values) {
 };
 
 
+var clearBarGraphPane = function () {
+  var barGraph = document.getElementById("bar-graph");
+  if (barGraph) barGraph.parentNode.removeChild(barGraph);
+};
+
 var setInitialGraphInfo = function (){
+
+       clearBarGraphPane();
 
        var info = d3.select("#pathway-ancillary-info")
                     .append("div")
@@ -1036,16 +1123,24 @@ var setInitialGraphInfo = function (){
                     			    "<ul>" +
                       			     "<li>Tabular data expresses FPKM values in a heat map across conditions.</li>" +
                       			     "<li>Right click on a gene or condition label to see a context menu.</li>" +
-                      			     "<li>For genes, context menus have links to reports in Phytoweb, Phytomine and JBrowse. Both gene and condition context menus have options to get a bar plot of expression levels.</li>" +
+                      			     "<li>For genes, context menus have links to reports in Phytozome, Phytomine and JBrowse. Both gene and condition context menus have options to get a bar plot of expression levels.</li>" +
                     			    "</ul>" +
                             "</div>"
                   			    );
+
+      d3.select("#get-info")
+        .classed("no-display", true);
+
 };
 
 
 var loadExpressionTable = function(container, json) {
 
   setInitialGraphInfo();
+
+  d3.select(container)
+    .append("h3")
+    .text("Gene Expression");
 
   if (json.data.length > 1) createExperimentGroupSelect(container, json);
 
@@ -1055,8 +1150,8 @@ var loadExpressionTable = function(container, json) {
   json.data.forEach( function(d) {
 
     // create the label for this table if only one table
-    if (json.data.length === 1) {
-	d3.select(container)
+  if (json.data.length === 1) {
+	   d3.select(container)
           .selectAll("label")
           .data([{ caption: "Experiment Group: " + d.group,
                     id: "caption-" + d.idName }])
@@ -1094,9 +1189,9 @@ var loadExpressionTable = function(container, json) {
                   class: "gene" },
                 { content: "EC(s)",
                   class: "ec" },
-                { content: "CV",
+                { content: "Coefficient of variation",
                   class: "coeff-var",
-                  ttText: "Coefficient of Variation. Calculated across conditions per gene in this experiment. Coloring for gene and CV value labels ranges from lightest blue for least variation to darkest for greatest." }];
+                  ttText: "Coefficient of variation calculated across conditions per gene in this experiment. Coloring for gene and CV value labels ranges from lightest blue for least variation to darkest for greatest." }];
     for( var s in sampleNames ) {
       cols.push( { content: s,
                    class: "condition",
@@ -1161,6 +1256,7 @@ var loadExpressionTable = function(container, json) {
 
       var menu = [];
       geneLinks[gene].forEach( function(f) {
+        if (/PhytoWeb/.test(f.label)) f.label = "Phytozome Gene Report";
         menu.push({title: f.label,
                    action: function() { doLinkout(f.url)}});
       });
@@ -1235,6 +1331,11 @@ var loadExpressionTable = function(container, json) {
 
 // Global event handlers
 
+// svg diagram specific handlers
+
+
+// handlers for expression tables / graph / interaction between these and diagram
+
 var setPathwayEventHandlers = function () {
 
     var setColor = function (elem, elemContent, clicked) {
@@ -1287,7 +1388,7 @@ var setPathwayEventHandlers = function () {
 			  return !d3.select(this).classed("no-display");
 		   })
 
-		toggled.attr("dy", function (dd){
+	    toggled.attr("dy", function (dd){
 		 	  var el = d3.select(this);
 		 	  if (el.classed("no-display reaction-control")) {
 		 	     return "0em";
@@ -1299,7 +1400,7 @@ var setPathwayEventHandlers = function () {
 			  return !d3.select(this).classed("no-display");
 		});
 
-	    var parentDimensions = getElementDimensions(parent); // values after the click
+	    var parentDimensions = getSvgElementDimensions(parent); // values after the click
 
 	    if (previousUncle.classed("no-display")) {
 		previousUncle.attr("height", parentDimensions.height)
@@ -1319,7 +1420,15 @@ var setPathwayEventHandlers = function () {
 		    // put the masterGroup containing the reaction as the last element in the diagram, i.e. as the top layer
 		    putAsTopLayer(masterGroup);
 	    }
+
+	    // reset the pathway diagram's size;
+	    setSvgElementDimensions(d3.select("#pathway-svg"));
     });
+
+    d3.select("#get-info")
+      .on("click", function (d){
+        setInitialGraphInfo();
+      });
 
     // d3.selectAll(".reaction.label")
     //   .on("mouseover", function(d) {

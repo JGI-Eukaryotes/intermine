@@ -55,19 +55,25 @@ div.container_12 {
 .container_12 .grid_10 {
   width: 100%; }
 
+#lists_links {
+  max-width: none; }
+
 #pathway {
   height: 98vh;
   font-family: "Lucida Grande", Geneva, Lucida, Helvetica, Arial, sans-serif;
   font-size: 13px; }
 
 #pathway #pathway-widget {
-  /* end #diagram-and-ancillary #controls */
+  /* end #diagram-and-ancillary #diagram-controls */
   /* end #pathway-expression-table nesting */
   /* Split pane styling */
-  height: 100%;
   box-sizing: border-box; }
   #pathway #pathway-widget select {
     padding: .5rem; }
+  #pathway #pathway-widget #pathway-svg {
+    margin: 0 auto;
+    display: block;
+    padding: 0 2em; }
   #pathway #pathway-widget svg .reaction {
     cursor: pointer; }
   #pathway #pathway-widget .highlighter:hover,
@@ -91,30 +97,39 @@ div.container_12 {
     font-size: .85rem;
     z-index: 1000;
     position: absolute; }
+  #pathway #pathway-widget .no-display {
+    display: none; }
   #pathway #pathway-widget #pathway-diagram {
-    padding-bottom: 3rem; }
-    #pathway #pathway-widget #pathway-diagram .label.reaction .no-display {
-      display: none; }
-    #pathway #pathway-widget #pathway-diagram .reaction-control {
-      font-style: italic; }
+    padding-bottom: 3rem;
+    width: 100%; }
   #pathway #pathway-widget #diagram-and-ancillary {
     position: relative; }
-  #pathway #pathway-widget #diagram-and-ancillary #controls {
+  #pathway #pathway-widget #diagram-and-ancillary .controls {
     position: absolute;
-    top: .5rem;
-    left: .5rem;
-    z-index: 1000; }
-    #pathway #pathway-widget #diagram-and-ancillary #controls button {
-      float: left;
-      margin-right: .5rem;
+    top: 0.5rem; }
+    #pathway #pathway-widget #diagram-and-ancillary .controls button {
       padding: 0;
       border: 1px solid #ccc;
       border-radius: 5px;
       background: #fff; }
-    #pathway #pathway-widget #diagram-and-ancillary #controls button#save {
+  #pathway #pathway-widget #diagram-and-ancillary #bar-graph-controls {
+    right: 0.5rem;
+    z-index: 999; }
+    #pathway #pathway-widget #diagram-and-ancillary #bar-graph-controls button {
+      float: right;
+      margin-left: 0.5rem; }
+    #pathway #pathway-widget #diagram-and-ancillary #bar-graph-controls button#get-info {
       padding: .3rem .5rem .4rem; }
-    #pathway #pathway-widget #diagram-and-ancillary #controls #zoom-in svg,
-    #pathway #pathway-widget #diagram-and-ancillary #controls #zoom-out svg {
+  #pathway #pathway-widget #diagram-and-ancillary #diagram-controls {
+    left: .5rem;
+    z-index: 1000; }
+    #pathway #pathway-widget #diagram-and-ancillary #diagram-controls button {
+      float: left;
+      margin-right: .5rem; }
+    #pathway #pathway-widget #diagram-and-ancillary #diagram-controls button#save {
+      padding: .3rem .5rem .4rem; }
+    #pathway #pathway-widget #diagram-and-ancillary #diagram-controls #zoom-in svg,
+    #pathway #pathway-widget #diagram-and-ancillary #diagram-controls #zoom-out svg {
       fill: #222;
       width: 22px;
       height: 22px; }
@@ -203,7 +218,8 @@ div.container_12 {
     align-items: center;
     height: 100%; }
     #pathway #pathway-widget .initial-info .flexed {
-      max-width: 40rem; }
+      max-width: 40rem;
+      margin: 0 2rem; }
     #pathway #pathway-widget .initial-info h3 {
       font-size: 1.15rem;
       font-weight: bold; }
