@@ -67,18 +67,51 @@ var paneSizeAttrs = {
 }
 
 
+var adjustPanesHeight = function(d) {
+
+    var topHeight = (d.pathwaySvgDimensions.height >= d.barGraphDimensions.height) ? d.pathwaySvgDimensions.height : d.barGraphDimensions.height;
+    var bottomHeight = d.expressionTableDimensions.height;
+	
+    var margin = 100;
+
+    if ( (topHeight + margin) < ((d.viewportHeight * paneSizeAttrs.mainVertical[0]) / 100) ) {
+ 
+	var pathwayHeight = d.viewportHeight - (d.viewportHeight * 0.02);
+	var bottomPerc = Math.round(((bottomHeight + margin) / pathwayHeight) * 100);
+	var topPerc = 100 - bottomPerc;
+
+	if ( ((bottomHeight + margin) / d.viewportHeight) < bottomPerc ) {
+	    pathwayHeight = topHeight + bottomHeight + (margin * 2);
+	    bottomPerc = Math.round(((bottomHeight + margin) / pathwayHeight) * 100) ;
+	    topPerc = 100 - bottomPerc;
+	}
+
+	splits.mainVertical.setSizes([topPerc, bottomPerc]);
+	d3.select("#pathway")
+	  .style("height", pathwayHeight + "px");
+
+    }
+    
+};
+
+
 var splits = {};
 
 var loadPathway = function(json, expression) {
   loadPathwayDiagram("#pathway-diagram", json);
   setDiagramEventHandlers();
   if (expression.data.length > 0) {
+
     d3.select("#pathway")
       .style("height", "98vh");
+
     loadExpressionTable("#pathway-expression-table", expression);
+
     setExpressionEventHandlers(); // these needed for interaction between expression data table / graph and diagram
-    d3.select("#pathway-widget") // this makes Split happy, but don't want it only applied when there are split panes
+
+    d3.select("#pathway-widget") // this makes Split happy, but want it only applied when there are split panes
       .style("height", "100%")
+
     splits.mainVertical = Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
               direction: "vertical",
               sizes: paneSizeAttrs.mainVertical,
@@ -93,6 +126,18 @@ var loadPathway = function(json, expression) {
              cursor: "col-resize",
              onDrag: setFlex
     });
+
+    var dimensions = {
+	pathwaySvgDimensions: getSvgElementDimensions(d3.select("#pathway-svg")),
+	barGraphDimensions: getHtmlElementDimensions("how-to-info"),
+	expressionTableDimensions: getHtmlElementDimensions("pathway-expression-table-inner"),
+	viewportHeight: document.documentElement.clientHeight
+    };
+
+    adjustPanesHeight(dimensions);
+ 
+    // set whether display: flex should be applied: if the diagram fits in the pane, center it vertically and horizontally. Toggled off if not, since messes up scrolling.
+    setFlex();
   }
   
 };
@@ -165,8 +210,7 @@ var labelReactions = function (d) {
     pData.push({ content: dd.name,
                  class: "highlighter diagram gene",
                  baseColor: geneLabelAttrs.diagramColor,
-                 highlightedColor: geneLabelAttrs.highlightedColor,
-                 coeffVar: null }
+		 highlightedColor: geneLabelAttrs.highlightedColor }
                );
   });
   el.selectAll("tspan").data(ecData).enter().append("tspan")
@@ -181,7 +225,7 @@ var labelReactions = function (d) {
                                   .attr("dy","1em")
                                   .attr("class", function(dd) { return dd.class })
                                   .text(function(dd) { return dd.content })
-  .style("fill", function(dd) { return dd.baseColor } );
+                                  .style("fill", function(dd) { return dd.baseColor } );
 
 
   // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
@@ -199,10 +243,10 @@ var labelReactions = function (d) {
 	      .style("fill", fontAttrs.color)
 	      .style("font-style", "italic");
 
-    el.selectAll("tspan:nth-child(n+3)")
+          el.selectAll("tspan:nth-child(n+4)")
 	      .classed("no-display hidable", true);
 
-	  el.insert("tspan", ":nth-child(3)")
+	  el.insert("tspan", ":nth-child(4)")
 	      .attr("x", el.attr("x"))
 	      .attr("dy", "1em")
 	      .attr("text-decoration", "underline")
@@ -758,8 +802,7 @@ var loadPathwayDiagram = function(container,json) {
 
   // discover how large the svg is and explicitly set it on the root <svg> node
   setSvgElementDimensions(svgContainer);
-  // set whether display: flex should be applied: if the diagram fits in the pane, center it vertically and horizontally. Toggled off if not, since messes up scrolling.
-  setFlex();
+
 };
 
 
@@ -1115,7 +1158,7 @@ var setInitialGraphInfo = function (){
                     .append("div")
                       .attr("id", "bar-graph")
                       .classed("initial-info", true)
-                      .html('<div class="flexed">' +
+                      .html('<div class="flexed" id="how-to-info">' +
                               "<h3>How-to</h3>" +
   			                      "<h4>Gene and EC labels</h4>" +
   			                      "<ul>" +
@@ -1137,13 +1180,16 @@ var setInitialGraphInfo = function (){
 };
 
 
-var loadExpressionTable = function(container, json) {
+var loadExpressionTable = function(initialContainer, json) {
 
   setInitialGraphInfo();
 
-  d3.select(container)
-    .append("h3")
-    .text("Gene Expression");
+  var container = d3.select(initialContainer)
+                    .append("div")
+                      .attr("id", "pathway-expression-table-inner");
+
+  container.append("h3")
+           .text("Gene Expression");
 
   if (json.data.length > 1) createExperimentGroupSelect(container, json);
 
@@ -1154,13 +1200,12 @@ var loadExpressionTable = function(container, json) {
 
     // create the label for this table if only one table
   if (json.data.length === 1) {
-	   d3.select(container)
-          .selectAll("label")
-          .data([{ caption: "Experiment Group: " + d.group,
+     container.selectAll("label")
+              .data([{ caption: "Experiment Group: " + d.group,
                     id: "caption-" + d.idName }])
-          .enter()
-          .append("label")
-          .text(function(d) { return d.caption; });
+              .enter()
+              .append("label")
+              .text(function(d) { return d.caption; });
     }
 
     // prescan to find all sample names/EC. There may be holes in the table
@@ -1182,10 +1227,9 @@ var loadExpressionTable = function(container, json) {
     var colorScale = setColorScale(minMaxFkpm, [expTableAttrs.minFkpmColor, expTableAttrs.maxFkpmColor]);
 
     // put the experiment's data into a table.
-    var table = d3.select(container)
-                  .append("table")
-                  .attr("class","collection-table")
-                  .attr("id","table-"+d.idName);
+    var table = container.append("table")
+                         .attr("class","collection-table")
+                         .attr("id","table-"+d.idName);
 
     // make the data structure for the table headings
     var cols =[ { content: "Gene",
@@ -1338,6 +1382,10 @@ var loadExpressionTable = function(container, json) {
 
 var setDiagramEventHandlers = function () {
 
+  var putAsTopLayer = function (mastergroup) {
+      document.getElementById("master").appendChild(mastergroup);
+  };
+
   d3.selectAll(".reaction-control")
     .on("click", function(d){
 	    var parent = d3.select(this.parentNode);
@@ -1422,9 +1470,6 @@ var setExpressionEventHandlers = function () {
       })
   };
 
-  var putAsTopLayer = function (mastergroup) {
-      document.getElementById("master").appendChild(mastergroup);
-  };
 
   d3.selectAll(".highlighter")
     .on("mouseover", function(d) {
