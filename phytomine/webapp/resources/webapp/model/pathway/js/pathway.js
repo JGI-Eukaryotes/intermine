@@ -71,11 +71,12 @@ var splits = {};
 
 var loadPathway = function(json, expression) {
   loadPathwayDiagram("#pathway-diagram", json);
+  setDiagramEventHandlers();
   if (expression.data.length > 0) {
     d3.select("#pathway")
       .style("height", "98vh");
     loadExpressionTable("#pathway-expression-table", expression);
-    setPathwayEventHandlers(); // these needed for interaction between expression data table / graph and diagram
+    setExpressionEventHandlers(); // these needed for interaction between expression data table / graph and diagram
     d3.select("#pathway-widget") // this makes Split happy, but don't want it only applied when there are split panes
       .style("height", "100%")
     splits.mainVertical = Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
@@ -186,7 +187,7 @@ var labelReactions = function (d) {
   // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
   // see setPathwayEventHandlers() below for the click handlers.
 
-  if (el.selectAll("tspan").size() > 3) {
+  if (el.selectAll("tspan").size() > 4) {
           el.classed("has-ellipse", true);
 
 	  el.append("tspan")
@@ -198,10 +199,10 @@ var labelReactions = function (d) {
 	      .style("fill", fontAttrs.color)
 	      .style("font-style", "italic");
 
-    el.selectAll("tspan:nth-child(n+4)")
+    el.selectAll("tspan:nth-child(n+3)")
 	      .classed("no-display hidable", true);
 
-	  el.insert("tspan", ":nth-child(4)")
+	  el.insert("tspan", ":nth-child(3)")
 	      .attr("x", el.attr("x"))
 	      .attr("dy", "1em")
 	      .attr("text-decoration", "underline")
@@ -1335,49 +1336,7 @@ var loadExpressionTable = function(container, json) {
 
 // svg diagram specific handlers
 
-
-// handlers for expression tables / graph / interaction between these and diagram
-
-var setPathwayEventHandlers = function () {
-
-    var setColor = function (elem, elemContent, clicked) {
-    elem.classed("clicked", clicked);
-    d3.selectAll(".highlighter")
-      .filter( function (dd) {
-        return dd.content && dd.content.match(elemContent);
-      })
-      .each( function (e) {
-        d3.select(this).classed("highlighted", function (dd, i) {
-                                return !d3.select(this).classed("highlighted");})
-	        .classed("clicked", clicked);
-      })
-  };
-
-  var putAsTopLayer = function (mastergroup) {
-      document.getElementById("master").appendChild(mastergroup);
-  };
-
-  d3.selectAll(".highlighter")
-    .on("mouseover", function(d) {
-       var el = d3.select(this);
-       if ( ! el.classed("clicked")) {
-	        setColor(el, d.content, false);
-       }})
-    .on("mouseout", function(d) {
-       if ( ! d3.select(this).classed("clicked")) {
-	        setColor(d3.select(this), d.content, false);
-       }})
-    .on("click", function(d) {
-       d3.selectAll(".highlighter")
-         .filter( function (dd) {
-           return dd.content && !dd.content.match(d.content);})
-         .each(function(e) {
-           d3.select(this).classed("clicked", false);
-         })
-       var el = d3.select(this);
-       setColor(el, d.content, (!el.classed("clicked"))) ;
-    });
-
+var setDiagramEventHandlers = function () {
 
   d3.selectAll(".reaction-control")
     .on("click", function(d){
@@ -1427,11 +1386,6 @@ var setPathwayEventHandlers = function () {
 	    setSvgElementDimensions(d3.select("#pathway-svg"));
     });
 
-    d3.select("#get-info")
-      .on("click", function (d){
-        setInitialGraphInfo();
-      });
-
     // d3.selectAll(".reaction.label")
     //   .on("mouseover", function(d) {
 
@@ -1448,7 +1402,57 @@ var setPathwayEventHandlers = function () {
     // 	    putAsTopLayer(masterGroup);
     // });
 
-}
+};
+
+
+// handlers for expression tables / graph / interaction between these and diagram
+
+var setExpressionEventHandlers = function () {
+
+    var setColor = function (elem, elemContent, clicked) {
+    elem.classed("clicked", clicked);
+    d3.selectAll(".highlighter")
+      .filter( function (dd) {
+        return dd.content && dd.content.match(elemContent);
+      })
+      .each( function (e) {
+        d3.select(this).classed("highlighted", function (dd, i) {
+                                return !d3.select(this).classed("highlighted");})
+	        .classed("clicked", clicked);
+      })
+  };
+
+  var putAsTopLayer = function (mastergroup) {
+      document.getElementById("master").appendChild(mastergroup);
+  };
+
+  d3.selectAll(".highlighter")
+    .on("mouseover", function(d) {
+       var el = d3.select(this);
+       if ( ! el.classed("clicked")) {
+	        setColor(el, d.content, false);
+       }})
+    .on("mouseout", function(d) {
+       if ( ! d3.select(this).classed("clicked")) {
+	        setColor(d3.select(this), d.content, false);
+       }})
+    .on("click", function(d) {
+       d3.selectAll(".highlighter")
+         .filter( function (dd) {
+           return dd.content && !dd.content.match(d.content);})
+         .each(function(e) {
+           d3.select(this).classed("clicked", false);
+         })
+       var el = d3.select(this);
+       setColor(el, d.content, (!el.classed("clicked"))) ;
+    });
+
+  d3.select("#get-info")
+    .on("click", function (d){
+        setInitialGraphInfo();
+    });
+
+};
 
 //module.exports.loadPathway = loadPathway;
 //module.exports.loadExpressionTable = loadExpressionTable;
