@@ -815,7 +815,7 @@ var toLowerCaseAndSpacesToDashes = function (string) {
 };
 
 var showTable = function(tableId) {
-  d3.selectAll("table")
+  d3.selectAll("table.collection-table")
     .style("display", "none");
 
   var tableToDisplay = "#" + tableId;
