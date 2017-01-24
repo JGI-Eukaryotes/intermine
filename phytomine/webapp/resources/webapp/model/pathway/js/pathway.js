@@ -72,6 +72,8 @@ var splits = {};
 var loadPathway = function(json, expression) {
   loadPathwayDiagram("#pathway-diagram", json);
   if (expression.data.length > 0) {
+    d3.select("#pathway")
+      .style("height", "98vh");
     loadExpressionTable("#pathway-expression-table", expression);
     setPathwayEventHandlers(); // these needed for interaction between expression data table / graph and diagram
     d3.select("#pathway-widget") // this makes Split happy, but don't want it only applied when there are split panes
@@ -91,7 +93,7 @@ var loadPathway = function(json, expression) {
              onDrag: setFlex
     });
   }
-
+  
 };
 
 // PATHWAY DIAGRAM //
