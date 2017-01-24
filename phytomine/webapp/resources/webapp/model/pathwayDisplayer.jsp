@@ -10,33 +10,34 @@
 
 <link rel="stylesheet" type="text/css" href="model/pathway/css/pathway.css" />
 
-<div id="pathway" align="left">
-  <div id="pathway-widget" align="start">
-      <div id="diagram-and-ancillary" class="split split-vertical">
-      	  <div id="controls">
-	       <button id="zoom-in">
-	       	  <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-		    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-		    <path d="M0 0h24v24H0V0z" fill="none"/>
-		    <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/>
-		  </svg>
-		</button>
-		<button id="zoom-out">
-		  <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-		    <path d="M0 0h24v24H0V0z" fill="none"/>
-		    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM7 9h5v1H7z"/>
-		  </svg>
-	        </button>
-	        <button id="save">Save SVG</button>
-	  </div>
-       	  <div id="pathway-diagram" class="split split-horizontal"></div>
-	  <div id="pathway-ancillary-info" class="split split-horizontal"></div>
-      </div>
-      <div id="pathway-expression-table" class="split split-vertical">
-	<h3>Gene Expression</h3>
-      </div>
-  </div><!--#pathway-widget-->
-</div><!--#pathway-->
+    <div id="pathway" align="left">
+      <div id="pathway-widget" align="start">
+        <div id="diagram-and-ancillary" class="split split-vertical">
+	  <div id="diagram-controls" class="controls">
+	    <button id="zoom-in">
+	      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+		<path d="M0 0h24v24H0V0z" fill="none"/>
+		<path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/>
+	      </svg>
+	    </button>
+            <button id="zoom-out">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        	<path d="M0 0h24v24H0V0z" fill="none"/>
+        	<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM7 9h5v1H7z"/>
+              </svg>
+	    </button>
+	    <button id="save">Save SVG</button>
+           </div>
+           <div id="bar-graph-controls" class="controls">
+             <button id="get-info" class="no-display">Help</button>
+           </div>
+           <div id="pathway-diagram" class="split split-horizontal"></div>
+	   <div id="pathway-ancillary-info" class="split split-horizontal"></div>
+        </div>
+        <div id="pathway-expression-table" class="split split-vertical"></div>
+      </div><!--#pathway-widget-->
+    </div><!--#pathway-->
 
 <script type="text/javascript" charset="utf-8">
 
@@ -74,37 +75,22 @@
 		jQuery.when(ensureDataReceived(${jsonPathway}), 
     			    ensureDataReceived(${jsonExpression}))
 	  	      .done(function () {
-    		      		     	 loadPathway("#pathway-diagram",${jsonPathway});
-    					 loadExpressionTable("#pathway-expression-table",${jsonExpression});
-          				 setPathwayEventHandlers();
-
-          				 Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
-                    			 	  direction: "vertical",
-                    				  sizes: [65, 35],
-                    				  gutterSize: 8,
-                    				  cursor: "row-resize"
-          					  });
-          				 Split(["#pathway-diagram", "#pathway-ancillary-info"], {
-                   			 	  direction: "horizontal",
-                   				  sizes: [50, 50],
-                   				  gutterSize: 8,
-                   				  cursor: "col-resize"
-          				 });
+    		      		     	 loadPathway(${jsonPathway}, ${jsonExpression});
           				 //
           				 // construct a menu out of the jsonLinks and stash it in #external-links
                          var linkMenu = "<h3 class=\"goog\">This pathway in other organisms</h3><select onchange=\"openPathway(this.selectedIndex-1)\">";
-                         linkMenu = linkMenu.concat("<option>-- Select another organism --</option>");
+                         linkMenu = linkMenu.concat("<option>Select another organism</option>");
                          var url = [];
                          for( link in ${jsonLinks}) {
                            url.push(${jsonLinks}[link].url);
                            linkMenu = linkMenu.concat("<option>",${jsonLinks}[link].label ,"</option>");
                          }
                          linkMenu = linkMenu.concat("</select>");
-          				 jQuery("#external-links").html(linkMenu);
+          		 var linkContainer = jQuery("#external-links");
+			 linkContainer.html(linkMenu);
                          var urlArrayString = "\"".concat(url.join("\",\"")).concat("\"");
                          var linkScript = "<script> url=[".concat(urlArrayString).concat("]; function openPathway(i) { window.open(url[i]); }<\/script>");
-                         jQuery("#external-links").append(jQuery(linkScript));
-
+                         linkContainer.append(jQuery(linkScript));			 
     		      });
       });
 
