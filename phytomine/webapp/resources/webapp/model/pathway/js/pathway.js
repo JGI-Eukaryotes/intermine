@@ -869,11 +869,10 @@ var showCoefficientsOfVariation = function(table) {
 
 var createExperimentGroupSelect = function (container, json) {
 
-  var select = d3.select(container)
-                 .append("label")
-                 .text("Experiment Group: ")
-                 .append("select")
-                 .attr("id", "experiments-select");
+  var select = container.append("label")
+                        .text("Experiment Group: ")
+                        .append("select")
+                        .attr("id", "experiments-select");
 
   select.selectAll("option")
         .data(json.data)
