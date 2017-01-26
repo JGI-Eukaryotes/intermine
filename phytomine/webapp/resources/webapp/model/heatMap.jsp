@@ -271,8 +271,33 @@
                });
 
             // the correlation map
+            // but remove things with zero variance
+            var parsedJSON = JSON.parse('${cufflinksScoreJSON}')
+            var newFPKM = [];
+            var newVars = [];
+            for ( i=0; i < parsedJSON.y.data.length; i++) {
+              var fpkm = parsedJSON.y.data[i];
+              var vars = parsedJSON.y.vars[i];
+              var sum1 = 0;
+              var sum2 = 0;
+              for( j=0; j<fpkm.length; j++) {
+                sum1 += fpkm[j];
+                sum2 += fpkm[j]*fpkm[j];
+              } 
+              if ( sum2*fpkm.length - sum1*sum1 > 1e-4) {
+                newFPKM.push(fpkm);
+                newVars.push(vars);
+              }
+            }
+            var newJSON = new Object();
+            newJSON.y = new Object();
+            newJSON.y.data = newFPKM;
+            newJSON.y.vars = newVars;
+            newJSON.y.smps = parsedJSON.y.smps;
+            newJSON.y.desc = parsedJSON.y.desc;
+           
             var correlationHeatMap = new CanvasXpress('canvas_corr',
-                                         ${cufflinksScoreJSON},
+                                         newJSON,
                                          {'graphType': 'Correlation',
                                           'correlationAxis' : "variables",
                                           'gradient': true}
@@ -283,7 +308,6 @@
 
   </c:otherwise>
 </c:choose>
-</div>
 
 <!-- /heatMap.jsp -->
 
