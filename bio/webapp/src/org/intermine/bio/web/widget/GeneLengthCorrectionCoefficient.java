@@ -75,7 +75,13 @@ public class GeneLengthCorrectionCoefficient implements CorrectionCoefficient
         this.bag = bag;
         this.ids = ids;
     }
-
+    public GeneLengthCorrectionCoefficient(WidgetConfig config, ObjectStore os, InterMineBag bag) {
+      this.config = config;
+      this.os = os;
+      // one of the two below is not NULL or else web service call would have failed.
+      this.bag = bag;
+      this.ids = null;
+    }
     /**
      * {@inheritDoc}
      */
