@@ -151,14 +151,17 @@ public class BuildBagAction extends InterMineAction
 
         String thisLine;
         List<String> list = new ArrayList<String>();
-        int elementCount = 0;
+         int elementCount = 0;
         while ((thisLine = reader.readLine()) != null) {
             // append whitespace to valid delimiters
-            String bagUploadDelims = (String) webProperties.get("list.upload.delimiters") + " ";
+            String bagUploadDelims = (String) webProperties.get("list.upload.delimiters");
+            if (!type.equals("Pathway")) {
+            	bagUploadDelims = bagUploadDelims + " ";
+            }
             StrMatcher matcher = StrMatcher.charSetMatcher(bagUploadDelims);
             StrTokenizer st = new StrTokenizer(thisLine, matcher, StrMatcher.doubleQuoteMatcher());
             while (st.hasNext()) {
-                String token = st.nextToken();
+                String token = st.nextToken().trim();
                 list.add(token);
                 elementCount++;
                 if (elementCount > maxBagSize) {
