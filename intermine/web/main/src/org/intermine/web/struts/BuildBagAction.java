@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -155,7 +156,7 @@ public class BuildBagAction extends InterMineAction
         while ((thisLine = reader.readLine()) != null) {
             // append whitespace to valid delimiters
             String bagUploadDelims = (String) webProperties.get("list.upload.delimiters");
-            if (!type.equals("Pathway")) {
+            if (!(Arrays.asList( ((String) webProperties.get("list.upload.spaced")).split(",")) ).contains(type)) {
             	bagUploadDelims = bagUploadDelims + " ";
             }
             StrMatcher matcher = StrMatcher.charSetMatcher(bagUploadDelims);
