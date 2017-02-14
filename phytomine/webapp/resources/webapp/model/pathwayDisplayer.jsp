@@ -63,10 +63,11 @@
     };
 
 
-    jQuery.ajaxSetup({ cache: false }); // flip to true for production!
+    jQuery.ajaxSetup({ cache: true }); // flip to true for production!
 
     var pathwayScripts = [ "model/pathway/js/d3.v4.min.js",
-  		    	   "model/pathway/js/pathway.js"];
+  		    	   "model/pathway/js/pathway.js",
+			   "model/pathway/js/sort-by.min.js"];
 
 
     getScripts(pathwayScripts, function(){

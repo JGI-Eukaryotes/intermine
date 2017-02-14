@@ -180,10 +180,10 @@ div.container_12 {
       min-width: 0;
       /* otherwise mouseover bleeds into right adjacent expression result */ }
     #pathway #pathway-widget #pathway-expression-table .gene {
-      left: 0;
+      left: 75px;
       width: 120px; }
     #pathway #pathway-widget #pathway-expression-table .ec {
-      left: 120px;
+      left: 0;
       width: 75px; }
     #pathway #pathway-widget #pathway-expression-table .condition {
       cursor: pointer; }

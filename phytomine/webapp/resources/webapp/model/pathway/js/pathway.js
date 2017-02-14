@@ -1,4 +1,7 @@
-//* Copyright (c)2017 The Regents of The University Of California *//
+/**
+* Copyright (c)2017 The Regents of The University Of California for the work built here on licensed software.
+* Authors: Joe Carlson and Patrick Davidson of the DOE JGI Phytozome Group.
+*/
 
 /* This lets the linter know d3 is defined globally and so not throw an error */
 /*global d3:true*/
@@ -71,11 +74,11 @@ var adjustPanesHeight = function(d) {
 
     var topHeight = (d.pathwaySvgDimensions.height >= d.barGraphDimensions.height) ? d.pathwaySvgDimensions.height : d.barGraphDimensions.height;
     var bottomHeight = d.expressionTableDimensions.height;
-	
+
     var margin = 100;
 
     if ( (topHeight + margin) < ((d.viewportHeight * paneSizeAttrs.mainVertical[0]) / 100) ) {
- 
+
 	var pathwayHeight = d.viewportHeight - (d.viewportHeight * 0.02);
 	var bottomPerc = Math.round(((bottomHeight + margin) / pathwayHeight) * 100);
 	var topPerc = 100 - bottomPerc;
@@ -91,7 +94,7 @@ var adjustPanesHeight = function(d) {
 	  .style("height", pathwayHeight + "px");
 
     }
-    
+
 };
 
 
@@ -135,11 +138,11 @@ var loadPathway = function(json, expression) {
     };
 
     adjustPanesHeight(dimensions);
- 
+
     // set whether display: flex should be applied: if the diagram fits in the pane, center it vertically and horizontally. Toggled off if not, since messes up scrolling.
     setFlex();
   }
-  
+
 };
 
 // PATHWAY DIAGRAM //
@@ -963,7 +966,7 @@ var makeBarplot = function (d, geneData, colorScale) {
           }
         }
     } else {
-        geneData[d.content].forEach( function (condition) {
+        geneData.samples.forEach( function (condition) {
             if (condition.sample.length > longestName) longestName = condition.sample.length;
             data.push({name: condition.sample, fpkm: condition.fpkm});
         });
@@ -1178,8 +1181,36 @@ var setInitialGraphInfo = function (){
 
 };
 
+var sortOnEc = function (jsonIn) {
 
-var loadExpressionTable = function(initialContainer, json) {
+  // make a quick and dirty clone, leaving jsonIn unmutated
+  var json = JSON.parse(JSON.stringify(jsonIn));
+
+  json.data.forEach( function(experiment) {
+    var outGenes = []
+    experiment.genes.forEach( function(g) {
+      g.enzyme.forEach( function (enz) {
+        var geneOut = {
+            enzyme: enz,
+            gene: g.gene,
+            samples: g.samples
+          }
+        outGenes.push(geneOut);
+      })
+    })
+    experiment.genes = outGenes;
+    experiment.genes.sort(sortBy("enzyme", "gene"))
+  })
+
+  return json;
+
+}
+
+
+var loadExpressionTable = function(initialContainer, rawJson) {
+
+  var json = sortOnEc(rawJson);
+  // var json = rawJson;
 
   setInitialGraphInfo();
 
@@ -1214,12 +1245,15 @@ var loadExpressionTable = function(initialContainer, json) {
     var sampleNames = {};
     var ec = {};
     d.idName = d.group.toLowerCase().replace(/ /g, "-");
-    //groupNames.push(d.group);
+
+
     d.genes.forEach( function(e) {
       e.samples.forEach( function(f) { sampleNames[f.sample] = 1; });
       geneData[e.gene] = e.samples;
       ec[e.gene] = e.enzyme;
     });
+
+    // console.log ('d', d, 'geneData', geneData, 'sampleNames', sampleNames, 'ec', ec)
 
     // find minimum and maximum fpkm values for the experiment for setting a color scale.
     var minMaxFkpm = getMinMaxFpkm(d);
@@ -1231,10 +1265,10 @@ var loadExpressionTable = function(initialContainer, json) {
                          .attr("id","table-"+d.idName);
 
     // make the data structure for the table headings
-    var cols =[ { content: "Gene",
-                  class: "gene" },
-                { content: "EC(s)",
+    var cols =[ { content: "EC",
                   class: "ec" },
+                { content: "Gene",
+                  class: "gene" },
                 { content: "Coefficient of variation",
                   class: "coeff-var",
                   ttText: "Coefficient of variation calculated across conditions per gene in this experiment. Coloring for gene and CV value labels ranges from lightest blue for least variation to darkest for greatest." }];
@@ -1268,30 +1302,37 @@ var loadExpressionTable = function(initialContainer, json) {
 
     var body = table.append("tbody");
     // and now the rows
-    for( var gene in geneData ) {
+
+    d.genes.forEach( function (gene) {
+
+      var geneName = gene.gene
 
       var lookup = {};
       var fpkmArr = []
+      // console.log(geneName, d.genes, gene)
       // hash the results, also make an array of the fpkms
-      geneData[gene].forEach( function(e) {
+      gene.samples.forEach( function(e) {
 	      lookup[e.sample] = e.fpkm;
 	      fpkmArr.push(parseFloat(e.fpkm));
       });
 
       var coeffVar = coefficientOfVariation(fpkmArr);
 
-      var cols = [{ class: "highlighter table gene",
-                    content: gene,
-		                coeffVar: coeffVar,
+      var cols = [{ content: gene.enzyme,
+       			        class: "ec highlighter table",
+       			        baseColor: ecLabelAttrs.tableColor,
+       			        highlightedColor: ecLabelAttrs.highlightedColor },
+                  { class: "highlighter table gene",
+                    content: geneName,
+              		  coeffVar: coeffVar,
                     experiment: d.idName,
                     experimentDisplayName: d.group,
                     baseColor: geneLabelAttrs.tableColor,
                     highlightedColor: geneLabelAttrs.highlightedColor,
                     plotType: "Gene" },
-	                { class: "ec" },
                   { content: coeffVar,
                     class: "coeff-var",
-                    gene: gene }];
+                    gene: geneName }];
       for( s in sampleNames ) {
         if (s in lookup) {
           cols.push({"content":lookup[s], "class": "fpkm result"});
@@ -1301,34 +1342,22 @@ var loadExpressionTable = function(initialContainer, json) {
       }
 
       var menu = [];
-      geneLinks[gene].forEach( function(f) {
+      geneLinks[geneName].forEach( function(f) {
         if (/PhytoWeb/.test(f.label)) f.label = "Phytozome Gene Report";
         menu.push({title: f.label,
                    action: function() { doLinkout(f.url)}});
       });
-      menu.push({ title: "Plot " + gene,
-                  action: function(elem, d, i) { makeBarplot(d, geneData, colorScale) }});
+      menu.push({ title: "Plot " + geneName,
+                  action: function(elem, d, i) { makeBarplot(d, gene, colorScale) }});
 
-      var trHeight = ec[gene].length;
 
-      var tr = body.append("tr")
-	           .style("height", function () {
-			   if (trHeight > 1) {
-			       var h = trHeight + 0.5;
-			       return h + "rem";
-			   }
-			   return;
-		  });
+      var tr = body.append("tr");
 
       tr.selectAll("td")
         .data(cols)
         .enter()
         .append("td")
-        .html( function(d) {
-		        if (/ec/.test(d.class)) {
-		            return;
-		        }
-            return d.content; })
+        .html( function(d) { return d.content; })
         .attr("class", function(d) { return d.class;})
         .style("background-color", function(d){
             if (/result/.test(d.class)) {
@@ -1336,31 +1365,10 @@ var loadExpressionTable = function(initialContainer, json) {
             }
         });
 
-      var ecs = [];
-      ec[gene].forEach( function (el) {
-	      ecs.push(
-		       { content: el,
-			 class: "highlighter table",
-			 baseColor: ecLabelAttrs.tableColor,
-			 highlightedColor: ecLabelAttrs.highlightedColor });
-	  });
-
-      tr.select("td.ec")
-	  .append("ul")
-	  .selectAll("li")
-	  .data(ecs)
-	  .enter()
-	  .append("li")
-	  .html( function(d) {
-		  return d.content; })
-	  .attr("class", function(d) {
-		  return d.class; });
-
       tr.select("td.gene")
           .on("contextmenu", d3.contextMenu(menu));
 
-    }
-
+    });
 
   });
 
