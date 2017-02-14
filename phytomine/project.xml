@@ -817,6 +817,13 @@
       <property name="dataSetURL" value="ftp://ftp.pantherdb.org/panther_library/10.0" />
       <property name="converter.class" value="org.intermine.bio.dataconversion.PantherTermsConverter" />
     </source>
+    <source name="Pathway-terms" type="ontology-terms">
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathway-terms/" />
+      <property name="src.data.file" value="pathway-terms.tsv" />
+      <property name="dataSetTitle" value="Pathway" />
+      <property name="dataSetURL" value="http://www.plantcyc.org" />
+      <property name="converter.class" value="org.intermine.bio.dataconversion.PathwayTermsConverter" />
+    </source>
     <source name="Pfam-terms" type="ontology-terms">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pfam-terms/" />
       <property name="src.data.file" value="Pfam-A.full" />
