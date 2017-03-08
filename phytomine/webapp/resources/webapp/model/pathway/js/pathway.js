@@ -10,7 +10,11 @@
 
 var geneLinks = {}; // derived from pathway diagram's json, needed in expression table.
 
-// Styles for svg or other html manipulated by d3 (e.g. expression tables). Use and manipulate this as the single source (don't inline raw styles!!). Why inline? Because we want a pathway diagram downloaded as a single, dependency free file. //
+/* Styles for svg or other html manipulated by d3 (e.g. expression
+ * tables). Use and manipulate this as the single source (don't inline
+ * raw styles!!). Why inline? Because we want a pathway diagram
+ * downloaded as a single, dependency free file.
+*/
 
 var pathAttrs = {
   stroke: "#444",
@@ -72,47 +76,49 @@ var paneSizeAttrs = {
 
 var adjustPanesHeight = function(d) {
 
-    var topHeight = (d.pathwaySvgDimensions.height >= d.barGraphDimensions.height) ? d.pathwaySvgDimensions.height : d.barGraphDimensions.height;
+    var topHeight = (d.pathwaySvgDimensions.height >= d.barGraphDimensions.height) ?
+                     d.pathwaySvgDimensions.height : d.barGraphDimensions.height;
     var bottomHeight = d.expressionTableDimensions.height;
 
     var margin = 100;
 
     if ( (topHeight + margin) < ((d.viewportHeight * paneSizeAttrs.mainVertical[0]) / 100) ) {
 
-	var pathwayHeight = d.viewportHeight - (d.viewportHeight * 0.02);
-	var bottomPerc = Math.round(((bottomHeight + margin) / pathwayHeight) * 100);
-	var topPerc = 100 - bottomPerc;
+     var pathwayHeight = d.viewportHeight - (d.viewportHeight * 0.02);
+     var bottomPerc = Math.round(((bottomHeight + margin) / pathwayHeight) * 100);
+     var topPerc = 100 - bottomPerc;
 
-	if ( ((bottomHeight + margin) / d.viewportHeight) < bottomPerc ) {
-	    pathwayHeight = topHeight + bottomHeight + (margin * 2);
-	    bottomPerc = Math.round(((bottomHeight + margin) / pathwayHeight) * 100) ;
-	    topPerc = 100 - bottomPerc;
-	}
+     if ( ((bottomHeight + margin) / d.viewportHeight) < bottomPerc ) {
+         pathwayHeight = topHeight + bottomHeight + (margin * 2);
+         bottomPerc = Math.round(((bottomHeight + margin) / pathwayHeight) * 100) ;
+         topPerc = 100 - bottomPerc;
+     }
 
-	splits.mainVertical.setSizes([topPerc, bottomPerc]);
-	d3.select("#pathway")
-	  .style("height", pathwayHeight + "px");
+     splits.mainVertical.setSizes([topPerc, bottomPerc]);
+     d3.select("#pathway")
+       .style("height", pathwayHeight + "px");
 
     }
 
 };
-
 
 var splits = {};
 
 var loadPathway = function(json, expression) {
   loadPathwayDiagram("#pathway-diagram", json);
   setDiagramEventHandlers();
-  if (expression.data.length > 0) {
 
+  if (expression.data.length > 0) {
     d3.select("#pathway")
       .style("height", "98vh");
 
     loadExpressionTable("#pathway-expression-table", expression);
 
-    setExpressionEventHandlers(); // these needed for interaction between expression data table / graph and diagram
+    // these needed for interaction between expression data table / graph and diagram
+    setExpressionEventHandlers();
 
-    d3.select("#pathway-widget") // this makes Split happy, but want it only applied when there are split panes
+    // this makes Split happy, but want it only applied when there are split panes
+    d3.select("#pathway-widget")
       .style("height", "100%")
 
     splits.mainVertical = Split(["#diagram-and-ancillary", "#pathway-expression-table"], {
@@ -131,15 +137,17 @@ var loadPathway = function(json, expression) {
     });
 
     var dimensions = {
-	pathwaySvgDimensions: getSvgElementDimensions(d3.select("#pathway-svg")),
-	barGraphDimensions: getHtmlElementDimensions("how-to-info"),
-	expressionTableDimensions: getHtmlElementDimensions("pathway-expression-table-inner"),
-	viewportHeight: document.documentElement.clientHeight
+      pathwaySvgDimensions: getSvgElementDimensions(d3.select("#pathway-svg")),
+      barGraphDimensions: getHtmlElementDimensions("how-to-info"),
+      expressionTableDimensions: getHtmlElementDimensions("pathway-expression-table-inner"),
+      viewportHeight: document.documentElement.clientHeight
     };
 
     adjustPanesHeight(dimensions);
 
-    // set whether display: flex should be applied: if the diagram fits in the pane, center it vertically and horizontally. Toggled off if not, since messes up scrolling.
+    // set whether display: flex should be applied: if the diagram
+    // fits in the pane, center it vertically and horizontally. Toggled
+    // off if not, since messes up scrolling.
     setFlex();
   }
 
@@ -161,7 +169,6 @@ var setSvgElementDimensions = function (element) {
   var y = Math.floor(bbox.y) - 50;
   element.attr("width", w)
          .attr("height", h)
-  //         .attr("viewBox", 0 + " " + 0 + " " + w + " " + h);
          .attr("viewBox",x+ " "+ y + " " + w + " " + h);
 };
 
@@ -169,7 +176,6 @@ var setFlex = function() {
   var pathwayDiagramDimensions = getHtmlElementDimensions("pathway-diagram");
   var pd = d3.select("#pathway-diagram");
   var pathwaySvgDimensions = getSvgElementDimensions(d3.select("#pathway-svg"));
-  //console.log(pathwayDiagramDimensions, pathwaySvgDimensions);
   if ((pathwaySvgDimensions.height + 100 >= pathwayDiagramDimensions.height) ||
       (pathwaySvgDimensions.width + 200 >= pathwayDiagramDimensions.width)) {
     pd.style("display", "block")
@@ -192,7 +198,6 @@ var extractMenuItems = function (d) {
 }
 
 var labelReactions = function (d) {
-  // console.log(d);
   var el = d3.select(this);
   // do not touch the label if there are no ECs and no genes.
   if (d.ecs.length == 0 && d.genes.length == 0 ) return;
@@ -213,22 +218,23 @@ var labelReactions = function (d) {
     pData.push({ content: dd.name,
                  class: "highlighter diagram gene",
                  baseColor: geneLabelAttrs.diagramColor,
-		 highlightedColor: geneLabelAttrs.highlightedColor }
+           highlightedColor: geneLabelAttrs.highlightedColor }
                );
   });
   el.selectAll("tspan").data(ecData).enter().append("tspan")
-                                  .attr("x",el.attr("x"))
-                                  .attr("dy","1em")
-                                  .attr("class", function (dd) { return dd.class })
-                                  .text(function(dd) { return dd.content })
-                                  .style("fill", function(dd) { return dd.baseColor });
+                       .attr("x",el.attr("x"))
+                       .attr("dy","1em")
+                       .attr("class", function (dd) { return dd.class })
+                       .text(function(dd) { return dd.content })
+                       .style("fill", function(dd) { return dd.baseColor });
 
-  var geneTspan = el.selectAll("tspan").filter(function (e) { return 0;}).data(pData).enter().append("tspan")
-                                  .attr("x",el.attr("x"))
-                                  .attr("dy","1em")
-                                  .attr("class", function(dd) { return dd.class })
-                                  .text(function(dd) { return dd.content })
-                                  .style("fill", function(dd) { return dd.baseColor } );
+  var geneTspan = el.selectAll("tspan").filter(function (e) { return 0;}).data(pData)
+                       .enter().append("tspan")
+                       .attr("x",el.attr("x"))
+                       .attr("dy","1em")
+                       .attr("class", function(dd) { return dd.class })
+                       .text(function(dd) { return dd.content })
+                       .style("fill", function(dd) { return dd.baseColor } );
 
 
   // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
@@ -237,145 +243,67 @@ var labelReactions = function (d) {
   if (el.selectAll("tspan").size() > 4) {
           el.classed("has-ellipse", true);
 
-	  el.append("tspan")
-	      .attr("x", el.attr("x"))
-	      .attr("dy", "1em")
-	      .attr("text-decoration", "underline")
-	      .classed("reaction-control", true)
-	      .text("less...")
-	      .style("fill", fontAttrs.color)
-	      .style("font-style", "italic");
+       el.append("tspan")
+           .attr("x", el.attr("x"))
+           .attr("dy", "1em")
+           .attr("text-decoration", "underline")
+           .classed("reaction-control", true)
+           .text("less...")
+           .style("fill", fontAttrs.color)
+           .style("font-style", "italic");
 
           el.selectAll("tspan:nth-child(n+4)")
-	      .classed("no-display hidable", true);
+           .classed("no-display hidable", true);
 
-	  el.insert("tspan", ":nth-child(4)")
-	      .attr("x", el.attr("x"))
-	      .attr("dy", "1em")
-	      .attr("text-decoration", "underline")
-	      .classed("reaction-control hidable", true)
-	      .text("more...")
-	      .style("fill", fontAttrs.color)
-	      .style("font-style", "italic");
+       el.insert("tspan", ":nth-child(4)")
+           .attr("x", el.attr("x"))
+           .attr("dy", "1em")
+           .attr("text-decoration", "underline")
+           .classed("reaction-control hidable", true)
+           .text("more...")
+           .style("fill", fontAttrs.color)
+           .style("font-style", "italic");
   }
-
 }
 
-var insertLineBreaks = function (d) {
+var renderLabels = function (d) {
   var el = d3.select(this);
-  el.text("");
-  // process label if defined.
   if (d.label) {
-    // split on <br>"s
-    var lines = d.label.split("<br>");
-    for (var i = 0; i < lines.length; i++) {
-      // first replace html char codes...
-      lines[i] = replaceHTMLchar(lines[i]);
-
-      // now deal with <sub>, <sup> and <i> tags.
-      // I hope they're not overlapping
-      handleShifts(el,(15*i)+"px",lines[i],d);
-    }
+    var parent = this.parentElement;
+    var lines = d.label.split('<br>');
+    var lineCtr = -lines.length/2.;
+    lines.forEach( function(e) {
+      var lineSize = measureText(e,15);
+      d3.select(parent).append('g').append("foreignObject")
+        .attr("width",lineSize.width)
+        .attr("x",(el.attr('text-anchor')==='end')?parseInt(el.attr("x"))-lineSize.width:el.attr('x'))
+        .attr("y",parseInt(el.attr("y"))+15*lineCtr++)
+        .attr("height",15)
+        .append("xhtml:span")
+        .html(e);
+      });
   }
+  return;
 };
 
-function handleShifts(ele, dy, line) {
-  // this does rudimentary parsing of html tags <sub>, <sup> and <i>
-  // take the line and break it into raised or lowered tokens.
-  // The first function returns a list of the form
-  // [ [<text> ,-1||0||1, 0||1 ] , [ <text>, -1||0||1 , 0||1 ] , ...]
-
-  // For the second field, "0" means baseline. "1" means
-  // superscript, "-1" means subscript. If a subscript is
-  // nested in a superscript or vice versa, you get back to the
-  // baseline. This ain't TeX.
-  // For the third field field, 0 means normal font, 1 means italic
-
-  var token_list = makeTokens(line);
-  // now append tokens
-  var last_shift= 0;
-  var last_style = 0;
-  var parentTspan = ele.append("tspan").attr("x",ele.attr("x")).attr("y",ele.attr("y")).attr("dy",dy);
-  for ( var i = 0; i < token_list.length; i++) {
-    var tspan = parentTspan.append("tspan").text(token_list[i][0]);
-    // semantic tooltip?
-
-    if ( i === 0 ) {
-      tspan.attr("font-size",fontAttrs.size)
-           .attr("font-style","normal");
-    } else {
-      tspan.attr("dx","0");
-      var this_shift = token_list[i][1];
-      if (this_shift === 0) {
-        tspan.attr("font-size",fontAttrs.size);
-      } else {
-        tspan.attr("font-size",smallFontAttrs.size);
-      }
-
-    // baseline-shift appears not to work. Here is
-    // easier code in case this ever works...
-    //switch( token_list[i][1]) {
-    //  case 1:
-    //    tspan.style("baseline-shift","super");
-    //    break;
-    //  case -1:
-    //    tspan.style("baseline-shift","sub");
-    //    break;
-    //}
-
-      // and harder-to-follow code until baseline-shift
-      if ( (this_shift - last_shift) > 0) {
-        // going up...
-        tspan.attr("dy","-"+fontAttrs.baselineShift);
-      } else if ( (this_shift - last_shift) < 0) {
-        // going down...
-        tspan.attr("dy",fontAttrs.baselineShift);
-      } else {
-        tspan.attr("dy",0);
-      }
-      last_shift = this_shift;
-
-      if ( token_list[i][2] !== last_style) {
-        last_style = token_list[i][2];
-        switch (token_list[i][2]) {
-        case 0:
-          tspan.attr("font-style","normal");
-          break;
-        case 1:
-          tspan.attr("font-style","italic");
-          break;
-        }
-      }
-    }
-  }
+var measureText = function(pText, pFontSize) {
+  // shamelessly stolen code to get the size of a text span
+  var lDiv = document.createElement('div');
+  document.body.appendChild(lDiv);
+  lDiv.style.fontSize = "" + pFontSize + "px";
+  lDiv.style.position = "absolute";
+  lDiv.style.left = -1000;
+  lDiv.style.top = -1000;
+  lDiv.innerHTML = pText;
+  var lResult = {
+    width: lDiv.clientWidth,
+    height: lDiv.clientHeight
+  };
+  document.body.removeChild(lDiv);
+  lDiv = null;
+  return lResult;
 }
 
-function makeTokens(line) {
-  var retList = [];
-  var subs = line.split(/<\/?sub>/i);
-  for( var j = 0; j<subs.length; j++) {
-    var supers =  subs[j].split(/<\/?sup>/i);
-    for ( var l = 0; l < supers.length; l++) {
-      var this_shift = ((j%2===0) && (l%2===0))?0:(j%2===1)?-1:1;
-      // now split on <i> tokens
-      var italics = supers[l].split(/<\/?i>/i);
-      for (var k = 0; k < italics.length; k++ ) {
-        retList.push([italics[k],this_shift,k%2]);
-      }
-    }
-  }
-  return retList;
-}
-
-var replaceHTMLchar = function (w) {
-  return w.replace(/&harr;/ig, "\u21D4")
-          .replace(/&larr;/ig, "\u21D0")
-          .replace(/&rarr;/ig, "\u21D2")
-          .replace(/&alpha;/ig, "\u03B1")
-          .replace(/&beta;/ig, "\u03B2")
-          .replace(/&gamma;/ig, "\u03B3")
-          .replace(/&delta;/ig, "\u03B4");
-};
 
 var getCoords = function (elem) { // crossbrowser version
     var box = elem.getBoundingClientRect();
@@ -413,7 +341,8 @@ var loadPathwayDiagram = function(container,json) {
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
     var blob = new Blob(["<?xml version=\"1.0\" standalone=\"no\"?>" +
-                         "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" +
+                         "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "+
+                         "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" +
                          svg.outerHTML],
                          { type: "image/svg+xml"});
     var url = URL.createObjectURL(blob);
@@ -434,28 +363,19 @@ var loadPathwayDiagram = function(container,json) {
   var drag = d3.drag()
              .on("start",function() {
                eventStart = d3.mouse(this);
-               moveablePath = d3.selectAll("path.moveable");
+               moveablePath = d3.selectAll("line.moveable");
                moveablePath.each(function (dd) {
-                 dd.origStart = {x: dd.startX, y: dd.startY};
-                 dd.origEnd = {x: dd.endX, y: dd.endY};
+                 dd.origStart = {x: dd.x1, y: dd.y1};
+                 dd.origEnd = {x: dd.x2, y: dd.y2};
                });
              })
              .on("drag",function(d) {
                d.x = d3.event.x;
                d.y = d3.event.y;
                var mouse = d3.mouse(this);
-               d3.select(this).attr("transform","translate("+d.x+","+d.y+")");
-               moveablePath.each(function(dd) {
-                 if (!d.id || (""+d.id).split(":").indexOf(""+dd.sourceId) === -1) return;
-                 dd.startX += mouse[0]-eventStart[0]; dd.startY += mouse[1]-eventStart[1];
-                 d3.select(this).attr("d",lineFunction(dd));
-               });
-               moveablePath.each(function(dd) {
-                 if (!d.id || (""+d.id).split(":").indexOf(""+dd.targetId) === -1) return;
-                 dd.endX += mouse[0]-eventStart[0]; dd.endY += mouse[1]-eventStart[1];
-                 d3.select(this).attr("d",lineFunction(dd));
-                 setSvgElementDimensions(svgContainer);
-               });
+               d3.select(this).attr("transform","translate("+(d.x-d.baseX)+","+(d.y-d.baseY)+")");
+               refreshPositions();
+               setSvgElementDimensions(svgContainer);
              });
 
 
@@ -465,9 +385,7 @@ var loadPathwayDiagram = function(container,json) {
                                          .style("font-family", fontAttrs.family)
                                          .style("color", fontAttrs.color);
 
-  //console.log(JSON.stringify(json));
-
-
+  
   // defs: arrowheads, dropshadows
   var refX = 7;
   var refY = 2.5;
@@ -531,6 +449,16 @@ var loadPathwayDiagram = function(container,json) {
                                 .append("g")
                                 .attr("id",function(d) { return d.id});
 
+  // for testing. Draw a ruler
+  //masterGroup.append('line')
+              //.attr('id','ruler')
+              //.attr('x1','10')
+              //.attr('y1','10')
+              //.attr('x2','60')
+              //.attr('y2','10')
+              //.attr('stroke','red')
+              //.attr('stroke-width','2');
+
   // and a div for the tooltip
   var tooltipDiv = d3.select("body")
                      .append("div")
@@ -547,17 +475,20 @@ var loadPathwayDiagram = function(container,json) {
     // each group has up to 3 members. This will generate a name
     // that is unique enough
     var thisId = d[0] + ":" + d[1] + ":" + d[2];
-    containerData.push({"id":thisId,"x":0,"y":0});
+    containerData.push({"id":thisId});
     d.forEach( function(e) { parents[e] = thisId; });
   });
-  // and insert them
-  masterGroup.selectAll("g")
+
+  // and insert them. This is initially unpositioed.
+  // we'll position it as we populate it with the elements
+  var nodeGroups = masterGroup.selectAll("g")
               .data(containerData)
               .enter()
               .append("g")
-              .attr("id",function(d){return "mastergroup-" + d.id; })
-              .attr("transform","translate(0,0)");
+              .attr("id",function(d){return d.id; })
+              .attr("class","moveable")
 
+  var processedGroups = [];
   json.nodes.forEach( function(d) {
 
     // every node is already part of a group, even if the
@@ -568,13 +499,21 @@ var loadPathwayDiagram = function(container,json) {
     var parentGroup = masterGroup.selectAll("g")
                                  .filter(function(dd){return dd.id === parentGroupId;});
 
+    // if the type of the node is "reaction" or "link", the location
+    // of this node is the anchor point for the group. This is where
+    // the line goes to.
+    if ( d.type === 'link' || d.type == 'reaction') {
+      // we'll keep track of both the original (x,y) and current (x,y)
+      parentGroup.each(function(e) { e.x = 5*d.x; e.y = 15*d.y ; e.baseX = e.x; e.baseY = e.y} );
+    }
+
     // each node has a rectangle and text. These will be their own group one level lower.
     var nodeGroup = parentGroup.selectAll("g")
                                .filter(function(dd) { return dd.id === d.id; })
-                               .data([{id:d.id}])
+                               .data([{id:d.id,x:5.*d.x,y:15.*d.y}])
                                .enter()
                                .append("g")
-                               .attr("id", "g-" + d.id);
+                               .attr("id", d.id);
 
     // put a rectangle in the group, and with tooltip if it's a reaction
     nodeGroup.selectAll("rect")
@@ -584,7 +523,7 @@ var loadPathwayDiagram = function(container,json) {
                .attr("id", "rect-" + d.id)
                .attr("class","rect no-display")
                .attr("x", 5*d.x)
-	       .attr("y", 15*d.y);
+               .attr("y", 15*d.y);
 
     // and the text holder, with a tooltip that will show up if it's in the data
     nodeGroup.selectAll("text")
@@ -598,34 +537,34 @@ var loadPathwayDiagram = function(container,json) {
                    return 5 * d.xCoor;
                  }
                  return 5*d.xCoor + 10;
-               })
+                 })
                .attr("y", function(d){
                  if (d.labelHeight === 1) {
                    return 15 * d.yCoor + 8;
                  } else if (d.type === "reaction" && ( d.genes.length + d.ecs.length > 3)) {
-		   return 15 * (d.yCoor - 1.5);
-		 }
+                   return 15 * (d.yCoor - 1.5);
+                 }
                  return 15 * d.yCoor;
-               })
+                 })
                .attr("text-anchor", function(d){
                  if (d.type === "link") {
                    return "beginning";
                  }
                  return "end";
-               })
+                 })
                .attr("text-anchor",(d.type==="input"||d.type==="output")?"beginning":"end")
                .attr("alignment-baseline","middle")
                .attr("class", function(dd){
                  if (dd.type === "reaction") {
-                   return "label reaction";
+                   return "reaction";
                  }
                  return "label";
-               })
+                 })
               .on("mouseover",function() {
                 if ( d.tooltip ) {
                   tooltipDiv.html("<span id='tooltip-text'>" + d.tooltip + "</span>" +
                   "<span id='dismiss-text'>X</span>");
-		  var coords = getCoords(this);
+                  var coords = getCoords(this);
                   var yloc = coords.top - 60;
                   var xloc = coords.midX - 50;
 
@@ -643,7 +582,7 @@ var loadPathwayDiagram = function(container,json) {
                     .style("opacity",0)
                     .style("display", "none")});;
                 }
-	      });
+           });
 
   });
 
@@ -654,7 +593,7 @@ var loadPathwayDiagram = function(container,json) {
                    .duration(500)
                    .style("opacity", 0)
                    .style("display", "none");
-	      });
+           });
 
   // the zoom handler
 
@@ -662,25 +601,13 @@ var loadPathwayDiagram = function(container,json) {
                       .scaleExtent([.512, 1.953125])
                       .on("zoom",function() {
                            var transform = d3.zoomTransform(this);
-			                     masterGroup.attr("transform", "translate(30, 10) scale(" + transform.k + ")");
-   	                       setSvgElementDimensions(svgContainer);
+                                    masterGroup.attr("transform", "translate(30, 10) scale(" + transform.k + ")");
+                               setSvgElementDimensions(svgContainer);
                            setFlex();
-   	                   });
+                           });
 
-  // install the zoom handler on the zoom buttons
 
-  d3.select("#zoom-in").on("click", function() {
-	  zoomDiagram.scaleBy(svgContainer, 1.25);
-      });
-
-  d3.select("#zoom-out").on("click", function() {
-	  zoomDiagram.scaleBy(svgContainer, 0.8);
-      });
-
-  // install a drag handler for every group inside the master group that has an 'id'
-  masterGroup.selectAll("g").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
-
-  d3.selectAll("text.label").each(insertLineBreaks);
+  d3.selectAll("text.label").each(renderLabels);
   d3.selectAll("text.reaction").each(labelReactions);
   d3.selectAll("text.reaction").each(extractMenuItems);
 
@@ -691,68 +618,66 @@ var loadPathwayDiagram = function(container,json) {
   // use the origStart and origEnd objects to limit the firing of these.
 
   function lineFunction(f) {
-    if ((f.startX === f.endX) || (f.startY === f.endY)) {
+    // rules for drawing lines between reactions and linking reaction products
+    if ((f.x1 === f.x2) || (f.y1 === f.y2)) {
       // where either start and end values on either axis is identical
-      return "M" + f.startX + "," + f.startY +
-             "L" + f.endX + "," + f.endY;
+      return "M" + f.x1 + "," + f.y1 +
+             "L" + f.x2 + "," + f.y2;
       // return a straight line between start and end points
-    } else if ((f.endX > f.startX) && (f.endY > f.startY)) {
+    } else if ((f.x2 > f.x1) && (f.y2 > f.y1)) {
       // where the end values on both axes are greater than the start values
-      return "M" + f.startX + "," + f.startY +
-             "L" + f.endX + "," + f.startY +
-             "L" + f.endX + "," + f.endY;
-      // return a line that runs right on the x-axis to the endX point, turns +90deg and runs to the endY point
+      return "M" + f.x1 + "," + f.y1 +
+             "L" + f.x2 + "," + f.y1 +
+             "L" + f.x2 + "," + f.y2;
+      // return a line that runs right on the x-axis to the x2 point, turns +90deg and runs to the y2 point
     } else {
-      return "M" + f.startX + "," + f.startY +
-             "L" + f.startX + "," + f.endY +
-             "L" + f.endX + "," + f.endY;
-      // return a line that runs on the y-axis to the endY point, turns +90 deg and runs to the endX point
+      return "M" + f.x1 + "," + f.y1 +
+             "L" + f.x1 + "," + f.y2 +
+             "L" + f.x2 + "," + f.y2;
+      // return a line that runs on the y-axis to the y2 point, turns +90 deg and runs to the x2 point
     }
   }
 
   function inputArcFunction(f) {
-    var str = "M"+f.startX+","+f.startY+
-              " A"+Math.abs(f.startX-f.endX)+"," +
-              Math.abs(f.startY-f.endY)+" 0 0 0 "+
-              f.endX+","+f.endY;
+    // how to draw an arc for an input compound
+    var str = "M"+f.x1+","+f.y1+
+              " A"+Math.abs(f.x1-f.x2)+"," +
+              Math.abs(f.y1-f.y2)+" 0 0 0 "+
+              f.x2+","+f.y2;
     return str;
   }
 
   function outputArcFunction(f) {
-    var str = "M"+f.startX+","+f.startY+
-              " A"+Math.abs(f.startX-f.endX)+","+
-              Math.abs(f.startY-f.endY)+" 0 0 0 "+
-              f.endX+","+f.endY;
+    // how to draw an arc for an output compound
+    var str = "M"+f.x1+","+f.y1+
+              " A"+Math.abs(f.x1-f.x2)+","+
+              Math.abs(f.y1-f.y2)+" 0 0 0 "+
+              f.x2+","+f.y2;
     return str;
   }
 
   // create links.
+  // This data structure is what we're going to pass to the force layout
+  var forceLinkData = [];
   json.links.forEach( function(d) {
-    // source/target/input/output nodes.
+    // source and target
     // at this point we don"t know what we have.
     var source = masterGroup.selectAll("rect").filter(function(dd){ return dd.id===d.source;});
     var target = masterGroup.selectAll("rect").filter(function(dd){ return dd.id===d.target;});
-    var input = masterGroup.selectAll("rect").filter(function(dd){ return dd.id===d.input;});
-    var output = masterGroup.selectAll("rect").filter(function(dd){ return dd.id===d.output;});
+    var type = d.type;
 
-    // the path is inside the top level group.
-    // but we want to include the id"s of the groups that this line touches.
-    var touchedGroups = [];
-    source.data().forEach(function(dd) { touchedGroups.push(dd.groupId); });
-    target.data().forEach(function(dd) { touchedGroups.push(dd.groupId); });
-    input.data().forEach(function(dd) { touchedGroups.push(dd.groupId); });
-    output.data().forEach(function(dd) { touchedGroups.push(dd.groupId); });
-    if (source.size() === 0 && input.size() === 1) {
-      var thisGroup = masterGroup.selectAll("g").filter(function(ddd) { return ddd.id===parents[d.input]; });
-      thisGroup.selectAll("path").data([{"id":d.input+":"+d.target,
-                                         "sourceId":d.input,
-                                         "targetId":d.target,
-                                         "startX":parseInt(input.attr("x"))+5,
-                                         "startY":parseInt(input.attr("y"))+5,
-                                         "endX":parseInt(target.attr("x"))+5,
-                                         "endY":parseInt(target.attr("y"))+5,
-                                         "touchedGroups":touchedGroups }],
-                                         function(dd){return dd.id===d.input+":"+d.target;})
+    if (type === 'input') {
+      // draw an arc with arrow for inputs.
+      var thisGroup = masterGroup.selectAll("g")
+                                 .filter(function(ddd) { return ddd.id===parents[d.source]; });
+      thisGroup.selectAll("path").data([{"id":d.source+":"+d.target,
+                                         "source":d.source,
+                                         "target":d.target,
+                                         "x1":parseInt(source.attr("x"))+5,
+                                         "y1":parseInt(source.attr("y"))+5,
+                                         "x2":parseInt(target.attr("x"))+5,
+                                         "y2":parseInt(target.attr("y"))+5 }],
+                                         function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
                                          .append("path")
                                          .attr("d",inputArcFunction)
@@ -760,17 +685,18 @@ var loadPathwayDiagram = function(container,json) {
                                          .style("stroke-width", pathAttrs.strokeWidth)
                                          .style("fill", pathAttrs.fill);
 
-    } else if (target.size() === 0 && output.size() === 1) {
-      thisGroup = masterGroup.selectAll("g").filter(function(ddd) { return ddd.id===parents[d.output]; });
-      thisGroup.selectAll("path").data([{"id":d.source+":"+d.output,
-                                         "sourceId":d.source,
-                                         "targetId":d.output,
-                                         "startX":parseInt(source.attr("x"))+5,
-                                         "startY":parseInt(source.attr("y"))+5,
-                                         "endX":parseInt(output.attr("x"))+5,
-                                         "endY":parseInt(output.attr("y"))+5,
-                                         "touchedGroups":touchedGroups }],
-                                         function(dd){return dd.id===d.source+":"+d.output;})
+    } else if (type === 'output') {
+      // draw an arc with arrow for inputs.
+      var thisGroup = masterGroup.selectAll("g")
+                                 .filter(function(ddd) { return ddd.id===parents[d.source]; });
+      thisGroup.selectAll("path").data([{"id":d.source+":"+d.target,
+                                         "source":d.source,
+                                         "target":d.output,
+                                         "x1":parseInt(source.attr("x"))+5,
+                                         "y1":parseInt(source.attr("y"))+5,
+                                         "x2":parseInt(target.attr("x"))+5,
+                                         "y2":parseInt(target.attr("y"))+5 }],
+                                         function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
                                          .append("path")
                                          .style("stroke", pathAttrs.stroke)
@@ -778,34 +704,72 @@ var loadPathwayDiagram = function(container,json) {
                                          .style("fill", pathAttrs.fill)
                                          .attr("marker-end","url(#n_degree_arrowend)")
                                          .attr("d",outputArcFunction);
-    } else if (source.size() === 1 && target.size() === 1) {
-      // default: a straight line
-      masterGroup.selectAll("path").data([{"id":d.source+":"+d.target,
-                                         "sourceId":d.source,
-                                         "targetId":d.target,
-                                         "startX":parseInt(source.attr("x"))+5,
-                                         "startY":parseInt(source.attr("y"))+5,
-                                         "endX":parseInt(target.attr("x"))+5,
-                                         "endY":parseInt(target.attr("y"))+5,
-                                         "touchedGroups":touchedGroups}],
-                                         function(dd){return dd.id===d.source+":"+d.target;}).enter().append("path")
-                                         .attr("class","moveable")
-                                         .attr("marker-end", function(d) {
-                                           var type = json.nodes.filter(function(x){return x.id === d.targetId;})[0].type;
-                                           if (type === "link") return "url(#arrowend)";
-                                           return "";
-                                         })
-                                         .style("stroke", pathAttrs.stroke)
-                                         .style("stroke-width", pathAttrs.strokeWidth)
-                                         .style("fill", pathAttrs.fill)
-                                         .attr("d",lineFunction);
+    } else if (type === 'link') {
+      // a movable line
+      forceLinkData.push( {"id":parents[d.source]+'->'+parents[d.target], "source":parents[d.source],"target":parents[d.target] } );
     }
 
   });
 
+  var link = masterGroup.append("g").selectAll("line")
+                                    .data(forceLinkData)
+                                    .enter()
+                                    .append("line")
+                                    .attr("marker-end","url(#arrowend)")
+                                    .attr('stroke-width',pathAttrs.strokeWidth)
+                                    .attr('stroke',pathAttrs.stroke)
+                                    .attr('class','moveable');
+
   // discover how large the svg is and explicitly set it on the root <svg> node
   setSvgElementDimensions(svgContainer);
 
+  // initiate the layout.
+  simulation = d3.forceSimulation()
+                     .force("link", d3.forceGridLink())
+                     .force("collision", d3.forceGridCollision())
+                     .force("gravity",d3.forceGravity())
+                     ;
+
+  simulation.force("link").distance(100).strength(1).id(function (d) { return d.id;});
+  simulation.force("collision").strength(1);
+  simulation.force("collision").exclude(forceLinkData);
+  simulation.force("collision").distanceX(200).distanceY(75);
+  simulation.force("gravity").strengthY(function(d) { return 10*d.y/svgContainer.attr('height');} );
+
+  simulation.nodes(containerData).on("tick", refreshPositions);
+  simulation.force("link").links(forceLinkData);
+
+  simulation.on('end',function() {
+    // install the zoom handler on the zoom buttons
+    d3.select("#zoom-in").on("click", function() {
+         zoomDiagram.scaleBy(svgContainer, 1.25);
+        });
+    d3.select("#zoom-out").on("click", function() {
+         zoomDiagram.scaleBy(svgContainer, 0.8);
+        });
+    // install a drag handler for every group inside the master group that has an 'id'
+    masterGroup.selectAll("g.moveable").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
+
+    // development. remove for production
+    svgContainer.on('mousemove', function() { console.log("Mouse is at "+d3.mouse(this)); });
+
+
+   });
+
+  function refreshPositions() {
+    simulation.force("gravity").strengthY(function(d) { return 10*d.y/svgContainer.attr('height');} );
+    link
+        .attr("x1", function(d) { return d.source.x+5; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x+5; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    nodeGroups
+        .attr('transform',function (d) { return 'translate ('+(d.x-d.baseX)+','+(d.y-d.baseY)+')';});
+
+    setSvgElementDimensions(svgContainer);
+
+   }
 };
 
 
@@ -863,10 +827,10 @@ var showCoefficientsOfVariation = function(table) {
             return dd.gene && dd.gene.match(d.content); })
           .each( function (e) {
             var target = d3.select(this)
-		           .style("color", function () { return colorScale(d.coeffVar)})
+                     .style("color", function () { return colorScale(d.coeffVar)})
           });
 
-	});
+     });
 };
 
 
@@ -920,7 +884,6 @@ var flattenJson = function(data) {
 
 var getMinMaxFpkm = function(data) {
   var flattenedData = flattenJson(data);
-  // console.log(flattenedData);
   var fpkmArr = [];
   for (var key in flattenedData) {
     if (flattenedData.hasOwnProperty(key) && /fpkm/.test(key)) {
@@ -945,13 +908,10 @@ var setColorScale = function(minMaxVal, minMaxColors) {
 };
 
 var doLinkout = function(n) {
-  console.log("doing linkout "+n);
   window.open(n,"_blank");
 };
 
 var makeBarplot = function (d, geneData, colorScale) {
-    // console.log(splits)
-    // console.log(splits.topHorizontal.getSizes());
 
     var plotType = d.plotType;
     var data = [];
@@ -985,8 +945,6 @@ var makeBarplot = function (d, geneData, colorScale) {
     var heightWMaxBand = 25 * data.length * 1.333333;
     var heightWMinBand = 15 * data.length * 1.333333;
 
-    //console.log(containerHeight, heightWMinBand, heightWMaxBand);
-
     var plotHeight;
     var svgHeight;
     var yOffset = margin.top;
@@ -1013,7 +971,6 @@ var makeBarplot = function (d, geneData, colorScale) {
     var y = d3.scaleBand().rangeRound([0, plotHeight]).padding(0.25);
 
 
-    // console.log('containerHeight:', containerHeight, 'plotHeight:', plotHeight, 'containerWidth:', containerWidth, 'width:', width);
 
     // x.domain(data.map(function(d) { return d.name; }));
     // y.domain([0, minMaxFkpm[1]]);
@@ -1120,8 +1077,8 @@ var getHtmlElementDimensions = function (element) {
 
 var mean = function (data){
     var sum = data.reduce(function(sum, value){
-	    return sum + value;
-	}, 0);
+         return sum + value;
+     }, 0);
 
     return sum / data.length;
 };
@@ -1130,10 +1087,10 @@ var standardDeviation = function (values){
     var avg = mean(values);
 
     var squareDiffs = values.map(function(value){
-	    var diff = value - avg;
-	    var sqrDiff = diff * diff;
-	    return sqrDiff;
-	});
+         var diff = value - avg;
+         var sqrDiff = diff * diff;
+         return sqrDiff;
+     });
 
     var avgSquareDiff = mean(squareDiffs);
 
@@ -1162,19 +1119,19 @@ var setInitialGraphInfo = function (){
                       .classed("initial-info", true)
                       .html('<div class="flexed" id="how-to-info">' +
                               "<h3>How-to</h3>" +
-  			                      "<h4>Gene and EC labels</h4>" +
-  			                      "<ul>" +
-    			                      "<li>Hover over a gene or ec label in the diagram to see it highlighted in the table and vice versa.</li>" +
-                      			    "<li>Left click to have that highlighting persist.</li>" +
-                    			    "</ul>" +
-                    			    "<h4>Expression experiment data</h4>" +
-                    			    "<ul>" +
-                      			     "<li>Tabular data expresses FPKM values in a heat map across conditions.</li>" +
-                      			     "<li>Right click on a gene or condition label to see a context menu.</li>" +
-                      			     "<li>For genes, context menus have links to reports in Phytozome, Phytomine and JBrowse. Both gene and condition context menus have options to get a bar plot of expression levels.</li>" +
-                    			    "</ul>" +
+                                       "<h4>Gene and EC labels</h4>" +
+                                       "<ul>" +
+                                         "<li>Hover over a gene or ec label in the diagram to see it highlighted in the table and vice versa.</li>" +
+                                         "<li>Left click to have that highlighting persist.</li>" +
+                                       "</ul>" +
+                                       "<h4>Expression experiment data</h4>" +
+                                       "<ul>" +
+                                          "<li>Tabular data expresses FPKM values in a heat map across conditions.</li>" +
+                                          "<li>Right click on a gene or condition label to see a context menu.</li>" +
+                                          "<li>For genes, context menus have links to reports in Phytozome, Phytomine and JBrowse. Both gene and condition context menus have options to get a bar plot of expression levels.</li>" +
+                                       "</ul>" +
                             "</div>"
-                  			    );
+                                     );
 
       d3.select("#get-info")
         .classed("no-display", true);
@@ -1253,8 +1210,6 @@ var loadExpressionTable = function(initialContainer, rawJson) {
       ec[e.gene] = e.enzyme;
     });
 
-    // console.log ('d', d, 'geneData', geneData, 'sampleNames', sampleNames, 'ec', ec)
-
     // find minimum and maximum fpkm values for the experiment for setting a color scale.
     var minMaxFkpm = getMinMaxFpkm(d);
     var colorScale = setColorScale(minMaxFkpm, [expTableAttrs.minFkpmColor, expTableAttrs.maxFkpmColor]);
@@ -1309,22 +1264,21 @@ var loadExpressionTable = function(initialContainer, rawJson) {
 
       var lookup = {};
       var fpkmArr = []
-      // console.log(geneName, d.genes, gene)
       // hash the results, also make an array of the fpkms
       gene.samples.forEach( function(e) {
-	      lookup[e.sample] = e.fpkm;
-	      fpkmArr.push(parseFloat(e.fpkm));
+           lookup[e.sample] = e.fpkm;
+           fpkmArr.push(parseFloat(e.fpkm));
       });
 
       var coeffVar = coefficientOfVariation(fpkmArr);
 
       var cols = [{ content: gene.enzyme,
-       			        class: "ec highlighter table",
-       			        baseColor: ecLabelAttrs.tableColor,
-       			        highlightedColor: ecLabelAttrs.highlightedColor },
+                              class: "ec highlighter table",
+                              baseColor: ecLabelAttrs.tableColor,
+                              highlightedColor: ecLabelAttrs.highlightedColor },
                   { class: "highlighter table gene",
                     content: geneName,
-              		  coeffVar: coeffVar,
+                          coeffVar: coeffVar,
                     experiment: d.idName,
                     experimentDisplayName: d.group,
                     baseColor: geneLabelAttrs.tableColor,
@@ -1395,66 +1349,66 @@ var setDiagramEventHandlers = function () {
 
   d3.selectAll(".reaction-control")
     .on("click", function(d){
-	    var parent = d3.select(this.parentNode);
-	    var previousUncle = d3.select(this.parentNode.previousSibling); // the rect to be used as a background, text's previous sibling
-	    var masterGroup= this.parentNode.parentNode.parentNode; // (this = tspan) > text > g > g-mastergroup
+         var parent = d3.select(this.parentNode);
+         var previousUncle = d3.select(this.parentNode.previousSibling); // the rect to be used as a background, text's previous sibling
+         var masterGroup= this.parentNode.parentNode.parentNode; // (this = tspan) > text > g > g-mastergroup
 
-	    var toggled = parent.selectAll(".hidable")
-	          .classed("no-display", function (dd, i) {
-			  return !d3.select(this).classed("no-display");
-		   })
+         var toggled = parent.selectAll(".hidable")
+               .classed("no-display", function (dd, i) {
+                 return !d3.select(this).classed("no-display");
+             })
 
-	    toggled.attr("dy", function (dd){
-		 	  var el = d3.select(this);
-		 	  if (el.classed("no-display reaction-control")) {
-		 	     return "0em";
-		 	  }
-		 	  return "1em";
-		 });
+         toggled.attr("dy", function (dd){
+                  var el = d3.select(this);
+                  if (el.classed("no-display reaction-control")) {
+                     return "0em";
+                  }
+                  return "1em";
+           });
 
-	    previousUncle.classed("no-display", function (dd, i) {
-			  return !d3.select(this).classed("no-display");
-		});
+         previousUncle.classed("no-display", function (dd, i) {
+                 return !d3.select(this).classed("no-display");
+          });
 
-	    var parentDimensions = getSvgElementDimensions(parent); // values after the click
+         var parentDimensions = getSvgElementDimensions(parent); // values after the click
 
-	    if (previousUncle.classed("no-display")) {
-		previousUncle.attr("height", parentDimensions.height)
-		    .attr("width", parentDimensions.width)
-		    .attr("x", parentDimensions.x)
-		    .attr("y", parentDimensions.y)
-		    .attr("fill", "#fff")
-		    .style("filter", null);
-	    } else {
-		previousUncle.attr("x", parentDimensions.x - 8)
-		    .attr("y", parentDimensions.y - 5)
-		    .attr("height", parentDimensions.height + 10)
-		    .attr("width", parentDimensions.width + 10)
-		    .attr("fill", "#fff")
-		    .style("filter", "url(#dropshadow)");
+         if (previousUncle.classed("no-display")) {
+          previousUncle.attr("height", parentDimensions.height)
+              .attr("width", parentDimensions.width)
+              .attr("x", parentDimensions.x)
+              .attr("y", parentDimensions.y)
+              .attr("fill", "#fff")
+              .style("filter", null);
+         } else {
+          previousUncle.attr("x", parentDimensions.x - 8)
+              .attr("y", parentDimensions.y - 5)
+              .attr("height", parentDimensions.height + 10)
+              .attr("width", parentDimensions.width + 10)
+              .attr("fill", "#fff")
+              .style("filter", "url(#dropshadow)");
 
-		    // put the masterGroup containing the reaction as the last element in the diagram, i.e. as the top layer
-		    putAsTopLayer(masterGroup);
-	    }
+              // put the masterGroup containing the reaction as the last element in the diagram, i.e. as the top layer
+              putAsTopLayer(masterGroup);
+         }
 
-	    // reset the pathway diagram's size;
-	    setSvgElementDimensions(d3.select("#pathway-svg"));
+         // reset the pathway diagram's size;
+         setSvgElementDimensions(d3.select("#pathway-svg"));
     });
 
     // d3.selectAll(".reaction.label")
     //   .on("mouseover", function(d) {
 
-    // 	    var parent = d3.select(this.parentNode);
-    // 	    var previousUncle = d3.select(this.parentNode.previousSibling); // the rect to be used as a background, text's previous sibling
-    // 	    var parentDimensions = getElementDimensions(parent);
-    // 	    previousUncle.attr("height", parentDimensions.height)
-    // 		.attr("width", parentDimensions.width)
-    // 		.attr("x", parentDimensions.x)
-    // 		.attr("y", parentDimensions.y)
-    // 		.attr("fill", "#fff");
+    //          var parent = d3.select(this.parentNode);
+    //          var previousUncle = d3.select(this.parentNode.previousSibling); // the rect to be used as a background, text's previous sibling
+    //          var parentDimensions = getElementDimensions(parent);
+    //          previousUncle.attr("height", parentDimensions.height)
+    //           .attr("width", parentDimensions.width)
+    //           .attr("x", parentDimensions.x)
+    //           .attr("y", parentDimensions.y)
+    //           .attr("fill", "#fff");
 
-    // 	    var masterGroup= this.parentNode.parentNode; // (this = text > g > g-mastergroup
-    // 	    putAsTopLayer(masterGroup);
+    //          var masterGroup= this.parentNode.parentNode; // (this = text > g > g-mastergroup
+    //          putAsTopLayer(masterGroup);
     // });
 
 };
@@ -1473,7 +1427,7 @@ var setExpressionEventHandlers = function () {
       .each( function (e) {
         d3.select(this).classed("highlighted", function (dd, i) {
                                 return !d3.select(this).classed("highlighted");})
-	        .classed("clicked", clicked);
+             .classed("clicked", clicked);
       })
   };
 
@@ -1482,11 +1436,11 @@ var setExpressionEventHandlers = function () {
     .on("mouseover", function(d) {
        var el = d3.select(this);
        if ( ! el.classed("clicked")) {
-	        setColor(el, d.content, false);
+             setColor(el, d.content, false);
        }})
     .on("mouseout", function(d) {
        if ( ! d3.select(this).classed("clicked")) {
-	        setColor(d3.select(this), d.content, false);
+             setColor(d3.select(this), d.content, false);
        }})
     .on("click", function(d) {
        d3.selectAll(".highlighter")
@@ -1508,3 +1462,4 @@ var setExpressionEventHandlers = function () {
 
 //module.exports.loadPathway = loadPathway;
 //module.exports.loadExpressionTable = loadExpressionTable;
+//# sourceURL=pathway.js

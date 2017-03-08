@@ -202,7 +202,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         }
         xPlace.put(Integer.valueOf(i),xPlacement);
         // another gap
-        xPlacement += 10;
+        xPlacement += 5;
         xPlace.put(Integer.valueOf(i+1),xPlacement);
         if (maxWidth.containsKey(Integer.valueOf(i+1))) {
           xPlacement += maxWidth.get(Integer.valueOf(i+1));
@@ -238,8 +238,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   }
 
   private Integer getHeight(String l) {
-    // the height of a label. Count <br>'s and add 1
-    return new Integer(1 + l.split("<br>").length);
+    // the height of a label. Split on <br>'s and count
+    return new Integer(l.split("<br>").length);
   }
 
   private Integer getWidth(String l) {
@@ -248,11 +248,15 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     String[] lines = l.split("<br>");
     if (lines.length == 1) {
       int width = 0;
-      // remove all html tags and sum of the # of characters
+      // remove all html tags and &<html>; characters and sum of the # of characters
       // this over-estimates the width of html escapes (i.e. &alpha;)
       // and UTF-8, but, meh.
       for( String bit:  lines[0].split("<[^>]*>") ) {
-        width += bit.length();
+        for( String subBit: bit.split("&[^;]+")) {
+          // this splits on "&<everything up to the ;>". Since I'm leaving
+          // the ; there, the number of character is correct
+          width += subBit.length();
+        }
       }
       return new Integer(width);
     } else {

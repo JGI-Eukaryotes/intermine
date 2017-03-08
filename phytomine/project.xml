@@ -353,6 +353,7 @@
 
     <source name="pathologic-pathway-Acoerulea_322" type="biopax-pathway">
       <property name="proteomeId" value="322"/>
+      <property name="shortName" value="A.coerulea" />
       <property name="src.data.dir.includes" value="Acoerulea_322.owl"/>
       <property name="method" value="pathologic"/>
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
@@ -370,7 +371,7 @@
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
     <source name="pathologic-pathway-Ahypochondriacus_315" type="biopax-pathway">
-      <property name="proteomeId" value="315"/>
+      <property name="shortName" value="A. hypochondriacus" />
       <property name="src.data.dir.includes" value="Ahypochondriacus_315.owl"/>
       <property name="method" value="pathologic"/>
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
@@ -388,7 +389,8 @@
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
     <source name="pathologic-pathway-Athaliana_167" type="biopax-pathway">
-      <property name="proteomeId" value="167"/>
+      <property name="shortName" value="A. thaliana"/>
+      <property name="proteomeId" value="167" />
       <property name="src.data.dir.includes" value="Athaliana_167.owl"/>
       <property name="method" value="pathologic"/>
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
