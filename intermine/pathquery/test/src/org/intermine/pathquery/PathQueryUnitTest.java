@@ -16,7 +16,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.intermine.metadata.Model;
-import org.intermine.objectstore.query.ConstraintOp;
+import org.intermine.metadata.ConstraintOp;
 
 public class PathQueryUnitTest extends TestCase
 {
@@ -40,7 +40,7 @@ public class PathQueryUnitTest extends TestCase
         } catch (IllegalArgumentException e) {
         }
         try {
-            PathQuery.checkPathFormat("Department$.employees.name");
+            PathQuery.checkPathFormat("Department$!.employees.name");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
@@ -670,7 +670,7 @@ public class PathQueryUnitTest extends TestCase
             assertEquals("Cannot associate a code with a subclass constraint. Use the addConstraint(PathConstraint) method instead", e.getMessage());
         }
     }
-    
+
     public void testMultiTypeConstraint() throws Exception {
         Model model = Model.getInstanceByName("testmodel");
         PathQuery q = new PathQuery(model);
@@ -678,25 +678,25 @@ public class PathQueryUnitTest extends TestCase
         assertNotNull(q.addConstraint(new PathConstraintMultitype(
                 "Employable", ConstraintOp.ISA, Arrays.asList("Contractor", "Manager"))));
         assertEquals(Collections.EMPTY_LIST, q.verifyQuery());
-        
+
         q.clearConstraints();
         assertTrue(q.isValid());
         q.addConstraint(new PathConstraintMultitype( // Bank cannot be an Employable
                 "Employable", ConstraintOp.ISA, Arrays.asList("Contractor", "Bank")));
         assertTrue(!q.isValid());
-        
+
         q.clearConstraints();
         assertTrue(q.isValid());
         q.addConstraint(new PathConstraintMultitype( // Contractors are not Employees
                 "Employee", ConstraintOp.ISA, Arrays.asList("Contractor", "Manager")));
         assertTrue(!q.isValid());
-        
+
         q.clearConstraints();
         assertTrue(q.isValid());
         q.addConstraint(new PathConstraintMultitype( // No such classes Foo and Bar
                 "Employee", ConstraintOp.ISA, Arrays.asList("Foo", "Bar")));
         assertTrue(!q.isValid());
-        
+
         q.clearConstraints();
         assertTrue(q.isValid());
         q.addConstraint(new PathConstraintMultitype( // Path is an attribute.
@@ -1054,7 +1054,29 @@ public class PathQueryUnitTest extends TestCase
         q.sortConstraints(makeConstraintOrder(b));
         expected = makeConstraintOrder(a, c, b);
         assertEquals(expected, readActualConstraintOrder(q));
-}
+    }
+
+    public void testRangeConstraints() {
+
+        Model model = Model.getInstanceByName("testmodel");
+        PathQuery q = new PathQuery(model);
+        q.addViews("Employee.name");
+        q.addViews("Employee.age");
+        q.addConstraint(new PathConstraintRange("Employee.age", ConstraintOp.WITHIN,
+                Collections.singleton("10..30")));
+
+        String expected = "<query name=\"query\" model=\"testmodel\" view=\"Employee.name Employee.age\" longDescription=\"\"><constraint path=\"Employee.age\" op=\"WITHIN\"><value>10..30</value></constraint></query>";
+        assertEquals(expected, q.toXml());
+        assertTrue(q.isValid());
+
+        q = new PathQuery(model);
+        q.addViews("Employee.name");
+        q.addViews("Employee.age");
+        q.addConstraint(new PathConstraintRange("Employee.age", ConstraintOp.OUTSIDE,
+                Collections.singleton("10..30")));
+        assertTrue(q.isValid());
+
+    }
 
     private List<PathConstraint> makeConstraintOrder(PathConstraint... cons) {
         ArrayList<PathConstraint> expected = new ArrayList<PathConstraint>();

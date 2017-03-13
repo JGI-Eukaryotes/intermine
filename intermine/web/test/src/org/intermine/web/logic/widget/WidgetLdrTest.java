@@ -1,7 +1,7 @@
 package org.intermine.web.logic.widget;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -11,8 +11,8 @@ package org.intermine.web.logic.widget;
  */
 
 import org.intermine.api.profile.InterMineBag;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.objectstore.ObjectStore;
-import org.intermine.objectstore.query.ConstraintOp;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.Query;
@@ -83,7 +83,7 @@ public class WidgetLdrTest extends WidgetConfigTestCase {
 
         widgetLdr.createQueryFieldByPath("department.company.name", q, false);
         assertEquals(query.toString(), q.toString());
-        
+
     }
 
     public void testAddReference() throws ClassNotFoundException {
@@ -110,7 +110,7 @@ public class WidgetLdrTest extends WidgetConfigTestCase {
     public class MokaWidgetLdr extends WidgetLdr
     {
         public MokaWidgetLdr(InterMineBag bag, ObjectStore os, String filter, WidgetConfig config) {
-            super(bag, os, filter, config);
+            super(bag, os, filter, config, null);
         }
 
         public QueryClass getStartQueryClass() {

@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.query;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -12,18 +12,16 @@ package org.intermine.webservice.server.query;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.intermine.api.InterMineAPI;
-import org.intermine.api.profile.InterMineBag;
+import org.intermine.web.context.InterMineContext;
 import org.intermine.webservice.server.Format;
 import org.intermine.webservice.server.WebService;
 import org.intermine.webservice.server.core.ListManager;
-import org.intermine.webservice.server.core.Producer;
-import org.intermine.webservice.server.exceptions.InternalErrorException;
+import org.intermine.webservice.server.exceptions.ServiceException;
 import org.intermine.webservice.server.query.result.PathQueryBuilder;
 import org.intermine.webservice.server.query.result.PathQueryBuilderForJSONObj;
 
@@ -58,13 +56,14 @@ public abstract class AbstractQueryService extends WebService
      */
     public static String getSchemaLocation(HttpServletRequest request) {
         try {
-            String relPath = request.getContextPath() + "/"
-                    + XML_SCHEMA_LOCATION;
-            URL url = new URL(request.getScheme(), request.getServerName(),
-                    request.getServerPort(), relPath);
+            final Properties webProperties = InterMineContext.getWebProperties();
+            String baseUrl = webProperties.getProperty("webapp.baseurl");
+            String path = webProperties.getProperty("webapp.path");
+            String relPath = path + "/" + XML_SCHEMA_LOCATION;
+            URL url = new URL(baseUrl + "/" + relPath);
             return url.toString();
         } catch (MalformedURLException e) {
-            throw new InternalErrorException(e);
+            throw new ServiceException(e);
         }
     }
 

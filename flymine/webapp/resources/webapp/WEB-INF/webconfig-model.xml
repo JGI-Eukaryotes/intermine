@@ -35,6 +35,8 @@
     </fields>
   </class>
 
+
+
   <class className="org.intermine.model.bio.Component">
     <fields>
       <fieldconfig fieldExpr="name"/>
@@ -78,6 +80,18 @@
     <fields>
       <fieldconfig fieldExpr="type"/>
       <fieldconfig fieldExpr="description"/>
+    </fields>
+  </class>
+
+  <class className="org.intermine.model.bio.Complex">
+     <headerconfig>
+      <titles>
+        <title mainTitles="identifier|name"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="identifier"/>
+      <fieldconfig fieldExpr="name"/>
     </fields>
   </class>
 
@@ -134,7 +148,7 @@
       <customlinks>
         <customlink
           url="http://flybase.org/reports/{primaryIdentifier}.html"
-          image="flybase_logo_link.png"
+          image="flybase_logo.jpeg"
         />
       </customlinks>
     </headerconfig>
@@ -150,6 +164,7 @@
     </fields>
     <bagdisplayers>
       <displayer src="friendlyMineLinkDisplayer.tile" showOnLeft="false" />
+      <displayer src="esynListDisplayer.tile" showOnLeft="true" />
    </bagdisplayers>
   </class>
 
@@ -199,18 +214,22 @@
 
   <class className="org.intermine.model.bio.Interaction">
     <fields>
-      <fieldconfig fieldExpr="gene1.symbol" />
-      <fieldconfig fieldExpr="gene2.symbol" />
+      <fieldconfig fieldExpr="participant1.primaryIdentifier" />
+      <fieldconfig fieldExpr="participant2.primaryIdentifier" />
     </fields>
   </class>
 
-  <class className="org.intermine.model.bio.InteractionExperiment">
+
+  <class className="org.intermine.model.bio.InteractionDetail">
     <fields>
+      <fieldconfig fieldExpr="type"/>
+      <fieldconfig fieldExpr="relationshipType"/>
       <fieldconfig fieldExpr="name"/>
-      <fieldconfig fieldExpr="description"/>
+      <fieldconfig fieldExpr="role1"/>
+      <fieldconfig fieldExpr="role2"/>
     </fields>
   </class>
-  
+
   <class className="org.intermine.model.bio.InteractionTerm">
     <fields>
       <fieldconfig fieldExpr="identifier"/>
@@ -689,10 +708,17 @@
                      placement="summary"
                      types="Gene"/>
 
+
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.DiseaseDisplayer"
                      jspName="model/diseaseDisplayer.jsp"
                      replacesFields=""
                      placement="summary"
+                     types="Gene"/>
+
+    <reportdisplayer javaClass="org.intermine.bio.web.displayer.EsynDisplayer"
+                     jspName="model/esynDisplayer.jsp"
+                     replacesFields=""
+                     placement="Interactions"
                      types="Gene"/>
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.ProteinStructureATMDisplayer"
@@ -754,6 +780,9 @@
                       seriesPath="affyCall"
                       seriesValues="Up,Down"
                       seriesLabels="Up,Down"
+                      constraints="presentCall != 0,
+                                   presentCall != 1,
+                                   presentCall != 2"
                       views="genes.secondaryIdentifier,genes.symbol,genes.name,genes.organism.name,
                             tissue.name,enrichment,affyCall,mRNASignal,mRNASignalSEM,presentCall"/>
 
@@ -770,6 +799,9 @@
                       seriesPath="affyCall"
                       seriesValues="Up,Down"
                       seriesLabels="Up,Down"
+                      constraints="presentCall != 0,
+                                   presentCall != 1,
+                                   presentCall != 2"
                       views="material.secondaryIdentifier,material.symbol,material.name,material.organism.name,
                             tissue.name,enrichment,affyCall,mRNASignal,mRNASignalSEM,presentCall"/>
 
@@ -789,7 +821,7 @@
                       constraints="mRNAExpressionResults.dataSet.name=fly-Fish data set"
                       views="primaryIdentifier,secondaryIdentifier,name,organism.name,
                              mRNAExpressionResults.stageRange,mRNAExpressionResults.expressed"/>
-                             
+
 <!--       <graphdisplayer id="mouse_human_orthologue_pair"
                       title="Mouse-human orthologue pair"
                       description="dots would be where there is a mouse-human orthologue pair "
@@ -803,7 +835,7 @@
                       seriesValues=""
                       seriesLabels=""
                       constraints="organism.name=Homo sapiens,homologues.homologue.organism.name=Mus musculus"
-                      views="primaryIdentifier,secondaryIdentifier,name,organism.name"/>        -->                      
+                      views="primaryIdentifier,secondaryIdentifier,name,organism.name"/>        -->
 
       <graphdisplayer id="bdgp"
                       title="BDGP expression patterns"
@@ -879,7 +911,7 @@
                                        goAnnotation.ontologyTerm.identifier, goAnnotation.ontologyTerm.name,
                                        goAnnotation.ontologyTerm.parents.identifier,goAnnotation.ontologyTerm.parents.name"
                                  externalLink="http://amigo.geneontology.org/cgi-bin/amigo/term_details?term="
-                                 correctionCoefficient="org.intermine.bio.web.widget.GeneLenghtCorrectionCoefficient"/>
+                                 correctionCoefficient="org.intermine.bio.web.widget.GeneLengthCorrectionCoefficient"/>
 
       <enrichmentwidgetdisplayer id="prot_dom_enrichment_for_gene"
                                  title="Protein Domain Enrichment"
@@ -887,12 +919,12 @@
                                  label="Protein Domain"
                                  startClass="Gene"
                                  startClassDisplay="primaryIdentifier"
-                                 enrich="proteins.proteinDomains.name"
-                                 enrichIdentifier="proteins.proteinDomains.primaryIdentifier"
+                                 enrich="proteins.proteinDomainRegions.proteinDomain.name"
+                                 enrichIdentifier="proteins.proteinDomainRegions.proteinDomain.primaryIdentifier"
                                  constraints="organism.name=[list]"
                                  typeClass="Gene"
                                  views="secondaryIdentifier,symbol,primaryIdentifier,organism.name,
-                                       proteins.proteinDomains.primaryIdentifier,proteins.proteinDomains.name"
+                                       proteins.proteinDomainRegions.proteinDomain.primaryIdentifier,proteins.proteinDomainRegions.proteinDomain.name"
                                  externalLink="http://www.ebi.ac.uk/interpro/IEntry?ac="/>
 
       <enrichmentwidgetdisplayer id="prot_dom_enrichment_for_protein"
@@ -901,12 +933,12 @@
                                  label="Protein Domain"
                                  startClass="Protein"
                                  startClassDisplay="primaryIdentifier"
-                                 enrich="proteinDomains.name"
-                                 enrichIdentifier="proteinDomains.primaryIdentifier"
+                                 enrich="proteinDomainRegions.proteinDomain.name"
+                                 enrichIdentifier="proteinDomainRegions.proteinDomain.primaryIdentifier"
                                  constraints="organism.name=[list]"
                                  typeClass="Protein"
-                                 views="primaryIdentifier,organism.name,proteinDomains.primaryIdentifier,
-                                       proteinDomains.name"
+                                 views="primaryIdentifier,organism.name,proteinDomainRegions.proteinDomain.primaryIdentifier,
+                                       proteinDomainRegions.proteinDomain.name"
                                  externalLink="http://www.ebi.ac.uk/interpro/entry/"/>
 
 
@@ -936,7 +968,7 @@
                                  views="secondaryIdentifier, symbol, organism.name,
                                        publications.title, publications.firstAuthor,
                                        publications.journal, publications.year, publications.pubMedId"
-                                 externalLink="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=PubMed&amp;dopt=Abstract&amp;list_uids="/>
+                                 externalLink="https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=PubMed&amp;dopt=Abstract&amp;list_uids="/>
 
 
       <enrichmentwidgetdisplayer id="pathway_enrichment"

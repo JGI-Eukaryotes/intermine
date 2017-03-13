@@ -105,22 +105,29 @@ jQuery(document).ready(function() {
   jQuery("p#contactUsLink").toggle();
   });
 
-setOption(['CDN'], 'server', "${WEB_PROPERTIES['head.cdn.location']}");
+if (typeof imtables != "undefined" && typeof imtables != null) {
+    // Make sure IM Tables knows about the host CDN (for code generation)
+    imtables.configure("CDN.server", "${WEB_PROPERTIES['head.cdn.location']}");
+}
 
 if ((typeof intermine != 'undefined') && (intermine.Service != null)) {
     // Set up the service, if required.
-    var root = window.location.protocol + "//" + window.location.host + "/${WEB_PROPERTIES['webapp.path']}";
+    var root = window.location.origin + "/${WEB_PROPERTIES['webapp.path']}";
+
     $SERVICE = new intermine.Service({
         "root": root,
         "token": "${PROFILE.dayToken}",
         "help": "${WEB_PROPERTIES['feedback.destination']}"
     });
-    
+
     var notification = new FailureNotification({message: $SERVICE.root + " is incorrect"});
 
     $SERVICE.fetchVersion().then(reportVersion, notification.render);
-  
-    // Load list widgets.  
+    if (typeof imtables !== 'undefined') {
+        console.debug('Using imtables: ' + (imtables.version || 'UNKNOWN'));
+    }
+
+    // Load list widgets.
     (function() {
       if (window['list-widgets'] != null) {
         // Make sure we have all deps required in `global.web.properties`, otherwise we fail!!!
@@ -128,21 +135,11 @@ if ((typeof intermine != 'undefined') && (intermine.Service != null)) {
         window.widgets = new ListWidgets({ 'root': $SERVICE.root, 'token': $SERVICE.token });
       }
     })();
-    
+
     var ua = jQuery.browser; // kinda evil, but best way to do this for now
     if (ua && ua.msie && parseInt(ua.version, 10) < 9) { // removed in 1.9.1
         new Notification({message: '<fmt:message key="old.browser"/>'}).render();
     }
-}
-
-function setOption (ns, key, val) {
-    var i, step, options = (window.intermine && window.intermine.options);
-    if (!options) return;
-    for (i = 0; i < ns.length; i++) {
-        step = ns[i];
-        options = options[step] || (options[step] = {});
-    }
-    options[key] = val;
 }
 
 function reportVersion (v) {
@@ -164,11 +161,11 @@ $MODEL_TRANSLATION_TABLE = {
 };
 
 <c:if test="${! empty WEB_PROPERTIES['constraint.default.value']}">
-if (typeof intermine != 'undefined') {
-    intermine.scope('intermine.conbuilder.messages', {
-        "ValuePlaceholder": "${WEB_PROPERTIES['constraint.default.value']}",
-        "ExtraPlaceholder": "${WEB_PROPERTIES['constraint.default.extra-value']}"
-    }, true);
+if (typeof imtables != 'undefined' && imtables.setMessages) {
+    imtables.setMessages({
+        "conbuilder.ValuePlaceholder": "${WEB_PROPERTIES['constraint.default.value']}",
+        "conbuilder.ExtraPlaceholder": "${WEB_PROPERTIES['constraint.default.extra-value']}"
+    });
 }
 </c:if>
 

@@ -1,7 +1,7 @@
 package org.intermine.sql;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -31,13 +31,13 @@ import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.ReferenceDescriptor;
+import org.intermine.metadata.StringUtil;
+import org.intermine.metadata.TypeUtil;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.sql.writebatch.BatchWriterPostgresCopyImpl;
 import org.intermine.sql.writebatch.FlushJob;
 import org.intermine.sql.writebatch.TableBatch;
-import org.intermine.util.StringUtil;
-import org.intermine.util.TypeUtil;
 
 /**
  * Collection of commonly used Database utilities
@@ -453,22 +453,55 @@ public final class DatabaseUtil
         "YEAR",
         "ZONE"));
 
+    /**
+     * @author Matthew
+     */
     public enum Type {
+        /**
+         * text
+         */
         text("TEXT"),
+        /**
+         * integer
+         */
         integer("integer"),
+        /**
+         * big int
+         */
         bigint("bigint"),
+        /**
+         * real
+         */
         real("real"),
+        /**
+         * double
+         */
         double_precision("double precision"),
+        /**
+         * timestampe
+         */
         timestamp("timestamp"),
+        /**
+         * boolean
+         */
         boolean_type("boolean"),
+        /**
+         * uuid
+         */
         uuid("uuid");
 
         private final String sqlType;
 
+        /**
+         * @param sqlType set sql type
+         */
         Type(String sqlType) {
             this.sqlType = sqlType;
         }
 
+        /**
+         * @return sql type
+         */
         String getSQLType() {
             return sqlType;
         }
@@ -546,6 +579,10 @@ public final class DatabaseUtil
             if ("TABLE".equals(res.getString(4))) {
                 tablenames.add(tablename);
             }
+            if ("VIEW".equals(res.getString(4))) {
+                LOG.info("Dropping view " + tablename);
+                con.createStatement().execute("DROP VIEW " + tablename);
+            }
         }
         for (String tablename : tablenames) {
             LOG.info("Dropping table " + tablename);
@@ -564,6 +601,19 @@ public final class DatabaseUtil
         LOG.info("Dropping sequence " + sequence);
         con.createStatement().execute("DROP SEQUENCE " + sequence);
     }
+
+    /**
+     * Remove the view from the database given.
+     *
+     * @param con the Connection to the database
+     * @param view the view to remove
+     * @throws SQLException if an error occurs in the underlying database
+     */
+    public static void removeView(Connection con, String view) throws SQLException {
+        LOG.info("Dropping view " + view);
+        con.createStatement().execute("DROP VIEW IF EXISTS " + view);
+    }
+
 
     /**
      * Creates a table name for a class descriptor
@@ -899,6 +949,7 @@ public final class DatabaseUtil
     /**
      * Verify if 'bagvalues' table is empty
      * @param con the Connection to use
+     * @return true if empty
      * @throws SQLException if there is a database problem
      */
     public static boolean isBagValuesEmpty(Connection con)
@@ -907,11 +958,7 @@ public final class DatabaseUtil
         ResultSet result = con.createStatement().executeQuery(sqlCount);
         result.next();
         int bagValuesSize = result.getInt(1);
-        if (bagValuesSize == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return bagValuesSize == 0;
     }
 
     /**
@@ -1022,7 +1069,16 @@ public final class DatabaseUtil
         }
     }
 
-    public static boolean verifyColumnType (Connection con, String tableName, String columnName, int columnType) {
+    /**
+     *
+     * @param con database connection
+     * @param tableName table name
+     * @param columnName column name
+     * @param columnType column type
+     * @return true if column exists
+     */
+    public static boolean verifyColumnType (Connection con, String tableName,
+            String columnName, int columnType) {
         try {
             if (DatabaseUtil.tableExists(con, tableName)) {
                 ResultSet res = con.getMetaData().getColumns(null, null,
@@ -1043,7 +1099,14 @@ public final class DatabaseUtil
         return true;
     }
 
-    public static String getTableDefinition(Database db, ClassDescriptor cd) throws ClassNotFoundException {
+    /**
+     * @param db database
+     * @param cd class descriptor
+     * @return SQL to create table
+     * @throws ClassNotFoundException table isn't in database
+     */
+    public static String getTableDefinition(Database db, ClassDescriptor cd)
+        throws ClassNotFoundException {
         StringBuffer sb = new StringBuffer("CREATE TABLE " + DatabaseUtil.getTableName(cd) + " (");
         boolean needsComma = false;
         for (AttributeDescriptor ad: cd.getAllAttributeDescriptors()) {

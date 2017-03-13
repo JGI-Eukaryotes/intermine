@@ -1,7 +1,7 @@
 package org.intermine.web.logic.widget;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -13,10 +13,11 @@ package org.intermine.web.logic.widget;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.objectstore.ObjectStore;
-import org.intermine.objectstore.query.ConstraintOp;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.Query;
@@ -27,17 +28,23 @@ import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.QueryReference;
 import org.intermine.objectstore.query.QueryValue;
 import org.intermine.pathquery.PathConstraint;
-import org.intermine.util.TypeUtil;
+import org.intermine.metadata.TypeUtil;
 import org.intermine.web.logic.widget.config.EnrichmentWidgetConfig;
 import org.intermine.web.logic.widget.config.GraphWidgetConfig;
 import org.intermine.web.logic.widget.config.WidgetConfig;
 import org.intermine.web.logic.widget.config.WidgetConfigUtil;
 
+/**
+ * The class that performs the actual queries for widgets.
+ * @author Various Artists.
+ *
+ */
 public class WidgetLdr
 {
 
     protected ObjectStore os;
     protected InterMineBag bag;
+    protected String ids;
     protected String filter;
     protected QueryClass startClass;
     private static final Logger LOG = Logger.getLogger(WidgetLdr.class);
@@ -46,15 +53,18 @@ public class WidgetLdr
     protected Map<String, QueryClass> queryClassInQuery = new HashMap<String, QueryClass>();
 
     /**
-     * Constructor initializing intermine bag, the object store and the filter
      * @param bag the intermine bag
      * @param os the object store
      * @param filter the filter
+     * @param config The description of the widget.
+     * @param ids intermine IDs to analyse. required if bag is null
      */
-    public WidgetLdr(InterMineBag bag, ObjectStore os, String filter, WidgetConfig config) {
+    public WidgetLdr(InterMineBag bag, ObjectStore os, String filter, WidgetConfig config,
+        String ids) {
         this.bag = bag;
         this.os = os;
         this.filter = filter;
+        this.ids = ids;
         try {
             startClass = new QueryClass(Class.forName(os.getModel().getPackageName() + "."
                                         + config.getStartClass()));
@@ -80,7 +90,15 @@ public class WidgetLdr
         } else if ("false".equalsIgnoreCase(value)) {
             queryValue = new QueryValue(false);
         } else {
-            queryValue = new QueryValue(value);
+            if (!NumberUtils.isNumber(value)) {
+                queryValue = new QueryValue(value);
+            } else {
+                try {
+                    queryValue = new QueryValue(Integer.parseInt(value));
+                } catch (NumberFormatException nfe) {
+                    queryValue = new QueryValue(Double.parseDouble(value));
+                }
+            }
         }
         return queryValue;
     }
@@ -119,9 +137,19 @@ public class WidgetLdr
     }
 
     /**
-     * Add a contains constraint to Query (q) built with the query class and attribute given in iput
+     * Add a contains constraint to Query (q) built with the query class and attribute given
+     * in input
+     * @param query The query to add a reference to.
+     * @param qc The class the reference belongs to.
+     * @param attribute the name of the field of the class.
+     * @param attributePath Another similarly named field - I wish it had been documented!
+     * @return The query class of the attributePath.
      */
-    protected QueryClass addReference(Query query, QueryClass qc, String attribute, String attributePath) {
+    protected QueryClass addReference(
+            final Query query,
+            final QueryClass qc,
+            String attribute,
+            String attributePath) {
         ConstraintSet cs = (ConstraintSet) query.getConstraint();
         QueryReference qr = null;
         String type = "";
@@ -158,23 +186,24 @@ public class WidgetLdr
                 qcTmp = new QueryClass(TypeUtil.getElementType(qc.getType(), attribute));
             }
         }
+        QueryClass ret;
         if (!queryClassInQuery.containsKey(attributePath)) {
-            qc = qcTmp;
-            query.addFrom(qc);
-            cs.addConstraint(new ContainsConstraint(qr, ConstraintOp.CONTAINS, qc));
-            queryClassInQuery.put(attributePath, qc);
+            ret = qcTmp;
+            query.addFrom(ret);
+            cs.addConstraint(new ContainsConstraint(qr, ConstraintOp.CONTAINS, ret));
+            queryClassInQuery.put(attributePath, ret);
         } else {
-            qc = queryClassInQuery.get(attributePath);
+            ret = queryClassInQuery.get(attributePath);
         }
-        return qc;
+        return ret;
     }
 
     /**
      * Return the path of the attribute at the the position index in the paths given in input
      * without reference to subclass.
-     * @param paths
-     * @param index
-     * @return
+     * @param paths The paths to get from.
+     * @param index The index of the path to get.
+     * @return the path of the attribute at the the position index
      */
     protected String createAttributePath(String[] paths, int index) {
         String partialPath = startClass.getType().getSimpleName();

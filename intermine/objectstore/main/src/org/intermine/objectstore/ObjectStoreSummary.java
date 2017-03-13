@@ -1,7 +1,7 @@
 package org.intermine.objectstore;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -27,11 +27,12 @@ import org.apache.log4j.Logger;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.ReferenceDescriptor;
+import org.intermine.metadata.StringUtil;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
-import org.intermine.objectstore.query.ConstraintOp;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.Query;
@@ -44,7 +45,6 @@ import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SubqueryExistsConstraint;
-import org.intermine.util.StringUtil;
 
 /**
  * A summary of the data in an ObjectStore
@@ -261,6 +261,25 @@ public class ObjectStoreSummary
               }
             }
           }
+        }
+    }
+
+
+    private void countAndStore(ObjectStore os, Model model, ClassDescriptor cld)
+        throws ObjectStoreException {
+        if (!classCountsMap.containsKey(cld.getName())) {
+            int classCount = countClass(os, cld.getType());
+            LOG.info("Adding class count: " + cld.getUnqualifiedName() + " = " + classCount);
+            classCountsMap.put(cld.getName(), new Integer(classCount));
+
+            // if this class is empty all subclasses MUST be empty as well
+            if (classCount == 0) {
+                for (ClassDescriptor subCld : model.getAllSubs(cld)) {
+                    if (!classCountsMap.containsKey(subCld.getName())) {
+                        classCountsMap.put(subCld.getName(), new Integer(classCount));
+                    }
+                }
+            }
         }
     }
 

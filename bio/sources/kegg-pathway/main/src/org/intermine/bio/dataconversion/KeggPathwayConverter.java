@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -49,7 +49,6 @@ public class KeggPathwayConverter extends BioFileConverter
     protected Map<String, Item> pathwaysNotStored = new HashMap<String, Item>();
 
     protected IdResolver rslv;
-    protected static final String HUMAN = "9606";
 
     /**
      * Constructor
@@ -96,10 +95,11 @@ public class KeggPathwayConverter extends BioFileConverter
                 configs[1] = "primaryIdentifier";
                 config.put(organism, configs);
             }
+            String[] bits = config.get(organism);
             if ("taxonId".equals(attributes[1])) {
-                config.get(organism)[0] = value;
+                bits[0] = value;
             } else if ("identifier".equals(attributes[1])) {
-                config.get(organism)[1] = value;
+                bits[1] = value;
             } else {
                 String msg = "Problem processing properties '" + PROP_FILE + "' on line " + key
                     + ".  This line has not been processed.";
@@ -119,8 +119,7 @@ public class KeggPathwayConverter extends BioFileConverter
 
         // init resolver
         if (rslv == null) {
-            Set<String> taxons = new HashSet<String>(taxonIds);
-            rslv = IdResolverService.getIdResolverByOrganism(taxons);
+            rslv = IdResolverService.getIdResolverByOrganism(taxonIds);
         }
 
         while (lineIter.hasNext()) {
@@ -199,7 +198,7 @@ public class KeggPathwayConverter extends BioFileConverter
             int resCount = rslv.countResolutions(taxonId, geneCG);
             if (resCount != 1) {
                 LOG.info("RESOLVER: failed to resolve gene to one identifier, ignoring gene: "
-                         + geneCG + " count: " + resCount + " FBgn: "
+                         + geneCG + " count: " + resCount + " Results: "
                          + rslv.resolveId(taxonId, geneCG));
                 return null;
             }

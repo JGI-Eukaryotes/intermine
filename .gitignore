@@ -13,6 +13,8 @@ executeLog*
 productionLog
 *~
 
+!/intermine/webservice/client/download/dist/
+
 # /intermine/objectstore/main/
 /intermine/objectstore/main/src.png
 /intermine/objectstore/main/src.dot
@@ -198,3 +200,8 @@ malariamine/
 nbproject/
 nb-build.xml
 .idea/
+apache-tomcat*
+prefixed
+failures.list
+*.jks
+biotestmine/project.xml

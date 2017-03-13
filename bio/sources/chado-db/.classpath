@@ -9,6 +9,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/intermine-objectstore-main"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/intermine-objectstore-test"/>
 	<classpathentry kind="src" path="/bio-postprocess-main"/>
-	<classpathentry kind="lib" path="/bio-skeleton-phytomine-dev/dbmodel/build/classes"/>
 	<classpathentry kind="output" path="bin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/intermine-model-test"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/intermine-model-main"/>
 </classpath>

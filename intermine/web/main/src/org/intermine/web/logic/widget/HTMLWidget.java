@@ -1,7 +1,7 @@
 package org.intermine.web.logic.widget;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -22,7 +22,6 @@ import org.intermine.web.logic.widget.config.WidgetConfig;
  */
 public class HTMLWidget extends Widget
 {
-
     /**
      * @param config widget config
      */
@@ -31,12 +30,7 @@ public class HTMLWidget extends Widget
     }
 
     @Override
-    public List<String> getElementInList() {
-        return null;
-    }
-
-    @Override
-    public List<List<String>> getExportResults(@SuppressWarnings("unused") String[] selected)
+    public List<List<String>> getExportResults(String[] selected)
         throws Exception {
         return null;
     }
@@ -57,12 +51,12 @@ public class HTMLWidget extends Widget
     }
 
     @Override
-    public void process() throws Exception {
+    public void process() {
         // nothing to do
     }
 
     @Override
-    public void setNotAnalysed(@SuppressWarnings("unused") int notAnalysed) {
+    public void setNotAnalysed(int notAnalysed) {
         // nothing to do
     }
 
@@ -70,5 +64,4 @@ public class HTMLWidget extends Widget
     public PathQuery getPathQuery() {
         return null;
     }
-
 }

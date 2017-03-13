@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -32,9 +32,7 @@ import org.intermine.model.bio.Organism;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.sql.Database;
-import org.intermine.util.StringUtil;
-import org.intermine.xml.full.Attribute;
-import org.intermine.xml.full.Item;
+import org.intermine.metadata.StringUtil;
 
 /**
  * DataConverter to read from a Chado database into items

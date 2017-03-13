@@ -1,7 +1,7 @@
 package org.intermine.web.logic;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -196,7 +196,7 @@ public final class Constants
      * Current version of the InterMine WebService.
      * This constant must changed every time the API changes, either by addition
      * or deletion of features.
-     * 
+     *
      * 12 - Added ability to filter lists from AvailableListsService
      * 13 - Added ability to serve characterish subsequences
      * 15 - Added jbrowse endpoint.
@@ -204,8 +204,15 @@ public final class Constants
      *      which is now category based by default.
      *    - Added JBrowse-names, simple-data service.
      * 17 - Added jbrowse-config.
+     * 18 - Added display names to the model output.
+     * 19 - Added intermine version
      */
-    public static final int WEB_SERVICE_VERSION = 17;
+    public static final int WEB_SERVICE_VERSION = 19;
+
+    /**
+     * Current version of the InterMine code
+     */
+    public static final String INTERMINE_VERSION = "1.7.1";
 
     /**
      * Key for a Map from class name to Boolean.TRUE for all classes in the model that do not have
@@ -249,4 +256,7 @@ public final class Constants
 
     /** The preference set if the user does not want to be found */
     public static final String HIDDEN = "hidden";
+
+    /** The key under which OAuth2 providers are stored **/
+    public static final String OAUTH2_PROVIDERS = "OAUTH2_PROVIDERS";
 }

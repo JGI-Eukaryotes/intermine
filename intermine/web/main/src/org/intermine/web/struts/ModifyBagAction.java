@@ -1,7 +1,7 @@
 package org.intermine.web.struts;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -13,7 +13,6 @@ package org.intermine.web.struts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
@@ -32,6 +31,8 @@ import org.apache.struts.action.ActionMessage;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.bag.BagOperations;
+import org.intermine.api.bag.ClassKeysNotFoundException;
+import org.intermine.api.bag.UnknownBagTypeException;
 import org.intermine.api.bag.operations.BagOperationException;
 import org.intermine.api.bag.operations.InternalBagOperationException;
 import org.intermine.api.bag.operations.NoContent;
@@ -43,7 +44,7 @@ import org.intermine.api.util.NameUtil;
 import org.intermine.metadata.MetaDataException;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
-import org.intermine.util.StringUtil;
+import org.intermine.metadata.StringUtil;
 import org.intermine.web.logic.session.SessionMethods;
 
 /**
@@ -101,7 +102,7 @@ public class ModifyBagAction extends InterMineAction
     }
 
     // make sure new list name doesn't equal the default example list name
-    private String getNewNameTextBox(HttpServletRequest request, String newBagName) {
+    private static String getNewNameTextBox(HttpServletRequest request, String newBagName) {
         Properties properties = SessionMethods.getWebProperties(request.getSession()
                 .getServletContext());
         String exampleName = properties.getProperty("lists.input.example");
@@ -111,7 +112,8 @@ public class ModifyBagAction extends InterMineAction
         return newBagName;
     }
 
-    private void copy(ActionForm form, HttpServletRequest request) throws ObjectStoreException {
+    private void copy(ActionForm form, HttpServletRequest request) throws UnknownBagTypeException,
+        ClassKeysNotFoundException, ObjectStoreException {
         HttpSession session = request.getSession();
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         Profile profile = SessionMethods.getProfile(session);
@@ -145,7 +147,7 @@ public class ModifyBagAction extends InterMineAction
                 newBagName = NameUtil.generateNewName(allBags.keySet(), selectedBagName);
             }
 
-            if (createBag(origBag, newBagName, profile)) {
+            if (createBag(origBag, newBagName, profile, im)) {
                 recordMessage(new ActionMessage("bag.createdlists", newBagName), request);
                 //track the list creation
                 im.getTrackerDelegate().trackListCreation(origBag.getType(), origBag.getSize(),
@@ -168,7 +170,7 @@ public class ModifyBagAction extends InterMineAction
                 }
 
                 String newBagName = NameUtil.generateNewName(allBags.keySet(), selectedBagName);
-                if (createBag(origBag, newBagName, profile)) {
+                if (createBag(origBag, newBagName, profile, im)) {
                     msg += newBagName + ", ";
                 }
             }
@@ -181,15 +183,13 @@ public class ModifyBagAction extends InterMineAction
         }
     }
 
-    private boolean createBag(InterMineBag origBag, String newBagName, Profile profile)
-        throws ObjectStoreException {
-        // Clone method clones the bag in the database
-        InterMineBag newBag = (InterMineBag) origBag.clone();
-        newBag.setProfileId(profile.getUserId());
-        newBag.setDate(new Date());
-        newBag.setName(newBagName);
+    private static boolean createBag(InterMineBag origBag, String newBagName, Profile profile,
+        InterMineAPI im)
+        throws UnknownBagTypeException, ClassKeysNotFoundException, ObjectStoreException {
+        InterMineBag newBag = profile.createBag(newBagName, origBag.getType(),
+                origBag.getDescription(), im.getClassKeys());
+        newBag.addIdsToBag(origBag.getContentsAsIds(), origBag.getType());
         profile.saveBag(newBagName, newBag);
-        newBag.addBagValues();
         return true;
     }
 
@@ -266,7 +266,7 @@ public class ModifyBagAction extends InterMineAction
         }
     }
 
-    private Collection<InterMineBag> getSelectedBags(Map<String, InterMineBag> allBags,
+    private static Collection<InterMineBag> getSelectedBags(Map<String, InterMineBag> allBags,
             String[] selectedBagNames) {
         Set<InterMineBag> selectedBags = new HashSet<InterMineBag>();
         for (String bagName : selectedBagNames) {
@@ -275,7 +275,7 @@ public class ModifyBagAction extends InterMineAction
         return selectedBags;
     }
 
-    private void delete(ActionForm form, HttpServletRequest request) throws Exception {
+    private static void delete(ActionForm form, HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
         Profile profile = SessionMethods.getProfile(session);
         ModifyBagForm mbf = (ModifyBagForm) form;
@@ -296,21 +296,21 @@ public class ModifyBagAction extends InterMineAction
         }
     }
 
-    private void unshareBag(HttpSession session, Profile profile, InterMineBag bag) {
+    private static void unshareBag(HttpSession session, Profile profile, InterMineBag bag) {
         InterMineAPI api = SessionMethods.getInterMineAPI(session);
         BagManager bm = api.getBagManager();
         bm.unshareBagWithUser(bag, profile);
     }
 
     // Remove a bag from userprofile database and session cache
-    private void deleteBag(HttpSession session, Profile profile,
+    private static void deleteBag(HttpSession session, Profile profile,
             InterMineBag bag) throws ObjectStoreException {
         // removed a cached bag table from the session
         SessionMethods.invalidateBagTable(session, bag.getName());
         profile.deleteBag(bag.getName());
     }
 
-    private ActionForward getReturn(String pageName, ActionMapping mapping) {
+    private static ActionForward getReturn(String pageName, ActionMapping mapping) {
         if (pageName != null && "MyMine".equals(pageName)) {
             return new ForwardParameters(mapping.findForward("mymine"))
                     .addParameter("subtab", "lists").forward();
@@ -324,7 +324,7 @@ public class ModifyBagAction extends InterMineAction
         Map<String, SavedQuery> savedQueries = profile.getHistory();
         Set<String> savedQueriesNames = new HashSet<String>(profile.getHistory().keySet());
         for (String queryName : savedQueriesNames) {
-            SavedQuery query = (SavedQuery) savedQueries.get(queryName);
+            SavedQuery query = savedQueries.get(queryName);
             if (query.getPathQuery().getBagNames().contains(bagName)) {
                 profile.deleteHistory(queryName);
             }
@@ -334,7 +334,7 @@ public class ModifyBagAction extends InterMineAction
         savedQueries = profile.getSavedQueries();
         savedQueriesNames = new HashSet<String>(profile.getSavedQueries().keySet());
         for (String queryName : savedQueriesNames) {
-            SavedQuery query = (SavedQuery) savedQueries.get(queryName);
+            SavedQuery query = savedQueries.get(queryName);
             if (query.getPathQuery().getBagNames().contains(bagName)) {
                 profile.deleteQuery(queryName);
             }

@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -54,7 +54,7 @@ public class BioGridConverterTest extends ItemsTestCase
         converter.close();
 
         // uncomment to write out a new target items file
-        // writeItemsFile(itemWriter.getItems(), "biogrid-tgt-items.xml");
+        //writeItemsFile(itemWriter.getItems(), "biogrid-tgt-items.xml");
 
         Set<org.intermine.xml.full.Item> expected = readItemSet("BioGridConverterTest_tgt.xml");
 

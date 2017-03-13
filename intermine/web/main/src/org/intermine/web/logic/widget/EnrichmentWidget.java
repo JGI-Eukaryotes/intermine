@@ -1,7 +1,7 @@
 package org.intermine.web.logic.widget;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.intermine.api.profile.InterMineBag;
@@ -34,7 +33,6 @@ import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.OrderDirection;
 import org.intermine.pathquery.PathConstraint;
 import org.intermine.pathquery.PathQuery;
-import org.intermine.util.TypeUtil;
 import org.intermine.web.logic.widget.config.EnrichmentWidgetConfig;
 import org.intermine.web.logic.widget.config.WidgetConfig;
 import org.intermine.web.logic.widget.config.WidgetConfigUtil;
@@ -50,38 +48,47 @@ public class EnrichmentWidget extends Widget
     private InterMineBag populationBag;
     private String filter;
     private EnrichmentResults results;
-    private String errorCorrection, max;
+    private String errorCorrection;
+    private double max = 0.05d;
     private boolean extraCorrectionCoefficient = false;
     private CorrectionCoefficient correctionCoefficient = null;
     private EnrichmentWidgetImplLdr ldr;
     private String pathConstraint;
     private ClassDescriptor typeDescriptor;
-
+    private String ids;
+    private String populationIds;
 
     /**
      * @param config widget config
      * @param interMineBag bag for this widget
      * @param populationBag the reference population
      * @param os object storegene
-     * @param errorCorrection which error correction to use (Bonferroni, etc)
-     * @param extraCorrectionCoefficient if true correction coefficient has been selected
-     * @param max maximum value to display (0 - 1)
-     * @param filter filter to use (ie Ontology)
+     * @param options the options for this widget.
+     * @param ids list of IDs to analyse, use instead of intermine bag
+     * @param populationIds use instead of populationBag
+     *
      */
-    public EnrichmentWidget(EnrichmentWidgetConfig config, InterMineBag interMineBag,
-                            InterMineBag populationBag, ObjectStore os,
-                            String filter, String max, String errorCorrection,
-                            String extraCorrectionCoefficient) {
+    public EnrichmentWidget(EnrichmentWidgetConfig config,
+                            InterMineBag interMineBag,
+                            InterMineBag populationBag,
+                            ObjectStore os,
+                            EnrichmentOptions options,
+                            String ids,
+                            String populationIds) {
         super(config);
         this.bag = interMineBag;
         this.populationBag = populationBag;
         this.os = os;
         this.typeDescriptor = os.getModel().getClassDescriptorByName(config.getTypeClass());
-        this.errorCorrection = errorCorrection;
-        this.max = max;
-        this.filter = filter;
+        this.errorCorrection = options.getCorrection();
+        this.max = options.getMaxPValue();
+        this.filter = options.getFilter();
+        this.ids = ids;
+        this.populationIds = populationIds;
 
-        validateBagType();
+        if (bag != null) {
+            validateBagType();
+        }
         String correctionCoefficientClassName = (config.getCorrectionCoefficient() != null)
                                                ? config.getCorrectionCoefficient().trim()
                                                : "";
@@ -89,18 +96,36 @@ public class EnrichmentWidget extends Widget
             try {
                 Class<?> clazz = Class.forName(correctionCoefficientClassName);
                 Constructor<?> c = clazz.getConstructor(new Class[] {WidgetConfig.class,
-                    ObjectStore.class, InterMineBag.class});
+                    ObjectStore.class, InterMineBag.class, String.class});
                 correctionCoefficient =  (CorrectionCoefficient) c.newInstance(new Object[] {
-                    config, os, bag});
+                    config, os, bag, ids});
                 this.extraCorrectionCoefficient = correctionCoefficient
-                    .isSelected(extraCorrectionCoefficient);
+                    .isSelected(options.getExtraCorrectionCoefficient());
             } catch (ClassNotFoundException cnfe) {
                 LOG.error(cnfe);
             } catch (Exception e) {
                 LOG.error(e);
             }
         }
-        process();
+    }
+
+
+    /** @param filter Set the filter to something else **/
+    public void setFilter(String filter) {
+        checkNotProcessed();
+        this.filter = filter;
+    }
+
+    private void checkProcessed() {
+        if (ldr == null) {
+            throw new IllegalStateException("This widget has not been processed yet.");
+        }
+    }
+
+    private void checkNotProcessed() {
+        if (ldr != null) {
+            throw new IllegalStateException("This widget has already been processed.");
+        }
     }
 
     /**
@@ -125,59 +150,47 @@ public class EnrichmentWidget extends Widget
                 + "list of %s ", config.getId(), config.getTypeClass(), bag.getType()));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void process() {
+        checkNotProcessed();
         try {
             ldr = new EnrichmentWidgetImplLdr(bag, populationBag, os,
                   (EnrichmentWidgetConfig) config, filter, extraCorrectionCoefficient,
-                  correctionCoefficient);
+                  correctionCoefficient, ids, populationIds);
             EnrichmentInput input = new EnrichmentInputWidgetLdr(os, ldr);
-            Double maxValue = Double.parseDouble(max);
-            results = EnrichmentCalculation.calculate(input, maxValue, errorCorrection,
+            results = EnrichmentCalculation.calculate(input, max, errorCorrection,
                                            extraCorrectionCoefficient, correctionCoefficient);
-            setNotAnalysed(bag.getSize() - results.getAnalysedTotal());
+            int size = 0;
+            if (bag != null) {
+                size = bag.getSize();
+            } else if (ids != null) {
+                String[] idArray = ids.split(",");
+                size = idArray.length;
+            }
+            setNotAnalysed(size - results.getAnalysedTotal());
         } catch (ObjectStoreException e) {
-            // TODO Auto-generated catch block
-            LOG.error(e.getMessage(), e);
-        } catch (NumberFormatException e) {
-            // TODO Auto-generated catch block
-            LOG.error(e.getMessage(), e);
-        } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            LOG.error(e.getMessage(), e);
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            LOG.error(e.getMessage(), e);
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public List getElementInList() {
-        return new Vector();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public boolean getHasResults() {
+        checkProcessed();
         return results.getPValues().size() > 0;
     }
 
     private Map<String, List<String>> getTermsToIdsForExport(List<String> selectedIds)
         throws Exception {
+        checkProcessed();
         Query q = ldr.getExportQuery(selectedIds);
 
         Results res = os.execute(q);
-        Iterator iter = res.iterator();
-        HashMap<String, List<String>> termsToIds = new HashMap();
+        Iterator<?> iter = res.iterator();
+        HashMap<String, List<String>> termsToIds = new HashMap<String, List<String>>();
         while (iter.hasNext()) {
+            @SuppressWarnings("rawtypes")
             ResultsRow resRow = (ResultsRow) iter.next();
             String termId = resRow.get(0).toString();
             String id = resRow.get(1).toString();
@@ -190,35 +203,9 @@ public class EnrichmentWidget extends Widget
         return termsToIds;
     }
 
-    private Map<String, List<Map<String, Object>>> getTermsToIds(List<String> selectedIds)
-        throws Exception {
-        Query q = ldr.getExportQuery(selectedIds);
-
-        Results res = os.execute(q);
-        Iterator iter = res.iterator();
-        HashMap<String, List<Map<String, Object>>> termsToIds = new HashMap();
-        while (iter.hasNext()) {
-            ResultsRow resRow = (ResultsRow) iter.next();
-            String termId = resRow.get(0).toString();
-            Map<String, Object> map = new HashMap<String, Object>();
-            String displayed = (resRow.get(1) != null) ? resRow.get(1).toString() : "";
-            String id = (resRow.get(2) != null) ? resRow.get(2).toString() : "";
-            map.put("displayed", displayed);
-            map.put("id", id);
-            if (!termsToIds.containsKey(termId)) {
-                termsToIds.put(termId, new ArrayList<Map<String, Object>>());
-            }
-            termsToIds.get(termId).add(map);
-        }
-
-        return termsToIds;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public List<List<String>> getExportResults(String[] selected) throws Exception {
-
+        checkProcessed();
         Map<String, BigDecimal> pValues = results.getPValues();
         Map<String, String> labels = results.getLabels();
         List<List<String>> exportResults = new ArrayList<List<String>>();
@@ -229,7 +216,7 @@ public class EnrichmentWidget extends Widget
         for (String id : selectedIds) {
             if (labels.get(id) != null) {
 
-                List row = new LinkedList();
+                List<String> row = new LinkedList<String>();
                 row.add(id);
                 String label = labels.get(id);
                 if (!label.equals(id)) {
@@ -237,11 +224,11 @@ public class EnrichmentWidget extends Widget
                 }
 
                 BigDecimal bd = pValues.get(id);
-                row.add(new Double(bd.doubleValue()));
+                row.add(new Double(bd.doubleValue()).toString());
 
-                List<String> ids = termsToIds.get(id);
+                List<String> termIds = termsToIds.get(id);
                 StringBuffer sb = new StringBuffer();
-                for (String term : ids) {
+                for (String term : termIds) {
                     if (sb.length() > 0) {
                         sb.append(", ");
                     }
@@ -257,6 +244,7 @@ public class EnrichmentWidget extends Widget
 
     @Override
     public List<List<Object>> getResults() throws Exception {
+        checkProcessed();
         List<List<Object>> exportResults = new LinkedList<List<Object>>();
         if (results != null) {
             Map<String, BigDecimal> pValues = results.getPValues();
@@ -290,15 +278,31 @@ public class EnrichmentWidget extends Widget
     public PathQuery getPathQuery() {
         PathQuery q = createPathQueryView(os, config);
         // bag constraint
-        q.addConstraint(Constraints.in(config.getStartClass(), bag.getName()));
+        if (bag != null) {
+            q.addConstraint(Constraints.in(config.getStartClass(), bag.getName()));
+        } else if (ids != null) {
+            // use list of IDs instead of bag
+            String[] idStrings = ids.split(",");
+            List<Integer> intermineIds = new ArrayList<Integer>();
+            for (int i = 0; i < idStrings.length; i++) {
+                try {
+                    intermineIds.add(Integer.parseInt(idStrings[i]));
+                } catch (NumberFormatException e) {
+                    LOG.error("bad IDs for list in enrichment.", e);
+                    return null;
+                }
+            }
+            q.addConstraint(Constraints.inIds(config.getStartClass(), intermineIds));
+        }
         //constraints for view (bdgp_enrichment)
         List<PathConstraint> pathConstraintsForView =
-            ((EnrichmentWidgetConfig) config).getPathConstraintsForView();
+                ((EnrichmentWidgetConfig) config).getPathConstraintsForView();
         if (pathConstraintsForView != null) {
             for (PathConstraint pc : pathConstraintsForView) {
                 q.addConstraint(pc);
             }
         }
+
         //add type constraints for subclasses
         String enrichIdentifier = ((EnrichmentWidgetConfig) config).getEnrichIdentifier();
         boolean subClassContraint = false;
@@ -364,7 +368,24 @@ public class EnrichmentWidget extends Widget
         pathQuery.addView(startClassDisplayView);
         pathQuery.addOrderBy(enrichIdentifier, OrderDirection.ASC);
         // bag constraint
-        pathQuery.addConstraint(Constraints.in(config.getStartClass(), bag.getName()));
+        if (bag != null) {
+            pathQuery.addConstraint(Constraints.in(config.getStartClass(), bag.getName()));
+        } else if (ids != null) {
+            // use list of IDs instead of bag
+            String[] idStrings = ids.split(",");
+            List<Integer> intermineIds = new ArrayList<Integer>();
+            for (int i = 0; i < idStrings.length; i++) {
+                try {
+                    intermineIds.add(Integer.parseInt(idStrings[i]));
+                } catch (NumberFormatException e) {
+                    LOG.error("bad IDs for list in enrichment.", e);
+                    return null;
+                }
+            }
+            pathQuery.addConstraint(Constraints.inIds(config.getStartClass(), intermineIds));
+        }
+
+
         //subclass constraint
         if (subClassContraint) {
             pathQuery.addConstraint(Constraints.type(subClassPath, subClassType));
@@ -381,8 +402,7 @@ public class EnrichmentWidget extends Widget
     }
 
     /**
-     * Return the correction coefficient used by the widget
-     * @return
+     * @return the correction coefficient used by the widget
      */
     public CorrectionCoefficient getExtraCorrectionCoefficient() {
         return correctionCoefficient;

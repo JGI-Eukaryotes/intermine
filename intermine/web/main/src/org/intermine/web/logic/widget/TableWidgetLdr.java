@@ -1,7 +1,7 @@
 package org.intermine.web.logic.widget;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -30,7 +30,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.query.BagConstraint;
-import org.intermine.objectstore.query.ConstraintOp;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
@@ -80,11 +80,12 @@ public class TableWidgetLdr extends WidgetLdr
      * @param widgetConfig the configuration settings for this widget
      * @param bag bag for this widget
      * @param os the objectstore
+     * @param ids intermine IDs, required if bag is NULL
      * @throws UnsupportedEncodingException if can't encode url
      */
-    public TableWidgetLdr(WidgetConfig widgetConfig, InterMineBag bag, ObjectStore os)
+    public TableWidgetLdr(WidgetConfig widgetConfig, InterMineBag bag, ObjectStore os, String ids)
         throws UnsupportedEncodingException {
-        super(bag, os, null, widgetConfig);
+        super(bag, os, null, widgetConfig, ids);
         this.config = (TableWidgetConfig) widgetConfig;
         pathString = config.getPathStrings();
         model = os.getModel();
@@ -101,6 +102,7 @@ public class TableWidgetLdr extends WidgetLdr
         setFlattenedResults();
     }
 
+    /** @return the class name of the path this table widget loads. **/
     public String getType() {
         return type;
     }
