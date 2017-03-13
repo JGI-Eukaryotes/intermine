@@ -67,13 +67,8 @@ public final class ShutdownHook extends Thread
     /**
      * Performs the shutdown.
      */
-<<<<<<< HEAD
-    private static synchronized void shutdown() {
-        while ( (objects!=null) && !objects.empty()) {
-=======
     public static synchronized void shutdown() {
         while (!objects.empty()) {
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
             Object o = objects.pop();
             try {
                 if (o instanceof WeakReference<?>) {

@@ -87,13 +87,7 @@ public class NewUserService extends JSONService
 
         JSONObject user = new JSONObject();
         user.put("username", input.getUsername());
-<<<<<<< HEAD
         
-        // commented out in phytomine. no email to webservice accounts.
-        /*
-=======
-
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
         MailAction welcomeMessage = new WelcomeAction(input.getUsername());
         if (!InterMineContext.queueMessage(welcomeMessage)) {
             LOG.error("Mail queue capacity exceeded. Not sending welcome message");
@@ -108,13 +102,8 @@ public class NewUserService extends JSONService
             }
         }
         user.put("subscribedToList", mailingList != null);
-<<<<<<< HEAD
-        user.put("mailingList", mailingList);*/
-        
-=======
         user.put("mailingList", mailingList);
 
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
         Profile p = pm.getProfile(input.getUsername());
         if (p == null) {
             throw new ServiceException("Creating profile failed");

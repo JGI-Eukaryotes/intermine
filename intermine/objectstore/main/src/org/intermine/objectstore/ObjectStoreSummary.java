@@ -98,34 +98,6 @@ public class ObjectStoreSummary
         // 4. Always empty refs/cols per class
         // 5. Always empty attributes per class
 
-<<<<<<< HEAD
-         Model model = os.getModel();
-        
-         // classCounts - number of objects of each type in the database
-         LOG.info("Collecting class counts...");
-         for (ClassDescriptor cld : model.getTopDownLevelTraversal()) {
-
-           LOG.info("Counting class "+cld.getName());
-           nonEmptyFieldsMap.put(cld.getName(), new HashSet<String>());
-
-           if (!classCountsMap.containsKey(cld.getName())) {
-             int classCount = countClass(os, cld.getType());
-             LOG.info("Adding class count: " + cld.getUnqualifiedName() + " = " + classCount);
-             classCountsMap.put(cld.getName(), new Integer(classCount));
-
-             // if this class is empty all subclasses MUST be empty as well
-             if (classCount == 0) {
-               for (ClassDescriptor subCld : model.getAllSubs(cld)) {
-                 if (!classCountsMap.containsKey(subCld.getName())) {
-                   classCountsMap.put(subCld.getName(), new Integer(classCount));
-                 }
-               }
-             }
-           }
-         }
-         LOG.info("Done with class counting.");
-        
-=======
         Model model = os.getModel();
 
         // classCounts - number of objects of each type in the database
@@ -135,7 +107,6 @@ public class ObjectStoreSummary
             countAndStore(os, model, cld);
         }
 
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
         // fieldValues - find all attributes with few unique values for populating dropdowns,
         // also look for any attributes that are empty.
         LOG.info("Summarising field values...");

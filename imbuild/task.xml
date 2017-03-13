@@ -128,35 +128,6 @@ specify a valid release suffix with '-Drelease=xxx'.
 
   </target>
 
-<<<<<<< HEAD
-<!--
-
-build properties are now merged with *mine.properties file
-
-  <target name="-init-check-for-build-properties"
-          depends="-set-release-suffix, -init-deps">
-    <property name="build.properties.file"
-              value="${intermine.properties.dir}/build.properties.${mine.name}${release-suffix}"/>
-    <available file="${build.properties.file}" property="have.build.properties.file"/>
-  </target>
-
-  <target name="-check-for-build-properties"
-          depends="-init-check-for-build-properties"
-          unless="have.build.properties.file">
-    <fail unless="temporary.webapp.project">
-Couldn't find ${build.properties.file}
-    </fail>
-  </target>
-
-  <target name="-init-app-properties"
-          depends="-init-properties, -pre-define-task-classpath">
-    <property file="${intermine.properties.dir}/build.properties.${mine.name}${release-suffix}"/>
-  </target>
-
--->
-
-=======
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
   <target name="-load-task-taskdefs" depends="-check-task-availability,
                                               -load-os-tasks,
                                               -load-int-tasks,

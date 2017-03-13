@@ -10,13 +10,9 @@ package org.intermine.api.profile;
  *
  */
 
-<<<<<<< HEAD
-import java.io.IOException;
-=======
 import static java.util.Collections.singleton;
 
 import java.io.Reader;
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,15 +34,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
-<<<<<<< HEAD
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.RandomStringUtils;
-=======
-
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.intermine.api.bag.SharedBagManager;
@@ -55,11 +42,7 @@ import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.api.template.ApiTemplate;
 import org.intermine.api.util.TextUtil;
 import org.intermine.api.xml.SavedQueryBinding;
-<<<<<<< HEAD
-import org.intermine.api.profile.Caliban;
-=======
 import org.intermine.metadata.ConstraintOp;
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
@@ -629,17 +612,7 @@ public class ProfileManager
                     uosw.delete((InterMineObject) i.next());
                 }
             } else {
-<<<<<<< HEAD
-                // Should not happen
-                //throw new RuntimeException("The UserProfile is null");
-              // no. it can happen. For accounts created outside the normal procedures.
-                 userProfile = new UserProfile();
-                 userProfile.setUsername(profile.getUsername());
-                 userProfile.setPassword(profile.getPassword());
-                 userProfile.setId(userId);
-=======
                 throw new RuntimeException("Cannot save this profile: The UserProfile is null");
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
             }
 
             userProfile.setApiKey(profile.getApiKey());
@@ -1500,11 +1473,6 @@ public class ProfileManager
         Set<String> fieldNames = new HashSet<String>();
         fieldNames.add("apiKey");
         try {
-<<<<<<< HEAD
-          profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
-        } catch (ObjectStoreException e1) {
-          return null;
-=======
             profile = uosw.getObjectByExample(profile, fieldNames);
         } catch (ObjectStoreException e) {
             return null; // Could not be found.
@@ -1512,7 +1480,6 @@ public class ProfileManager
         if (profile == null) {
             throw new AuthenticationException(
                 "'" + token + "' is not a valid API access key");
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
         }
       } else {
         HashMap<String,String> identity = null;

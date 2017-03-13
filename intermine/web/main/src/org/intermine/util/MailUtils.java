@@ -60,15 +60,6 @@ public abstract class MailUtils
      * @param webProperties Common properties for all emails (such as from, authentication)
      * @throws MessagingException if there is a problem creating the email
      */
-<<<<<<< HEAD
-    public static void email(String to, String subject, String body, String from,
-            final Map webProperties) throws MessagingException {
-        final String user = (String) webProperties.get("mail.smtp.user");
-        String smtpPort = (String) webProperties.get("mail.smtp.port");
-        String authFlag = (String) webProperties.get("mail.smtp.auth");
-        String starttlsFlag = (String) webProperties.get("mail.smtp.starttls.enable");
-        
-=======
     public static void email(
             String to,
             String subject,
@@ -80,7 +71,6 @@ public abstract class MailUtils
         String smtpPort = webProperties.getProperty("mail.smtp.port");
         String authFlag = webProperties.getProperty("mail.smtp.auth");
         String starttlsFlag = webProperties.getProperty("mail.smtp.starttls.enable");
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 
         Properties properties = System.getProperties();
 

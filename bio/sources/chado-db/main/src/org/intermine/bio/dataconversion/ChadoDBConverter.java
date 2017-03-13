@@ -32,13 +32,7 @@ import org.intermine.model.bio.Organism;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.sql.Database;
-<<<<<<< HEAD
-import org.intermine.util.StringUtil;
-import org.intermine.xml.full.Attribute;
-import org.intermine.xml.full.Item;
-=======
 import org.intermine.metadata.StringUtil;
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 
 /**
  * DataConverter to read from a Chado database into items

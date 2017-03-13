@@ -482,13 +482,7 @@ public class PrecomputedTableManager
         //     + table + " (" + (field.equals(field.toLowerCase()) ? field : "\"" + field + "\"")
         //     + ")";
         String sql = "CREATE INDEX " + simpleTable + "_" + simpleField + " ON "
-<<<<<<< HEAD
-            //jwc huh?+ table + " (" + (field.equals(field.toLowerCase()) ? field : "\"" + field + "\"")
-            + table + " (" + field
-            + ")";
-=======
                 + table + " (" + field + ")";
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
         try {
             Statement stmt = con.createStatement();
             stmt.execute(sql);

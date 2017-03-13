@@ -6,12 +6,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/bio-core-main"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/intermine-api-main"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/intermine-web"/>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="/bio-skeleton-phytomine/dbmodel/build/classes"/>
-=======
 	<classpathentry kind="src" path="/bio-testall-dbmodel"/>
 	<classpathentry kind="src" path="/intermine-model-main"/>
 	<classpathentry kind="src" path="/intermine-web-tasks"/>
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 	<classpathentry kind="output" path="bin"/>
 </classpath>

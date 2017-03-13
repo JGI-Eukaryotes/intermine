@@ -13,13 +13,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="lib/ant-1.6.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/base64.jar"/>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="lib/ojdbc14.jar"/>
-	<classpathentry kind="lib" path="lib/xercesImpl-2.6.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="lib/opencsv-2.3.jar"/>
-	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/phytomine/dbmodel/build/classes"/>
-=======
 	<classpathentry exported="true" kind="lib" path="lib/ojdbc14.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/opencsv-2.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/intermine-model-main"/>
@@ -31,6 +24,5 @@
 	<classpathentry exported="true" kind="lib" path="lib/javassist-3.18.2.GA.jar"/>
 	<classpathentry kind="lib" path="lib/HikariCP-java6-2.3.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/postgresql-9.4.1212.jre7.jar"/>
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 	<classpathentry kind="output" path="bin"/>
 </classpath>

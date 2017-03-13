@@ -28,12 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
-<<<<<<< HEAD
-import org.intermine.api.query.PathQueryExecutor;
-import org.intermine.api.results.ExportResultsIterator;
-import org.intermine.api.results.ResultElement;
-=======
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 import org.intermine.bio.web.model.ChromosomeInfo;
 import org.intermine.bio.web.model.GenomicRegion;
 import org.intermine.bio.web.model.GenomicRegionSearchConstraint;
@@ -260,17 +254,6 @@ public class GenomicRegionSearchQueryRunner implements Runnable
             q.addFrom(qcChr);
             q.addFrom(qcOrg);
 
-<<<<<<< HEAD
-                PathQueryExecutor pQE = im.getPathQueryExecutor(profile);
-                // JWC bigger batch size.
-                pQE.setBatchSize(100000);
-                ExportResultsIterator results = pQE.execute(query);
-
-                // a List contains all the chrInfo (organism, chrPID, length)
-                List<ChromosomeInfo> chrInfoList = new ArrayList<ChromosomeInfo>(500000);
-                // a Set contains all the orgName
-                Set<String> orgSet = new HashSet<String>();
-=======
             QueryField qfOrgName = new QueryField(qcOrg, "shortName");
             QueryField qfChrIdentifier = new QueryField(qcChr, "primaryIdentifier");
             QueryField qfChrLength = new QueryField(qcChr, "length");
@@ -278,7 +261,6 @@ public class GenomicRegionSearchQueryRunner implements Runnable
             q.addToSelect(qfOrgName);
             q.addToSelect(qfChrIdentifier);
             q.addToSelect(qfChrLength);
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 
             QueryObjectReference orgRef = new QueryObjectReference(qcChr, "organism");
             ContainsConstraint ccOrg = new ContainsConstraint(orgRef,

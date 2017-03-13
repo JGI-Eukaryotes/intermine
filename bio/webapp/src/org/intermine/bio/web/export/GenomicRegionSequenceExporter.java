@@ -116,22 +116,9 @@ public class GenomicRegionSequenceExporter
         GenomicRegion aRegion = grList.get(0);
         Organism org = (Organism) DynamicUtil.createObject(Collections
                 .singleton(Organism.class));
-<<<<<<< HEAD
-        // We normally specify the short name (text) as the key to the organism. A
-        // numerical values for the organism say we're going to use another
-        // key.
-        try {
-          org.setProteomeId(Integer.parseInt(aRegion.getOrganism()));
-          org = (Organism) os.getObjectByExample(org, Collections.singleton("proteomeId"));
-        } catch ( NumberFormatException e ) {
-          org.setShortName(aRegion.getOrganism());
-          org = (Organism) os.getObjectByExample(org, Collections.singleton("shortName"));
-        }
-=======
         org.setShortName(aRegion.getOrganism());
 
         org = os.getObjectByExample(org, Collections.singleton("shortName"));
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 
         for (GenomicRegion gr : grList) {
             Chromosome chr = (Chromosome) DynamicUtil.createObject(

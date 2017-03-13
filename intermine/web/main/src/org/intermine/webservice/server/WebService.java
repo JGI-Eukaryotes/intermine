@@ -45,12 +45,8 @@ import org.intermine.web.logic.RequestUtil;
 import org.intermine.web.logic.export.Exporter;
 import org.intermine.web.logic.export.ResponseUtil;
 import org.intermine.web.logic.profile.LoginHandler;
-<<<<<<< HEAD
-import org.intermine.web.logic.session.SessionMethods;
-=======
 import org.intermine.web.security.KeyStorePublicKeySource;
 import org.intermine.web.security.PublicKeySource;
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 import org.intermine.webservice.server.core.ListManager;
 import org.intermine.webservice.server.exceptions.BadRequestException;
 import org.intermine.webservice.server.exceptions.MissingParameterException;

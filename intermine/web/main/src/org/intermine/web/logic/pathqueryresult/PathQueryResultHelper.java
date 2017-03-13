@@ -103,14 +103,9 @@ public final class PathQueryResultHelper
             if (fieldConfig.getShowInResults()) {
                 try {
                     Path path = new Path(model, prefix + "." + relPath);
-<<<<<<< HEAD
-                    // JWC check attribute relative to converted to type
-                    Path checkIsOnlyAttribute = new Path(model,type+"."+relPath);
-=======
                     // use type (e.g. Protein) not prefix (e.g. Gene.proteins) to do
                     // attribute check
                     Path checkIsOnlyAttribute = new Path(model, type + "." + relPath);
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
                     if (checkIsOnlyAttribute.isOnlyAttribute()) {
                         view.add(path.getNoConstraintsString());
                     }
