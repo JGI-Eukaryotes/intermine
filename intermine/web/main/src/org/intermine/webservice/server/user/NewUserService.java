@@ -104,7 +104,6 @@ public class NewUserService extends JSONService
         }
         user.put("subscribedToList", mailingList != null);
         user.put("mailingList", mailingList);*/
-        
         Profile p = pm.getProfile(input.getUsername());
         if (p == null) {
             throw new ServiceException("Creating profile failed");

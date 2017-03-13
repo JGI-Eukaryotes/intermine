@@ -48,6 +48,7 @@ import org.intermine.api.template.ApiTemplate;
 import org.intermine.api.util.TextUtil;
 import org.intermine.api.xml.SavedQueryBinding;
 import org.intermine.api.profile.Caliban;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
@@ -1484,9 +1485,19 @@ public class ProfileManager
         Set<String> fieldNames = new HashSet<String>();
         fieldNames.add("apiKey");
         try {
+<<<<<<< HEAD
           profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
         } catch (ObjectStoreException e1) {
           return null;
+=======
+            profile = uosw.getObjectByExample(profile, fieldNames);
+        } catch (ObjectStoreException e) {
+            return null; // Could not be found.
+        }
+        if (profile == null) {
+            throw new AuthenticationException(
+                "'" + token + "' is not a valid API access key");
+>>>>>>> abdbeaddcc354d197567859a99b4c95cab5ed016
         }
       } else {
         HashMap<String,String> identity = null;

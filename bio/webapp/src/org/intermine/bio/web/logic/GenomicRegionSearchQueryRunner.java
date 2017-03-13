@@ -257,7 +257,6 @@ public class GenomicRegionSearchQueryRunner implements Runnable
             q.addFrom(qcChr);
             q.addFrom(qcOrg);
 
-<<<<<<< HEAD
                 PathQueryExecutor pQE = im.getPathQueryExecutor(profile);
                 // JWC bigger batch size.
                 pQE.setBatchSize(100000);
@@ -267,7 +266,6 @@ public class GenomicRegionSearchQueryRunner implements Runnable
                 List<ChromosomeInfo> chrInfoList = new ArrayList<ChromosomeInfo>(500000);
                 // a Set contains all the orgName
                 Set<String> orgSet = new HashSet<String>();
-=======
             QueryField qfOrgName = new QueryField(qcOrg, "shortName");
             QueryField qfChrIdentifier = new QueryField(qcChr, "primaryIdentifier");
             QueryField qfChrLength = new QueryField(qcChr, "length");
@@ -275,7 +273,6 @@ public class GenomicRegionSearchQueryRunner implements Runnable
             q.addToSelect(qfOrgName);
             q.addToSelect(qfChrIdentifier);
             q.addToSelect(qfChrLength);
->>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 
             QueryObjectReference orgRef = new QueryObjectReference(qcChr, "organism");
             ContainsConstraint ccOrg = new ContainsConstraint(orgRef,

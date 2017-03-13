@@ -67,7 +67,6 @@ public abstract class MailUtils
         String authFlag = (String) webProperties.get("mail.smtp.auth");
         String starttlsFlag = (String) webProperties.get("mail.smtp.starttls.enable");
         
-
         Properties properties = System.getProperties();
 
         properties.put("mail.smtp.host", webProperties.get("mail.host"));
