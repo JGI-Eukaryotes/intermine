@@ -1,7 +1,7 @@
 package org.intermine.sql;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -15,11 +15,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -28,11 +31,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.metadata.StringUtil;
+import org.intermine.util.PropertiesUtil;
 import org.intermine.util.ShutdownHook;
 import org.intermine.util.Shutdownable;
-import org.intermine.util.StringUtil;
 import org.postgresql.util.PSQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * Class that represents a physical SQL database
@@ -43,15 +51,15 @@ import org.postgresql.util.PSQLException;
 public class Database implements Shutdownable
 {
     private static final Logger LOG = Logger.getLogger(Database.class);
-
+    private static final String HIKARI_CLASSNAME = "com.zaxxer.hikari.HikariDataSource";
     protected DataSource datasource;
     protected String platform;
     protected String driver;
     /** The number of worker threads to use for background SQL statements */
     protected int parallel = 4;
-
     // Store all the properties this Database was configured with
     protected Properties settings;
+    protected String version = null;
 
     // protected Map createSituations = new HashMap();
 
@@ -62,6 +70,7 @@ public class Database implements Shutdownable
         // empty
     }
 
+
     /**
      * Constructs a Database object from a set of properties
      *
@@ -70,7 +79,48 @@ public class Database implements Shutdownable
      */
     protected Database(Properties props) throws ClassNotFoundException {
         settings = props;
-        configure(props);
+
+        if (props.containsKey("datasource.class")
+                && HIKARI_CLASSNAME.equals(props.get("datasource.class"))) {
+
+            // HikariCP has different configuration than default postgres, need to adjust properties
+            Properties dsProps = PropertiesUtil.getPropertiesStartingWith("datasource", props);
+            dsProps = PropertiesUtil.stripStart("datasource", dsProps);
+            removeProperty(dsProps, "class");
+
+            // this name is only used for logging
+            renameProperty(dsProps, "dataSourceName", "poolName");
+
+            // need to be compatible with old postgres pool maxConnections
+            renameProperty(dsProps, "maxConnections", "maximumPoolSize");
+
+            // database connection properties need dataSource prefix
+            renameProperty(dsProps, "user", "dataSource.user");
+            renameProperty(dsProps, "password", "dataSource.password");
+            renameProperty(dsProps, "port", "dataSource.portNumber");
+            renameProperty(dsProps, "databaseName", "dataSource.databaseName");
+            renameProperty(dsProps, "serverName", "dataSource.serverName");
+
+            HikariConfig conf = new HikariConfig(dsProps);
+            datasource = new HikariDataSource(conf);
+
+            // also need to set 'driver' and 'platform' on this Database object
+            if (props.containsKey("platform")) {
+                this.platform = props.getProperty("platform");
+            }
+            if (props.containsKey("driver")) {
+                this.driver = props.getProperty("driver");
+            }
+        } else {
+            // this is the original PGPoolingDataSource configured by reflection
+            LOG.warn("This database connection is configured to use the "
+                    + props.getProperty("datasource.class") + " connection pool. We now recommend "
+                    + "using HikariCP as it is fast and more robust. Set "
+                    + props.getProperty("datasource.dataSourceName") + ".class="
+                    + HIKARI_CLASSNAME
+                    + " in default.intermine.properties or minename.properties.");
+            configure(props);
+        }
         try {
             LOG.info("Creating new Database " + getURL() + "(" + toString() + ") with ClassLoader "
                     + getClass().getClassLoader() + " and parallelism " + parallel);
@@ -79,6 +129,19 @@ public class Database implements Shutdownable
                     + getClass().getClassLoader(), e);
         }
         ShutdownHook.registerObject(new WeakReference<Database>(this));
+    }
+
+    private void renameProperty(Properties props, String origName, String newName) {
+        if (props.containsKey(origName)) {
+            props.put(newName,  props.get(origName));
+            props.remove(origName);
+        }
+    }
+
+    private void removeProperty(Properties props, String propName) {
+        if (props.containsKey(propName)) {
+            props.remove(propName);
+        }
     }
 
     /**
@@ -94,9 +157,10 @@ public class Database implements Shutdownable
      * Gets a Connection to this Database
      *
      * @return a Connection to this Database
-     * @throws SQLException if there is a problem in the underlying database
+     * @throws DatabaseConnectionException if it wasn't possible to get a connection to the
+     * underlying database.
      */
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() throws DatabaseConnectionException {
         Connection retval;
         if (datasource == null) {
             throw new NullPointerException("Datasource is null. Properties are: " + settings);
@@ -104,7 +168,11 @@ public class Database implements Shutdownable
         try {
             retval = datasource.getConnection();
         } catch (PSQLException e) {
-            throw new RuntimeException("can't open datasource for " + this, e);
+            throw new DatabaseConnectionException("Unable to open database connection (there"
+                    + " may not be enough available connections): " + this, e);
+        } catch (SQLException e) {
+            throw new DatabaseConnectionException("Unable to open database connection (there"
+                    + " may not be enough available connections): " + this, e);
         }
         /*
         Exception e = new Exception();
@@ -142,7 +210,11 @@ public class Database implements Shutdownable
         }
         LOG.info("Database " + getURL() + "(" + toString() + ") has " + totalConnections
                 + " connections, of which " + activeConnections + " are active");*/
-        if (datasource instanceof org.postgresql.ds.PGPoolingDataSource) {
+        if (datasource instanceof com.zaxxer.hikari.HikariDataSource) {
+            LOG.info("Shutdown - Closing datasource for Database " + getURL() + "(" + toString()
+                    + ") with ClassLoader " + getClass().getClassLoader());
+            ((com.zaxxer.hikari.HikariDataSource) datasource).close();
+        } else if (datasource instanceof org.postgresql.ds.PGPoolingDataSource) {
             LOG.info("Shutdown - Closing datasource for Database " + getURL() + "(" + toString()
                     + ") with ClassLoader " + getClass().getClassLoader());
             ((org.postgresql.ds.PGPoolingDataSource) datasource).close();
@@ -163,7 +235,11 @@ public class Database implements Shutdownable
     @Override
     public void finalize() throws Throwable {
         super.finalize();
-        if (datasource instanceof org.postgresql.ds.PGPoolingDataSource) {
+        if (datasource instanceof com.zaxxer.hikari.HikariDataSource) {
+            LOG.info("Finalise - Closing datasource for Database " + getURL() + "(" + toString()
+                    + ") with ClassLoader " + getClass().getClassLoader());
+            ((com.zaxxer.hikari.HikariDataSource) datasource).close();
+        } else if (datasource instanceof org.postgresql.ds.PGPoolingDataSource) {
             LOG.info("Finalise - Closing datasource for Database " + getURL() + "(" + toString()
                     + ") with ClassLoader " + getClass().getClassLoader());
             ((org.postgresql.ds.PGPoolingDataSource) datasource).close();
@@ -224,8 +300,8 @@ public class Database implements Shutdownable
         StringBuffer urlBuffer = new StringBuffer();
         urlBuffer.append("jdbc:" + platform.toLowerCase() + "://");
         urlBuffer.append((String) settings.get("datasource.serverName"));
-        if (settings.get("datasource.portNumber") != null) {
-            urlBuffer.append(":" + (String) settings.get("datasource.portNumber"));
+        if (settings.get("datasource.port") != null) {
+            urlBuffer.append(":" + (String) settings.get("datasource.port"));
         }
         urlBuffer.append("/" + (String) settings.get("datasource.databaseName"));
         String url = urlBuffer.toString();
@@ -247,6 +323,95 @@ public class Database implements Shutdownable
      */
     public String getName() {
         return (String) settings.get("datasource.databaseName");
+    }
+
+    /**
+     * Get the version number of the database as a string. Currently throws an error if database
+     * server is anything other than postgres.
+     * @return the database version number
+     */
+    public String getVersion() {
+        if (!"postgresql".equals(platform.toLowerCase())) {
+            throw new IllegalArgumentException("Don't know how to get the version number for "
+                    + platform + " databases.");
+        }
+        if (version == null) {
+            try {
+                Connection c = null;
+                try {
+                    c = getConnection();
+                    Statement s = c.createStatement();
+                    String versionQuery = "SELECT current_setting('server_version')";
+                    ResultSet rs = s.executeQuery(versionQuery);
+                    if (rs.next()) {
+                        version = rs.getString(1);
+                    }
+                } catch (SQLException e) {
+                    throw new IllegalArgumentException("Error fetching version number from"
+                            + " database: " + e.getMessage());
+                } finally {
+                    if (c != null) {
+                        c.close();
+                    }
+                }
+            } catch (SQLException e) {
+                LOG.warn("Error closing database connection used to find Postgres version.");
+            }
+        }
+        return version;
+    }
+
+    /**
+     * Return true if the database version is at least as high as the test number given, taking
+     * into account major and minor versions. e.g. test if database is at least 9.2
+     * @param testVersionStr a postgres version number of dot separated integers
+     * @return true if the database is the version specified or later
+     */
+    public boolean isVersionAtLeast(String testVersionStr) {
+
+        List<Integer> dbVersion = versionStringToInts(getVersion());
+        List<Integer> testVersion = versionStringToInts(testVersionStr);
+        for (int i = 0; i < testVersion.size(); i++) {
+            if (dbVersion.size() > i) {
+                if (dbVersion.get(i) < testVersion.get(i)) {
+                    return false;
+                }
+            } else if (i > 0 && (testVersion.get(i - 1).equals(dbVersion.get(i - 1)))) {
+                // if previous numbers were equal and all remaining digits of the test version are
+                // zero the we're at least that version e.g. 9.3 is at least 9.3.0 but not 9.3.0.1
+                for (Integer remaining : testVersion.subList(i, testVersion.size())) {
+                    if (remaining > 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    // parse the postgres version, e.g. 9.2.1
+    private List<Integer> versionStringToInts(String versionStr) {
+        List<Integer> versionInts = new ArrayList<Integer>();
+        String[] parts = versionStr.split("\\.");
+        for (int i = 0; i < parts.length; i++) {
+            String partToParse = parts[i];
+            if (StringUtils.isNumeric(partToParse)) {
+                versionInts.add(new Integer(partToParse));
+            } else {
+                // beta version, e.g. 9.4beta3
+                if (partToParse.contains("beta")) {
+                    String[] betaBits = partToParse.split("beta");
+                    if (betaBits != null) {
+                        String betaDigit = betaBits[0];
+                        if (StringUtils.isNumeric(betaDigit)
+                                && StringUtils.isNotEmpty(betaDigit)) {
+                            versionInts.add(new Integer(betaDigit));
+                        }
+                    }
+                }
+            }
+        }
+        return versionInts;
     }
 
     /**

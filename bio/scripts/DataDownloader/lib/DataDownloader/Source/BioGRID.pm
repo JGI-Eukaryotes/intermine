@@ -8,19 +8,16 @@ use Web::Scraper;
 use constant {
     TITLE => 'BioGRID',
     DESCRIPTION => 'Biological General Repository for Interaction Datasets',
-    SOURCE_LINK => 'http://thebiogrid.org',
+    SOURCE_LINK => 'https://thebiogrid.org',
     SOURCE_DIR => 'biogrid',
-    METADATA_URL => "http://thebiogrid.org/scripts/fetchDirectoryDescription.php",
+    METADATA_URL => "https://thebiogrid.org/scripts/fetchDirectoryDescription.php",
 };
 use constant ORGANISMS => (
     "Drosophila_melanogaster",
     "Caenorhabditis_elegans", 
     "Mus_musculus",
     "Homo_sapiens",
-    "Saccharomyces_cerevisiae",
-    "Bacillus_subtilis_168",
-    "Escherichia_coli",
-    "Arabidopsis_thaliana",
+    "Saccharomyces_cerevisiae_S288c"
 );
 
 sub BUILD {
@@ -32,7 +29,7 @@ sub BUILD {
 
     $self->set_sources([
         {
-            SERVER => 'http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-' . $version,
+            SERVER => 'https://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-' . $version,
             FILE => 'BIOGRID-ORGANISM-' . $version . '.psi25.zip',
 
             CLEANER => sub {

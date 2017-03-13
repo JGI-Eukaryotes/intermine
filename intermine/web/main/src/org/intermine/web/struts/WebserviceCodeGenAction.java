@@ -1,7 +1,7 @@
 package org.intermine.web.struts;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -140,7 +140,8 @@ public class WebserviceCodeGenAction extends InterMineAction
         String scope = request.getParameter("scope");
         String originalTemplate = request.getParameter("originalTemplate");
 
-        TemplateManager templateManager = SessionMethods.getInterMineAPI(request).getTemplateManager();
+        TemplateManager templateManager =
+                SessionMethods.getInterMineAPI(request).getTemplateManager();
         if (name == null) {
             throw new IllegalArgumentException("Cannot find a template in context "
                                                    + scope);
@@ -235,9 +236,7 @@ public class WebserviceCodeGenAction extends InterMineAction
      */
     private void sendCode(String sourceCodeString, String extension, String filename,
             HttpServletResponse response) {
-        response.setContentType("text/plain");
-        response.setHeader("Content-Disposition ", "inline; filename="
-                + filename + "." + extension);
+        response.setContentType("text/plain; charset=utf-8");
 
         PrintStream out;
         try {

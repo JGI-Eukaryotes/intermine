@@ -108,7 +108,7 @@
     </module>
 
     <module name="ParameterNumber">
-      <property name="max" value="11"/>
+      <property name="max" value="12"/>
       <property name="tokens" value="METHOD_DEF,CTOR_DEF"/>
     </module>
 
@@ -131,13 +131,13 @@
     </module>
 
     <module name="ParenPad">
-      <property name="tokens" value="CTOR_CALL, LPAREN, METHOD_CALL, RPAREN, SUPER_CTOR_CALL, TYPECAST"/>
+      <property name="tokens" value="CTOR_CALL, METHOD_CALL, SUPER_CTOR_CALL"/>
       <property name="option" value="nospace"/>
     </module>
 
 
     <module name="WhitespaceAfter">
-      <property name="tokens" value="COLON, COMMA, SEMI, TYPECAST"/>
+      <property name="tokens" value="COMMA, SEMI, TYPECAST"/>
     </module>
 
     <module name="WhitespaceAround">
@@ -216,8 +216,6 @@
     <module name="UpperEll"/>
     <module name="Indentation"/>
     <module name="CovariantEquals"/>
-    <module name="DoubleCheckedLocking"/>
-    <module name="RedundantThrows"/>
     <module name="StringLiteralEquality"/>
     <module name="SuperFinalize"/>
     <module name="PackageDeclaration"/>
@@ -273,4 +271,5 @@
   </module>
   <module name="NewlineAtEndOfFile">
   </module>
+
 </module>

@@ -1,7 +1,7 @@
 package org.intermine.bio.postprocess;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -10,21 +10,12 @@ package org.intermine.bio.postprocess;
  *
  */
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
-
-
-import org.intermine.api.config.ClassKeyHelper;
-import org.intermine.metadata.FieldDescriptor;
 import org.intermine.modelproduction.MetadataManager;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreSummary;
@@ -37,7 +28,7 @@ import org.intermine.task.DynamicAttributeTask;
 import org.intermine.task.PrecomputeTask;
 import org.intermine.util.PropertiesUtil;
 import org.intermine.web.autocompletion.AutoCompleter;
-import org.intermine.web.search.KeywordSearch;
+import org.intermine.web.task.CreateSearchIndexTask;
 
 /**
  * Run operations on genomic model database after DataLoading
@@ -106,7 +97,6 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
         if (operation == null) {
             throw new BuildException("operation attribute is not set");
         }
-        long startTime = System.currentTimeMillis();
         try {
             if ("create-chromosome-locations-and-lengths".equals(operation)) {
                 CalculateLocations cl = new CalculateLocations(getObjectStoreWriter());
@@ -120,9 +110,6 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
                 CreateReferences cr = new CreateReferences(getObjectStoreWriter());
                 LOGGER.info("Starting CreateReferences.insertReferences()");
                 cr.insertReferences();
-            } else if ("create-symmetrical-relation-references".equals(operation)) {
-                throw new BuildException("create-symmetrical-relation-references task is"
-                        + " deprecated");
             } else if ("create-utr-references".equals(operation)) {
                 CreateReferences cr = new CreateReferences(getObjectStoreWriter());
                 LOGGER.info("Starting CreateReferences.createUtrRefs()");
@@ -132,16 +119,7 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
                 ts = new TransferSequences(getObjectStoreWriter());
                 LOGGER.info("Starting TransferSequences.transferToLocatedSequenceFeatures()");
                 ts.transferToLocatedSequenceFeatures();
-
                 ts = new TransferSequences(getObjectStoreWriter());
-                LOGGER.info("Starting TransferSequences.transferToTranscripts()");
-                ts.transferToTranscripts();
-            } else if ("transfer-sequences-located-sequence-feature".equals(operation)) {
-                TransferSequences ts = new TransferSequences(getObjectStoreWriter());
-                LOGGER.info("Starting TransferSequences.transferToLocatedSequenceFeatures()");
-                ts.transferToLocatedSequenceFeatures();
-            } else if ("transfer-sequences-transcripts".equals(operation)) {
-                TransferSequences ts = new TransferSequences(getObjectStoreWriter());
                 LOGGER.info("Starting TransferSequences.transferToTranscripts()");
                 ts.transferToTranscripts();
             } else if ("make-spanning-locations".equals(operation)) {
@@ -162,29 +140,6 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
                 configureDynamicAttributes(iu);
                 LOGGER.info("Starting IntronUtil.createIntronFeatures()");
                 iu.createIntronFeatures();
-            } else if ("create-overlap-relations-flymine".equals(operation)) {
-                LOGGER.info("Starting CalculateLocations.createOverlapRelations()");
-                List<String> classNamesToIgnoreList = new ArrayList<String>();
-                String ignoreFileName = "overlap.config";
-                ClassLoader classLoader = PostProcessOperationsTask.class.getClassLoader();
-                InputStream classesToIgnoreStream =
-                    classLoader.getResourceAsStream(ignoreFileName);
-                if (classesToIgnoreStream == null) {
-                    throw new RuntimeException("can't find resource: " + ignoreFileName);
-                }
-                BufferedReader classesToIgnoreReader =
-                    new BufferedReader(new InputStreamReader(classesToIgnoreStream));
-                String line = classesToIgnoreReader.readLine();
-                while (line != null) {
-                    classNamesToIgnoreList.add(line);
-                    line = classesToIgnoreReader.readLine();
-                }
-
-                CalculateLocations cl = new CalculateLocations(getObjectStoreWriter());
-                cl.createOverlapRelations(classNamesToIgnoreList, false);
-            } else if ("set-collection-counts".equals(operation)) {
-                SetCollectionCounts setCounts = new SetCollectionCounts(getObjectStoreWriter());
-                setCounts.setCollectionCount();
             } else if ("create-attribute-indexes".equals(operation)) {
                 CreateIndexesTask cit = new CreateIndexesTask();
                 cit.setAttributeIndexes(true);
@@ -240,40 +195,16 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
                                         ac.getBinaryIndexMap());
                 }
             } else if ("create-search-index".equals(operation)) {
-                System .out.println("Creating lucene index for keyword search...");
-
-                ObjectStore os = getObjectStoreWriter().getObjectStore();
-                if (!(os instanceof ObjectStoreInterMineImpl)) {
-                    throw new RuntimeException("Got invalid ObjectStore - must be an "
-                            + "instance of ObjectStoreInterMineImpl!");
-                }
-
-                ClassLoader classLoader = PostProcessOperationsTask.class.getClassLoader();
-
-                /*
-                String configFileName = "objectstoresummary.config.properties";
-                InputStream configStream = classLoader.getResourceAsStream(configFileName);
-                if (configStream == null) {
-                    throw new RuntimeException("can't find resource: " + configFileName);
-                }
-
-                Properties properties = new Properties();
-                properties.load(configStream);*/
-
-                //read class keys to figure out what are keyFields during indexing
-                InputStream is = classLoader.getResourceAsStream("class_keys.properties");
-                Properties classKeyProperties = new Properties();
-                classKeyProperties.load(is);
-                Map<String, List<FieldDescriptor>> classKeys =
-                    ClassKeyHelper.readKeys(os.getModel(), classKeyProperties);
-
-                //index and save
-                KeywordSearch.saveIndexToDatabase(os, classKeys);
-                KeywordSearch.deleteIndexDirectory();
+                // Delegate to a sub-task.
+                CreateSearchIndexTask subtask = new CreateSearchIndexTask();
+                subtask.setClassLoader(PostProcessOperationsTask.class.getClassLoader());
+                subtask.setObjectStore(getObjectStoreWriter().getObjectStore());
+                subtask.execute();
             } else if ("create-overlap-view".equals(operation)) {
                 OverlapViewTask ovt = new OverlapViewTask(getObjectStoreWriter());
                 ovt.createView();
             } else if ("create-bioseg-location-index".equals(operation)) {
+<<<<<<< HEAD
                 BiosegIndexTask bit = new BiosegIndexTask(getObjectStoreWriter());
                 bit.createIndex();
             } else if ("link-ins".equals(operation)) {
@@ -304,6 +235,24 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
             } else {
               throw new BuildException("unknown operation: " + operation);
             }
+=======
+                LOG.warn("The postprocess step 'create-bioseg-location-index' has been replaced"
+                        + " by 'create-location-overlap-index'. They now do the same thing but"
+                        + "you should use the new name.");
+                // this will use int4range or bioseg depending on postgres version
+                CreateLocationOverlapIndex cloi =
+                        new CreateLocationOverlapIndex(getObjectStoreWriter());
+                cloi.create();
+            } else if ("populate-child-features".equals(operation)) {
+                PopulateChildFeatures jb = new PopulateChildFeatures(getObjectStoreWriter());
+                jb.populateCollection();
+            } else if ("create-location-overlap-index".equals(operation)) {
+                CreateLocationOverlapIndex cloi =
+                        new CreateLocationOverlapIndex(getObjectStoreWriter());
+                cloi.create();
+            }
+
+>>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
         } catch (BuildException e) {
             LOGGER.error("Failed postprocess. Operation was: " + operation, e);
             throw e;

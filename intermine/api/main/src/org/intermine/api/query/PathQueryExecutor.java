@@ -1,7 +1,7 @@
 package org.intermine.api.query;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -26,7 +26,6 @@ import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
-import org.intermine.metadata.FieldDescriptor;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.intermine.ObjectStoreInterMineImpl;
@@ -45,6 +44,9 @@ import org.intermine.pathquery.PathQuery;
 public class PathQueryExecutor extends QueryExecutor
 {
 
+    /**
+     * default batch size
+     */
     public static final int DEFAULT_BATCH_SIZE = 5000;
     private static final long MAX_WAIT_TIME = 2000;
     private int batchSize = DEFAULT_BATCH_SIZE;
@@ -62,14 +64,12 @@ public class PathQueryExecutor extends QueryExecutor
      * Constructor with necessary objects.
      *
      * @param os the ObjectStore to run the query in
-     * @param classKeys key fields for classes in the data model
      * @param profile the user executing the query - for access to saved lists
      * @param bagQueryRunner for executing bag searches in queries
      * @param bagManager access to global and user bags
      */
     public PathQueryExecutor(
             ObjectStore os,
-            Map<String, List<FieldDescriptor>> classKeys,
             Profile profile,
             BagQueryRunner bagQueryRunner,
             BagManager bagManager) {
@@ -87,6 +87,7 @@ public class PathQueryExecutor extends QueryExecutor
      *
      * @param pathQuery path query to be executed
      * @return results
+     * @throws ObjectStoreException if something goes wrong with the database
      */
     public ExportResultsIterator execute(PathQuery pathQuery) throws ObjectStoreException {
         Map<String, QuerySelectable> pathToQueryNode = new HashMap<String, QuerySelectable>();
@@ -94,6 +95,12 @@ public class PathQueryExecutor extends QueryExecutor
 
         Query q = makeQuery(pathQuery, returnBagQueryResults, pathToQueryNode);
         Results results = os.execute(q, batchSize, true, true, false);
+
+        Query realQ = results.getQuery();
+        if (realQ == q) {
+            queryToPathToQueryNode.put(q, pathToQueryNode);
+        }
+
         return new ExportResultsIterator(pathQuery, q, results, pathToQueryNode);
     }
 
@@ -107,6 +114,7 @@ public class PathQueryExecutor extends QueryExecutor
      * results from database from index 0 and just throws away all before start index.
      * @param limit maximum number of results
      * @return results
+     * @throws ObjectStoreException if fail to execute query
      */
 
     public ExportResultsIterator execute(PathQuery pathQuery, final int start,
@@ -116,6 +124,18 @@ public class PathQueryExecutor extends QueryExecutor
 
         Query q = makeQuery(pathQuery, returnBagQueryResults, pathToQueryNode);
         Results results = os.execute(q, batchSize, true, true, false);
+
+        // If realQ = q this means that the query has never executed before.
+        // We store pathToQueryNode for next time we call the same query
+        // for instance by UI when the query will no been re-executed.
+        // Differently from WebResultExecutor, we don't have to update pathToQueryNode
+        // using that one stored on the cache (queryToPathToQueryNode) because the
+        // ResultIterator uses pathQuery, to build the columns,from which pathToQueryNode comes from
+        Query realQ = results.getQuery();
+        if (realQ == q) {
+            queryToPathToQueryNode.put(q, pathToQueryNode);
+        }
+
         // Prime the results -- although lazy, ExportResults are always fetched to be
         // evaluated, and we want errors thrown here, not later when they are swallowed
         // by the list interface.
@@ -137,13 +157,14 @@ public class PathQueryExecutor extends QueryExecutor
                 pathToBagQueryResult);
         return q;
     }
-    
+
     /* make this the returned value rather than those stupid maps...
     private class MainHelperResult {
-        final Map<String, BagQueryResult> pathToBagQueryResult = new HashMap<String, BagQueryResult>();
+        final Map<String, BagQueryResult> pathToBagQueryResult
+            = new HashMap<String, BagQueryResult>();
         final Map<String, QuerySelectable> pathToQueryNode = new HashMap<String, QuerySelectable>();
         Query query;
-        
+
         MainHelperResult() {
         }
     }
@@ -156,6 +177,7 @@ public class PathQueryExecutor extends QueryExecutor
      * @return The Query to run.
      * @throws ObjectStoreException if there is a problem making the query.
      */
+    @Override
     public Query makeQuery(PathQuery pq) throws ObjectStoreException {
         Map<String, QuerySelectable> pathToQueryNode = new HashMap<String, QuerySelectable>();
         Map<String, BagQueryResult> returnBagQueryResults =

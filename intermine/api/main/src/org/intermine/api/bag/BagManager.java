@@ -1,7 +1,7 @@
 package org.intermine.api.bag;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -42,6 +42,7 @@ import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.model.userprofile.Tag;
 import org.intermine.objectstore.ObjectStore;
+import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.query.ObjectStoreBag;
 import org.intermine.objectstore.query.ObjectStoreBagsForObject;
 import org.intermine.objectstore.query.Query;
@@ -126,6 +127,10 @@ public class BagManager
 
         for (Map.Entry<String, InterMineBag> entry : profile.getSavedBags().entrySet()) {
             InterMineBag bag = entry.getValue();
+            // is this bag useable (current)?
+            if (!bag.isCurrent()) {
+                continue;
+            }
             List<Tag> tags = tagManager.getTags(tag, bag.getName(), TagTypes.BAG,
                     profile.getUsername());
             if (tags.size() > 0) {
@@ -201,10 +206,9 @@ public class BagManager
      */
     public List<Tag> getTagsForBag(InterMineBag bag, Profile profile) {
         // Add on the public tag, if this bag is tagged with it.
-        Set<Tag> tags = new HashSet<Tag>(tagManager.getTags(TagNames.IM_PUBLIC, bag.getName(),
-            TagTypes.BAG, null));
-        tags.addAll(tagManager.getObjectTags(bag, profile));
-        return new ArrayList<Tag>(tags);
+        //Set<Tag> tags = new HashSet<Tag>(tagManager.getTags(TagNames.IM_PUBLIC, bag.getName(),
+        //    TagTypes.BAG, null));
+        return new ArrayList<Tag>(tagManager.getObjectTags(bag, profile));
     }
 
     /**
@@ -319,8 +323,10 @@ public class BagManager
      * @throws UserAlreadyShareBagException if the bag is already shared by the user
      */
     public void shareBagWithUser(InterMineBag bag, Profile recipient)
-            throws UserNotFoundException, UserAlreadyShareBagException {
-        if (recipient == null) throw new UserNotFoundException("recipient is null");
+        throws UserNotFoundException, UserAlreadyShareBagException {
+        if (recipient == null) {
+            throw new UserNotFoundException("recipient is null");
+        }
         sharedBagManager.shareBagWithUser(bag, recipient.getUsername());
     }
 
@@ -343,7 +349,7 @@ public class BagManager
     }
 
     /**
-     * Unshare the bag with the user given in input
+     * Un-share the bag with the user given in input
      * @param bag the bag to un-share
      * @param profile the user sharing the bag
      * @throws UserNotFoundException if the user does't exist
@@ -384,10 +390,11 @@ public class BagManager
 
         allBags.putAll(getGlobalBags());
         if (profile != null) {
-            Map<String, InterMineBag> savedBags = profile.getSavedBags();
-            allBags.putAll(savedBags);
             Map<String, InterMineBag> sharedBags = sharedBagManager.getSharedBags(profile);
             allBags.putAll(sharedBags);
+            // A user's own lists take precedence over everything else.
+            Map<String, InterMineBag> savedBags = profile.getSavedBags();
+            allBags.putAll(savedBags);
         }
 
         return allBags;
@@ -476,6 +483,18 @@ public class BagManager
     }
 
     /**
+     * Fetch global and user bags current of the specified type or a subclass
+     * or any superclass of the specified type.
+     * @param profile the user to fetch bags for
+     * @param type an unqualified class name
+     * @return a map from bag name to bag
+     */
+    public Map<String, InterMineBag> getCompatibleCurrentBags(Profile profile,
+                                                          String type) {
+        return filterBagsByType(getBags(profile), type, true, true);
+    }
+
+    /**
      * Fetch global and user bags of the specified type or a subclass of the specified type.
      * @param profile the user to fetch bags for
      * @param type an unqualified class name
@@ -484,7 +503,7 @@ public class BagManager
      */
     public Map<String, InterMineBag> getBagsOfType(Profile profile, String type,
                                                    boolean onlyCurrent) {
-        return filterBagsByType(getBags(profile), type, onlyCurrent);
+        return filterBagsByType(getBags(profile), type, onlyCurrent, false);
     }
 
     /**
@@ -494,26 +513,31 @@ public class BagManager
      * @return a map from bag name to bag
      */
     public Map<String, InterMineBag> getCurrentUserBagsOfType(Profile profile, String type) {
-        return filterBagsByType(getUserBags(profile), type, true);
+        return filterBagsByType(getUserBags(profile), type, true, false);
     }
 
     private Map<String, InterMineBag> filterBagsByType(Map<String, InterMineBag> bags,
-            String type, boolean onlyCurrent) {
-        Set<String> classAndSubs = new HashSet<String>();
-        classAndSubs.add(type);
+            String type, boolean onlyCurrent, boolean includeSupers) {
+        Set<String> acceptableTypes = new HashSet<String>();
+        acceptableTypes.add(type);
 
         ClassDescriptor bagTypeCld = model.getClassDescriptorByName(type);
         if (bagTypeCld == null) {
             throw new NullPointerException("Could not find ClassDescriptor for name " + type);
         }
         for (ClassDescriptor cld : model.getAllSubs(bagTypeCld)) {
-            classAndSubs.add(cld.getUnqualifiedName());
+            acceptableTypes.add(cld.getUnqualifiedName());
+        }
+        if (includeSupers) {
+            for (ClassDescriptor cld : bagTypeCld.getAllSuperDescriptors()) {
+                acceptableTypes.add(cld.getUnqualifiedName());
+            }
         }
 
         Map<String, InterMineBag> bagsOfType = new HashMap<String, InterMineBag>();
         for (Map.Entry<String, InterMineBag> entry : bags.entrySet()) {
             InterMineBag bag = entry.getValue();
-            if (classAndSubs.contains(bag.getType())) {
+            if (acceptableTypes.contains(bag.getType())) {
                 if ((onlyCurrent && bag.isCurrent()) || !onlyCurrent) {
                     bagsOfType.put(entry.getKey(), bag);
                 }
@@ -608,7 +632,8 @@ public class BagManager
         return bagsContainingId;
     }
 
-    private Map<Integer, InterMineBag> getOsBagIdToInterMineBag(Collection<InterMineBag> imBags) {
+    private static Map<Integer, InterMineBag> getOsBagIdToInterMineBag(
+            Collection<InterMineBag> imBags) {
         Map<Integer, InterMineBag> osBagIdToInterMineBag = new HashMap<Integer, InterMineBag>();
 
         for (InterMineBag imBag : imBags) {
@@ -617,7 +642,7 @@ public class BagManager
         return osBagIdToInterMineBag;
     }
 
-    private Collection<ObjectStoreBag> getObjectStoreBags(Collection<InterMineBag> imBags) {
+    private static Collection<ObjectStoreBag> getObjectStoreBags(Collection<InterMineBag> imBags) {
         Set<ObjectStoreBag> objectStoreBags = new HashSet<ObjectStoreBag>();
         for (InterMineBag imBag : imBags) {
             objectStoreBags.add(imBag.getOsb());
@@ -681,5 +706,12 @@ public class BagManager
         }
     }
 
-
+    /**
+     * Close the TagManager
+     *
+     * @throws ObjectStoreException in exceptional circumstances
+     */
+    public void close() throws ObjectStoreException {
+        tagManager.close();
+    }
 }

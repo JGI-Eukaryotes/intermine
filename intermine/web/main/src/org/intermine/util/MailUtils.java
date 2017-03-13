@@ -1,7 +1,7 @@
 package org.intermine.util;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -10,9 +10,7 @@ package org.intermine.util;
  *
  */
 
-import java.net.URLEncoder;
 import java.text.MessageFormat;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -24,7 +22,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.intermine.api.profile.InterMineBag;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Mail utilities for the webapp.
@@ -43,11 +41,12 @@ public abstract class MailUtils
      *
      * @param to the address to send to
      * @param webProperties properties such as the from address
-     * @throws Exception if there is a problem creating the email
+     * @throws MessagingException if there is a problem creating the email
      */
-    public static void welcome(String to, final Map webProperties) throws MessagingException {
-        String subject = (String) webProperties.get("mail.subject");
-        String text = (String) webProperties.get("mail.text");
+    public static void welcome(String to, final Properties webProperties)
+        throws MessagingException {
+        String subject = webProperties.getProperty("mail.subject");
+        String text = webProperties.getProperty("mail.text");
         email(to, subject, text, webProperties);
     }
 
@@ -61,6 +60,7 @@ public abstract class MailUtils
      * @param webProperties Common properties for all emails (such as from, authentication)
      * @throws MessagingException if there is a problem creating the email
      */
+<<<<<<< HEAD
     public static void email(String to, String subject, String body, String from,
             final Map webProperties) throws MessagingException {
         final String user = (String) webProperties.get("mail.smtp.user");
@@ -68,6 +68,19 @@ public abstract class MailUtils
         String authFlag = (String) webProperties.get("mail.smtp.auth");
         String starttlsFlag = (String) webProperties.get("mail.smtp.starttls.enable");
         
+=======
+    public static void email(
+            String to,
+            String subject,
+            String body,
+            String from,
+            final Properties webProperties)
+        throws MessagingException {
+        final String user = webProperties.getProperty("mail.smtp.user");
+        String smtpPort = webProperties.getProperty("mail.smtp.port");
+        String authFlag = webProperties.getProperty("mail.smtp.auth");
+        String starttlsFlag = webProperties.getProperty("mail.smtp.starttls.enable");
+>>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
 
         Properties properties = System.getProperties();
 
@@ -80,7 +93,6 @@ public abstract class MailUtils
         if (smtpPort != null) {
             properties.put("mail.smtp.port", smtpPort);
         }
-
         if (starttlsFlag != null) {
             properties.put("mail.smtp.starttls.enable", starttlsFlag);
         }
@@ -103,12 +115,17 @@ public abstract class MailUtils
                     return new PasswordAuthentication(user, password);
                 }
             };
-            session = Session.getDefaultInstance(properties, authenticator);
+            session = Session.getInstance(properties, authenticator);
         } else {
-            session = Session.getDefaultInstance(properties);
+            session = Session.getInstance(properties);
         }
         MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(from));
+        if (StringUtils.isEmpty(user)) {
+            message.setFrom(new InternetAddress(from));
+        } else {
+            message.setReplyTo(InternetAddress.parse(from, true));
+            message.setFrom(new InternetAddress(user));
+        }
         message.addRecipient(Message.RecipientType.TO, InternetAddress.parse(to, true)[0]);
         message.setSubject(subject);
         message.setContent(body, "text/plain");
@@ -122,7 +139,11 @@ public abstract class MailUtils
      * @param webProperties Common properties for all emails (such as from, authentication)
      * @throws MessagingException if there is a problem creating the email
      */
-    public static void email(String to, String subject, String body, final Map webProperties)
+    public static void email(
+            String to,
+            String subject,
+            String body,
+            final Properties webProperties)
         throws MessagingException {
         String from = (String) webProperties.get("mail.from");
         email(to, subject, body, from, webProperties);
@@ -136,7 +157,10 @@ public abstract class MailUtils
      * @param webProperties properties such as the from address
      * @throws Exception if there is a problem creating the email
      */
-    public static void emailPasswordToken(String to, String url, final Map webProperties)
+    public static void emailPasswordToken(
+            String to,
+            String url,
+            final Properties webProperties)
         throws Exception {
 
         String projectTitle = (String) webProperties.get("project.title");
@@ -153,9 +177,12 @@ public abstract class MailUtils
      * mine config file
      * @param email the email to subscribe
      * @param webProperties the web properties
-     * @throws Exception when somethign goes wrong
+     * @throws MessagingException when something goes wrong
      */
-    public static void subscribe(String email, final Map webProperties) throws MessagingException {
+    public static void subscribe(
+            String email,
+            final Properties webProperties)
+        throws MessagingException {
         String to = (String) webProperties.get("mail.mailing-list");
         String subject = "";
         String body = "";

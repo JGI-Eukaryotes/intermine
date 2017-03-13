@@ -7,14 +7,23 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="im"%>
 <%@ taglib uri="/WEB-INF/imutil.tld" prefix="imutil" %>
 <%@ taglib uri="/WEB-INF/functions.tld" prefix="imf" %>
+<% pageContext.setAttribute("newLineChar", "\n"); %>
 
 <!-- report.jsp -->
+
 <html:xhtml/>
 
 <script type="text/javascript">
   <%-- apply white background as report page loads slowly and body bg will show through --%>
   var pageBackgroundColor = jQuery('body').css('background-color');
   jQuery('body').css('background-color', '#FFF');
+
+  <%--  Expose useful properties to the js. The properties themselves are
+        set in the foreach later down the page --%>
+  var imSummaryFields = {
+    type : "${object.type}"
+  };
+
 </script>
 
 <c:choose>
@@ -69,6 +78,12 @@
       <c:set var="tableCount" value="0" scope="page" />
 
       <c:forEach var="field" items="${object.objectSummaryFields}">
+        <%-- Expose useful props to the js --%>
+        <%-- <script>alert("TEST");</script> --%>
+        <%-- <script> imSummaryFields["${field.name}"] = "${field.value}";</script> --%>
+        <script> imSummaryFields["${field.name}"] = "${fn:replace(field.value, newLineChar, "; ")}";</script>
+
+
           <c:if test="${tableCount %2 == 0}">
             <c:choose>
               <c:when test="${tableCount == 0}">
@@ -295,13 +310,18 @@
       <tiles:put name="placement" value="summary" />
     <tiles:put name="reportObject" beanName="object" />
      </tiles:insert>
-  
+
    <tiles:insert name="templateList.tile">
     <tiles:put name="scope" value="global" />
     <tiles:put name="placement" value="im:aspect:summary" />
     <tiles:put name="reportObject" beanName="object" />
   </tiles:insert>
-  
+
+    <tiles:insert page="/reportRefsCols.jsp">
+      <tiles:put name="object" beanName="object" />
+      <tiles:put name="placement" value="im:summary" />
+    </tiles:insert>
+
   </div>
 
   <c:forEach items="${categories}" var="aspect" varStatus="status">

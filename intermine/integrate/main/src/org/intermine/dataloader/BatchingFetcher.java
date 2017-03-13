@@ -1,7 +1,7 @@
 package org.intermine.dataloader;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -22,12 +22,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import org.apache.log4j.Logger;
 import org.intermine.metadata.ClassDescriptor;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.MetaDataException;
 import org.intermine.metadata.PrimaryKey;
 import org.intermine.metadata.PrimaryKeyUtil;
 import org.intermine.metadata.ReferenceDescriptor;
+import org.intermine.metadata.TypeUtil;
+import org.intermine.metadata.Util;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStore;
@@ -35,7 +39,6 @@ import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStorePassthruImpl;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.objectstore.query.BagConstraint;
-import org.intermine.objectstore.query.ConstraintOp;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
@@ -45,12 +48,8 @@ import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.objectstore.query.SingletonResults;
 import org.intermine.util.CollectionUtil;
-import org.intermine.util.DynamicUtil;
-import org.intermine.util.Shutdownable;
 import org.intermine.util.ShutdownHook;
-import org.intermine.util.TypeUtil;
-
-import org.apache.log4j.Logger;
+import org.intermine.util.Shutdownable;
 
 /**
  * Class providing EquivalentObjectFetcher functionality that batches fetches to improve
@@ -138,6 +137,28 @@ public class BatchingFetcher extends HintingFetcher
      * @throws ObjectStoreException if something goes wrong
      */
     protected void getEquivalentsFor(List<ResultsRow<Object>> batch) throws ObjectStoreException {
+
+        List<FastPathObject> imos = new ArrayList<FastPathObject>();
+        // TODO: add all the objects that are referenced by these objects, and follow primary keys
+        // We can make use of the ObjectStoreFastCollectionsForTranslatorImpl's ability to work this
+        // all out for us.
+        for (ResultsRow<Object> row : batch) {
+            for (Object object : row) {
+                if (object instanceof InterMineObject) {
+                    imos.add((InterMineObject) object);
+                }
+            }
+        }
+        getEquivalentsForObjects(imos);
+    }
+
+    /**
+     * Fetches the equivalent object information for a whole batch of objects.
+     *
+     * @param fpos the objects to fetch equivalents for
+     * @throws ObjectStoreException if something goes wrong
+     */
+    protected void getEquivalentsForObjects(List<FastPathObject> fpos) throws ObjectStoreException {
         long time = System.currentTimeMillis();
         long time1 = time;
         boolean databaseEmpty = hints.databaseEmpty();
@@ -152,28 +173,27 @@ public class BatchingFetcher extends HintingFetcher
         // We can make use of the ObjectStoreFastCollectionsForTranslatorImpl's ability to work this
         // all out for us.
         Set<InterMineObject> objects = new HashSet<InterMineObject>();
-        for (ResultsRow<Object> row : batch) {
-            for (Object object : row) {
-                if (object instanceof InterMineObject) {
-                    InterMineObject imo = (InterMineObject) object;
-                    if (idMap.get(imo.getId()) == null) {
-                        objects.add(imo);
-                        for (String fieldName : TypeUtil.getFieldInfos(imo.getClass()).keySet()) {
-                            Object fieldValue;
-                            try {
-                                fieldValue = imo.getFieldProxy(fieldName);
-                            } catch (IllegalAccessException e) {
-                                throw new RuntimeException(e);
-                            }
-                            if ((fieldValue instanceof InterMineObject)
-                                    && (!(fieldValue instanceof ProxyReference))) {
-                                objects.add((InterMineObject) fieldValue);
-                            } else if (fieldValue instanceof Collection<?>) {
-                                for (Object collectionElement : ((Collection<?>) fieldValue)) {
-                                    if ((collectionElement instanceof InterMineObject)
-                                            && (!(collectionElement instanceof ProxyReference))) {
-                                        objects.add((InterMineObject) collectionElement);
-                                    }
+        for (FastPathObject fpo : fpos) {
+            if (fpo instanceof InterMineObject) {
+                InterMineObject imo = (InterMineObject) fpo;
+
+                if (idMap.get(imo.getId()) == null) {
+                    objects.add(imo);
+                    for (String fieldName : TypeUtil.getFieldInfos(imo.getClass()).keySet()) {
+                        Object fieldValue;
+                        try {
+                            fieldValue = imo.getFieldProxy(fieldName);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                        if ((fieldValue instanceof InterMineObject)
+                                && (!(fieldValue instanceof ProxyReference))) {
+                            objects.add((InterMineObject) fieldValue);
+                        } else if (fieldValue instanceof Collection<?>) {
+                            for (Object collectionElement : ((Collection<?>) fieldValue)) {
+                                if ((collectionElement instanceof InterMineObject)
+                                        && (!(collectionElement instanceof ProxyReference))) {
+                                    objects.add((InterMineObject) collectionElement);
                                 }
                             }
                         }
@@ -181,6 +201,7 @@ public class BatchingFetcher extends HintingFetcher
                 }
             }
         }
+
         objects.removeAll(equivalents.keySet());
         // Now objects contains all the objects we need to fetch data for.
         Map<InterMineObject, Set<InterMineObject>> results = new HashMap<InterMineObject,
@@ -211,7 +232,7 @@ public class BatchingFetcher extends HintingFetcher
                     if (!keysForClass.isEmpty()) {
                         time = System.currentTimeMillis();
                         boolean classNotExists = hints.classNotExists(cld.getType());
-                        String className = DynamicUtil.getFriendlyName(cld.getType());
+                        String className = Util.getFriendlyName(cld.getType());
                         if (!savedTimes.containsKey(className)) {
                             savedTimes.put(className, new Long(System.currentTimeMillis() - time));
                         }
@@ -397,7 +418,7 @@ public class BatchingFetcher extends HintingFetcher
                                     long time = System.currentTimeMillis();
                                     boolean pkQueryFruitless = hints.pkQueryFruitless(cld
                                             .getType(), fieldName, fieldValue);
-                                    String summaryName = DynamicUtil.getFriendlyName(cld
+                                    String summaryName = Util.getFriendlyName(cld
                                             .getType()) + "." + fieldName;
                                     if (!savedTimes.containsKey(summaryName)) {
                                         savedTimes.put(summaryName, new Long(System

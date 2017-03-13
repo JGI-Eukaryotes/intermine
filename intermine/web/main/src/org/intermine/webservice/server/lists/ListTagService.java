@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.lists;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -15,19 +15,17 @@ import static org.apache.commons.collections.TransformerUtils.invokerTransformer
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
-import org.intermine.api.profile.TagManager;
 import org.intermine.api.tag.TagTypes;
+import org.intermine.api.util.AnonProfile;
 import org.intermine.model.userprofile.Tag;
 import org.intermine.webservice.server.exceptions.ResourceNotFoundException;
 import org.intermine.webservice.server.output.JSONFormatter;
@@ -62,11 +60,15 @@ public class ListTagService extends AbstractListService
         Profile profile = getPermission().getProfile();
         String listName = getOptionalParameter("name", null);
 
-        Set<String> tags;
-        if (listName == null) {
-            tags = getAllTags(profile);
-        } else {
-            tags = getTagsForSingleList(listName, profile);
+
+        Set<String> tags = new HashSet<String>();
+        // if not logged in, return empty. See #1222
+        if (!AnonProfile.USERNAME.equals(profile.getUsername())) {
+            if (listName == null) {
+                tags = getAllTags(profile);
+            } else {
+                tags = getTagsForSingleList(listName, profile);
+            }
         }
 
         output.addResultItem(new ArrayList<String>(tags));
@@ -88,11 +90,7 @@ public class ListTagService extends AbstractListService
     }
 
     private Set<String> getAllTags(Profile profile) {
-        if (!this.isAuthenticated()) {
-            return Collections.emptySet();
-        }
-        TagManager tm = im.getTagManager();
-        return tm.getUserTagNames(TagTypes.BAG, profile.getUsername());
+        return im.getTagManager().getUserTagNames(TagTypes.BAG, profile);
     }
 
 }

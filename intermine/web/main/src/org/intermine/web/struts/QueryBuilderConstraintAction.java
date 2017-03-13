@@ -1,7 +1,7 @@
 package org.intermine.web.struts;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -12,19 +12,20 @@ package org.intermine.web.struts;
 
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.intermine.objectstore.query.ConstraintOp;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.OuterJoinStatus;
 import org.intermine.pathquery.Path;
@@ -34,6 +35,7 @@ import org.intermine.pathquery.PathConstraintBag;
 import org.intermine.pathquery.PathConstraintLookup;
 import org.intermine.pathquery.PathConstraintLoop;
 import org.intermine.pathquery.PathConstraintMultiValue;
+import org.intermine.pathquery.PathConstraintRange;
 import org.intermine.pathquery.PathConstraintSubclass;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.template.SwitchOffAbility;
@@ -60,9 +62,13 @@ public class QueryBuilderConstraintAction extends InterMineAction
      * @return an ActionForward object defining where control goes next
      * @exception Exception if the application business logic throws an exception
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-            @SuppressWarnings("unused") HttpServletResponse response) throws Exception {
+    public ActionForward execute(
+            ActionMapping mapping,
+            ActionForm form,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         //to prevent submit twice
         if (!isTokenValid(request)) {
@@ -90,6 +96,7 @@ public class QueryBuilderConstraintAction extends InterMineAction
         boolean constrainToASubclass = request.getParameter("subclass") != null;
         boolean constrainToNull = request.getParameter("nullnotnull") != null;
         boolean editingTemplateConstraintParams = request.getParameter("template") != null;
+        boolean constrainToARange = request.getParameter("range") != null;
 
         // Select the join style for the path in the query
         // If we set an outer join, then we need to take care of the consequences, like order by
@@ -149,8 +156,8 @@ public class QueryBuilderConstraintAction extends InterMineAction
                         constraintValue);
             }
         } else if (constrainToABag) {
-            ConstraintOp constraintOp = ConstraintOp
-            .getOpForIndex(Integer.valueOf(constraintForm.getBagOp()));
+            ConstraintOp constraintOp =
+                    ConstraintOp.getOpForIndex(Integer.valueOf(constraintForm.getBagOp()));
             String constraintValue = constraintForm.getBagValue();
             // Note, we constrain the parent if the path is an attribute
             Path path1 = query.makePath(constraintForm.getPath());
@@ -170,6 +177,14 @@ public class QueryBuilderConstraintAction extends InterMineAction
         } else if (constrainToASubclass) {
             newConstraint = new PathConstraintSubclass(constraintForm.getPath(),
                   constraintForm.getSubclassValue());
+        } else if (constrainToARange) {
+            Set<String> ranges = new HashSet<String>();
+            String rangeString = constraintForm.getRangeConstraint();
+            String[] bits = rangeString.split("[, ]+");
+            ranges.addAll(Arrays.asList(bits));
+            ConstraintOp constraintOp
+                = ConstraintOp.getOpForIndex(Integer.valueOf(constraintForm.getRangeOp()));
+            newConstraint = new PathConstraintRange(constraintForm.getPath(), constraintOp, ranges);
         } else if (constrainToNull) {
             if ("NotNULL".equals(constraintForm.getNullConstraint())) {
                 newConstraint = Constraints.isNotNull(constraintForm.getPath());
@@ -197,8 +212,8 @@ public class QueryBuilderConstraintAction extends InterMineAction
             }
             sb.append("}, parameters = {");
             needComma = false;
-            for (Map.Entry<String, String[]> param : ((Map<String, String[]>) request
-                    .getParameterMap()).entrySet()) {
+            for (Map.Entry<String, String[]> param
+                    : ((Map<String, String[]>) request.getParameterMap()).entrySet()) {
                 if (needComma) {
                     sb.append(", ");
                 }

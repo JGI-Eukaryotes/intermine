@@ -1,7 +1,7 @@
 package org.intermine.web.struts;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -9,6 +9,9 @@ package org.intermine.web.struts;
  * information or http://www.gnu.org/copyleft/lesser.html.
  *
  */
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,7 +21,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.intermine.objectstore.query.ConstraintOp;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.pathquery.ConstraintValueParser;
 import org.intermine.pathquery.ParseValueException;
 import org.intermine.pathquery.Path;
@@ -33,6 +36,7 @@ import org.intermine.web.logic.session.SessionMethods;
  */
 public class QueryBuilderConstraintForm extends ActionForm
 {
+    private static final long serialVersionUID = 1L;
     protected String bagOp, bagValue;
     protected String attributeOp, attributeValue, attributeOptions, extraValue;
     protected String multiValueAttribute;
@@ -44,6 +48,9 @@ public class QueryBuilderConstraintForm extends ActionForm
     protected String path;
     protected String operator = "and";
     protected String nullConstraint;
+    protected String rangeOp;
+    protected String rangeConstraint;
+    protected Set<String> ranges;
     private String editingConstraintCode = null;
 
     // template builder elements
@@ -189,8 +196,9 @@ public class QueryBuilderConstraintForm extends ActionForm
     }
 
     /**
-     * Sets the value of multiValueAttribute, a string rapresenting the values selected
-     * by the user separated by a comma
+     * Sets the value of multiValueAttribute, a string representing the values selected
+     * by the user separated by a comma.
+     *
      * @param multiValueAttribute the value to assign to multiValueAttribute
      */
     public void setMultiValueAttribute(String multiValueAttribute) {
@@ -280,6 +288,52 @@ public class QueryBuilderConstraintForm extends ActionForm
     }
 
     /**
+     * Set the range constraint value. Will be one or more ranges separated by commas
+     *
+     * @param rangeConstraint the range constraint value
+     */
+    public void setRangeConstraint(String rangeConstraint) {
+        this.rangeConstraint = rangeConstraint.trim();
+    }
+
+    /**
+     * Get the range constraint value. Will be one or more ranges separated by commas
+     *
+     * @return the range constraint value
+     */
+    public String getRangeConstraint() {
+        return rangeConstraint;
+    }
+
+    /**
+     * @return the ranges to constrain by, e.g. 2R:123..456
+     */
+    public Set<String> getRanges() {
+        return ranges;
+    }
+
+    /**
+     * @param range the range to constrain by, e.g. 2R:123..456
+     */
+    public void addRange(String range) {
+        ranges.add(range);
+    }
+
+    /**
+     * @return the operator for this range constraint, e.g. OVERLAPS
+     */
+    public String getRangeOp() {
+        return rangeOp;
+    }
+
+    /**
+     * @param rangeOp the operator for this range constraint, e.g. OVERLAPS
+     */
+    public void setRangeOp(String rangeOp) {
+        this.rangeOp = rangeOp;
+    }
+
+    /**
      * Get the template label.
      * @return the template label
      */
@@ -358,7 +412,7 @@ public class QueryBuilderConstraintForm extends ActionForm
      * {@inheritDoc}
      */
     @Override
-    public ActionErrors validate(@SuppressWarnings("unused") ActionMapping mapping,
+    public ActionErrors validate(ActionMapping mapping,
                                  HttpServletRequest request) {
         HttpSession session = request.getSession();
 
@@ -413,7 +467,7 @@ public class QueryBuilderConstraintForm extends ActionForm
      * {@inheritDoc}
      */
     @Override
-    public void reset(@SuppressWarnings("unused") ActionMapping mapping,
+    public void reset(ActionMapping mapping,
                       HttpServletRequest request) {
         bagOp = null;
         bagValue = null;
@@ -429,5 +483,8 @@ public class QueryBuilderConstraintForm extends ActionForm
         joinType = "inner";
         useJoin = null;
         editingConstraintCode = null;
+        ranges = new HashSet<String>();
+        rangeOp = null;
+        rangeConstraint = null;
     }
 }

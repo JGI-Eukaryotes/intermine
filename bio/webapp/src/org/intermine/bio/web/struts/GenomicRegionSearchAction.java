@@ -1,7 +1,7 @@
 package org.intermine.bio.web.struts;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -19,7 +19,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -44,12 +43,10 @@ import org.json.JSONObject;
  */
 public class GenomicRegionSearchAction extends InterMineAction
 {
-    @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(GenomicRegionSearchAction.class);
-
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
         throws Exception {
@@ -135,6 +132,7 @@ public class GenomicRegionSearchAction extends InterMineAction
                         gr.setChr(coord.split("\t")[0].trim());
                         gr.setStart(Integer.valueOf(coord.split("\t")[1].trim()));
                         gr.setEnd(Integer.valueOf(coord.split("\t")[2].trim()));
+                        gr.setMinusStrand(gr.getStart().intValue() > gr.getEnd().intValue());
                         liftedList.add(gr);
                     }
 
@@ -142,14 +140,12 @@ public class GenomicRegionSearchAction extends InterMineAction
                         String info = (String) unmappedArray.get(i);
                         info.trim();
                         if (info.startsWith("#")) { // e.g. "#Partially deleted in new\n"
-                            unmapped.append(info.subSequence(1, info.length() - 1))
-                                    .append(" - ");
+                            unmapped.append(info.subSequence(1, info.length() - 1)).append(" - ");
                         } else {
                             String chr = info.split("\t")[0].trim();
                             String start = info.split("\t")[1].trim();
                             String end = info.split("\t")[2].trim();
-                            unmapped.append(chr + ":" + start + ".." + end)
-                                    .append("<br>");
+                            unmapped.append(chr + ":" + start + ".." + end).append("<br>");
                         }
                     }
 
@@ -171,10 +167,8 @@ public class GenomicRegionSearchAction extends InterMineAction
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    request.setAttribute(
-                            "liftOverStatus",
-                            "<i>Genomic region coordinates are not lifted. " +
-                            "liftOver service error, please contact system admin</i>");
+                    request.setAttribute("liftOverStatus", "<i>Genomic region coordinates are not "
+                            + "lifted. liftOver service error, please contact system admin</i>");
                 }
             }
         }
@@ -192,8 +186,8 @@ public class GenomicRegionSearchAction extends InterMineAction
             } else {
                 String spanString = "";
                 for (GenomicRegion span : resultMap.get("error")) {
-                    spanString = spanString + span.getChr() + ":" + span.getStart()
-                            + ".." + span.getEnd() + ", ";
+                    spanString = spanString + span.getChr() + ":" + span.getStart() + ".."
+                            + span.getEnd() + ", ";
                 }
                 errorMsg = "<b>Invalid genomic regions in <i>"
                         + grsService.getConstraint().getOrgName()

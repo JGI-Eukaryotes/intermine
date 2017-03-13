@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,8 +54,8 @@ public class ProteinAtlasConverter extends BioFileConverter
     private Map<String, Item> tissues = new HashMap<String, Item>();
     private Set<String> storedTissues = new HashSet<String>();
     private int entryCount = 0;
-
-    private String taxonId = "9606";
+    protected IdResolver rslv;
+    private static final String TAXON_ID = "9606";
 
     /**
      * Constructor
@@ -63,6 +64,9 @@ public class ProteinAtlasConverter extends BioFileConverter
      */
     public ProteinAtlasConverter(ItemWriter writer, Model model) {
         super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
+        if (rslv == null) {
+            rslv = IdResolverService.getIdResolverByOrganism(Collections.singleton(TAXON_ID));
+        }
     }
 
     /**
@@ -70,11 +74,12 @@ public class ProteinAtlasConverter extends BioFileConverter
      *
      * {@inheritDoc}
      */
+    @Override
     public void process(Reader reader) throws Exception {
         File currentFile = getCurrentFile();
         if ("normal_tissue.csv".equals(currentFile.getName())) {
             processNormalTissue(reader);
-        } else if ("tissue_to_organ.tsv".equals(currentFile.getName())){
+        } else if ("tissue_to_organ.tsv".equals(currentFile.getName())) {
             processTissueToOrgan(reader);
         } else if ("proteinatlas.xml".equals(currentFile.getName())) {
             processAllInOneXML(currentFile);
@@ -142,13 +147,16 @@ public class ProteinAtlasConverter extends BioFileConverter
             String[] line = (String[]) lineIter.next();
 
             String geneId = getGeneId(line[0]);
-            String capitalisedTissueName = StringUtils.capitalize(line[1]);
+            if (StringUtils.isEmpty(geneId)) {
+                continue;
+            }
+            String capitalisedTissueName = StringUtils.capitalize(line[2]);
             Item tissueId = getTissue(capitalisedTissueName);
 
-            String cellType = line[2];
-            String level = line[3];
-            String expressionType = line[4];
-            String reliability = line[5];
+            String cellType = line[3];
+            String level = line[4];
+            String expressionType = line[5];
+            String reliability = line[6];
 
             level = alterLevel(level, expressionType);
             reliability = alterReliability(reliability, expressionType);
@@ -165,7 +173,7 @@ public class ProteinAtlasConverter extends BioFileConverter
     }
 
     private void processAllInOneXML(File file)
-            throws SAXException, IOException, ParserConfigurationException, ObjectStoreException {
+        throws SAXException, IOException, ParserConfigurationException, ObjectStoreException {
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -187,8 +195,8 @@ public class ProteinAtlasConverter extends BioFileConverter
                 e.getGeneSynonymSet().add(synonymList.item(si).getTextContent());
             }
 
-            e.setGeneId(((Element) entry.getElementsByTagName("identifier")
-                    .item(0)).getAttribute("id"));
+            e.setGeneId(((Element) entry.getElementsByTagName("identifier").item(0))
+                    .getAttribute("id"));
 
             Element te = (Element) entry.getElementsByTagName("tissueExpression").item(0);
             e.getTissueExpression().setType(te.getAttribute("type"));
@@ -212,10 +220,10 @@ public class ProteinAtlasConverter extends BioFileConverter
                 Element ted = (Element) tedList.item(tedi);
 
                 TissueExpressionData d = e.new TissueExpressionData();
-                d.setTissue(((Element) ted.getElementsByTagName("tissue").item(
-                        0)).getTextContent());
-                d.setTissueStatus(((Element) ted.getElementsByTagName("tissue")
-                        .item(0)).getAttribute("status"));
+                d.setTissue(((Element) ted.getElementsByTagName("tissue").item(0))
+                        .getTextContent());
+                d.setTissueStatus(((Element) ted.getElementsByTagName("tissue").item(0))
+                        .getAttribute("status"));
 
                 d.setCellType(ted.getElementsByTagName("cellType").item(0)
                         .getTextContent());
@@ -239,7 +247,7 @@ public class ProteinAtlasConverter extends BioFileConverter
     }
 
     // store tells us we have been called with the upper case name from the tissue_to_organ file
-    private Item getTissue(String tissueName) throws ObjectStoreException {
+    private Item getTissue(String tissueName) {
         Item tissue = tissues.get(tissueName);
         if (tissue == null) {
             tissue = createItem("Tissue");
@@ -249,19 +257,39 @@ public class ProteinAtlasConverter extends BioFileConverter
     }
 
     private String getGeneId(String primaryIdentifier) throws ObjectStoreException {
-        String geneId = genes.get(primaryIdentifier);
+        String resolvedIdentifier = resolveGene(primaryIdentifier);
+        if (StringUtils.isEmpty(resolvedIdentifier)) {
+            return null;
+        }
+        String geneId = genes.get(resolvedIdentifier);
         if (geneId == null) {
             Item gene = createItem("Gene");
-            gene.setAttribute("primaryIdentifier", primaryIdentifier);
-            gene.setReference("organism", getOrganism(taxonId));
+            gene.setAttribute("primaryIdentifier", resolvedIdentifier);
+            gene.setReference("organism", getOrganism(TAXON_ID));
             store(gene);
             geneId = gene.getIdentifier();
-            genes.put(primaryIdentifier, geneId);
+            genes.put(resolvedIdentifier, geneId);
         }
         return geneId;
     }
 
-    private String alterLevel(String level, String type) {
+    private String resolveGene(String identifier) {
+        String id = identifier;
+        if (rslv != null && rslv.hasTaxon(TAXON_ID)) {
+            int resCount = rslv.countResolutions(TAXON_ID, identifier);
+            if (resCount != 1) {
+                LOG.info("RESOLVER: failed to resolve gene to one identifier, ignoring gene: "
+                         + identifier + " count: " + resCount + " Human identifier: "
+                         + rslv.resolveId(TAXON_ID, identifier));
+                return null;
+            }
+            id = rslv.resolveId(TAXON_ID, identifier).iterator().next();
+        }
+        return id;
+    }
+
+
+    private static String alterLevel(String level, String type) {
         if ("staining".equalsIgnoreCase(type)) {
             if ("strong".equalsIgnoreCase(level)) {
                 return "High";
@@ -276,7 +304,7 @@ public class ProteinAtlasConverter extends BioFileConverter
         return level;
     }
 
-    private String alterReliability(String reliability, String type) {
+    private static String alterReliability(String reliability, String type) {
         if ("staining".equalsIgnoreCase(type)) {
             if ("supportive".equalsIgnoreCase(reliability)) {
                 return "High";
@@ -297,7 +325,7 @@ public class ProteinAtlasConverter extends BioFileConverter
         return reliability;
     }
 
-    private String alterExpressionType(String expressionType) {
+    private static String alterExpressionType(String expressionType) {
         if ("APE".equalsIgnoreCase(expressionType)) {
             return "APE - two or more antibodies";
         } else if ("Staining".equalsIgnoreCase(expressionType)) {
@@ -307,8 +335,7 @@ public class ProteinAtlasConverter extends BioFileConverter
         }
     }
 
-    private void processEntry(ProteinAtlasEntry entry) throws SAXException,
-            ObjectStoreException {
+    private void processEntry(ProteinAtlasEntry entry) throws ObjectStoreException {
         entryCount++;
         if (entryCount % 10000 == 0) {
             LOG.info("Processed " + entryCount + " entries.");
@@ -318,7 +345,7 @@ public class ProteinAtlasConverter extends BioFileConverter
     }
 
     private void processTissueExpression(ProteinAtlasEntry entry)
-            throws ObjectStoreException {
+        throws ObjectStoreException {
         String geneRefId = getGeneId(entry.getGeneId());
         String reliability = entry.getTissueExpression().getVerification();
 

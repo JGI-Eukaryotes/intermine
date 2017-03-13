@@ -1,7 +1,7 @@
 <project name="task" default="default" basedir="." xmlns:imdbproj="http://www.intermine.org/ns/im-task-proj/1">
 
   <dirname property="task.xml.basedir" file="${ant.file.task}"/>
-  
+
   <!--
      |
      | Import this file and call the target -init-task-xml to have access
@@ -26,7 +26,22 @@
      |    ${build.dir}
      |
    -->
-  
+
+  <!-- ABSTRACT TARGETS -->
+
+  <target name="default">
+    <!-- consuming projects should implement this target -->
+  </target>
+
+  <target name="-init-project">
+    <!-- Consuming projects should implement this target -->
+  </target>
+
+  <target name="-pre-init">
+      <!-- Consuming projects should implement this target. -->
+  </target>
+
+
   <target name="-check-task-availability">
     <available property="antlib-os-available" resource="org/intermine/task/antlib-os.xml" classpathref="task.class.path"/>
     <available property="antlib-int-available" resource="org/intermine/task/antlib-int.xml" classpathref="task.class.path"/>
@@ -44,6 +59,7 @@
 
   <target name="-set-release-suffix" 
           depends="-set-release-suffix-not-exists, -set-release-suffix-exists"/>
+
 
   <target name="-init-check-for-intermine-properties"
           depends="-set-release-suffix, -pre-define-task-classpath, -init-project">
@@ -112,6 +128,7 @@ specify a valid release suffix with '-Drelease=xxx'.
 
   </target>
 
+<<<<<<< HEAD
 <!--
 
 build properties are now merged with *mine.properties file
@@ -138,6 +155,8 @@ Couldn't find ${build.properties.file}
 
 -->
 
+=======
+>>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
   <target name="-load-task-taskdefs" depends="-check-task-availability,
                                               -load-os-tasks,
                                               -load-int-tasks,
@@ -157,8 +176,8 @@ Couldn't find ${build.properties.file}
     <echo>Loading web tasks</echo>
     <taskdef resource="org/intermine/web/task/antlib-web.xml" classpathref="task.class.path"/>
   </target>
-  
-  <target name="-pre-define-task-classpath" depends="-pre-init">
+
+    <target name="-pre-define-task-classpath" depends="-pre-init">
     <!-- depend on -pre-init to set build.dir -->
      <property name="build.task.dir" location="${build.dir}/main"/>
      <property name="build.tmp.dir" location="${build.dir}/tmp"/>

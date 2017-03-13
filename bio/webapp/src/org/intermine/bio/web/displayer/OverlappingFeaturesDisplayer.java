@@ -1,7 +1,7 @@
 package org.intermine.bio.web.displayer;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -15,14 +15,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.intermine.api.InterMineAPI;
-import org.intermine.bio.web.model.GeneModelCache;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.SequenceFeature;
@@ -98,8 +96,8 @@ public class OverlappingFeaturesDisplayer extends ReportDisplayer
 
                     // get the types
                     List<Class<?>> lt = PathQueryResultHelper.
-                    queryForTypesInCollection(reportObject.getObject(), "overlappingFeatures",
-                            im.getObjectStore());
+                            queryForTypesInCollection(reportObject.getObject(),
+                                    "overlappingFeatures", im.getObjectStore());
 
                     // make collection into a list
                     List<?> collectionList;
@@ -113,13 +111,9 @@ public class OverlappingFeaturesDisplayer extends ReportDisplayer
                         }
                     }
 
-
-
                 // separate objects into their types
                 looptyloop:
                     for (Class<?> c : lt) {
-
-                        long loopStartTime = System.currentTimeMillis();
 
                         Iterator<?> resultsIter = collectionList.iterator();
 
@@ -159,13 +153,12 @@ public class OverlappingFeaturesDisplayer extends ReportDisplayer
                             // create an InlineResultsTable
                             InlineResultsTable t = new InlineResultsTable(s,
                                     fd.getClassDescriptor().getModel(),
-                                    SessionMethods.getWebConfig(request), im.getClassKeys(), s.size(),
-                                    false, lc);
+                                    SessionMethods.getWebConfig(request), im.getClassKeys(),
+                                        s.size(), false, lc);
 
                             // name the table based on the first element contained
                             featureTables.put(type, t);
                         }
-                        long loopTime = System.currentTimeMillis();
                     }
                 }
             }

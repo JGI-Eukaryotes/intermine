@@ -1,7 +1,7 @@
 package org.intermine.util;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -10,9 +10,9 @@ package org.intermine.util;
  *
  */
 
-import java.lang.ref.WeakReference;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.lang.ref.WeakReference;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
@@ -48,6 +48,14 @@ public final class ShutdownHook extends Thread
     }
 
     /**
+     * Get the instance of this ShutdownHook.
+     * @return the ShutdownHook instance
+     */
+    public static synchronized ShutdownHook getInstance() {
+        return instance;
+    }
+
+    /**
      * Registers an object with the shutdown hook.
      *
      * @param object the object
@@ -59,8 +67,13 @@ public final class ShutdownHook extends Thread
     /**
      * Performs the shutdown.
      */
+<<<<<<< HEAD
     private static synchronized void shutdown() {
         while ( (objects!=null) && !objects.empty()) {
+=======
+    public static synchronized void shutdown() {
+        while (!objects.empty()) {
+>>>>>>> f26102d277ffe148b2b9ca2bdf109eab0ea63583
             Object o = objects.pop();
             try {
                 if (o instanceof WeakReference<?>) {

@@ -1,7 +1,7 @@
 package org.intermine.web.logic.config;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -24,6 +24,7 @@ public class FieldConfig
     private String fieldExpr;
     private boolean doNotTruncate;
     private boolean escapeXml = true;
+    private boolean hide = false;
     private boolean showInSummary = true;
     private boolean outerInSummary = false;
     private boolean showInInlineCollection = true;
@@ -40,15 +41,14 @@ public class FieldConfig
 
     /**
      * Specify if we want to show this field for an object in list analysis page table preview
-     * @param showInListAnalysisPreviewTable
+     * @param showInListAnalysisPreviewTable whether to show this in the list analysis preview.
      */
     public void setShowInListAnalysisPreviewTable(Boolean showInListAnalysisPreviewTable) {
         this.showInListAnalysisPreviewTable = showInListAnalysisPreviewTable;
     }
 
     /**
-     * -||-
-     * @return
+     * @return whether we should show this in the list analyis preview.
      */
     public Boolean getShowInListAnalysisPreviewTable() {
         return this.showInListAnalysisPreviewTable;
@@ -67,10 +67,16 @@ public class FieldConfig
         }
     }
 
+    /**
+     * @return The formatted name of this field.
+     */
     public String getFormattedName() {
         return FieldConfig.getFormattedName(fieldExpr);
     }
 
+    /**
+     * @param name the name of the field to format.
+     * @return the formatted name of a  particular field **/
     public static String getFormattedName(String name) {
         String[] parts = StringUtils.splitByCharacterTypeCamelCase(name);
         String[] ucFirstParts = new String[parts.length];
@@ -80,10 +86,12 @@ public class FieldConfig
         return StringUtils.join(ucFirstParts, " ");
     }
 
+    /** @param ccf The config object **/
     public void setClassConfig(Type ccf) {
         this.parent = ccf;
     }
 
+    /** @return The class config object for the class this field belongs to. **/
     public Type getClassConfig() {
         return this.parent;
     }
@@ -122,7 +130,7 @@ public class FieldConfig
 
     /**
      * Shall we show this field in a QueryBuilder? Ref #355
-     * @param showInQB
+     * @param showInQB whether to show this in the query builder.
      */
     public void setShowInQB(boolean showInQB) {
         this.showInQB = showInQB;
@@ -135,6 +143,9 @@ public class FieldConfig
         return showInQB;
     }
 
+    /**
+     * @return Whether this field represents a composite path.
+     */
     public boolean getIsDottedPath() {
         return (fieldExpr.lastIndexOf(".") >= 0);
     }
@@ -174,6 +185,22 @@ public class FieldConfig
     }
 
     /**
+     * If set to true, do not display field on report page.
+     * @param hide do not display if true
+     */
+    public void setHide(boolean hide) {
+        this.hide = hide;
+    }
+
+    /**
+     * Return the value of the hide flag.
+     * @return the value of the flag
+     */
+    public boolean getHide() {
+        return hide;
+    }
+
+    /**
      * Set the showInSummary flag.  If true, show this field in the summary section of the object
      * details page.
      * @param showInSummary the new value of the flag
@@ -190,10 +217,12 @@ public class FieldConfig
         return showInSummary;
     }
 
+    /** @return whether the summary contains any outer joins. **/
     public boolean getOuterInSummary() {
         return outerInSummary;
     }
 
+    /** @param outerInSummary whether the summary contains any outer joins. **/
     public void setOuterInSummary(boolean outerInSummary) {
         this.outerInSummary = outerInSummary;
     }

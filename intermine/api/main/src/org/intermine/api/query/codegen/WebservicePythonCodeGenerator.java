@@ -1,7 +1,7 @@
 package org.intermine.api.query.codegen;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.intermine.objectstore.query.ConstraintOp;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.pathquery.OrderDirection;
 import org.intermine.pathquery.OrderElement;
 import org.intermine.pathquery.OuterJoinStatus;
@@ -34,7 +34,7 @@ import org.intermine.pathquery.PathConstraintSubclass;
 import org.intermine.pathquery.PathException;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.template.TemplateQuery;
-import org.intermine.util.TypeUtil;
+import org.intermine.metadata.TypeUtil;
 
 /**
  * Class for generating Python code to run a query, using the intermine python library.
@@ -49,6 +49,9 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
 
     private String endl          = System.getProperty("line.separator");
 
+    /**
+     * @return error message
+     */
     protected String getInvalidQuery() {
         StringBuffer message = new StringBuffer()
             .append("# Invalid query.").append(endl)
@@ -80,7 +83,7 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
             + "#     sudo easy_install intermine" + endl
             + "#" + endl
             + "# For further documentation you can visit:" + endl
-            + "#     http://www.intermine.org/wiki/PythonClient" + endl + endl
+            + "#     http://intermine.readthedocs.org/en/latest/web-services/" + endl + endl
             + "# The following two lines will be needed in every python script:" + endl
             + "from intermine.webservice import Service" + endl;
         return boilerplate;
@@ -88,8 +91,8 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
 
     private static final String OUTER_JOINS_TITLE = "Outer Joins";
     private static final String[] OUTER_JOINS_EXPLANATION = new String[] {
-            "(display properties of these relations if they exist,",
-            "but also show objects without these relationships)"};
+        "(display properties of these relations if they exist,",
+        "but also show objects without these relationships)"};
     private static final String UNHANDLED_CONSTRAINT =
             "It contains a constraint type that can only be used internally";
 
@@ -119,9 +122,7 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
 
         StringBuffer sb = new StringBuffer(getBoilerPlate());
 
-        sb.append("service = Service(\"")
-          .append(info.getServiceBaseURL())
-          .append("/service\"");
+        sb.append("service = Service(\"").append(info.getServiceBaseURL()).append("/service\"");
 
         if (!info.isPublic()) {
             sb.append(", token = \"YOUR-API-KEY\"");
@@ -169,7 +170,7 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
         return sb.toString();
     }
 
-    private String decapitate(String longPath) {
+    private static String decapitate(String longPath) {
         return longPath.substring(longPath.indexOf(".") + 1);
     }
 
@@ -299,7 +300,7 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
     }
 
 
-    private List<String> generateOuterJoinSection(
+    private static List<String> generateOuterJoinSection(
             Map<String, OuterJoinStatus> outerJoinStatus) {
         List<String> lines = new LinkedList<String>();
         for (Entry<String, OuterJoinStatus> entry : outerJoinStatus.entrySet()) {
@@ -370,7 +371,7 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
         return null;
     }
 
-    private void listFormatUtil(StringBuffer sb, Collection<String> coll) {
+    private static void listFormatUtil(StringBuffer sb, Collection<String> coll) {
         Iterator<String> it = coll.iterator();
         while (it.hasNext()) {
             sb.append("\"" + it.next() + "\"");
@@ -392,22 +393,48 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
 
     /*
      * Nicely format long lines
+     *
+     * @param sb Existing stringbuffer on which to append line. Cannot be null.
+     * @param prefix Prefix for text on line (e.g. python indent or comment prefix). Cannot be null.
+     * @param text Text of line. Will be trimmed. Cannot be null.
      */
-    private void printLine(StringBuffer sb, String prefix, String line) {
-        String lineToPrint;
-        if (prefix != null) {
-            lineToPrint = prefix + line;
-        } else {
-            lineToPrint = line;
+    private void printLine(StringBuffer sb, String prefix, String text) {
+        text = text.trim();
+        int desiredMaxLineLength = 80;
+        String line = prefix + text;
+
+        // If our prefix is greater than desiredMaxTextLength then don't attempt to wrap the lines
+        // at all.  This should never happen but lets produce something unwrapped rather than fail
+        // in an unexpected way.
+        if (line.length() <= desiredMaxLineLength || prefix.length() >= desiredMaxLineLength) {
+            sb.append(line + endl);
+            return;
         }
-        if (lineToPrint.length() > 80 && lineToPrint.lastIndexOf(' ', 80) != -1) {
-            int lastCutPoint = lineToPrint.lastIndexOf(' ', 80);
-            String frontPart = lineToPrint.substring(0, lastCutPoint);
-            sb.append(frontPart + endl);
-            String nextLine = lineToPrint.substring(lastCutPoint + 1);
+
+        // We need to handle the case where a long path may generate a line without spaces past the
+        // 80 column mark except for the prefix.  Otherwise we get infinite recursion
+        int cutPoint = text.length();
+        int prevCutPoint = cutPoint;
+
+        int desiredMaxTextLength = desiredMaxLineLength - prefix.length();
+
+        while (cutPoint > desiredMaxTextLength) {
+            prevCutPoint = cutPoint;
+            cutPoint = text.lastIndexOf(' ', cutPoint - 1);
+        }
+
+        // Handle the case where our non-space text is greater than the desired max text length.
+        // This can be happen with long paths.
+        if (cutPoint == -1) {
+            cutPoint = prevCutPoint;
+        }
+
+        String thisLine = prefix + text.substring(0, cutPoint);
+        sb.append(thisLine + endl);
+
+        if (thisLine.length() < line.length()) {
+            String nextLine = text.substring(cutPoint + 1);
             printLine(sb, prefix, nextLine);
-        } else {
-            sb.append(lineToPrint + endl);
         }
     }
 
@@ -485,7 +512,7 @@ public class WebservicePythonCodeGenerator implements WebserviceCodeGenerator
      *            operation code
      * @return a line of source code
      */
-    private String templateConstraintUtil(PathConstraint pc, String opCode)
+    private static String templateConstraintUtil(PathConstraint pc, String opCode)
         throws UnhandledFeatureException {
         String className = TypeUtil.unqualifiedName(pc.getClass().toString());
         String op = pc.getOp().toString();

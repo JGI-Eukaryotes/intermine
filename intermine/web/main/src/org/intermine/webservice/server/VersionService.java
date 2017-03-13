@@ -1,7 +1,7 @@
 package org.intermine.webservice.server;
 
 /*
- * Copyright (C) 2002-2014 FlyMine
+ * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -12,11 +12,9 @@ package org.intermine.webservice.server;
 
 import static org.apache.commons.lang.StringUtils.defaultString;
 import static org.apache.commons.lang.StringUtils.lowerCase;
-import static org.intermine.util.StringUtil.trimSlashes;
+import static org.intermine.metadata.StringUtil.trimSlashes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +30,7 @@ import org.intermine.webservice.server.output.HTMLTableFormatter;
  */
 public class VersionService extends JSONService
 {
-
     private String versionType;
-    private boolean serveReleaseVersion;
 
     /**
      * Constructor
@@ -50,8 +46,10 @@ public class VersionService extends JSONService
         // server capabilities, rather than the release version, which
         // provides information about the data available.
 
-        if (serveReleaseVersion) {
+        if (versionType.startsWith("release")) {
             addResultValue(webProperties.getProperty("project.releaseVersion"), false);
+        } else if (versionType.startsWith("intermine")) {
+            addResultValue(Constants.INTERMINE_VERSION, false);
         } else {
             addResultValue(Constants.WEB_SERVICE_VERSION, false);
         }
@@ -61,7 +59,6 @@ public class VersionService extends JSONService
     protected void initState() {
         super.initState();
         versionType = lowerCase(trimSlashes(defaultString(request.getPathInfo(), "ws")));
-        serveReleaseVersion = versionType.startsWith("release");
     }
 
     @Override
@@ -69,7 +66,15 @@ public class VersionService extends JSONService
         Map<String, Object> attributes = super.getHeaderAttributes();
         if (Format.HTML == getFormat()) {
             List<String> headers = new ArrayList<String>();
-            headers.add(serveReleaseVersion ? "Release" : "API Version");
+            String header = null;
+            if (versionType.startsWith("release")) {
+                header = "Release";
+            } else if (versionType.startsWith("intermine")) {
+                header = "InterMine release";
+            } else {
+                header = "API Version";
+            }
+            headers.add(header);
             attributes.put(HTMLTableFormatter.KEY_COLUMN_HEADERS, headers);
         }
         return attributes;
@@ -93,7 +98,7 @@ public class VersionService extends JSONService
     protected boolean canServe(Format format) {
         return format == Format.JSON
             || format == Format.HTML
-            || format == Format.TEXT; 
+            || format == Format.TEXT;
     }
 
 }
