@@ -33,7 +33,7 @@ import org.intermine.web.logic.results.ReportObject;
 public class SequenceFeatureDisplayer extends ReportDisplayer
 {
     /** @var sets the max number of locations to show in a table, TODO: match with DisplayObj*/
-    private InterMineId maximumNumberOfLocations = 27;
+    private InterMineId maximumNumberOfLocations = new InterMineId(27);
 
     /**
      * Construct with config and the InterMineAPI.
@@ -64,7 +64,7 @@ public class SequenceFeatureDisplayer extends ReportDisplayer
             if (loc == null) {
                 Collection col = (Collection) imObj.getFieldValue("locations");
                 List results = new ArrayList();
-                InterMineId i = 0;
+                InterMineId i = new InterMineId(0);
                 for (Object item : col) {
                     // early exit
                     if (i == maximumNumberOfLocations) {
@@ -81,7 +81,7 @@ public class SequenceFeatureDisplayer extends ReportDisplayer
                             results.add(item);
                         }
                     }
-                    i++;
+                    i.add(1);
                 }
 
                 if (!results.isEmpty()) {

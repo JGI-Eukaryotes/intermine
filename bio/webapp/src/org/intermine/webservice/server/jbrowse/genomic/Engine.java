@@ -134,8 +134,8 @@ public class Engine extends CommandRunner
     public void reference(Command command) {
         Query q = getReferenceQuery(command);
         Segment seg = command.getSegment();
-        InterMineId start = (seg.getStart() == null) ? 0 : seg.getStart();
-        InterMineId end = seg.getEnd();
+        Integer start = (seg.getStart() == null) ? 0 : seg.getStart();
+        Integer end = seg.getEnd();
         Iterator<Object> it = getResults(q).iterator();
 
         while (it.hasNext()) {
@@ -256,7 +256,7 @@ public class Engine extends CommandRunner
             return defaultNum;
         }
         int width = command.getSegment().getWidth();
-        int numBPB = InterMineId.valueOf(bpb);
+        int numBPB = Integer.valueOf(bpb);
         return width / numBPB;
     }
 
@@ -395,8 +395,8 @@ public class Engine extends CommandRunner
         return getAPI().getObjectStore().executeSingleton(q);
     }
 
-    private static Map<String, Object> makeReferenceFeature(FastPathObject fpo, InterMineId start,
-            InterMineId end) {
+    private static Map<String, Object> makeReferenceFeature(FastPathObject fpo, Integer start,
+            Integer end) {
         CharSequence cs;
         try {
             cs = (CharSequence) fpo.getFieldValue("residues");
@@ -404,7 +404,7 @@ public class Engine extends CommandRunner
             throw new RuntimeException("Could not fetch reference sequence.", e);
         }
         int featureLength = cs.length();
-        InterMineId featEnd = (end == null) ? featureLength : Math.min(end, featureLength);
+        Integer featEnd = (end == null) ? featureLength : Math.min(end, featureLength);
         CharSequence subSequence = cs.subSequence(start, featEnd);
 
         Map<String, Object> refFeature = new HashMap<String, Object>();
@@ -461,7 +461,7 @@ public class Engine extends CommandRunner
             FastPathObject chrLoc = (FastPathObject) fpo.getFieldValue("chromosomeLocation");
             if (chrLoc != null) {
                 // Convert Base -> Interbase Co-ords: start - 1
-                feature.put("start",  ((InterMineId) chrLoc.getFieldValue("start")) - 1);
+                feature.put("start",  ((Integer) chrLoc.getFieldValue("start")) - 1);
                 feature.put("end",    chrLoc.getFieldValue("end"));
                 feature.put("strand", chrLoc.getFieldValue("strand"));
             }

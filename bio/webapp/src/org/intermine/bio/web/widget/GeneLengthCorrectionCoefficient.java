@@ -53,7 +53,7 @@ public class GeneLengthCorrectionCoefficient implements CorrectionCoefficient
     private WidgetConfig config;
     private ObjectStore os;
     private InterMineBag bag;
-    private InterMineId countItemsWithLengthNotNull = null;
+    private Integer countItemsWithLengthNotNull = null;
     private static final String GENE_LENGTH = "gene_length";
     private static final String GENE_LENGTH_CORRECTION = "gene_length_correction";
     private static final String PERCENTAGE_GENE_LENGTH_NOT_NULL = "percentage_gene_length_not_null";

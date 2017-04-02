@@ -220,7 +220,7 @@ public class GFF3Exporter implements Exporter
     private InterMineId lastLsfId = null;
     private SequenceFeature lastLsf = null;
     private Map<String, List<String>> attributes = null;
-    private Map<String, Set<Integer>> seenAttributes = new HashMap<String, Set<Integer>>();
+    private Map<String, Set<InterMineId>> seenAttributes = new HashMap<String, Set<InterMineId>>();
 
     private void exportRow(List<ResultElement> row,
             Collection<Path> unionPathCollection, Collection<Path> newPathCollection) {
@@ -463,9 +463,9 @@ public class GFF3Exporter implements Exporter
      */
     private void checkAttribute(ResultElement el, String attributeName) {
         if (!GFF_FIELDS.contains(attributeName)) {
-            Set<Integer> seenAttributeValues = seenAttributes.get(attributeName);
+            Set<InterMineId> seenAttributeValues = seenAttributes.get(attributeName);
             if (seenAttributeValues == null) {
-                seenAttributeValues = new HashSet<Integer>();
+                seenAttributeValues = new HashSet<InterMineId>();
                 seenAttributes.put(attributeName, seenAttributeValues);
             }
             if (!seenAttributeValues.contains(el.getId())) {

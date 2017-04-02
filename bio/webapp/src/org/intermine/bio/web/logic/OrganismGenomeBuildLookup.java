@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-import org.intermine.model.InterMineId;
 import org.intermine.util.PropertiesUtil;
 
 /**
@@ -28,7 +27,7 @@ import org.intermine.util.PropertiesUtil;
  */
 public final class OrganismGenomeBuildLookup
 {
-    private static Map<InterMineId, String> taxonMap = new HashMap<InterMineId, String>();
+    private static Map<Integer, String> taxonMap = new HashMap<Integer, String>();
     private static Map<String, String> abbreviationMap = new HashMap<String, String>();
     private static Map<String, String> fullnameMap = new HashMap<String, String>();
 
@@ -98,7 +97,7 @@ public final class OrganismGenomeBuildLookup
      * @param taxon taxon of an organism
      * @return genome build
      */
-    public static String getGenomeBuildbyOrgansimTaxon(InterMineId taxon) {
+    public static String getGenomeBuildbyOrgansimTaxon(Integer taxon) {
         prepareData();
         return taxonMap.get(taxon);
     }

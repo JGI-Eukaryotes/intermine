@@ -219,7 +219,7 @@ public interface ObjectStore
      * @return the number of rows that will be produced by query
      * @throws ObjectStoreException if an error occurs counting the query
      */
-    int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException;
+    InterMineId count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException;
 
     /**
      * Return the metadata associated with this ObjectStore

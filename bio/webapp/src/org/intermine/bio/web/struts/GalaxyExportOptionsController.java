@@ -156,7 +156,7 @@ public class GalaxyExportOptionsController extends TilesAction
                 e.printStackTrace();
             }
 
-            LinkedHashMap<Path, InterMineId> exportClassPathsMap = getExportClassPaths(pt);
+            LinkedHashMap<Path, Integer> exportClassPathsMap = getExportClassPaths(pt);
             List<Path> exportClassPaths = new ArrayList<Path>(exportClassPathsMap.keySet());
 
             Map<String, String> pathMap = new LinkedHashMap<String, String>();
@@ -166,10 +166,10 @@ public class GalaxyExportOptionsController extends TilesAction
                 pathMap.put(pathString, displayPath);
             }
 
-            Map<String, InterMineId> pathIndexMap = new LinkedHashMap<String, InterMineId>();
+            Map<String, Integer> pathIndexMap = new LinkedHashMap<String, Integer>();
             for (int index = 0; index < exportClassPaths.size(); index++) {
                 String pathString = exportClassPaths.get(index).toStringNoConstraints();
-                InterMineId idx = exportClassPathsMap.get(exportClassPaths.get(index));
+                Integer idx = exportClassPathsMap.get(exportClassPaths.get(index));
                 pathIndexMap.put(pathString, idx);
             }
 
@@ -280,8 +280,8 @@ public class GalaxyExportOptionsController extends TilesAction
      * @param pt the PagedTable
      * @return a list of Paths that have sequence
      */
-    public static LinkedHashMap<Path, InterMineId> getExportClassPaths(PagedTable pt) {
-        LinkedHashMap<Path, InterMineId> retPaths = new LinkedHashMap<Path, InterMineId>();
+    public static LinkedHashMap<Path, Integer> getExportClassPaths(PagedTable pt) {
+        LinkedHashMap<Path, Integer> retPaths = new LinkedHashMap<Path, Integer>();
 
         List<Column> columns = pt.getColumns();
 

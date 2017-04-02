@@ -77,7 +77,7 @@ public class GFF3HttpExporter extends HttpExporterBase implements TableHttpExpor
         HttpSession session = request.getSession();
         ServletContext servletContext = session.getServletContext();
 
-        Set<InterMineId> organisms = null;
+        Set<Integer> organisms = null;
         boolean makeUcscCompatible = false;
         // try to find the organism from the form
         if (form != null && form instanceof GFF3ExportForm) {
@@ -92,7 +92,7 @@ public class GFF3HttpExporter extends HttpExporterBase implements TableHttpExpor
             setGFF3Header(response);
         }
 
-        List<InterMineId> indexes = ExportHelper.getClassIndexes(ExportHelper.getColumnClasses(pt),
+        List<Integer> indexes = ExportHelper.getClassIndexes(ExportHelper.getColumnClasses(pt),
                 SequenceFeature.class);
 
         // get the project title to be written in GFF3 records

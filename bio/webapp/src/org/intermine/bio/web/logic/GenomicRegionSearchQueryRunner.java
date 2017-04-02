@@ -139,20 +139,21 @@ public class GenomicRegionSearchQueryRunner implements Runnable
         }
 
         // map of sequence feature statistics: key - class name. value - count of feature
-        Map<String, Map<GenomicRegion, Map<String, InterMineId>>> spanOverlapFullStatMap =
-             (Map<String, Map<GenomicRegion, Map<String, InterMineId>>>) request
+        @SuppressWarnings("unchecked")
+        Map<String, Map<GenomicRegion, Map<String, Integer>>> spanOverlapFullStatMap =
+             (Map<String, Map<GenomicRegion, Map<String, Integer>>>) request
                             .getSession().getAttribute("spanOverlapFullStatMap");
 
         if (spanOverlapFullStatMap == null) {
             spanOverlapFullStatMap =
-                new HashMap<String, Map<GenomicRegion, Map<String, InterMineId>>>();
+                new HashMap<String, Map<GenomicRegion, Map<String, Integer>>>();
         }
 
         Map<GenomicRegion, List<List<String>>> spanOverlapResultDisplayMap = Collections
                 .synchronizedMap(new LinkedHashMap<GenomicRegion, List<List<String>>>());
 
-        Map<GenomicRegion, Map<String, InterMineId>> spanOverlapResultStatMap = Collections
-        .synchronizedMap(new LinkedHashMap<GenomicRegion, Map<String, InterMineId>>());
+        Map<GenomicRegion, Map<String, Integer>> spanOverlapResultStatMap = Collections
+        .synchronizedMap(new LinkedHashMap<GenomicRegion, Map<String, Integer>>());
 
         if (!spanOverlapFullResultMap.containsKey(spanUUIDString)
                 && !spanOverlapFullStatMap.containsKey(spanUUIDString)) {
@@ -172,10 +173,10 @@ public class GenomicRegionSearchQueryRunner implements Runnable
 
                     List<List<String>> spanResults = new ArrayList<List<String>>();
 
-                    Map<String, InterMineId> spanStatMap = new HashMap<String, InterMineId>();
-                    ValueComparator bvc =  new ValueComparator(spanStatMap);
+                    Map<String, Integer> spanStatMap = new HashMap<String, Integer>();
+                    IntegerValueComparator bvc =  new IntegerValueComparator(spanStatMap);
                     @SuppressWarnings("unchecked")
-                    TreeMap<String, InterMineId> sortedStatMap = new TreeMap<String, InterMineId>(bvc);
+                    TreeMap<String, Integer> sortedStatMap = new TreeMap<String, Integer>(bvc);
 
                     if (results == null || results.isEmpty()) {
                         spanOverlapResultDisplayMap.put(e.getKey(), null);
@@ -290,7 +291,7 @@ public class GenomicRegionSearchQueryRunner implements Runnable
 
                 String orgName = (String) row.get(0);
                 String chrIdentifier = (String) row.get(1);
-                InterMineId chrLength = (InterMineId) row.get(2);
+                Integer chrLength = (Integer) row.get(2);
 
                 // Add orgName to HashSet to filter out duplication
                 orgSet.add(orgName);
@@ -413,10 +414,10 @@ public class GenomicRegionSearchQueryRunner implements Runnable
      * @param batchSize the query batch size
      * @return orgTaxonIdMap - a HashMap with organism  as key and its taxonId as value
      */
-    public static Map<String, InterMineId> getTaxonInfo(InterMineAPI im, int batchSize) {
+    public static Map<String, Integer> getTaxonInfo(InterMineAPI im, int batchSize) {
         long startTime = System.currentTimeMillis();
 
-        Map<String, InterMineId> orgTaxonIdMap = new HashMap<String, InterMineId>();
+        Map<String, Integer> orgTaxonIdMap = new HashMap<String, Integer>();
         Query q = new Query();
         QueryClass organisms = new QueryClass(org.intermine.model.bio.Organism.class);
         q.addFrom(organisms);
@@ -466,25 +467,35 @@ public class GenomicRegionSearchQueryRunner implements Runnable
  * @author Fengyuan Hu
  *
  */
-class ValueComparator implements Comparator
+class IdValueComparator implements Comparator
 {
     Map<String, InterMineId> base;
 
     /**
-     * @param base the map itself
+     * @param spanStatMap the map itself
      */
-    public ValueComparator(Map<String, InterMineId> base) {
-        this.base = base;
+    public IdValueComparator(Map<String, InterMineId> spanStatMap) {
+        this.base = spanStatMap;
     }
 
     @Override
     public int compare(Object a, Object b) {
-        if (base.get(a) < base.get(b)) {
-            return 1;
-        } else if (base.get(a) == base.get(b)) {
-            return -1;
-        } else {
-            return -1;
-        }
+      return base.get(a).compareTo(base.get(b));
     }
+}
+class IntegerValueComparator implements Comparator
+{
+  Map<String,Integer> base;
+
+  /**
+   * @param spanStatMap the map itself
+   */
+  public IntegerValueComparator(Map<String, Integer> spanStatMap) {
+      this.base = spanStatMap;
+  }
+
+  @Override
+  public int compare(Object a, Object b) {
+    return base.get(a).compareTo(base.get(b));
+  }
 }

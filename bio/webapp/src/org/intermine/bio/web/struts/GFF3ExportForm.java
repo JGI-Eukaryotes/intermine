@@ -21,7 +21,7 @@ import org.intermine.web.struts.TableExportForm;
  */
 public class GFF3ExportForm extends TableExportForm
 {
-    private Set<InterMineId> taxonIds = null;
+    private Set<Integer> taxonIds = null;
     private boolean makeUcscCompatible = false;
 
     /**
@@ -45,7 +45,7 @@ public class GFF3ExportForm extends TableExportForm
      *
      * @param taxonIds set of taxon ids
      */
-    public void setOrganisms(Set<InterMineId> taxonIds) {
+    public void setOrganisms(Set<Integer> taxonIds) {
         this.taxonIds = taxonIds;
     }
 
@@ -54,7 +54,7 @@ public class GFF3ExportForm extends TableExportForm
      *
      * @return a set of taxon ids
      */
-    public Set<InterMineId> getOrganisms() {
+    public Set<Integer> getOrganisms() {
         return taxonIds;
     }
 }

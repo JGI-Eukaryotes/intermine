@@ -347,8 +347,8 @@ public class SequenceExporter implements Exporter
             } else {
                 // Assume if loc exits, the following information should be available
                 String chr = loc.getLocatedOn().getPrimaryIdentifier();
-                InterMineId start = loc.getStart();
-                InterMineId end = loc.getEnd();
+                Integer start = loc.getStart();
+                Integer end = loc.getEnd();
 
                 String locString = chr + ':' + start + '-' + end;
                 headerBits.add(locString);

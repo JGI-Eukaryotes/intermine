@@ -29,7 +29,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     private Integer extendedEnd;
 
     //user identifier to tag the order of input e.g. X:7880589..7880644:5 is the 5th input
-    private InterMineId tag = null;
+    private Integer tag = null;
 
     /**
      * Default constructor
@@ -139,21 +139,21 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     }
 
     /**
-     * @param tag as integer
+     * @param integer as integer
      */
-    public void setTag(InterMineId tag) {
-        this.tag = tag;
+    public void setTag(Integer integer) {
+        this.tag = integer;
     }
 
     /**
      * @return tag value
      */
-    public InterMineId getTag() {
+    public Integer getTag() {
         return tag;
     }
 
     /**
-     * Make a string of orginal region if extended
+     * Make a string of original region if extended
      * @return chr:start..end
      */
     public String getOriginalRegion() {

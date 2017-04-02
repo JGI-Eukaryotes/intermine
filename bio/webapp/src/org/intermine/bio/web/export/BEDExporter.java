@@ -22,12 +22,12 @@ import org.intermine.api.results.ResultElement;
 import org.intermine.bio.io.bed.BEDRecord;
 import org.intermine.bio.web.logic.OrganismGenomeBuildLookup;
 import org.intermine.metadata.StringUtil;
+import org.intermine.model.InterMineId;
 import org.intermine.model.bio.SequenceFeature;
 import org.intermine.pathquery.Path;
 import org.intermine.util.IntPresentSet;
 import org.intermine.web.logic.export.ExportException;
 import org.intermine.web.logic.export.ExportHelper;
-import org.intermine.model.InterMineId;
 import org.intermine.web.logic.export.Exporter;
 
 /**
@@ -41,7 +41,7 @@ public class BEDExporter implements Exporter
     private boolean makeUcscCompatible = true;
     private int writtenResultsCount = 0;
     private boolean headerPrinted = false;
-    private List<InterMineId> featureIndexes;
+    private List<Integer> featureIndexes;
     private IntPresentSet exportedIds = new IntPresentSet();
     private List<String> orgSet = null;
 
@@ -71,7 +71,7 @@ public class BEDExporter implements Exporter
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      * @param trackDescription track description in the header
      */
-    public BEDExporter(PrintWriter out, List<InterMineId> featureIndexes, String sourceName,
+    public BEDExporter(PrintWriter out, List<Integer> featureIndexes, String sourceName,
             String organismString, boolean makeUcscCompatible, String trackDescription) {
 
         this.out = out;
@@ -196,7 +196,7 @@ public class BEDExporter implements Exporter
 
     private List<ResultElement> getResultElements(List<ResultElement> row) {
         List<ResultElement> els = new ArrayList<ResultElement>();
-        for (InterMineId index : featureIndexes) {
+        for (Integer index : featureIndexes) {
             if (row.get(index) != null) {
                 els.add(row.get(index));
             }

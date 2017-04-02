@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.intermine.api.results.ExportResultsIterator;
-import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultElement;
 
 /*
@@ -257,8 +256,8 @@ public class ProteinAtlasExpressions
         public class StainingLevel
         {
 
-            private InterMineId overall = 0;
-            private InterMineId count = 0;
+            private Integer overall = 0;
+            private Integer count = 0;
             private ByLevelComparator levelComparator;
 
             /**
@@ -271,7 +270,7 @@ public class ProteinAtlasExpressions
             /**
              * @param level level
              */
-            public void add(InterMineId level) {
+            public void add(Integer level) {
                 this.overall += level;
                 this.count += 1;
             }
@@ -324,7 +323,7 @@ public class ProteinAtlasExpressions
          * @param strLevel level
          * @return  level to integer conversion
          */
-        public InterMineId evaluate(String strLevel) {
+        public Integer evaluate(String strLevel) {
             String level = strLevel.toLowerCase();
 
             if ("strong".equals(level) || "high".equals(level)) {
@@ -340,12 +339,12 @@ public class ProteinAtlasExpressions
         }
 
         /**
-         * InterMineId value to string conversion
+         * Integer value to string conversion
          *
          * @param levelValue integer representation of the level
          * @return value in word form
          */
-        public String reverseEvaluate(InterMineId levelValue) {
+        public String reverseEvaluate(Integer levelValue) {
             switch (levelValue) {
                 case HIGH:
                     return "strong";
@@ -370,8 +369,8 @@ public class ProteinAtlasExpressions
 
         @Override
         public int compare(String aK, String bK) {
-            InterMineId aLevel = evaluate(aK);
-            InterMineId bLevel = evaluate(bK);
+            Integer aLevel = evaluate(aK);
+            Integer bLevel = evaluate(bK);
 
             if (aLevel < bLevel) {
                 return 1;
@@ -395,8 +394,8 @@ public class ProteinAtlasExpressions
 
         @Override
         public int compare(String aK, String bK) {
-            InterMineId aSize = results.get(aK).getValues().size();
-            InterMineId bSize = results.get(bK).getValues().size();
+            Integer aSize = results.get(aK).getValues().size();
+            Integer bSize = results.get(bK).getValues().size();
 
             if (aSize < bSize) {
                 return 1;

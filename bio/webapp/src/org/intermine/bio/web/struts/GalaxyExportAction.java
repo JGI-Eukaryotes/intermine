@@ -177,13 +177,13 @@ class ResultManipulater extends HttpExporterBase
      * @param index index of pagedTable column for the feature to export
      * @return A Map: Key - organism's TaxonId; Value - organism's shortName
      */
-    public Map<InterMineId, String> findOrganisms(PagedTable pt,
+    public Map<Integer, String> findOrganisms(PagedTable pt,
             HttpServletRequest request, int index) {
 
 //        if (pt.getEstimatedSize() > 10000) { }
         ExportResultsIterator resultIt = getResultRows(pt, request);
 
-        Map<InterMineId, String> orgNameMap = new LinkedHashMap<InterMineId, String>();
+        Map<Integer, String> orgNameMap = new LinkedHashMap<Integer, String>();
         try {
             while (resultIt.hasNext()) {
                 List<ResultElement> row = resultIt.next();
