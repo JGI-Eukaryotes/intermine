@@ -188,6 +188,7 @@ var setFlex = function() {
 
 
 var extractMenuItems = function (d) {
+  if (!d.genes) return;
   d.genes.forEach( function(e) {
     var gN = e.name;
     geneLinks[gN] = [];
@@ -200,7 +201,7 @@ var extractMenuItems = function (d) {
 var labelReactions = function (d) {
   var el = d3.select(this);
   // do not touch the label if there are no ECs and no genes.
-  if (d.ecs.length == 0 && d.genes.length == 0 ) return;
+  if ( (!d.genes || d.genes.length == 0) && (!d.ecs || d.ecs.length == 0) ) return;
 
   el.text("")
     .attr("font-size", fontAttrs.size);
@@ -296,7 +297,8 @@ var measureText = function(pText, pFontSize) {
   lDiv.style.top = -1000;
   lDiv.innerHTML = pText;
   var lResult = {
-    width: lDiv.clientWidth,
+    // it seems that we need to skosh this up a bit.
+    width: 1.1*lDiv.clientWidth,
     height: lDiv.clientHeight
   };
   document.body.removeChild(lDiv);
@@ -522,6 +524,8 @@ var loadPathwayDiagram = function(container,json) {
                .append("rect")
                .attr("id", "rect-" + d.id)
                .attr("class","rect no-display")
+               .attr("height",10)
+               .attr("width",10)
                .attr("x", 5*d.x)
                .attr("y", 15*d.y);
 
@@ -541,7 +545,7 @@ var loadPathwayDiagram = function(container,json) {
                .attr("y", function(d){
                  if (d.labelHeight === 1) {
                    return 15 * d.yCoor + 8;
-                 } else if (d.type === "reaction" && ( d.genes.length + d.ecs.length > 3)) {
+                 } else if (d.type === "reaction" && ( d.genes && d.ecs && d.genes.length + d.ecs.length > 3)) {
                    return 15 * (d.yCoor - 1.5);
                  }
                  return 15 * d.yCoor;
@@ -640,25 +644,26 @@ var loadPathwayDiagram = function(container,json) {
 
   function inputArcFunction(f) {
     // how to draw an arc for an input compound
+    var sweep = f.orient==='horiz'?1:0;
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+"," +
-              Math.abs(f.y1-f.y2)+" 0 0 0 "+
+              Math.abs(f.y1-f.y2)+" 0 0 "+sweep+" "+
               f.x2+","+f.y2;
     return str;
   }
 
   function outputArcFunction(f) {
     // how to draw an arc for an output compound
+    var sweep = f.orient==='horiz'?1:0;
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+","+
-              Math.abs(f.y1-f.y2)+" 0 0 0 "+
+              Math.abs(f.y1-f.y2)+" 0 0 "+sweep+" "+
               f.x2+","+f.y2;
     return str;
   }
 
   // create links.
-  // This data structure is what we're going to pass to the force layout
-  var forceLinkData = [];
+  var linkData = [];
   json.links.forEach( function(d) {
     // source and target
     // at this point we don"t know what we have.
@@ -676,7 +681,9 @@ var loadPathwayDiagram = function(container,json) {
                                          "x1":parseInt(source.attr("x"))+5,
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
-                                         "y2":parseInt(target.attr("y"))+5 }],
+                                         "y2":parseInt(target.attr("y"))+5,
+                                         "orient":d.orient || 'vert'}
+                                         ],
                                          function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
                                          .append("path")
@@ -695,24 +702,37 @@ var loadPathwayDiagram = function(container,json) {
                                          "x1":parseInt(source.attr("x"))+5,
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
-                                         "y2":parseInt(target.attr("y"))+5 }],
+                                         "y2":parseInt(target.attr("y"))+5,
+                                         "orient":d.orient || 'vert'}
+                                        ],
                                          function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
                                          .append("path")
                                          .style("stroke", pathAttrs.stroke)
                                          .style("stroke-width", pathAttrs.strokeWidth)
                                          .style("fill", pathAttrs.fill)
-                                         .attr("marker-end","url(#n_degree_arrowend)")
+                                         .attr("marker-end","url(#arrowend)")
                                          .attr("d",outputArcFunction);
     } else if (type === 'link') {
       // a movable line
-      forceLinkData.push( {"id":parents[d.source]+'->'+parents[d.target], "source":parents[d.source],"target":parents[d.target] } );
+      //  
+      var sourceGroup = masterGroup.selectAll("g")
+                                 .filter(function(ddd) { return ddd.id===parents[d.source]; });
+      var targetGroup = masterGroup.selectAll("g")
+                                 .filter(function(ddd) { return ddd.id===parents[d.target]; });
+      sourceGroup.each( function(a) { targetGroup.each ( function(b) {
+                       linkData.push( {"id":parents[d.source]+'->'+parents[d.target],
+                                        "source":a,
+                                        "target":b,
+                                        "orient": d.orient||'vert' } );
+                                        });
+                      });
     }
 
   });
 
   var link = masterGroup.append("g").selectAll("line")
-                                    .data(forceLinkData)
+                                    .data(linkData)
                                     .enter()
                                     .append("line")
                                     .attr("marker-end","url(#arrowend)")
@@ -722,42 +742,19 @@ var loadPathwayDiagram = function(container,json) {
 
   // discover how large the svg is and explicitly set it on the root <svg> node
   setSvgElementDimensions(svgContainer);
+  refreshPositions();
 
-  // initiate the layout.
-  simulation = d3.forceSimulation()
-                     .force("link", d3.forceGridLink())
-                     .force("collision", d3.forceGridCollision())
-                     .force("gravity",d3.forceGravity())
-                     ;
-
-  simulation.force("link").distance(100).strength(1).id(function (d) { return d.id;});
-  simulation.force("collision").strength(1);
-  simulation.force("collision").exclude(forceLinkData);
-  simulation.force("collision").distanceX(200).distanceY(75);
-  simulation.force("gravity").strengthY(function(d) { return 10*d.y/svgContainer.attr('height');} );
-
-  simulation.nodes(containerData).on("tick", refreshPositions);
-  simulation.force("link").links(forceLinkData);
-
-  simulation.on('end',function() {
-    // install the zoom handler on the zoom buttons
-    d3.select("#zoom-in").on("click", function() {
-         zoomDiagram.scaleBy(svgContainer, 1.25);
-        });
-    d3.select("#zoom-out").on("click", function() {
-         zoomDiagram.scaleBy(svgContainer, 0.8);
-        });
-    // install a drag handler for every group inside the master group that has an 'id'
-    masterGroup.selectAll("g.moveable").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
-
-    // development. remove for production
-    svgContainer.on('mousemove', function() { console.log("Mouse is at "+d3.mouse(this)); });
-
-
-   });
+  // install the zoom handler on the zoom buttons
+  d3.select("#zoom-in").on("click", function() {
+       zoomDiagram.scaleBy(svgContainer, 1.25);
+      });
+  d3.select("#zoom-out").on("click", function() {
+       zoomDiagram.scaleBy(svgContainer, 0.8);
+      });
+  // install a drag handler for every group inside the master group that has an 'id'
+  masterGroup.selectAll("g.moveable").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
 
   function refreshPositions() {
-    simulation.force("gravity").strengthY(function(d) { return 10*d.y/svgContainer.attr('height');} );
     link
         .attr("x1", function(d) { return d.source.x+5; })
         .attr("y1", function(d) { return d.source.y; })

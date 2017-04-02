@@ -186,6 +186,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
           maxHeight.put(y,height);
         }
       }
+      /*
+       * this block is commented out. We're counting on getting the x,y locations in the db directly.
       // now recompute x and y. For even columns, (0,2,4...) x is the
       // sum of widths <= column number. For odd columns, x is the sum
       // of widths < column number
@@ -227,7 +229,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         JSONObject node = jNodes.getJSONObject(i);
         node.put("x",xPlace.get(Integer.valueOf(node.getInt("x"))));
         node.put("y",yPlace.get(Integer.valueOf(node.getInt("y"))));
-      }
+      }*/
       addUrlJSON(jObj,webProperties,protId,geneIds);
       return jObj;
     } catch (JSONException e) {
