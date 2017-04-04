@@ -1,7 +1,6 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -23,18 +22,20 @@ import org.biopax.paxtools.impl.level3.BiochemicalPathwayStepImpl;
 import org.biopax.paxtools.io.SimpleIOHandler;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.level3.*;
-import org.biopax.paxtools.impl.level3.*;
 
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.xml.full.Item;
 
-
-
-/**
+/** Load the data from owl files into the pathway tables.
+ * This is designed to be run in two different modes: once without
+ * the organism set in order to make a template for the pathway,
+ * and again to capture the proteins for each reaction. Presumably,
+ * when run in first mode, the owl file is generated from a organism-agnostic
+ * owl file.
  *
- * @author
+ * @author J Carlson
  */
 public class BiopaxPathwayConverter extends BioFileConverter
 {
@@ -44,12 +45,14 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
   private String method = null;
   private Item organism = null;
+  private Item enzymeOntology = null;
+  private Item pathwayOntology = null;
   private boolean loadingJSON;
   HashSet<String> beenThereDoneThat = null;
   HashMap<String,Integer> componentCounter = null;
   public enum ReactantType { NOT_SET, LINK, INPUT, OUTPUT }
 
-  // number of pixels between rows.
+  // number of pixels between elements in the JSON in the x and y direction.
   private static int pixPerElement = 50;
 
   protected static final Logger LOG =
@@ -62,29 +65,6 @@ public class BiopaxPathwayConverter extends BioFileConverter
    */
   public BiopaxPathwayConverter(ItemWriter writer, Model model) {
     super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
-  }
-  HashMap<String,Integer> countComponents(org.biopax.paxtools.model.Model model) {
-    HashMap<String,Integer> retHash = new HashMap<String,Integer>();
-    Set<BiochemicalReaction> rSet = model.getObjects(BiochemicalReaction.class);
-    for (BiochemicalReaction r: rSet) {
-
-      for (PhysicalEntity pe: r.getLeft() ) {
-        String n = ((Named)pe).getStandardName();
-        if(!retHash.containsKey(n) ) {
-          retHash.put(n,new Integer(0));
-        }
-        retHash.put(n,retHash.get(n).intValue()+1);
-      }
-
-      for (PhysicalEntity pe: r.getRight() ) {
-        String n = ((Named)pe).getStandardName();
-        if(!retHash.containsKey(n) ) {
-          retHash.put(n,new Integer(0));
-        }
-        retHash.put(n,retHash.get(n).intValue()+1);
-      }
-    }
-    return retHash;
   }
 
   /**
@@ -99,7 +79,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     // used to load the json for the network.
     if (organism == null ||
         (organism.getAttribute("proteomeId") == null &&
-         organism.getAttribute("shortName") == null )) {
+        organism.getAttribute("shortName") == null )) {
       loadingJSON = true;
     } else {
       if (organism.getAttribute("proteomeId")==null ||
@@ -115,10 +95,14 @@ public class BiopaxPathwayConverter extends BioFileConverter
     componentCounter = countComponents(model);
     Set<Pathway> pathwaySet = model.getObjects(Pathway.class);
 
-    // record the EC ontology and make a map to store the observed entries
-    Item ontology = createItem("Ontology");
-    ontology.setAttribute("name","ENZYME");
-    store(ontology);
+    // record the ontologies and make a map to store the observed entries
+    enzymeOntology = createItem("Ontology");
+    enzymeOntology.setAttribute("name","ENZYME");
+    store(enzymeOntology);
+    pathwayOntology = createItem("Ontology");
+    pathwayOntology.setAttribute("name","Pathway");
+    store(pathwayOntology);
+
     // hashes for enzymes and proteins that we register along the way.
     TreeMap<String,Item> enzymeHash = new TreeMap<String,Item>();
     TreeMap<String,Item> proteinHash = new TreeMap<String,Item>();
@@ -126,303 +110,167 @@ public class BiopaxPathwayConverter extends BioFileConverter
     for (Pathway pathwayObj : pathwaySet) {
 
       String pathwayID = null;
-      String pathwayName = ((Named)pathwayObj).getStandardName();
-      for ( Xref xref: pathwayObj.getXref() ) {
-        pathwayID = xref.getId();
-      }
-      LOG.info("Processing current pathway id "+pathwayID+" name is "+pathwayName);
+      try {
+        String pathwayName = ((Named)pathwayObj).getStandardName();
+        for ( Xref xref: pathwayObj.getXref() ) {
+          pathwayID = xref.getId();
+        }
+        LOG.info("Processing current pathway id "+pathwayID+" name is "+pathwayName);
 
-      Item pathwayInfo = createItem("PathwayInfo");
-      if (pathwayID != null) pathwayInfo.setAttribute("identifier", pathwayID);
-      if (pathwayName != null) pathwayInfo.setAttribute("name", pathwayName);
-      // the first walk of the pathway just gets the reactions
-      HashMap<String,Node> nodeMap = getReactionSteps(pathwayObj,pathwayID);
+        // the first walk of the pathway just gets the reactions
+        HashMap<String,Node> nodeMap = getReactionSteps(pathwayObj,pathwayID);
 
-      // we'll need the initial nodes.
-      // First, determine the reverse links
-      for(String node: nodeMap.keySet()) {
-        if ( nodeMap.get(node) instanceof ReactionNode) {
-          for( String n: ((ReactionNode)nodeMap.get(node)).nextNode) {
-            ((ReactionNode)nodeMap.get(n)).prevNode.add(node);
-          }
-        }
-      }
-      // now make a new hash, but use the key instead of the unique name since this
-      // only exists in 1 owl file.
-      // the idea is that this will give a consistent ordering across owl files.
-      TreeMap<Integer,Node> keyMap = new TreeMap<Integer,Node>();
-      for( String uniquename: nodeMap.keySet()) {
-        Node node = nodeMap.get(uniquename);
-        StringBuffer keyString = new StringBuffer();
-        if (node.label() != null) keyString.append(node.label());
-        // TODO: figure out how to access the xref to METACYCNAME-RXN. That looks unique.
-        // also, some info disagree in direction of the arrows. replace them all (in the key hashcode) with <->
-        if (node.info() != null) keyString.append(node.info().replaceAll("&rarr;","&harr;").replaceAll("&larr;","&harr;"));
-        // TODO: temp for testing
-        if (node.info() != null) node.info(node.info().replaceAll("&rarr;","&harr;").replaceAll("&larr;","&harr;"));
-        for(String e: ((ReactionNode)node).ec() ) {keyString.append(e);}
-        if (keyString.length() == 0) {
-          LOG.error("key for node "+uniquename+" in "+pathwayName+" is null");
-        }
-        LOG.info("reaction nodekey from string "+keyString.toString()+" is "+keyString.toString().hashCode());
-        node.key( new Integer(keyString.toString().hashCode()));
-        keyMap.put(node.key(),node);
-      }
-      // and update the next/prev nodes inside to use the hashcodes.
-      for( Node node: nodeMap.values() ) {
-        TreeSet<String> next = new TreeSet(((ReactionNode) node).nextNode);
-        ((ReactionNode)node).nextNode.clear();
-        for(String key: next) {
-          ((ReactionNode)node).nextNode.add(nodeMap.get(key).key.toString());
-        }
-        TreeSet<String> prev = new TreeSet(((ReactionNode) node).prevNode);
-        ((ReactionNode)node).prevNode.clear();
-        for(String key: prev) {
-          ((ReactionNode)node).prevNode.add(nodeMap.get(key).key.toString());
-        }
-      }
-      
-      // and use this to find the initial node(s)
-      TreeSet<Integer> initialNodes = new TreeSet<Integer>();
-      TreeSet<Integer> terminalNodes = new TreeSet<Integer>();
-      for(Integer node: keyMap.keySet()) {
-        if ( keyMap.get(node) instanceof ReactionNode) {
-          if (((ReactionNode)keyMap.get(node)).nextNode.size() == 0) {
-            terminalNodes.add(node);
-          }
-          if (((ReactionNode)keyMap.get(node)).prevNode.size() == 0) {
-            initialNodes.add(node);
-          }
-        }
-      }
-      // then we need to walk the paths of the reactions to
-      // get the substrates and outputs starting from (all?) initial nodes.
-      // As we walk the reactions, we sweep up the components into either
-      // output nodes from the previous reaction node, input nodes to
-      // the current reaction node, or linking nodes of outputs of the previous
-      // which are also inputs for the current.
-
-      HashSet<Node[]> linkSet = new HashSet<Node[]>();
-      if(initialNodes.size() > 0) {
-        // we need to track node pairs we've visited to avoid double tracking
-        beenThereDoneThat = new HashSet<String>();
-
-        // as we walk, we'll assign row and column integers
-        // to the reaction nodes, inputs and output.
-        // the 'side' inputs and outputs will be at row-1 and
-        // row+1 compared to the reaction (and column+1). The linking
-        // input will be at row-2, output will be at row+2 (and the
-        // same column
-        // when we start the walk the first reaction
-        // will be set this to 2 (rather than 0) to have a
-        // row for the inputs.
-        Integer rowI = new Integer(2);
-        // and this will be the column.
-        Integer columnI = new Integer(0);
-        // TODO: look for problems with this algorithm. If there are
-        // multiple branches in a walk, the second will cross the column
-        // created by the first. This is a problem.
-        //HashMap<Integer,LinkingNode> linkNodeMap = new HashMap<Integer,LinkingNode>();
-        for( Integer initial: initialNodes) {
-          ReactionNode prevNode = null;
-          ReactionNode currentNode = (ReactionNode) keyMap.get(initial);
-          // this walk is recursive
-          walk(rowI,columnI,(ReactionNode)prevNode,(ReactionNode)currentNode,linkSet,keyMap);
-          columnI = new Integer(maxColumn(keyMap) + 2);
-        }
-
-        beenThereDoneThat.clear();
-        for( Integer initial: initialNodes) {
-          ReactionNode prevNode = null;
-          ReactionNode currentNode = (ReactionNode) keyMap.get(initial);
-          // this walk is recursive
-          addIONodes((ReactionNode)prevNode,(ReactionNode)currentNode,linkSet,keyMap);
-        }
-        
-
-        // Time to store
-        // first the components. If we're loading the JSON, we want to
-        // populate the entire record. But if it's only for the organism,
-        // we just want the key.
-        TreeSet<Item> components = new TreeSet<Item>();
-        for(Integer key: keyMap.keySet() ) {
-          Node activeNode = keyMap.get(key);
-          Item component = createItem("PathwayComponent");
-          component.setAttribute("key",activeNode.key().toString());
-          if (loadingJSON) {
-            if ( activeNode.x() != null) component.setAttribute("level",new Integer(activeNode.x()).toString());
-            if ( activeNode.y() != null) component.setAttribute("step",new Integer(activeNode.y()).toString());
-            if (activeNode instanceof InputNode) {
-              component.setAttribute("type","input");
-            } else if (activeNode instanceof OutputNode) {
-              component.setAttribute("type","output");
-            } else if (activeNode instanceof LinkingNode) {
-              component.setAttribute("type","link");
-            } else if(activeNode instanceof ReactionNode) {
-              component.setAttribute("type","reaction");
-              for( String protein: ((ReactionNode)activeNode).proteins ) {
-                if (!proteinHash.containsKey(protein) ) {
-                  Item p = createItem("Protein");
-                  p.setAttribute("primaryIdentifier",protein);
-                  p.setReference("organism",organism);
-                  store(p);
-                  proteinHash.put(protein,p);
-                }
-                component.addToCollection("proteins",proteinHash.get(protein));
-              }
-              for( String ec: ((ReactionNode)activeNode).ec ) {
-                if (!enzymeHash.containsKey(ec) ) {
-                  Item e = createItem("OntologyTerm");
-                  e.setAttribute("identifier",ec);
-                  e.setReference("ontology",ontology);
-                  store(e);
-                  enzymeHash.put(ec,e);
-                }
-                component.addToCollection("ontologyTerms",enzymeHash.get(ec));
-              }
-            } else {
-              throw new BuildException("Unknown node type. Is this a node? "+key+" "+keyMap.get(key));
+        // we'll need the initial nodes.
+        // First, determine the reverse links
+        for(String node: nodeMap.keySet()) {
+          if ( nodeMap.get(node) instanceof ReactionNode) {
+            for( String n: ((ReactionNode)nodeMap.get(node)).nextNode) {
+              ((ReactionNode)nodeMap.get(n)).prevNode.add(node);
             }
-            components.add(component);
+          }
+        }
+        // now make a new hash, but use the key instead of
+        // the unique name since this only exists in 1 owl file.
+        // The idea is that this will give a consistent ordering across owl files.
+        TreeMap<Integer,Node> keyMap = new TreeMap<Integer,Node>();
+        for( String uniquename: nodeMap.keySet()) {
+          Node node = nodeMap.get(uniquename);
+          StringBuffer keyString = new StringBuffer();
+          if (node.label() != null) keyString.append(node.label());
+          // also, some info disagree in direction of the arrows. replace them all (in the key hashcode) with <->
+          if (node.info() != null) keyString.append(node.info().replaceAll("&rarr;","&harr;").replaceAll("&larr;","&harr;"));
+          // TODO: temp for testing 
+          if (node.info() != null) node.info(node.info().replaceAll("&rarr;","&harr;").replaceAll("&larr;","&harr;"));
+          for(String e: ((ReactionNode)node).ec() ) {keyString.append(e);}
+          if (keyString.length() == 0) {
+            throw new PathwayException("key for node "+uniquename+" in "+pathwayName+" is null");
+          }
+          LOG.info("reaction nodekey from string "+keyString.toString()+" is "+keyString.toString().hashCode());
+          node.key( new Integer(keyString.toString().hashCode()));
+          keyMap.put(node.key(),node);
+        }
+        // and update the next/prev nodes inside to use the hashcodes.
+        for( Node node: nodeMap.values() ) {
+          TreeSet<String> next = new TreeSet<String>(((ReactionNode) node).nextNode);
+          ((ReactionNode)node).nextNode.clear();
+          for(String key: next) {
+            ((ReactionNode)node).nextNode.add(nodeMap.get(key).key.toString());
+          }
+          TreeSet<String> prev = new TreeSet<String>(((ReactionNode) node).prevNode);
+          ((ReactionNode)node).prevNode.clear();
+          for(String key: prev) {
+            ((ReactionNode)node).prevNode.add(nodeMap.get(key).key.toString());
           }
         }
 
-        // Now build the json.
-        // this connects the node key to an integer
-        TreeMap<Integer,Integer> nodeToId = new TreeMap<Integer,Integer>();
-        Integer currentId = new Integer(0);
-        // various buffers for holding things.
-        StringBuffer nodes = new StringBuffer();
-        StringBuffer links = new StringBuffer();
-        StringBuffer groups = new StringBuffer();
-
-
-        for( Integer key : keyMap.keySet()) {
-          Node activeNode = keyMap.get(key);
-          if( activeNode.x() != null && activeNode.y() != null) {
-            nodeToId.put(key,currentId);
-            if (activeNode instanceof InputNode) {
-              if (nodes.length() > 0 ) nodes.append(",");
-              nodes.append("{\"id\":"+currentId +
-                  (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
-                  ",\"x\":"+activeNode.x()*pixPerElement +
-                  ",\"y\":"+activeNode.y()*pixPerElement +
-                  ",\"orient\":\"90\""+
-                  ",\"type\":\"input\""+
-                  ",\"key\":"+key +
-                  "}");
-            } else if (activeNode instanceof OutputNode) {
-              if (nodes.length() > 0 ) nodes.append(",");
-              nodes.append("{\"id\":"+currentId +
-                  (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
-                  ",\"x\":"+activeNode.x()*pixPerElement +
-                  ",\"y\":"+activeNode.y()*pixPerElement +
-                  ",\"orient\":\"90\""+
-                  ",\"type\":\"output\""+
-                  ",\"key\":"+key +
-                  "}");
-            } else if (activeNode instanceof LinkingNode) {
-              if (nodes.length() > 0 ) nodes.append(",");
-              nodes.append("{\"id\":"+currentId +
-                  (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
-                  ",\"x\":"+activeNode.x()*pixPerElement +
-                  ",\"y\":"+activeNode.y()*pixPerElement +
-                  ",\"orient\":\"90\""+
-                  ",\"type\":\"link\""+
-                  ",\"key\":"+key +
-                  "}");
-            } else if(activeNode instanceof ReactionNode) {
-              if (nodes.length() > 0 ) nodes.append(",");
-              ReactionNode rn = (ReactionNode)activeNode;
-              nodes.append("{\"id\":"+currentId+
-                  (rn.label==null?"":",\"label\":\""+rn.label+"\"")+
-                  ",\"tooltip\":\""+activeNode.info()+"\""+
-                  ",\"x\":"+activeNode.x()*pixPerElement +
-                  ",\"y\":"+activeNode.y()*pixPerElement +
-                  ",\"orient\":\"90\""+
-                  ",\"type\":\"reaction\""+
-                  ",\"key\":"+key +
-                  "}");
-            } else {
-              throw new BuildException("What is this node? "+key+" "+activeNode);
+        // and use this to find the initial node(s)
+        TreeSet<Integer> initialNodes = new TreeSet<Integer>();
+        TreeSet<Integer> terminalNodes = new TreeSet<Integer>();
+        for(Integer node: keyMap.keySet()) {
+          if ( keyMap.get(node) instanceof ReactionNode) {
+            if (((ReactionNode)keyMap.get(node)).nextNode.size() == 0) {
+              terminalNodes.add(node);
             }
-            currentId = currentId + 1;
-          } else {
-            LOG.warn("There are untraveled reactions in "+pathwayID);
-          }
-        }
-
-        for( Node[] pair: linkSet) {
-          if (links.length() > 0) links.append(",");
-          links.append("{\"source\":"+nodeToId.get(pair[0].key) +
-              ",\"target\":"+nodeToId.get(pair[1].key)+",\"type\":\""+
-              (pair[0].nodeType().equals("input")?"input":pair[1].nodeType().equals("output")?"output":"link")+
-              "\"}");
-
-        }
-
-        // keep track of who is in a group. We'll construct groups
-        // of single elements for those not otherwise in a group.
-        TreeSet<Node> inAGroup = new TreeSet<Node>();
-        for( Integer key : keyMap.keySet() ) {
-          if (keyMap.get(key) instanceof ReactionNode && keyMap.get(key).y != null) {
-            ReactionNode rn = (ReactionNode)keyMap.get(key);
-            if (groups.length() > 0) groups.append(",");
-            groups.append("["+nodeToId.get(rn.key));
-            inAGroup.add(rn);
-            for( Node n: rn.groupComponents ) {
-              groups.append(","+nodeToId.get(n.key));
-              inAGroup.add(n);
+            if (((ReactionNode)keyMap.get(node)).prevNode.size() == 0) {
+              initialNodes.add(node);
             }
-            groups.append("]");
           }
         }
-        // now add loners
-        for( Integer key : keyMap.keySet() ) {
-          if (keyMap.get(key).y != null && !inAGroup.contains(keyMap.get(key))) {
-            if (groups.length() > 0) groups.append(",");
-            groups.append("["+nodeToId.get(keyMap.get(key).key)+"]");
+        // then we need to walk the paths of the reactions to
+        // get the substrates and outputs starting from (all?) initial nodes.
+        // As we walk the reactions, we sweep up the components into either
+        // output nodes from the previous reaction node, input nodes to
+        // the current reaction node, or linking nodes of outputs of the previous
+        // which are also inputs for the current.
+
+        HashSet<Node[]> linkSet = new HashSet<Node[]>();
+        if(initialNodes.size() > 0) {
+          // we need to track node pairs we've visited to avoid double tracking
+          beenThereDoneThat = new HashSet<String>();
+
+          // as we walk, we'll assign row and column integers
+          // to the reaction nodes, inputs and output.
+          // the 'side' inputs and outputs will be at row-1 and
+          // row+1 compared to the reaction (and column+1). The linking
+          // input will be at row-2, output will be at row+2 (and the
+          // same column
+          // when we start the walk the first reaction
+          // will be set this to 2 (rather than 0) to have a
+          // row for the inputs.
+          Integer rowI = new Integer(2);
+          // and this will be the column.
+          Integer columnI = new Integer(0);
+          // TODO: look for problems with this algorithm. If there are
+          // multiple branches in a walk, the second will cross the column
+          // created by the first. This is a problem.
+          //HashMap<Integer,LinkingNode> linkNodeMap = new HashMap<Integer,LinkingNode>();
+          for( Integer initial: initialNodes) {
+            ReactionNode prevNode = null;
+            ReactionNode currentNode = (ReactionNode) keyMap.get(initial);
+            // this walk is recursive
+            walkLinkingNodes(rowI,columnI,(ReactionNode)prevNode,(ReactionNode)currentNode,linkSet,keyMap);
+            columnI = new Integer(maxColumn(keyMap) + 2);
           }
-        }
 
-        String json = "{\"nodes\":["+nodes.toString()+"],\"links\":["+links.toString()+
-            "],\"groups\":["+groups.toString()+"]}";
+          beenThereDoneThat.clear();
+          for( Integer initial: initialNodes) {
+            ReactionNode prevNode = null;
+            ReactionNode currentNode = (ReactionNode) keyMap.get(initial);
+            // this walk is recursive
+            addIONodes((ReactionNode)prevNode,(ReactionNode)currentNode,linkSet,keyMap);
+          }
 
-        LOG.info("Storing pathway "+pathwayName+" ("+pathwayInfo.getIdentifier()+") with "+components.size()+" components.");
-        // store the pathwayinfo and it's JSON
-        store(pathwayInfo);
-        if (loadingJSON) {
-          Item pJSON = createItem("PathwayJSON");
-          pJSON.setAttribute("json",json);
-          pJSON.setReference("pathwayInfo",pathwayInfo);
-          store(pJSON);
-        }
-        
-        if (!loadingJSON) {
-        // and the specific instance
-        Item pathway = createItem("Pathway");
-        pathway.setAttribute("identifier",organism.getAttribute("shortName").getValue()+
-            " "+pathwayInfo.getAttribute("identifier").getValue());
-        pathway.setReference("pathwayInfo",pathwayInfo);
-        pathway.setReference("organism",organism);
-        if (method != null) pathway.setAttribute("method",method);
-        store(pathway);
-        }
+          storePathway(pathwayID,pathwayName,keyMap,proteinHash,enzymeHash,linkSet);
 
-        // and the components
-        for(Item component: components) {
-          component.setReference("pathwayInfo",pathwayInfo.getIdentifier());
-          store(component);
         }
+      } catch (PathwayException e) {
+        LOG.warn("pathway "+pathwayID+" has minimal info. Not Storing.");
       }
     }
   }
 
-  /* getReactionSteps identifies all Biochemical and spontaneous reactions in a pathway
+  /**
+   * countComponents
+   * scan the owl file and see how often each small molecule is part of a reaction
+   * these counts are used when looking for the intermediate products of reactions (since
+   * it is sometimes ambiguous) or the initial/final products of a pathway.
+   * things that are in more reactions will be considered the side input or output;
+   * things that are less common are the intermediate or terminal products
+   * @param model
+   * @return a hash of small molecule and count.
+   */
+  private HashMap<String,Integer> countComponents(org.biopax.paxtools.model.Model model) {
+    HashMap<String,Integer> retHash = new HashMap<String,Integer>();
+    Set<BiochemicalReaction> rSet = model.getObjects(BiochemicalReaction.class);
+    for (BiochemicalReaction r: rSet) {
+
+      for (PhysicalEntity pe: r.getLeft() ) {
+        String n = ((Named)pe).getStandardName();
+        if(!retHash.containsKey(n) ) {
+          retHash.put(n,new Integer(0));
+        }
+        retHash.put(n,retHash.get(n).intValue()+1);
+      }
+      for (PhysicalEntity pe: r.getRight() ) {
+        String n = ((Named)pe).getStandardName();
+        if(!retHash.containsKey(n) ) {
+          retHash.put(n,new Integer(0));
+        }
+        retHash.put(n,retHash.get(n).intValue()+1);
+      }
+    }
+    return retHash;
+  }
+
+  /**
+   * getReactionSteps
+   * identifies all Biochemical and spontaneous reactions in a pathway
    * and loads them into a map of unique identifier to ReactionNodes.
    * This is just the skeleton of the pathway. We'll need to walk
    * through everything to find the inputs, outputs and substrates.
-   * */
+   * @param pathway object
+   * @param pathwayId the 
+   */
 
   HashMap<String,Node> getReactionSteps(Pathway pathway,String pathwayID) {
 
@@ -440,13 +288,16 @@ public class BiopaxPathwayConverter extends BioFileConverter
             activeNode.label = "<i>spontaneous</i>";
             activeNode.isSpontaneous = true;
           }
+          for ( Xref xref: b.getXref() ) {
+            activeNode.label = xref.getId();
+          }
           if (activeNode.info() != null) {
             System.err.println("Step "+activeNode.info()+" has multiple reactions!");
           }
-          
+
           String ll = ((Named)proc).getStandardName().replaceAll("\"","&quot;");
           activeNode.info(ll);
-          
+
           for( String ec: b.getECNumber() ) {
             activeNode.ec.add(ec);
           }
@@ -509,14 +360,14 @@ public class BiopaxPathwayConverter extends BioFileConverter
       } catch (ClassCastException e) {
         throw new BuildException("Cannot cast "+step+" to a BiochemicalPathwayStepImpl.");
       }
-  
+
       retSet.put(activeNode.uniqueName,activeNode);
     }
-    
+
     return retSet;
   }
-   
-  private void walk(Integer rowI, Integer columnI,ReactionNode prevNode,ReactionNode currentNode,
+
+  private void walkLinkingNodes(Integer rowI, Integer columnI,ReactionNode prevNode,ReactionNode currentNode,
       HashSet<Node[]> linkSet,TreeMap<Integer,Node> nodeMap) {
 
     // if we've seen both the current and previous nodes, we've walked this section
@@ -572,7 +423,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
         String uniqueName = prevNode.uniqueName + ":" + currentNode.uniqueName;
         if (nodeMap.containsKey(key) ) {
           try {
-          linkN = (LinkingNode)nodeMap.get(key);
+            linkN = (LinkingNode)nodeMap.get(key);
           } catch (ClassCastException e) {
             throw new BuildException("The label "+label+" has the same hashcode as a non-linking node.");
           }
@@ -705,11 +556,11 @@ public class BiopaxPathwayConverter extends BioFileConverter
     if(currentNode != null ) {
       if (currentNode.nextNode.size()>0) {
         for( String nextNodeLabel: currentNode.nextNode) {
-          walk(nextrowI,nextcolumnI,currentNode,(ReactionNode) nodeMap.get(new Integer(nextNodeLabel)),linkSet,nodeMap);
+          walkLinkingNodes(nextrowI,nextcolumnI,currentNode,(ReactionNode) nodeMap.get(new Integer(nextNodeLabel)),linkSet,nodeMap);
           nextcolumnI = new Integer(maxColumn(nodeMap)+2);
         }
       } else {
-        walk(nextrowI,nextcolumnI,currentNode,null,linkSet,nodeMap);
+        walkLinkingNodes(nextrowI,nextcolumnI,currentNode,null,linkSet,nodeMap);
       }
     }
   }
@@ -719,7 +570,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
     // if we've seen both the current and previous nodes, we've walked this section
     // of the graph already. Do no double walk.
-    String hopName = ((prevNode==null)?"null":prevNode.uniqueName)+":"+((currentNode==null)?"null":currentNode.uniqueName);
+    String hopName = ((prevNode==null)?"null":prevNode.uniqueName)+":"+
+        ((currentNode==null)?"null":currentNode.uniqueName);
     if (beenThereDoneThat.contains(hopName)) return;
     beenThereDoneThat.add(hopName);
 
@@ -798,6 +650,188 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
   }
 
+  void storePathway(String pathwayID,String pathwayName, TreeMap<Integer, Node> keyMap, TreeMap<String, Item> proteinHash,
+      TreeMap<String, Item> enzymeHash, HashSet<Node[]> linkSet) throws ObjectStoreException {
+    // Time to store
+    // first the components. If we're loading the JSON, we want to
+    // populate the entire record. But if it's only for the organism,
+    // we just want the key.
+
+    Item pathwayInfo = createItem("PathwayInfo");
+    if (pathwayID != null) pathwayInfo.setAttribute("identifier", pathwayID);
+    if (pathwayName != null) pathwayInfo.setAttribute("name", pathwayName);
+
+    TreeSet<Item> components = new TreeSet<Item>();
+    for(Integer key: keyMap.keySet() ) {
+      Node activeNode = keyMap.get(key);
+      Item component = createItem("PathwayComponent");
+      component.setAttribute("key",activeNode.key().toString());
+      if ( activeNode.x() != null) component.setAttribute("level",new Integer(activeNode.x()).toString());
+      if ( activeNode.y() != null) component.setAttribute("step",new Integer(activeNode.y()).toString());
+      if (activeNode instanceof InputNode) {
+        component.setAttribute("type","input");
+      } else if (activeNode instanceof OutputNode) {
+        component.setAttribute("type","output");
+      } else if (activeNode instanceof LinkingNode) {
+        component.setAttribute("type","link");
+      } else if(activeNode instanceof ReactionNode) {
+        component.setAttribute("type","reaction");
+        if (!loadingJSON) {
+          for( String protein: ((ReactionNode)activeNode).proteins ) {
+            if (!proteinHash.containsKey(protein) ) {
+              Item p = createItem("Protein");
+              p.setAttribute("primaryIdentifier",protein);
+              p.setReference("organism",organism);
+              store(p);
+              proteinHash.put(protein,p);
+            }
+            component.addToCollection("proteins",proteinHash.get(protein));
+            // TODO: add pathway ontology term to protein.
+          }
+        }
+        for( String ec: ((ReactionNode)activeNode).ec ) {
+          if (!enzymeHash.containsKey(ec) ) {
+            Item e = createItem("OntologyTerm");
+            e.setAttribute("identifier",ec);
+            e.setReference("ontology",enzymeOntology);
+            store(e);
+            enzymeHash.put(ec,e);
+          }
+          component.addToCollection("ontologyTerms",enzymeHash.get(ec));
+        }
+      } else {
+        throw new BuildException("Unknown node type. Is this a node? "+key+" "+keyMap.get(key));
+      }
+      components.add(component);
+    }
+
+    // Now build the json.
+    // this connects the node key to an integer
+    TreeMap<Integer,Integer> nodeToId = new TreeMap<Integer,Integer>();
+    Integer currentId = new Integer(0);
+    // various buffers for holding things.
+    StringBuffer nodes = new StringBuffer();
+    StringBuffer links = new StringBuffer();
+    StringBuffer groups = new StringBuffer();
+
+
+    for( Integer key : keyMap.keySet()) {
+      Node activeNode = keyMap.get(key);
+      if( activeNode.x() != null && activeNode.y() != null) {
+        nodeToId.put(key,currentId);
+        if (activeNode instanceof InputNode) {
+          if (nodes.length() > 0 ) nodes.append(",");
+          nodes.append("{\"id\":"+currentId +
+              (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
+              ",\"x\":"+activeNode.x()*pixPerElement +
+              ",\"y\":"+activeNode.y()*pixPerElement +
+              ",\"orient\":\"90\""+
+              ",\"type\":\"input\""+
+              ",\"key\":"+key +
+              "}");
+        } else if (activeNode instanceof OutputNode) {
+          if (nodes.length() > 0 ) nodes.append(",");
+          nodes.append("{\"id\":"+currentId +
+              (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
+              ",\"x\":"+activeNode.x()*pixPerElement +
+              ",\"y\":"+activeNode.y()*pixPerElement +
+              ",\"orient\":\"90\""+
+              ",\"type\":\"output\""+
+              ",\"key\":"+key +
+              "}");
+        } else if (activeNode instanceof LinkingNode) {
+          if (nodes.length() > 0 ) nodes.append(",");
+          nodes.append("{\"id\":"+currentId +
+              (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
+              ",\"x\":"+activeNode.x()*pixPerElement +
+              ",\"y\":"+activeNode.y()*pixPerElement +
+              ",\"orient\":\"90\""+
+              ",\"type\":\"link\""+
+              ",\"key\":"+key +
+              "}");
+        } else if(activeNode instanceof ReactionNode) {
+          if (nodes.length() > 0 ) nodes.append(",");
+          ReactionNode rn = (ReactionNode)activeNode;
+          nodes.append("{\"id\":"+currentId+
+              (rn.label==null?"":",\"label\":\""+rn.label+"\"")+
+              ",\"tooltip\":\""+activeNode.info()+"\""+
+              ",\"x\":"+activeNode.x()*pixPerElement +
+              ",\"y\":"+activeNode.y()*pixPerElement +
+              ",\"orient\":\"90\""+
+              ",\"type\":\"reaction\""+
+              ",\"key\":"+key +
+              "}");
+        } else {
+          throw new BuildException("What is this node? "+key+" "+activeNode);
+        }
+        currentId = currentId + 1;
+      } else {
+        LOG.warn("There are untraveled reactions in "+pathwayID);
+      }
+    }
+
+    for( Node[] pair: linkSet) {
+      if (links.length() > 0) links.append(",");
+      links.append("{\"source\":"+nodeToId.get(pair[0].key) +
+          ",\"target\":"+nodeToId.get(pair[1].key)+",\"type\":\""+
+          (pair[0].nodeType().equals("input")?"input":pair[1].nodeType().equals("output")?"output":"link")+
+          "\"}");
+
+    }
+
+    // keep track of who is in a group. We'll construct groups
+    // of single elements for those not otherwise in a group.
+    TreeSet<Node> inAGroup = new TreeSet<Node>();
+    for( Integer key : keyMap.keySet() ) {
+      if (keyMap.get(key) instanceof ReactionNode && keyMap.get(key).y != null) {
+        ReactionNode rn = (ReactionNode)keyMap.get(key);
+        if (groups.length() > 0) groups.append(",");
+        groups.append("["+nodeToId.get(rn.key));
+        inAGroup.add(rn);
+        for( Node n: rn.groupComponents ) {
+          groups.append(","+nodeToId.get(n.key));
+          inAGroup.add(n);
+        }
+        groups.append("]");
+      }
+    }
+    // now add loners
+    for( Integer key : keyMap.keySet() ) {
+      if (keyMap.get(key).y != null && !inAGroup.contains(keyMap.get(key))) {
+        if (groups.length() > 0) groups.append(",");
+        groups.append("["+nodeToId.get(keyMap.get(key).key)+"]");
+      }
+    }
+
+    String json = "{\"nodes\":["+nodes.toString()+"],\"links\":["+links.toString()+
+        "],\"groups\":["+groups.toString()+"]}";
+
+    // store the pathwayinfo and it's JSON
+    store(pathwayInfo);
+    if (loadingJSON) {
+      Item pJSON = createItem("PathwayJSON");
+      pJSON.setAttribute("json",json);
+      pJSON.setReference("pathwayInfo",pathwayInfo);
+      store(pJSON);
+    }
+
+    if (!loadingJSON) {
+      // and the specific instance
+      Item pathway = createItem("Pathway");
+      pathway.setAttribute("identifier",organism.getAttribute("shortName").getValue()+
+          " "+pathwayInfo.getAttribute("identifier").getValue());
+      pathway.setReference("pathwayInfo",pathwayInfo);
+      pathway.setReference("organism",organism);
+      if (method != null) pathway.setAttribute("method",method);
+      store(pathway);
+    }
+
+    // and the components
+    for(Item component: components) {
+      component.setReference("pathwayInfo",pathwayInfo.getIdentifier());
+      store(component);
+    }
+  }
 
   /*
    * Look for the maximum x (so far) of all nodes.
@@ -868,7 +902,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
       store(organism);
     }
   }
-  
+
   public void setMethod(String method) {
     this.method=method;
   }
@@ -948,6 +982,13 @@ public class BiopaxPathwayConverter extends BioFileConverter
   private class SpontaneousNode extends Node {
     public SpontaneousNode() {
       nodeType = "link";
+    }
+  }
+
+  private class PathwayException extends Exception{
+
+    public PathwayException(String string) {
+      super(string);
     }
   }
 }
