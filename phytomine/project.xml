@@ -351,6 +351,11 @@
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
 
+    <source name="phytozome-homologs-458" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.458.fa-*.fa" />
+    </source>
+
     <source name="pathologic-pathway-Acoerulea_322" type="biopax-pathway">
       <property name="proteomeId" value="322"/>
       <property name="src.data.dir.includes" value="Acoerulea_322.owl"/>
@@ -780,6 +785,12 @@
     <source name="pathologic-pathway-Carabica_453" type="biopax-pathway">
       <property name="proteomeId" value="453" />
       <property name="src.data.dir.includes" value="Carabica_453.owl" />
+      <property name="method" value="pathologic"/>
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+    </source>
+    <source name="pathologic-pathway-Ghirsutum_458" type="biopax-pathway">
+      <property name="proteomeId" value="458" />
+      <property name="src.data.dir.includes" value="Ghirsutum_458.owl" />
       <property name="method" value="pathologic"/>
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
