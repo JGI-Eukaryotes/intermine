@@ -356,6 +356,11 @@
       <property name="src.data.dir.includes" value="table.458.fa-*.fa" />
     </source>
 
+    <source name="phytozome-homologs-313" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.458.fa-313.fa" />
+    </source>
+
     <source name="pathologic-pathway-Acoerulea_322" type="biopax-pathway">
       <property name="proteomeId" value="322"/>
       <property name="src.data.dir.includes" value="Acoerulea_322.owl"/>
