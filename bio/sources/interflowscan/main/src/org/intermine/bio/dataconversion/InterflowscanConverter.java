@@ -13,6 +13,7 @@ package org.intermine.bio.dataconversion;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.tools.ant.BuildException;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
@@ -102,6 +103,7 @@ public class InterflowscanConverter extends BioFileConverter
     private String hitAcc = null;
     private String eValue = null;
     private String score = null;
+    private ArrayList<HitStats> locations = new ArrayList<HitStats>();
     private ArrayList<String> goXref = new ArrayList<String>();
     // data sources we register
     private HashMap<String,String> sourceMap = new HashMap<String,String>();
@@ -213,6 +215,7 @@ public class InterflowscanConverter extends BioFileConverter
           ReferenceList refList = new ReferenceList("ontologyTerms");
           refList.addRefId(r.getRefId());
           crossReference.addCollection(refList);
+          xrefMap.get(dbName).put(hitAcc,tryToStore(crossReference));
         }
       } else if (qName.equals("entry") ) {
         // this is the subject for the crossreference. But only need to do this
@@ -222,7 +225,6 @@ public class InterflowscanConverter extends BioFileConverter
             // register this protein domain
             proteinDomain = createItem("ProteinDomain");
             proteinDomain.setAttribute("primaryIdentifier",attrs.getValue("id"));
-            proteinDomain.setAttribute("name",attrs.getValue("name"));
             domainMap.put(attrs.getValue("id"),tryToStore(proteinDomain));
           }
           crossReference.setReference("subject",domainMap.get(attrs.getValue("id")));
@@ -234,9 +236,9 @@ public class InterflowscanConverter extends BioFileConverter
             Item goTerm = createItem("GOTerm");
             goTerm.setAttribute("identifier",attrs.getValue("id"));
             goTerm.setReference("ontology",ontologyMap.get("GO"));
-            if (attrs.getValue("category") != null ) goTerm.setAttribute("namespace",attrs.getValue("category"));
+            /*if (attrs.getValue("category") != null ) goTerm.setAttribute("namespace",attrs.getValue("category"));
             if (attrs.getValue("name") != null ) goTerm.setAttribute("name",attrs.getValue("name"));
-            if (attrs.getValue("desc") != null ) goTerm.setAttribute("description",attrs.getValue("desc"));
+            if (attrs.getValue("desc") != null ) goTerm.setAttribute("description",attrs.getValue("desc"));*/
             oTermMap.get("GO").put(attrs.getValue("id"),tryToStore(goTerm));
           }
           Item goAnnot = createItem("GOAnnotation");
@@ -248,29 +250,17 @@ public class InterflowscanConverter extends BioFileConverter
         // this is the main event.
         // e-value and score may be at this level
         if (attrs.getValue("e-value") != null && attrs.getValue("e-value").trim().length() > 0) {
-          eValue = attrs.getValue("e-value");
+          if (attrs.getValue("score") != null && attrs.getValue("score").trim().length() > 0) {
+            locations.add(new HitStats(attrs.getValue("start"),attrs.getValue("end"),
+                attrs.getValue("e-value"),attrs.getValue("score")));
+          } else {
+            locations.add(new HitStats(attrs.getValue("start"),attrs.getValue("end"),
+                attrs.getValue("e-value")));
+          }
+        } else {
+          locations.add(new HitStats(attrs.getValue("start"),attrs.getValue("end")));
         }
-        if (attrs.getValue("score") != null && attrs.getValue("score").trim().length() > 0) {
-          score = attrs.getValue("score");
-        }
-        Item paf = createItem("ProteinAnalysisFeature");
-        paf.setReference("protein",proteinId);
-        paf.setReference("organism",orgId);
-        paf.setReference("crossReference",xrefMap.get(dbName).get(hitAcc));
-        paf.setAttribute("programname",programName);
-        if (eValue != null) paf.setAttribute("significance",eValue);
-        if (score != null) paf.setAttribute("normscore",score);
-        String theStart = attrs.getValue("start");
-        String theEnd = attrs.getValue("end");
-        paf.setAttribute("primaryIdentifier",proteinName+":"+dbName+":"+hitAcc+":"+theStart+"-"+theEnd);
-        paf.setAttribute("name",proteinName+":"+dbName+":"+hitAcc+":"+theStart+"-"+theEnd);
-        String pafRef = tryToStore(paf);
-        Item loc = createItem("Location");
-        loc.setReference("locatedOn",proteinId);
-        loc.setAttribute("start",theStart);
-        loc.setAttribute("end",theEnd);
-        loc.setReference("feature",pafRef);
-        tryToStore(loc);
+
       }
       super.startElement(uri, localName, qName, attrs);
     }
@@ -286,14 +276,32 @@ public class InterflowscanConverter extends BioFileConverter
       if (qName.equals("protein-matches")) {
       } else if (qName.equals("release") ) {
       } else if (qName.endsWith("-match") ) {
-      } else if (qName.equals("entry") ) {
-        if (crossReference != null ) {
-          xrefMap.get(dbName).put(hitAcc,tryToStore(crossReference));
-          crossReference = null;
+        for(HitStats location: locations) {
+          Item paf = createItem("ProteinAnalysisFeature");
+          paf.setReference("protein",proteinId);
+          paf.setReference("organism",orgId);
+          paf.setReference("crossReference",xrefMap.get(dbName).get(hitAcc));
+          paf.setAttribute("programname",programName);
+          if (location.evalue != null) paf.setAttribute("significance",location.evalue);
+          if (location.score != null) paf.setAttribute("normscore",location.score);
+          String theStart = location.start;
+          String theEnd = location.end;
+          paf.setAttribute("primaryIdentifier",proteinName+":"+dbName+":"+hitAcc+":"+theStart+"-"+theEnd);
+          paf.setAttribute("name",proteinName+":"+dbName+":"+hitAcc+":"+theStart+"-"+theEnd);
+          String pafRef = tryToStore(paf);
+          if (location.start != null && location.end != null) {
+            Item loc = createItem("Location");
+            loc.setReference("locatedOn",proteinId);
+            loc.setAttribute("start",theStart);
+            loc.setAttribute("end",theEnd);
+            loc.setReference("feature",pafRef);
+            tryToStore(loc);
+          }
         }
-      } else if (qName.equals("signature")) {
         hitAcc = null;
         dbName = null;
+        locations = new ArrayList<HitStats>();;
+      } else if (qName.equals("entry") ) {
       }
       
     }
@@ -321,6 +329,26 @@ public class InterflowscanConverter extends BioFileConverter
     }
   }
     
-  
-  
+  class HitStats {
+    public String start = null;
+    public String end = null;
+    public String evalue = null;
+    public String score = null;
+    HitStats(String start,String end) {
+      if (start != null) this.start = new String(start);
+      if (end != null) this.end = new String(end);
+    }
+    HitStats(String start, String end, String evalue) {
+      if (start != null) this.start = new String(start);
+      if (end != null) this.end = new String(end);
+      this.evalue = new String(evalue);
+    }    
+    HitStats(String start, String end, String evalue, String score) {
+      if (start != null) this.start = new String(start);
+      if (end != null) this.end = new String(end);
+      this.evalue = new String(evalue);
+      this.score = new String(score);
+    }
+  }
+
 }
