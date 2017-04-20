@@ -15,3 +15,27 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>
+  <source name="interflowscan-C.grandiflora_266" type="interflowscan">
+    <property name="proteomeId" value="266" />
+    <property name="src.data.file" value="C.grandiflora_266.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="phytozome-chado-C.grandiflora-266" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Capsella grandiflora" />
+    <property name="genus" value="Capsella" />
+    <property name="name" value="Capsella grandiflora" />
+    <property name="species" value="grandiflora" />
+    <property name="assemblyDbxrefId" value="7271520" />
+    <property name="proteomeId" value="266" />
+    <property name="taxonId" value="264402" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-C.grandiflora" />
+    <property name="shortName" value="C. grandiflora" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="7314903" />
+    <property name="assemblyVersion" value="v1" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
