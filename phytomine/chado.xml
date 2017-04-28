@@ -15,6 +15,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>
+
   <source name="interflowscan-C.grandiflora_266" type="interflowscan">
     <property name="proteomeId" value="266" />
     <property name="src.data.file" value="C.grandiflora_266.xml" />
@@ -22,6 +23,37 @@
     <property name="dataSourceName" value="Phytozome v11" />
     <property name="dataSetTitle" value="InterFlowScan" />
   </source>
+  <source name="interflowscan-C.grandiflora_266-fix" type="interflowscan">
+    <property name="proteomeId" value="266" />
+    <property name="src.data.file" value="C.grandiflora_266.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+  <source name="interflowscan-C.grandiflora_266-refix" type="interflowscan">
+    <property name="proteomeId" value="266" />
+    <property name="src.data.file" value="C.grandiflora_266.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+
+  <source name="interflowscan-C.grandiflora_266-refix2" type="interflowscan">
+    <property name="proteomeId" value="266" />
+    <property name="src.data.file" value="C.grandiflora_266.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+
+  <source name="interflowscan-C.grandiflora_266-refix3" type="interflowscan">
+    <property name="proteomeId" value="266" />
+    <property name="src.data.file" value="C.grandiflora_266.xml" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
+    <property name="dataSourceName" value="Phytozome v11" />
+    <property name="dataSetTitle" value="InterFlowScan" />
+  </source>
+
   <source name="phytozome-chado-C.grandiflora-266" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Capsella grandiflora" />

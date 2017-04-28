@@ -104,7 +104,7 @@ public class InterflowscanConverter extends BioFileConverter
     private String eValue = null;
     private String score = null;
     private ArrayList<HitStats> locations = new ArrayList<HitStats>();
-    private ArrayList<String> goXref = new ArrayList<String>();
+    private ArrayList<String> goXrefs = new ArrayList<String>();
     // data sources we register
     private HashMap<String,String> sourceMap = new HashMap<String,String>();
     // ontologies we register
@@ -158,7 +158,7 @@ public class InterflowscanConverter extends BioFileConverter
         proteinDomain = null;
         eValue = null;
         score = null;
-        goXref = new ArrayList<String>();
+        goXrefs = new ArrayList<String>();
       } else if (qName.equals("xref")) {
         // this is the protein name
         proteinName = attrs.getValue("id");
@@ -203,48 +203,46 @@ public class InterflowscanConverter extends BioFileConverter
           oTermMap.get(dbName).put(hitAcc,tryToStore(hit));
         }
         // we're going to make the item for the cross reference,
-        // link it to the ontology term, but do not store it just yet.
-        if (!xrefMap.get(dbName).containsKey(hitAcc) ) {
-          crossReference = createItem("CrossReference");
-          crossReference.setAttribute("identifier",hitAcc);
-          if (!sourceMap.containsKey(dbName) || sourceMap.get(dbName)==null ) {
-            throw new BuildException("database "+dbName+" was not part of the dbinfo header in xml.");
-          }
-          crossReference.setReference("source", sourceMap.get(dbName));   
-          Reference r = new Reference("ontologyTerm",oTermMap.get(dbName).get(hitAcc));
-          ReferenceList refList = new ReferenceList("ontologyTerms");
-          refList.addRefId(r.getRefId());
-          crossReference.addCollection(refList);
-          xrefMap.get(dbName).put(hitAcc,tryToStore(crossReference));
+        // link it to the ontology term, but do not store it just yet
+        // since we may have to add the domain.
+        crossReference = createItem("CrossReference");
+        crossReference.setAttribute("identifier",hitAcc);
+        if (!sourceMap.containsKey(dbName) || sourceMap.get(dbName)==null ) {
+          throw new BuildException("database "+dbName+" was not part of the dbinfo header in xml.");
         }
+        crossReference.setReference("source", sourceMap.get(dbName));   
+        Reference r = new Reference("ontologyTerm",oTermMap.get(dbName).get(hitAcc));
+        ReferenceList refList = new ReferenceList("ontologyTerms");
+        refList.addRefId(r.getRefId());
+        crossReference.addCollection(refList);
       } else if (qName.equals("entry") ) {
         // this is the subject for the crossreference. But only need to do this
         // if we're processing this crossref on this loop.
         if (crossReference != null) {
+          // register this protein domain
+          proteinDomain = createItem("ProteinDomain");
+          proteinDomain.setAttribute("primaryIdentifier",attrs.getValue("id"));
           if (!domainMap.containsKey(attrs.getValue("id") ) ) {
-            // register this protein domain
-            proteinDomain = createItem("ProteinDomain");
-            proteinDomain.setAttribute("primaryIdentifier",attrs.getValue("id"));
             domainMap.put(attrs.getValue("id"),tryToStore(proteinDomain));
           }
           crossReference.setReference("subject",domainMap.get(attrs.getValue("id")));
         }
       } else if (qName.equals("go-xref") ) { 
+        if (!oTermMap.get("GO").containsKey(attrs.getValue("id")) ) {
+          // register this GO term
+          Item goTerm = createItem("GOTerm");
+          goTerm.setAttribute("identifier",attrs.getValue("id"));
+          goTerm.setReference("ontology",ontologyMap.get("GO"));
+          oTermMap.get("GO").put(attrs.getValue("id"),tryToStore(goTerm));
+        }
+        // save this go term
+        goXrefs.add(oTermMap.get("GO").get(attrs.getValue("id")));
+        // attach the go term to the domain
         if (proteinDomain != null ) {
-          if (!oTermMap.get("GO").containsKey(attrs.getValue("id")) ) {
-            // register this GO term
-            Item goTerm = createItem("GOTerm");
-            goTerm.setAttribute("identifier",attrs.getValue("id"));
-            goTerm.setReference("ontology",ontologyMap.get("GO"));
-            /*if (attrs.getValue("category") != null ) goTerm.setAttribute("namespace",attrs.getValue("category"));
-            if (attrs.getValue("name") != null ) goTerm.setAttribute("name",attrs.getValue("name"));
-            if (attrs.getValue("desc") != null ) goTerm.setAttribute("description",attrs.getValue("desc"));*/
-            oTermMap.get("GO").put(attrs.getValue("id"),tryToStore(goTerm));
-          }
           Item goAnnot = createItem("GOAnnotation");
-          goAnnot.setReference("subject",proteinDomain);
+          goAnnot.setReference("subject",domainMap.get(proteinDomain.getAttribute("primaryIdentifier").getValue()));
           goAnnot.setReference("ontologyTerm",oTermMap.get("GO").get(attrs.getValue("id")));
-          String goAnnotRef = tryToStore(goAnnot);
+          tryToStore(goAnnot);
         }
       } else if (qName.equals("location") ) {
         // this is the main event.
@@ -277,9 +275,15 @@ public class InterflowscanConverter extends BioFileConverter
       } else if (qName.equals("release") ) {
       } else if (qName.endsWith("-match") ) {
         for(HitStats location: locations) {
+
           Item paf = createItem("ProteinAnalysisFeature");
           paf.setReference("protein",proteinId);
           paf.setReference("organism",orgId);
+          
+          // this is where we save the cross reference. If we haven't already.
+          if (!xrefMap.get(dbName).containsKey(hitAcc) ) {
+            xrefMap.get(dbName).put(hitAcc,tryToStore(crossReference));
+          }
           paf.setReference("crossReference",xrefMap.get(dbName).get(hitAcc));
           paf.setAttribute("programname",programName);
           if (location.evalue != null) paf.setAttribute("significance",location.evalue);
@@ -300,7 +304,10 @@ public class InterflowscanConverter extends BioFileConverter
         }
         hitAcc = null;
         dbName = null;
-        locations = new ArrayList<HitStats>();;
+        locations.clear();
+        goXrefs.clear();
+        crossReference = null;
+        proteinDomain = null;
       } else if (qName.equals("entry") ) {
       }
       

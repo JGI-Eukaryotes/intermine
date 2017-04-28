@@ -23,6 +23,7 @@ import org.apache.tools.ant.Task;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
+import org.intermine.metadata.ReferenceDescriptor;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreFactory;
 import org.intermine.sql.DatabaseUtil;
@@ -176,17 +177,21 @@ public class BuildTriggerMaker extends Task
             Model model = os.getModel();
             String makerFileName = "TriggerMaker.sql";
             String removerFileName = "TriggerRemover.sql";
+            String keyCheckFileName = "KeyChecker.sql";
 
             FileWriter makerW;
             FileWriter removerW;
+            FileWriter keyCheckW;
             try {
                 makerW = new FileWriter(new File(destDir, makerFileName));
                 removerW = new FileWriter(new File(destDir, removerFileName));
+                keyCheckW = new FileWriter(new File(destDir, keyCheckFileName));
             } catch (IOException e) {
                 throw new BuildException("Cannot open SQL file: " + e.getMessage());
             }
             PrintWriter makerPW = new PrintWriter(makerW);
             PrintWriter removerPW = new PrintWriter(removerW);
+            PrintWriter keyCheckPW = new PrintWriter(keyCheckW);
 
             makerPW.print(writeDisclaimer());
             removerPW.print(removeDisclaimer());
@@ -210,17 +215,38 @@ public class BuildTriggerMaker extends Task
                     }
                     makerPW.print(writeInterMineObjectActions(cld));
                     removerPW.print(removeInterMineObjectActions(cld));
+                    for( ReferenceDescriptor rD: cld.getAllReferenceDescriptors() ) {
+                      keyCheckPW.print(writeForeignKeyCheck(cld,rD));
+                    }
                 }
             }
             makerPW.print(writeDisclaimer());
             makerPW.close();
             removerPW.print(removeDisclaimer());
             removerPW.close();
+            keyCheckPW.close();
         } catch (Exception e) {
             throw new BuildException("Something bad happened: " + e.getMessage());
         }
     }
 
+    /**
+     * Generate SQL that propagates actions from a table to InterMineObject.
+     *
+     * @param c
+     *          ClassDescriptor for the base table
+     * @return SQL to generate functions and triggers
+     */
+    private static String writeForeignKeyCheck(final ClassDescriptor c,final ReferenceDescriptor r) {
+      return "SELECT CASE WHEN COUNT(*)>0 THEN "
+          + "COUNT(*) || ' "+r.getName()+"s missing from "+c.getUnqualifiedName()+"' ELSE "
+          + " 'All "+r.getName()+"s found in "+c.getUnqualifiedName()+"' END FROM "
+          + " "+c.getUnqualifiedName()+" t LEFT OUTER JOIN "
+          + getDBName(r.getReferencedClassDescriptor().getUnqualifiedName())+" r"
+          + " ON r.id=t."+r.getName()+"id WHERE r.id IS NULL AND t."+r.getName()+"id IS NOT NULL"
+          + " AND t.class='"+c.getName()+"';\n";
+      
+    }
     /**
      * Generate SQL that propagates actions from a table to InterMineObject.
      *
