@@ -341,7 +341,7 @@
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="primaryIdentifier" label="Organism-Pathway Identifier" />
+      <fieldconfig fieldExpr="identifier" label="Pathway Identifier" />
       <fieldconfig fieldExpr="pathwayInfo.name" label="Pathway name" />
       <fieldconfig fieldExpr="organism.name" label="Organism Name" />
       <fieldconfig fieldExpr="method" label="Analysis Method" />

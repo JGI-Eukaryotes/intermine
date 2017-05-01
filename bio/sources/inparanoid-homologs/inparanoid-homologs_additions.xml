@@ -17,10 +17,10 @@
   <attribute name="groupName" type="java.lang.String" />
   <attribute name="fromJGI" type="java.lang.Boolean" />
   <attribute name="fromInParanoid" type="java.lang.Boolean" />
-  <reference name="gene1" referenced-type="Gene" />
-  <reference name="organism1" referenced-type="Organism" />
-  <reference name="gene2" referenced-type="Gene" />
-  <reference name="organism2" referenced-type="Organism" />
+  <reference name="gene" referenced-type="Gene" />
+  <reference name="organism" referenced-type="Organism" />
+  <reference name="ortholog_gene" referenced-type="Gene" />
+  <reference name="ortholog_organism" referenced-type="Organism" />
   <reference name="proteinfamily" referenced-type="ProteinFamily" />
 </class>
 
