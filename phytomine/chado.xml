@@ -1,73 +1,34 @@
-  <source name="phytozome-chado-G.hirsutum-458" type="phytozome-db">
+  <source name="phytozome-chado-A.hypochondriacus-459" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
-    <property name="commonName" value="upland cotton" />
-    <property name="genus" value="Gossypium" />
-    <property name="name" value="Gossypium hirsutum" />
-    <property name="species" value="hirsutum" />
-    <property name="assemblyDbxrefId" value="14324325" />
-    <property name="proteomeId" value="458" />
-    <property name="taxonId" value="3635" />
-    <property name="annotationVersion" value="v1.1" />
-    <property name="dataSourceName" value="phytozome-G.hirsutum" />
-    <property name="shortName" value="G. hirsutum early-release" />
+    <property name="commonName" value="grain amaranth" />
+    <property name="genus" value="Amaranthus" />
+    <property name="name" value="Amaranthus hypochondriacus" />
+    <property name="species" value="hypochondriacus" />
+    <property name="assemblyDbxrefId" value="14414150" />
+    <property name="proteomeId" value="459" />
+    <property name="taxonId" value="28502" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-A.hypochondriacus" />
+    <property name="shortName" value="A. hypochondriacus early-release" />
     <property name="version" value="early-release" />
-    <property name="annotationDbxrefId" value="14324327" />
-    <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v11" />
+    <property name="annotationDbxrefId" value="14414152" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-
-  <source name="interflowscan-C.grandiflora_266" type="interflowscan">
-    <property name="proteomeId" value="266" />
-    <property name="src.data.file" value="C.grandiflora_266.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.grandiflora_266-fix" type="interflowscan">
-    <property name="proteomeId" value="266" />
-    <property name="src.data.file" value="C.grandiflora_266.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-  <source name="interflowscan-C.grandiflora_266-refix" type="interflowscan">
-    <property name="proteomeId" value="266" />
-    <property name="src.data.file" value="C.grandiflora_266.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-
-  <source name="interflowscan-C.grandiflora_266-refix2" type="interflowscan">
-    <property name="proteomeId" value="266" />
-    <property name="src.data.file" value="C.grandiflora_266.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-
-  <source name="interflowscan-C.grandiflora_266-refix3" type="interflowscan">
-    <property name="proteomeId" value="266" />
-    <property name="src.data.file" value="C.grandiflora_266.xml" />
-    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/interflowscan/" />
-    <property name="dataSourceName" value="Phytozome v11" />
-    <property name="dataSetTitle" value="InterFlowScan" />
-  </source>
-
-  <source name="phytozome-chado-C.grandiflora-266" type="phytozome-db">
+  <source name="phytozome-chado-C.zofingiensis-461" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
-    <property name="commonName" value="Capsella grandiflora" />
-    <property name="genus" value="Capsella" />
-    <property name="name" value="Capsella grandiflora" />
-    <property name="species" value="grandiflora" />
-    <property name="assemblyDbxrefId" value="7271520" />
-    <property name="proteomeId" value="266" />
-    <property name="taxonId" value="264402" />
-    <property name="annotationVersion" value="v1.1" />
-    <property name="dataSourceName" value="phytozome-C.grandiflora" />
-    <property name="shortName" value="C. grandiflora" />
-    <property name="version" value="current" />
-    <property name="annotationDbxrefId" value="7314903" />
-    <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v11" />
+    <property name="commonName" value="Chromochloris zofingiensis" />
+    <property name="genus" value="Chromochloris" />
+    <property name="name" value="Chromochloris zofingiensis" />
+    <property name="species" value="zofingiensis" />
+    <property name="assemblyDbxrefId" value="14485433" />
+    <property name="proteomeId" value="461" />
+    <property name="taxonId" value="31302" />
+    <property name="annotationVersion" value="v5.2.3" />
+    <property name="dataSourceName" value="phytozome-C.zofingiensis" />
+    <property name="shortName" value="C. zofingiensis early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14485435" />
+    <property name="assemblyVersion" value="v5" />
+    <property name="dataSetTitle" value="Phytozome v12" />
   </source>
