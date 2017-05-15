@@ -34,7 +34,7 @@
     </query>
   </template>
   <template name="Gene_Expression" title="Expression score for all genes in an organism." comment="">
-    <query name="Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+    <query name="Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpression.abundance Gene.rnaSeqExpression.experiment.name" longDescription="" sortOrder="Gene.primaryIdentifier asc">
       <constraint path="Gene.organism.shortName" editable="true" op="=" value="G. max"/>
     </query>
   </template>
@@ -70,12 +70,12 @@
     </query>
   </template>
   <template name="MRNA_Expression" title="Expression score for all mRNAs in an organism." comment="">
-    <query name="MRNA_Expression" model="genomic" view="MRNA.primaryIdentifier MRNA.cufflinksscores.fpkm MRNA.cufflinksscores.experiment.name" longDescription="" sortOrder="MRNA.primaryIdentifier asc">
+    <query name="MRNA_Expression" model="genomic" view="MRNA.primaryIdentifier MRNA.rnaSeqExpression.abundance MRNA.rnaSeqExpression.experiment.name" longDescription="" sortOrder="MRNA.primaryIdentifier asc">
       <constraint path="MRNA.organism.shortName" editable="true" op="=" value="G. max"/>
     </query>
   </template>
   <template name="One_Gene_Expression" title="Expression score for one specific gene." comment="">
-    <query name="One_Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+    <query name="One_Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpression.abundance Gene.rnaSeqExpression.experiment.name" longDescription="" sortOrder="Gene.primaryIdentifier asc">
       <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Glyma.01G000700"/>
     </query>
   </template>

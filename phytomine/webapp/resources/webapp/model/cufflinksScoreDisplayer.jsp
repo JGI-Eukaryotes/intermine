@@ -27,7 +27,7 @@
         <tr>
            <td> ${row.experiment} </td>
            <td> ${row.group} </td>
-           <td> ${row.fpkm} </td>
+           <td> ${row.abundance} </td>
         </tr>
       </c:forEach>
     </tbody>

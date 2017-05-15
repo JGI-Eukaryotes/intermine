@@ -11,18 +11,29 @@ package org.intermine.bio.dataconversion;
 
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.biopax.paxtools.impl.level3.BiochemicalPathwayStepImpl;
 import org.biopax.paxtools.io.SimpleIOHandler;
 import org.biopax.paxtools.model.BioPAXLevel;
-import org.biopax.paxtools.model.level3.*;
-
+import org.biopax.paxtools.model.level3.BiochemicalReaction;
+import org.biopax.paxtools.model.level3.Catalysis;
+import org.biopax.paxtools.model.level3.ComplexAssembly;
+import org.biopax.paxtools.model.level3.Entity;
+import org.biopax.paxtools.model.level3.Modulation;
+import org.biopax.paxtools.model.level3.Named;
+import org.biopax.paxtools.model.level3.Pathway;
+import org.biopax.paxtools.model.level3.PathwayStep;
+import org.biopax.paxtools.model.level3.PhysicalEntity;
+import org.biopax.paxtools.model.level3.StepDirection;
+import org.biopax.paxtools.model.level3.Transport;
+import org.biopax.paxtools.model.level3.Xref;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
@@ -190,20 +201,20 @@ public class BiopaxPathwayConverter extends BioFileConverter
           // we need to track node pairs we've visited to avoid double tracking
           beenThereDoneThat = new HashSet<String>();
 
-          // as we walk, we'll assign row and column integers
+          // as we walk, we'll assign column and row integers
           // to the reaction nodes, inputs and output.
-          // the 'side' inputs and outputs will be at row-1 and
-          // row+1 compared to the reaction (and column+1). The linking
-          // input will be at row-2, output will be at row+2 (and the
-          // same column
+          // the 'side' inputs and outputs will be at column-1 and
+          // column+1 compared to the reaction (and row+1). The linking
+          // input will be at column-2, output will be at column+2 (and the
+          // same row
           // when we start the walk the first reaction
           // will be set this to 2 (rather than 0) to have a
-          // row for the inputs.
-          Integer rowI = new Integer(2);
-          // and this will be the column.
-          Integer columnI = new Integer(0);
+          // column for the inputs.
+          Integer columnI = new Integer(2);
+          // and this will be the row.
+          Integer rowI = new Integer(0);
           // TODO: look for problems with this algorithm. If there are
-          // multiple branches in a walk, the second will cross the column
+          // multiple branches in a walk, the second will cross the row
           // created by the first. This is a problem.
           //HashMap<Integer,LinkingNode> linkNodeMap = new HashMap<Integer,LinkingNode>();
           for( String initial: initialNodes) {
@@ -211,7 +222,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
             ReactionNode currentNode = (ReactionNode) keyMap.get(initial);
             // this walk is recursive
             walkLinkingNodes(rowI,columnI,(ReactionNode)prevNode,(ReactionNode)currentNode,linkSet,keyMap);
-            columnI = new Integer(maxColumn(keyMap) + 2);
+            rowI = new Integer(maxRow(keyMap) + 2);
           }
 
           beenThereDoneThat.clear();
@@ -387,7 +398,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     return retSet;
   }
 
-  private void walkLinkingNodes(Integer rowI, Integer columnI,ReactionNode prevNode,ReactionNode currentNode,
+  private void walkLinkingNodes(Integer rowI,Integer columnI,ReactionNode prevNode,ReactionNode currentNode,
       HashSet<Node[]> linkSet,TreeMap<String,Node> keyMap) {
 
     // if we've seen both the current and previous nodes, we've walked this section
@@ -396,8 +407,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
     if (beenThereDoneThat.contains(hopName)) return;
     beenThereDoneThat.add(hopName);
 
-    if ((currentNode != null) && (currentNode.y() == null) ) currentNode.y(rowI);
     if ((currentNode != null) && (currentNode.x() == null) ) currentNode.x(columnI);
+    if ((currentNode != null) && (currentNode.y() == null) ) currentNode.y(rowI);
 
 
     TreeSet<String> linkingComponent = new TreeSet<String>();
@@ -468,8 +479,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
         /*SpontaneousNode sN = new SpontaneousNode();
         sN.uniqueName = prevNode.uniqueName + ":" + currentNode.uniqueName;
         sN.label("<i>spontaneous</i>");
-        sN.row((prevNode.row() + currentNode.row())/2);
         sN.column((prevNode.column() + currentNode.column())/2);
+        sN.row((prevNode.row() + currentNode.row())/2);
         nodeMap.put(sN.uniqueName,sN);
         Node[] a = new Node[2];
         a[0] = sN;
@@ -482,7 +493,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
       }
     } else if ( prevNode == null && currentNode != null) {
       // take the component from the left with the lowest count and
-      // call it the link. It is the initial molecule of the reaction
+      // call it the source. It is the initial molecule of the reaction
       if( currentNode.leftComponents.size() > 0) {
         String useThisOne = null;
         Integer lowestCount = null;
@@ -500,23 +511,23 @@ public class BiopaxPathwayConverter extends BioFileConverter
         // but for the key, take ALL components. There seems to be inconsistencies
         // in which is the "starting" components for different organism
         String key = Integer.toString(new String("start:"+makeComponentNodeLabel(currentNode.leftComponents,true)).hashCode());;
-        LinkingNode linkN = null;
+        SourceNode sourceN = null;
         if (keyMap.containsKey(key)) {
           try {
-            linkN = (LinkingNode)keyMap.get(key);
+            sourceN = (SourceNode)keyMap.get(key);
           } catch (ClassCastException e) {
             throw new BuildException("The label "+useThisOne+" has the same hashcode as a non-linking node.");
           }
         } else {
-          linkN = new LinkingNode();
-          linkN.label(useThisOne);
-          linkN.key(key);
-          linkN.y((-2 + currentNode.y())/2);
-          linkN.x(currentNode.x());
-          keyMap.put(linkN.key(),linkN);
+          sourceN = new SourceNode();
+          sourceN.label(useThisOne);
+          sourceN.key(key);
+          sourceN.y(currentNode.y());
+          sourceN.x(-1+currentNode.x());
+          keyMap.put(sourceN.key(),sourceN);
         }
         Node[] a = new Node[2];
-        a[0] = linkN;
+        a[0] = sourceN;
         a[1] = currentNode;
         linkSet.add(a);
       }
@@ -539,36 +550,36 @@ public class BiopaxPathwayConverter extends BioFileConverter
         // but for the key, take ALL components. There seems to be inconsistencies
         // in which is the "starting" components for different organism
         String key = Integer.toString(new String(makeComponentNodeLabel(prevNode.rightComponents,true)+":end").hashCode());
-        LinkingNode linkN = null;
+        DrainNode drainN = null;
         if (keyMap.containsKey(key)) {
           try {
-            linkN = (LinkingNode)keyMap.get(key);
+            drainN = (DrainNode)keyMap.get(key);
           } catch (ClassCastException e) {
             throw new BuildException("The label "+useThisOne+" has the same key as a non-linking node.");
           }
         } else {
-          linkN = new LinkingNode();
-          linkN.label(useThisOne);
-          linkN.key(key);
-          linkN.y((+2 + prevNode.y()));
-          linkN.x(prevNode.x());
-          keyMap.put(linkN.key(),linkN);
+          drainN = new DrainNode();
+          drainN.label(useThisOne);
+          drainN.key(key);
+          drainN.y(prevNode.y());
+          drainN.x(+1 + prevNode.x());
+          keyMap.put(drainN.key(),drainN);
         }
         Node[] a = new Node[2];
         a[0] = prevNode;
-        a[1] = linkN;
+        a[1] = drainN;
         linkSet.add(a);
       }
     }
 
-    // and proceed. We click up the ReactionNode row by 4 from the row of the current ReactionNode
-    Integer nextrowI = new Integer(rowI+4);
-    Integer nextcolumnI = columnI;
+    // and proceed. We click up the ReactionNode column by 4 from the column of the current ReactionNode
+    Integer nextcolumnI = new Integer(columnI+4);
+    Integer nextrowI = rowI;
     if(currentNode != null ) {
       if (currentNode.nextNode.size()>0) {
         for( String nextNodeLabel: currentNode.nextNode) {
           walkLinkingNodes(nextrowI,nextcolumnI,currentNode,(ReactionNode) keyMap.get(nextNodeLabel),linkSet,keyMap);
-          nextcolumnI = new Integer(maxColumn(keyMap)+2);
+          nextrowI = new Integer(maxRow(keyMap)+2);
         }
       } else {
         walkLinkingNodes(nextrowI,nextcolumnI,currentNode,null,linkSet,keyMap);
@@ -603,10 +614,10 @@ public class BiopaxPathwayConverter extends BioFileConverter
           inputN = new InputNode();
           inputN.label(label.toString());
           inputN.key(key);
-          // the input is put on the previous row of the current
-          inputN.y(new Integer(currentNode.y() - 1));
-          // and one column over. EXCEPT for the first row.
-          inputN.x(new Integer(currentNode.x() + 1));
+          // the input is put on the previous column of the current
+          inputN.x(new Integer(currentNode.x() - 1));
+          // and one row over. EXCEPT for the first column.
+          inputN.y(new Integer(currentNode.y() + 1));
           nodeMap.put(inputN.key(),inputN);
         }
         inputN = (InputNode) nodeMap.get(key);
@@ -631,11 +642,11 @@ public class BiopaxPathwayConverter extends BioFileConverter
           outputN = new OutputNode();
           outputN.label(label.toString());
           outputN.key(key);
-          // this output is put on the next row of the previous.
-          outputN.y(new Integer(prevNode.y() + 1));
-          // and one column over. EXCEPT for the last node.
-          //outputN.column(iN.row().equals(0)?new Integer(currentNode.column()):new Integer(currentNode.column() + 1));
+          // this output is put on the next column of the previous.
           outputN.x(new Integer(prevNode.x() + 1));
+          // and one row over. EXCEPT for the last node.
+          //outputN.row(iN.column().equals(0)?new Integer(currentNode.row()):new Integer(currentNode.row() + 1));
+          outputN.y(new Integer(prevNode.y() + 1));
           nodeMap.put(outputN.key(),outputN);
         }
         outputN = (OutputNode) nodeMap.get(key);
@@ -683,7 +694,11 @@ public class BiopaxPathwayConverter extends BioFileConverter
         component.setAttribute("type","output");
       } else if (activeNode instanceof LinkingNode) {
         component.setAttribute("type","link");
-      } else if(activeNode instanceof ReactionNode) {
+      } else if (activeNode instanceof SourceNode) {
+        component.setAttribute("type","source");
+      } else if (activeNode instanceof DrainNode) {
+        component.setAttribute("type","drain");
+      } else if (activeNode instanceof ReactionNode) {
         component.setAttribute("type","reaction");
         if (!loadingJSON) {
           for( String protein: ((ReactionNode)activeNode).proteins ) {
@@ -728,51 +743,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
       Node activeNode = keyMap.get(key);
       if( activeNode.x() != null && activeNode.y() != null) {
         nodeToId.put(key,currentId);
-        if (activeNode instanceof InputNode) {
-          if (nodes.length() > 0 ) nodes.append(",");
-          nodes.append("{\"id\":"+currentId +
-              (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
-              ",\"x\":"+activeNode.x()*pixPerElement +
-              ",\"y\":"+activeNode.y()*pixPerElement +
-              ",\"orient\":\"90\""+
-              ",\"type\":\"input\""+
-              ",\"key\":"+key +
-              "}");
-        } else if (activeNode instanceof OutputNode) {
-          if (nodes.length() > 0 ) nodes.append(",");
-          nodes.append("{\"id\":"+currentId +
-              (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
-              ",\"x\":"+activeNode.x()*pixPerElement +
-              ",\"y\":"+activeNode.y()*pixPerElement +
-              ",\"orient\":\"90\""+
-              ",\"type\":\"output\""+
-              ",\"key\":"+key +
-              "}");
-        } else if (activeNode instanceof LinkingNode) {
-          if (nodes.length() > 0 ) nodes.append(",");
-          nodes.append("{\"id\":"+currentId +
-              (activeNode.label==null?"":",\"label\":\""+activeNode.label+"\"") +
-              ",\"x\":"+activeNode.x()*pixPerElement +
-              ",\"y\":"+activeNode.y()*pixPerElement +
-              ",\"orient\":\"90\""+
-              ",\"type\":\"link\""+
-              ",\"key\":"+key +
-              "}");
-        } else if(activeNode instanceof ReactionNode) {
-          if (nodes.length() > 0 ) nodes.append(",");
-          ReactionNode rn = (ReactionNode)activeNode;
-          nodes.append("{\"id\":"+currentId+
-              (rn.label==null?"":",\"label\":\""+rn.label+"\"")+
-              ",\"tooltip\":\""+activeNode.info()+"\""+
-              ",\"x\":"+activeNode.x()*pixPerElement +
-              ",\"y\":"+activeNode.y()*pixPerElement +
-              ",\"orient\":\"90\""+
-              ",\"type\":\"reaction\""+
-              ",\"key\":"+key +
-              "}");
-        } else {
-          throw new BuildException("What is this node? "+key+" "+activeNode);
-        }
+        if (nodes.length() > 0 ) nodes.append(",");
+        nodes.append(activeNode.toJSON(currentId));
         currentId = currentId + 1;
       } else {
         LOG.warn("There are untraveled reactions in "+pathwayID);
@@ -842,16 +814,19 @@ public class BiopaxPathwayConverter extends BioFileConverter
       store(component);
     }
   }
+  String cleanUp(String a) {
+    return a.replaceAll("\"","&quot;");
+  }
 
   /*
    * Look for the maximum x (so far) of all nodes.
    */
 
-  int maxColumn(TreeMap<String,Node> keyMap) {
+  int maxRow(TreeMap<String,Node> keyMap) {
     int ml = 0;
     for(Node node: keyMap.values()) {
-      if (node.x() != null && node.x().intValue() > ml) {
-        ml = node.x().intValue();
+      if (node.y() != null && node.y().intValue() > ml) {
+        ml = node.y().intValue();
       }
     }
     return ml;
@@ -952,6 +927,16 @@ public class BiopaxPathwayConverter extends BioFileConverter
         return 0;
       }
     }
+    public String toJSON(Integer id) {
+      return "{\"id\":"+id.toString() +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\"") +
+          ",\"x\":"+x()*pixPerElement +
+          ",\"y\":"+y()*pixPerElement +
+          ",\"orient\":\"0\""+
+          ",\"type\":\""+nodeType+"\""+
+          ",\"key\":"+key+
+          "}" ;
+    }
   }
 
   private class ReactionNode extends Node {
@@ -974,6 +959,18 @@ public class BiopaxPathwayConverter extends BioFileConverter
     public TreeSet<String> proteins() { return proteins; }
     public String toString() {
       return "ReactionNode:"+key+", label:"+label+", ec:"+ecs+", next: "+nextNode+", proteins:"+proteins+", components:"+leftComponents+","+rightComponents;
+    }
+    @Override
+    public String toJSON(Integer id) {
+      return "{\"id\":"+id.toString() +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\"")+
+          ",\"tooltip\":\""+info()+"\""+
+          ",\"x\":"+x()*pixPerElement +
+          ",\"y\":"+y()*pixPerElement +
+          ",\"orient\":\"0\""+
+          ",\"type\":\"reaction\""+
+          ",\"key\":"+key +
+          "}";
     }
   }
 
@@ -998,6 +995,16 @@ public class BiopaxPathwayConverter extends BioFileConverter
   private class LinkingNode extends Node {
     public LinkingNode() {
       nodeType = "link";
+    }
+  }
+  private class SourceNode extends Node {
+    public SourceNode() {
+      nodeType = "source";
+    }
+  }
+  private class DrainNode extends Node {
+    public DrainNode() {
+      nodeType = "drain";
     }
   }
   private class SpontaneousNode extends Node {

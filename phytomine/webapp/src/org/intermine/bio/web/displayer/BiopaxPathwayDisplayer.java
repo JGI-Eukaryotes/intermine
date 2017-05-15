@@ -1,10 +1,6 @@
 package org.intermine.bio.web.displayer;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,32 +12,26 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.query.PathQueryExecutor;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
-import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.Organism;
-import org.intermine.model.bio.PathwayInfo;
 import org.intermine.model.bio.Pathway;
-import org.intermine.model.bio.PathwayComponent;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.OrderDirection;
 import org.intermine.pathquery.OuterJoinStatus;
 import org.intermine.pathquery.PathQuery;
-import org.intermine.util.DynamicUtil;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
 import org.intermine.web.logic.results.ReportObject;
 import org.intermine.web.logic.session.SessionMethods;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -53,6 +43,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   Profile profile;
   PathQueryExecutor exec;
   String pathwayName = null;
+  Organism org = null;
 
   protected static final Logger LOG = Logger.getLogger(BiopaxPathwayDisplayer.class);
   /**
@@ -73,7 +64,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     profile = SessionMethods.getProfile(session);
     exec = im.getPathQueryExecutor(profile);
     Pathway pathwayObj = (Pathway)reportObject.getObject();
-    Organism org = pathwayObj.getOrganism();
+    org = pathwayObj.getOrganism();
     Integer protId = org.getProteomeId();
 
     ServletContext servletContext = session.getServletContext();
@@ -121,7 +112,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     try {
       json = getJSONRecord(pathwayObj.getId());
       enzymes = getEnzymes(pathwayObj.getId());
-      genes = getGenes(pathwayObj.getId());
+      genes = getGenes(pathwayObj.getId(),org);
     } catch (ObjectStoreException e) {
       return null;
     }
@@ -273,8 +264,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   }
   private String getJSONRecord(Integer id) throws ObjectStoreException {
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("PathwayJSON.json","PathwayJSON.pathway.pathwayInfo.name");
-    query.addConstraint(Constraints.eq("PathwayJSON.pathway.id",id.toString()));
+    query.addViews("PathwayJSON.json","PathwayJSON.pathwayInfo.name");
+    query.addConstraint(Constraints.eq("PathwayJSON.pathwayInfo.pathways.id",id.toString()));
     ExportResultsIterator result = exec.execute(query);
     String json = null;
     while (result.hasNext()) {
@@ -288,17 +279,19 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   private HashMap<String,HashSet<String>> getEnzymes(Integer id) throws ObjectStoreException {
     HashMap<String,HashSet<String>> enzymes = new HashMap<String,HashSet<String>>();
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("Pathway.components.identifier","Pathway.components.ontologyTerms.identifier");
-    query.addConstraint(Constraints.eq("Pathway.id",id.toString()));
+    query.addViews("PathwayInfo.components.key","PathwayInfo.components.ontologyTerms.identifier");
+    query.addConstraint(Constraints.eq("PathwayInfo.pathways.id",id.toString()));
     return makeHash(query);
   }
 
-  private HashMap<String,TreeMap<String,Integer>> getGenes(Integer id) throws ObjectStoreException {
+  private HashMap<String,TreeMap<String,Integer>> getGenes(Integer id,Organism org) throws ObjectStoreException {
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("Pathway.components.identifier",
-        "Pathway.components.proteins.genes.primaryIdentifier",
-        "Pathway.components.proteins.genes.id");
-    query.addConstraint(Constraints.eq("Pathway.id",id.toString()));
+    query.addViews("PathwayInfo.components.key",
+        "PathwayInfo.components.proteins.genes.primaryIdentifier",
+        "PathwayInfo.components.proteins.genes.id");
+    query.addConstraint(Constraints.eq("PathwayInfo.pathways.id",id.toString()));
+    query.addConstraint(Constraints.eq("PathwayInfo.components.proteins.genes.organism.proteomeId",
+        Integer.toString(org.getProteomeId())));
     return makeHashPair(query);
   }
 
@@ -335,20 +328,21 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     // a pathway with this id.
     // this is organized in order of group (first), then gene
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("Pathway.components.proteins.genes.cufflinksscores.experiment.experimentGroup",
-        "Pathway.components.proteins.genes.primaryIdentifier",
-        "Pathway.components.ontologyTerms.identifier",
-        "Pathway.components.proteins.genes.cufflinksscores.experiment.name",
-        "Pathway.components.proteins.genes.cufflinksscores.fpkm",
-        "Pathway.components.proteins.genes.cufflinksscores.libraryExpressionLevel",
-        "Pathway.components.proteins.genes.cufflinksscores.locusExpressionLevel"
+    query.addViews("PathwayInfo.components.proteins.genes.rnaSeqExpressions.experiment.experimentGroup",
+        "PathwayInfo.components.proteins.genes.primaryIdentifier",
+        "PathwayInfo.components.ontologyTerms.identifier",
+        "PathwayInfo.components.proteins.genes.rnaSeqExpressions.experiment.name",
+        "PathwayInfo.components.proteins.genes.rnaSeqExpressions.abundance",
+        "PathwayInfo.components.proteins.genes.rnaSeqExpressions.libraryExpressionLevel",
+        "PathwayInfo.components.proteins.genes.rnaSeqExpressions.locusExpressionLevel"
         );
-    query.addConstraint(Constraints.eq("Pathway.id",id.toString()));
+    query.addConstraint(Constraints.eq("PathwayInfo.pathways.id",id.toString()));
+    query.addConstraint(Constraints.eq("PathwayInfo.components.proteins.genes.rnaSeqExpressions.method","cufflinks"));
     // probably not necessary to set the order direction...
-    query.addOrderBy("Pathway.components.proteins.genes.cufflinksscores.experiment.experimentGroup", OrderDirection.ASC);
-    query.addOrderBy("Pathway.components.proteins.genes.primaryIdentifier", OrderDirection.ASC);
+    query.addOrderBy("PathwayInfo.components.proteins.genes.rnaSeqExpressions.experiment.experimentGroup", OrderDirection.ASC);
+    query.addOrderBy("PathwayInfo.components.proteins.genes.primaryIdentifier", OrderDirection.ASC);
     // some reactions have no EC's
-    query.setOuterJoinStatus("Pathway.components.ontologyTerms", OuterJoinStatus.OUTER);
+    query.setOuterJoinStatus("PathwayInfo.components.ontologyTerms", OuterJoinStatus.OUTER);
     ExportResultsIterator result = exec.execute(query);
     JSONArray jsonArr = new JSONArray();
     String currentGene = null;

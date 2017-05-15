@@ -267,8 +267,8 @@
 
   <class className="org.intermine.model.bio.Homolog">
     <fields>
-      <fieldconfig fieldExpr="gene1.primaryIdentifier"/>
-      <fieldconfig fieldExpr="gene2.primaryIdentifier"/>
+      <fieldconfig fieldExpr="gene.primaryIdentifier"/>
+      <fieldconfig fieldExpr="ortholog_gene.primaryIdentifier"/>
     </fields>
   </class>
 
@@ -445,7 +445,7 @@
 
     <reportdisplayer javaClass="org.intermine.bio.web.displayer.CufflinksScoreDisplayer"
                      jspName="model/cufflinksScoreDisplayer.jsp"
-                     replacesFields="cufflinksscores"
+                     replacesFields="RNASeqExpression"
                      placement="Expression"
                      types="Gene,Transcript,MRNA" />
 
@@ -526,16 +526,16 @@
                                        proteinDomains.name"
                                  externalLink="http://www.ebi.ac.uk/interpro/IEntry?ac="/>
 
-      <bagtabledisplayer id="orthologs" title="Orthologs" pathStrings="Gene.homolog.gene2.organism"
+      <bagtabledisplayer id="orthologs" title="Orthologs" pathStrings="Gene.homolog.ortholog_gene.organism"
                          description="Counts of genes in list with orthologs."
                          displayFields="name"
                          exportField="primaryIdentifier"
                          typeClass="Gene"
                          columnTitle="Genes"
                          views="primaryIdentifier, symbol, organism.shortName,
-                                homolog.gene2.primaryIdentifier,
-                                homolog.gene2.symbol,
-                                homolog.gene2.organism.shortName,
+                                homolog.ortholog_gene.primaryIdentifier,
+                                homolog.ortholog_gene.symbol,
+                                homolog.ortholog_gene.organism.shortName,
                                 homolog.relationship" />
 
       <!--enrichmentwidgetdisplayer id="pathway_enrichment"

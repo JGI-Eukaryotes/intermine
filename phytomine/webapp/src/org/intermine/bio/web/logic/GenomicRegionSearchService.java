@@ -70,7 +70,6 @@ import org.intermine.pathquery.PathQuery;
 import org.intermine.web.logic.WebUtil;
 import org.intermine.web.logic.config.WebConfig;
 import org.intermine.web.logic.session.SessionMethods;
-import org.intermine.bio.web.logic.OrganismGenomeBuildLookup;
 import org.json.JSONObject;
 
 /**
@@ -545,7 +544,7 @@ public class GenomicRegionSearchService
           "extendedRegionSize can't be a negative value: "
               + extendedRegionSize);
     } else {
-      grsc.setExtededRegionSize(Integer.parseInt(extendedRegionSize));
+      grsc.setExtendedRegionSize(Integer.parseInt(extendedRegionSize));
     }
 
     selectionInfo.add("<b>Selected organism: </b><i>" + organism + "</i>");
@@ -783,7 +782,7 @@ public class GenomicRegionSearchService
         grsc.getGenomicRegionList(),
         grsc.getExtendedRegionSize(),
         grsc.getOrgName(),
-        grsc.getFeatureTypes());
+        grsc.getFeatureTypes(),false);
   }
 
   /**

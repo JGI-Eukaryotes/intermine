@@ -57,7 +57,7 @@ import org.intermine.web.logic.session.SessionMethods;
 import org.intermine.xml.full.Item;
 import org.jfree.util.Log;
 import org.json.JSONObject;
-import org.intermine.model.bio.CufflinksScore;
+import org.intermine.model.bio.RNASeqExpression;
 
 /**
  * Class that generates heatMap data for a list of genes or exons.

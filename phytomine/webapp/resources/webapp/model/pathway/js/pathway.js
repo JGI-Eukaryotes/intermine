@@ -506,13 +506,13 @@ var loadPathwayDiagram = function(container,json) {
     // the line goes to.
     if ( d.type === 'link' || d.type == 'reaction') {
       // we'll keep track of both the original (x,y) and current (x,y)
-      parentGroup.each(function(e) { e.x = 5*d.x; e.y = 15*d.y ; e.baseX = e.x; e.baseY = e.y} );
+      parentGroup.each(function(e) { e.x = d.x; e.y = d.y ; e.baseX = e.x; e.baseY = e.y} );
     }
 
     // each node has a rectangle and text. These will be their own group one level lower.
     var nodeGroup = parentGroup.selectAll("g")
                                .filter(function(dd) { return dd.id === d.id; })
-                               .data([{id:d.id,x:5.*d.x,y:15.*d.y}])
+                               .data([{id:d.id,x:d.x,y:d.y}])
                                .enter()
                                .append("g")
                                .attr("id", d.id);
@@ -526,8 +526,8 @@ var loadPathwayDiagram = function(container,json) {
                .attr("class","rect no-display")
                .attr("height",10)
                .attr("width",10)
-               .attr("x", 5*d.x)
-               .attr("y", 15*d.y);
+               .attr("x", d.x)
+               .attr("y", d.y);
 
     // and the text holder, with a tooltip that will show up if it's in the data
     nodeGroup.selectAll("text")
@@ -538,17 +538,17 @@ var loadPathwayDiagram = function(container,json) {
                .enter().append("text")
                .attr("x", function(d){
                  if (d.type === "reaction" || d.type === "link") {
-                   return 5 * d.xCoor;
+                   return d.xCoor + 5;
                  }
-                 return 5*d.xCoor + 10;
+                 return d.xCoor + 10;
                  })
                .attr("y", function(d){
                  if (d.labelHeight === 1) {
-                   return 15 * d.yCoor + 8;
+                   return d.yCoor + 8;
                  } else if (d.type === "reaction" && ( d.genes && d.ecs && d.genes.length + d.ecs.length > 3)) {
-                   return 15 * (d.yCoor - 1.5);
+                   return d.yCoor - 20
                  }
-                 return 15 * d.yCoor;
+                 return d.yCoor;
                  })
                .attr("text-anchor", function(d){
                  if (d.type === "link") {
@@ -644,7 +644,7 @@ var loadPathwayDiagram = function(container,json) {
 
   function inputArcFunction(f) {
     // how to draw an arc for an input compound
-    var sweep = f.orient==='horiz'?1:0;
+    var sweep = f.orient==='0'?1:0;
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+"," +
               Math.abs(f.y1-f.y2)+" 0 0 "+sweep+" "+
@@ -654,7 +654,7 @@ var loadPathwayDiagram = function(container,json) {
 
   function outputArcFunction(f) {
     // how to draw an arc for an output compound
-    var sweep = f.orient==='horiz'?1:0;
+    var sweep = f.orient==='0'?1:0;
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+","+
               Math.abs(f.y1-f.y2)+" 0 0 "+sweep+" "+
@@ -682,7 +682,7 @@ var loadPathwayDiagram = function(container,json) {
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
                                          "y2":parseInt(target.attr("y"))+5,
-                                         "orient":d.orient || 'vert'}
+                                         "orient":d.orient}
                                          ],
                                          function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
@@ -703,7 +703,7 @@ var loadPathwayDiagram = function(container,json) {
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
                                          "y2":parseInt(target.attr("y"))+5,
-                                         "orient":d.orient || 'vert'}
+                                         "orient":d.orient}
                                         ],
                                          function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
@@ -724,7 +724,7 @@ var loadPathwayDiagram = function(container,json) {
                        linkData.push( {"id":parents[d.source]+'->'+parents[d.target],
                                         "source":a,
                                         "target":b,
-                                        "orient": d.orient||'vert' } );
+                                        "orient": d.orient} );
                                         });
                       });
     }
@@ -1293,13 +1293,13 @@ var loadExpressionTable = function(initialContainer, rawJson) {
       }
 
       var menu = [];
-      geneLinks[geneName].forEach( function(f) {
+      /*geneLinks[geneName].forEach( function(f) {
         if (/PhytoWeb/.test(f.label)) f.label = "Phytozome Gene Report";
         menu.push({title: f.label,
                    action: function() { doLinkout(f.url)}});
       });
       menu.push({ title: "Plot " + geneName,
-                  action: function(elem, d, i) { makeBarplot(d, gene, colorScale) }});
+                  action: function(elem, d, i) { makeBarplot(d, gene, colorScale) }}); */
 
 
       var tr = body.append("tr");

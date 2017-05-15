@@ -729,23 +729,6 @@
     <property name="assemblyVersion" value="v2" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.bicolor-313" type="phytozome-db">
-    <property name="source.db.name" value="phytozome" />
-    <property name="commonName" value="cereal grass" />
-    <property name="genus" value="Sorghum" />
-    <property name="name" value="Sorghum bicolor" />
-    <property name="species" value="bicolor" />
-    <property name="assemblyDbxrefId" value="9520318" />
-    <property name="proteomeId" value="313" />
-    <property name="taxonId" value="4558" />
-    <property name="annotationVersion" value="v3.1" />
-    <property name="dataSourceName" value="phytozome-S.bicolor" />
-    <property name="shortName" value="S. bicolor" />
-    <property name="version" value="current" />
-    <property name="annotationDbxrefId" value="9419677" />
-    <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
-  </source>
   <source name="phytozome-chado-B.distachyon-314" type="phytozome-db">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="purple false brome" />
@@ -1220,5 +1203,56 @@
     <property name="version" value="early-release" />
     <property name="annotationDbxrefId" value="14077761" />
     <property name="assemblyVersion" value="v0.5" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-G.hirsutum-458" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="upland cotton" />
+    <property name="genus" value="Gossypium" />
+    <property name="name" value="Gossypium hirsutum" />
+    <property name="species" value="hirsutum" />
+    <property name="assemblyDbxrefId" value="14324325" />
+    <property name="proteomeId" value="458" />
+    <property name="taxonId" value="3635" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-G.hirsutum" />
+    <property name="shortName" value="G. hirsutum early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14324327" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-A.hypochondriacus-459" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="grain amaranth" />
+    <property name="genus" value="Amaranthus" />
+    <property name="name" value="Amaranthus hypochondriacus" />
+    <property name="species" value="hypochondriacus" />
+    <property name="assemblyDbxrefId" value="14414150" />
+    <property name="proteomeId" value="459" />
+    <property name="taxonId" value="28502" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-A.hypochondriacus" />
+    <property name="shortName" value="A. hypochondriacus early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14414152" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-C.zofingiensis-461" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Chromochloris zofingiensis" />
+    <property name="genus" value="Chromochloris" />
+    <property name="name" value="Chromochloris zofingiensis" />
+    <property name="species" value="zofingiensis" />
+    <property name="assemblyDbxrefId" value="14485433" />
+    <property name="proteomeId" value="461" />
+    <property name="taxonId" value="31302" />
+    <property name="annotationVersion" value="v5.2.3" />
+    <property name="dataSourceName" value="phytozome-C.zofingiensis" />
+    <property name="shortName" value="C. zofingiensis early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14485435" />
+    <property name="assemblyVersion" value="v5" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>

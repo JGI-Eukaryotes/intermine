@@ -1,5 +1,7 @@
 package org.intermine.bio.dataconversion;
 
+import java.io.File;
+
 /*
  * Copyright (C) 2002-2011 FlyMine
  *
@@ -11,23 +13,20 @@ package org.intermine.bio.dataconversion;
  */
 
 import java.io.Reader;
-import java.io.File;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
-import org.apache.commons.lang.StringUtils;
 import org.intermine.dataconversion.ItemWriter;
-import org.intermine.metadata.Model;           
+import org.intermine.metadata.Model;
+import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.util.FormattedTextParser;
 import org.intermine.xml.full.Item;
 import org.intermine.xml.full.Reference;
-import org.intermine.objectstore.ObjectStoreException;
-import org.intermine.bio.dataconversion.BioFileConverter;
-import org.intermine.util.FormattedTextParser;
 
 
 /**
@@ -159,7 +158,7 @@ public class CufflinksConverter extends BioFileConverter
             if (libraryRating.containsKey(geneName) && libraryRating.get(geneName).containsKey(expName) ){
               theScore.getValue().setAttribute("libraryExpressionLevel",libraryRating.get(geneName).get(expName));
             }
-            if(Double.parseDouble(theScore.getValue().getAttribute("fpkm").getValue()) == 0.) {
+            if(Double.parseDouble(theScore.getValue().getAttribute("abundance").getValue()) == 0.) {
               theScore.getValue().setAttribute("locusExpressionLevel","Not Expressed");
               theScore.getValue().setAttribute("libraryExpressionLevel","Not Expressed");
             }
@@ -280,13 +279,14 @@ public class CufflinksConverter extends BioFileConverter
                 scoreMap.get(bioentityType).put(primaryId,new HashMap<String,Item>());
               }
               if(!scoreMap.get(bioentityType).get(primaryId).containsKey(experiment)){
-                Item score = createItem("CufflinksScore");
+                Item score = createItem("RNASeqExpression");
                 scoreMap.get(bioentityType).get(primaryId).put(experiment,score);
               }
               Item score = scoreMap.get(bioentityType).get(primaryId).get(experiment);
               if( fileType.equals("FPKM") ) {
+                score.setAttribute("method","cufflinks");
                 try {
-                  if (!fields[i  ].trim().isEmpty() ) score.setAttribute("fpkm",fields[i].trim());
+                  if (!fields[i  ].trim().isEmpty() ) score.setAttribute("abundance",fields[i].trim());
                   if (!fields[i+1].trim().isEmpty() ) score.setAttribute("conflo",fields[i+1].trim());
                   if (!fields[i+2].trim().isEmpty() ) score.setAttribute("confhi",fields[i+2].trim());
                   if (!fields[i+3].trim().isEmpty() ) score.setAttribute("status",fields[i+3].trim());
@@ -297,6 +297,7 @@ public class CufflinksConverter extends BioFileConverter
                 score.setReference("bioentity", bioentityMap.get(bioentityType).get(primaryId));
                 score.setReference("experiment", experimentMap.get(experimentColGroupMap.get(colGroup)));
               } else {
+                score.setAttribute("method","cufflinks");
                 try {
                   if (!fields[i  ].trim().isEmpty() ) score.setAttribute("count",fields[i].trim());
                   if (!fields[i+1].trim().isEmpty() ) score.setAttribute("countvariance",fields[i+1].trim());

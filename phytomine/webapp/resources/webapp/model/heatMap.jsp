@@ -201,14 +201,14 @@
                                                    var conditionConstraint = condition.map(function(a)
                                                                   { return "<value>"+a+"</value>" }).join("");
                                                    if ("${ExpressionType}" == "gene") {
-                                                       var query = '<query name="" model="genomic" view="Gene.primaryIdentifier Gene.organism.shortName Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup Gene.cufflinksscores.fpkm Gene.cufflinksscores.conflo Gene.cufflinksscores.confhi" sortOrder="Gene.primaryIdentifier asc" constraintLogic="A and B">'+
+                                                       var query = '<query name="" model="genomic" view="Gene.primaryIdentifier Gene.organism.shortName Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup Gene.cufflinksscores.abundance Gene.cufflinksscores.conflo Gene.cufflinksscores.confhi" sortOrder="Gene.primaryIdentifier asc" constraintLogic="A and B">'+
     '<constraint path="Gene.primaryIdentifier" code="A" op="ONE OF">' + featureConstraint+ '</constraint>'+
     '<constraint path="Gene.cufflinksscores.experiment.name" code="B" op="ONE OF">'+conditionConstraint+'</constraint></query>';
                                                        var encodedQuery = encodeURIComponent(query);
                                                        encodedQuery = encodedQuery.replace("%20", "+");
                                                        window.open("/${WEB_PROPERTIES['webapp.path']}/loadQuery.do?skipBuilder=true&query=" + encodedQuery  + "&trail=|query&method=xml");
                                                    } else if ("${ExpressionType}" == "mrna") {
-                                                       var query = '<query name="" model="genomic" view="MRNA.primaryIdentifier MRNA.organism.shortName MRNA.cufflinksscores.experiment.name MRNA.cufflinksscores.experiment.experimentGroup MRNA.cufflinksscores.fpkm MRNA.cufflinksscores.conflo MRNA.cufflinksscores.confhi" sortOrder="MRNA.primaryIdentifier asc" constraintLogic="A and B">'+
+                                                       var query = '<query name="" model="genomic" view="MRNA.primaryIdentifier MRNA.organism.shortName MRNA.cufflinksscores.experiment.name MRNA.cufflinksscores.experiment.experimentGroup MRNA.cufflinksscores.abundance MRNA.cufflinksscores.conflo MRNA.cufflinksscores.confhi" sortOrder="MRNA.primaryIdentifier asc" constraintLogic="A and B">'+
     '<constraint path="MRNA.primaryIdentifier" code="A" op="ONE OF">'+featureConstraint+'</constraint>'+
     '<constraint path="Gene.cufflinksscores.experiment.name" code="B" op="ONE OF">'+conditionConstraint+'</constraint></query>';
                                                        var encodedQuery = encodeURIComponent(query);
