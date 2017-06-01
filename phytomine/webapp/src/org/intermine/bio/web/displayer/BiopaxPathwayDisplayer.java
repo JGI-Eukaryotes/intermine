@@ -56,7 +56,6 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public void display(HttpServletRequest request, ReportObject reportObject) {
     HttpSession session = request.getSession();
     final InterMineAPI im = SessionMethods.getInterMineAPI(session);
@@ -83,7 +82,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
 
     try {
       // now get the corresponding expression data
-      JSONObject jE = makeExpressionJSON(pathwayObj.getId());
+      JSONObject jE = makeExpressionJSON(pathwayObj.getId(),org);
       request.setAttribute("jsonExpression",jE.toString());
       // if this throws an exception, we'll still display the pathway
     } catch (ObjectStoreException e) {
@@ -91,7 +90,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     } catch (JSONException e) {
       LOG.warn("Caught a json exception when constructing expression: "+e.getMessage());
     }
-    
+
 
     try {
       JSONArray jOo = makeOtherOrgJSON(pathwayObj,webProperties,protId);
@@ -133,30 +132,27 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
 
       int maxX = 0;
       int maxY = 0;
-      // used to calculate the layout. Height is in ex's. Width is in em's
-      HashMap<Integer,Integer> maxWidth = new HashMap<Integer,Integer>();
-      HashMap<Integer,Integer> maxHeight = new HashMap<Integer,Integer>();
       for(int i=0; i<jNodes.length(); i++) {
         JSONObject node = jNodes.getJSONObject(i);
         Integer x = new Integer(node.getInt("x"));
         maxX = (x>maxX)?x:maxX;
         Integer y = new Integer(node.getInt("y"));
         maxY = (y>maxY)?y:maxY;
-        String label = node.getString("label");
+        String key = node.getString("key");
 
         // add genes and enzymes if this is a reaction node
         if (node.getString("type").equals("reaction")) {
           JSONArray ecList = new JSONArray();
-          if ( enzymes.containsKey(label) ) {
-            for( String enzyme: enzymes.get(label)) {
+          if ( enzymes.containsKey(key) ) {
+            for( String enzyme: enzymes.get(key)) {
               ecList.put(enzyme);
             }
           }
           node.put("ecs",ecList);
           JSONArray geneList = new JSONArray();
-          if ( genes.containsKey(label) ) {
+          if ( genes.containsKey(key) ) {
             List<String> gL = new ArrayList<String>();
-            gL.addAll(genes.get(label).keySet());
+            gL.addAll(genes.get(key).keySet());
             Collections.sort(gL);
             for( String gene: gL ) {
               JSONObject jj = new JSONObject();
@@ -165,62 +161,9 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
             }
           }
           node.put("genes",geneList);
-          node.put("label",label);
         }
+      }
 
-        Integer width = getWidth(label);
-        Integer height = getHeight(label);
-        if (!maxWidth.containsKey(x) || maxWidth.get(x) < width) {
-          maxWidth.put(x,width);
-        }
-        if (!maxHeight.containsKey(y) || maxHeight.get(y) < height) {
-          maxHeight.put(y,height);
-        }
-      }
-      /*
-       * this block is commented out. We're counting on getting the x,y locations in the db directly.
-      // now recompute x and y. For even columns, (0,2,4...) x is the
-      // sum of widths <= column number. For odd columns, x is the sum
-      // of widths < column number
-
-      // a map from row/col to placement
-      HashMap<Integer,Integer> xPlace = new HashMap<Integer,Integer>();
-      int xPlacement = 0;
-      for(int i = 0 ; i <= maxX; i+=2) {
-        if (maxWidth.containsKey(Integer.valueOf(i))) {
-          xPlacement += maxWidth.get(Integer.valueOf(i));
-        } else {
-          // leave a gap?
-          xPlacement += 5;
-        }
-        xPlace.put(Integer.valueOf(i),xPlacement);
-        // another gap
-        xPlacement += 5;
-        xPlace.put(Integer.valueOf(i+1),xPlacement);
-        if (maxWidth.containsKey(Integer.valueOf(i+1))) {
-          xPlacement += maxWidth.get(Integer.valueOf(i+1));
-        } else {
-          // leave a gap?
-          xPlacement += 5;
-        }
-      }
-      // repeat for y position
-      int yPlacement = 0;
-      HashMap<Integer,Integer> yPlace = new HashMap<Integer,Integer>();
-      for(int i = 0 ; i <= maxY; i++) {
-        if (maxHeight.containsKey(Integer.valueOf(i))) {
-          yPlacement += maxHeight.get(Integer.valueOf(i));
-        } else {
-          // leave a gap?
-          yPlacement += 2;
-        }
-        yPlace.put(Integer.valueOf(i),yPlacement);
-      }
-      for(int i=0; i<jNodes.length(); i++) {
-        JSONObject node = jNodes.getJSONObject(i);
-        node.put("x",xPlace.get(Integer.valueOf(node.getInt("x"))));
-        node.put("y",yPlace.get(Integer.valueOf(node.getInt("y"))));
-      }*/
       addUrlJSON(jObj,webProperties,protId,geneIds);
       return jObj;
     } catch (JSONException e) {
@@ -230,38 +173,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     }
   }
 
-  private Integer getHeight(String l) {
-    // the height of a label. Split on <br>'s and count
-    return new Integer(l.split("<br>").length);
-  }
 
-  private Integer getWidth(String l) {
-    // the width of a label.
-    // first, split on the lines
-    String[] lines = l.split("<br>");
-    if (lines.length == 1) {
-      int width = 0;
-      // remove all html tags and &<html>; characters and sum of the # of characters
-      // this over-estimates the width of html escapes (i.e. &alpha;)
-      // and UTF-8, but, meh.
-      for( String bit:  lines[0].split("<[^>]*>") ) {
-        for( String subBit: bit.split("&[^;]+")) {
-          // this splits on "&<everything up to the ;>". Since I'm leaving
-          // the ; there, the number of character is correct
-          width += subBit.length();
-        }
-      }
-      return new Integer(width);
-    } else {
-      // multiple lines. Look at each and return the longest
-      Integer width = new Integer(0);
-      for(String line: lines ) {
-        Integer newWidth = getWidth(line);
-        width = (newWidth > width)?newWidth:width;
-      }
-      return width;
-    }
-  }
   private String getJSONRecord(Integer id) throws ObjectStoreException {
     PathQuery query = new PathQuery(im.getModel());
     query.addViews("PathwayJSON.json","PathwayJSON.pathwayInfo.name");
@@ -277,7 +189,6 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
   }
 
   private HashMap<String,HashSet<String>> getEnzymes(Integer id) throws ObjectStoreException {
-    HashMap<String,HashSet<String>> enzymes = new HashMap<String,HashSet<String>>();
     PathQuery query = new PathQuery(im.getModel());
     query.addViews("PathwayInfo.components.key","PathwayInfo.components.ontologyTerms.identifier");
     query.addConstraint(Constraints.eq("PathwayInfo.pathways.id",id.toString()));
@@ -290,7 +201,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         "PathwayInfo.components.proteins.genes.primaryIdentifier",
         "PathwayInfo.components.proteins.genes.id");
     query.addConstraint(Constraints.eq("PathwayInfo.pathways.id",id.toString()));
-    query.addConstraint(Constraints.eq("PathwayInfo.components.proteins.genes.organism.proteomeId",
+    query.addConstraint(Constraints.eq("PathwayInfo.components.proteins.organism.proteomeId",
         Integer.toString(org.getProteomeId())));
     return makeHashPair(query);
   }
@@ -322,8 +233,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     }
     return map;
   }
-  
-  private JSONObject makeExpressionJSON(Integer id) throws ObjectStoreException, JSONException  {
+
+  private JSONObject makeExpressionJSON(Integer id,Organism org) throws ObjectStoreException, JSONException  {
     // query for the genes and fpkm's associated with the proteins in
     // a pathway with this id.
     // this is organized in order of group (first), then gene
@@ -338,6 +249,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
         );
     query.addConstraint(Constraints.eq("PathwayInfo.pathways.id",id.toString()));
     query.addConstraint(Constraints.eq("PathwayInfo.components.proteins.genes.rnaSeqExpressions.method","cufflinks"));
+    query.addConstraint(Constraints.eq("PathwayInfo.components.proteins.organism.proteomeId",
+        Integer.toString(org.getProteomeId())));
     // probably not necessary to set the order direction...
     query.addOrderBy("PathwayInfo.components.proteins.genes.rnaSeqExpressions.experiment.experimentGroup", OrderDirection.ASC);
     query.addOrderBy("PathwayInfo.components.proteins.genes.primaryIdentifier", OrderDirection.ASC);
@@ -449,10 +362,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
 
   private void addUrlJSON(JSONObject jE,Properties p,Integer orgId,TreeMap<String,Integer> genes) throws ObjectStoreException, JSONException {
 
-    //parse our beautiful json for the identifiers.
-
-    JSONArray jsonArr = new JSONArray();
-    // the data
+    //parse our beautiful json for the identifiers and add link URLs.
+    // the node data
     JSONArray jData = jE.getJSONArray("nodes");
 
     // hack
@@ -492,7 +403,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
 
   private JSONArray makeOtherOrgJSON(Pathway pathway,Properties p,Integer id) throws ObjectStoreException, JSONException  {
     String pMTem = p.getProperty("webapp.path");
-    
+
     PathQuery query = new PathQuery(im.getModel());
     query.addViews("Pathway.id",
         "Pathway.organism.shortName"
@@ -500,7 +411,7 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     query.addConstraint(Constraints.eq("Pathway.pathwayInfo.id",pathway.getPathwayInfo().getId().toString()));
     query.addConstraint(Constraints.neq("Pathway.organism.id",pathway.getOrganism().getId().toString()));
     ExportResultsIterator result = exec.execute(query);
-    
+
     JSONArray jLinks = new JSONArray();
     while (result.hasNext()) {
       List<ResultElement> row = result.next();

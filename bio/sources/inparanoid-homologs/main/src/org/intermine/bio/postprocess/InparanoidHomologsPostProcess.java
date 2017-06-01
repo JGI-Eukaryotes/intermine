@@ -3,45 +3,28 @@
  */
 package org.intermine.bio.postprocess;
 
-import java.io.IOException;
-import java.io.PipedReader;
-import java.io.PipedWriter;
-import java.io.Reader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.intermine.bio.util.Constants;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.model.bio.Gene;
 import org.intermine.model.bio.Homolog;
 import org.intermine.model.bio.Organism;
-import org.intermine.model.bio.ProteinFamily;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.intermine.ObjectStoreInterMineImpl;
-import org.intermine.objectstore.intermine.ObjectStoreWriterInterMineImpl;
-import org.intermine.metadata.ConstraintOp;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryField;
 import org.intermine.objectstore.query.QueryObjectReference;
-import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
-import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.postprocess.PostProcessor;
-import org.intermine.sql.Database;
-import org.intermine.sql.DatabaseFactory;
 
 /**
  * @author jcarlson
@@ -128,7 +111,7 @@ public class InparanoidHomologsPostProcess extends PostProcessor {
       osw.store(h);
     }
     for(Homolog h: organismABSet ) {
-      if (shortNameA.equals(h.getOrganism1().getShortName())) {
+      if (shortNameA.equals(h.getOrganism().getShortName())) {
         h.setRelationship(category(organismABSet.size(),organismBASet.size()));
       } else {
         h.setRelationship(category(organismBASet.size(),organismABSet.size()));
@@ -136,7 +119,7 @@ public class InparanoidHomologsPostProcess extends PostProcessor {
       osw.store(h);
     }    
     for(Homolog h: organismBASet ) {    
-      if (shortNameA.equals(h.getOrganism1().getShortName())) {
+      if (shortNameA.equals(h.getOrganism().getShortName())) {
         h.setRelationship(category(organismABSet.size(),organismBASet.size()));
       } else {
         h.setRelationship(category(organismBASet.size(),organismABSet.size()));
@@ -199,13 +182,13 @@ public class InparanoidHomologsPostProcess extends PostProcessor {
       q.addToOrderBy(qfHomologGroupName);
 
       ConstraintSet cs = new ConstraintSet(ConstraintOp.AND);
-      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "organism1"),
+      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "organism"),
           ConstraintOp.CONTAINS, qcOrganism1));
-      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "organism2"),
+      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "ortholog_organism"),
           ConstraintOp.CONTAINS, qcOrganism2));
-      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "gene1"),
+      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "gene"),
           ConstraintOp.CONTAINS, qcGene1));
-      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "gene2"),
+      cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qcHomolog, "ortholog_gene"),
           ConstraintOp.CONTAINS, qcGene2));
 
       q.setConstraint(cs);

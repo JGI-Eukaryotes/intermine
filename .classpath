@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="bio/postprocess/main/src"/>
+	<classpathentry kind="src" path="bio/sources/differential-expression/main/src"/>
 	<classpathentry kind="src" path="phytomine/dbmodel/build/gen/src"/>
 	<classpathentry kind="src" path="intermine/integrate/model/fulldata/build/gen/src"/>
 	<classpathentry kind="src" path="bio/sources/e2p2-enzymes/main/src"/>

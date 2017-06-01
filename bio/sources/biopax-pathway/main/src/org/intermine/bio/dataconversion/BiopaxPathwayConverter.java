@@ -64,7 +64,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
   public enum ReactantType { NOT_SET, LINK, INPUT, OUTPUT }
 
   // number of pixels between elements in the JSON in the x and y direction.
-  private static int pixPerElement = 50;
+  private static int pixPerElement = 75;
+  private static int pixLabelOffset = 10;
 
   protected static final Logger LOG =
       Logger.getLogger(BiopaxPathwayConverter.class);
@@ -448,21 +449,32 @@ public class BiopaxPathwayConverter extends BioFileConverter
         currentNode.leftComponents.put(label,ReactantType.LINK);
         prevNode.rightComponents.put(label,ReactantType.LINK);
         // try to reuse linking nodes.
+        // if we find that this link has been used before, either leading into the current node
+        // or out of the previous node, we'll use that node
         LinkingNode linkN;
-        String key = Integer.toString(new String(prevNode.label() + ":" + currentNode.label()).hashCode());
-        if (keyMap.containsKey(key) ) {
+        String key1 = Integer.toString(new String(label + ":" + currentNode.label()).hashCode());
+        String key2 = Integer.toString(new String(prevNode.label() + ":" + label).hashCode());
+        if (keyMap.containsKey(key1) ) {
           try {
-            linkN = (LinkingNode)keyMap.get(key);
+            linkN = (LinkingNode)keyMap.get(key1);
           } catch (ClassCastException e) {
-            throw new BuildException("The key "+key+" has the same label as a non-linking node.");
+            throw new BuildException("The key "+key2+" has the same label as a non-linking node.");
           }
+        } else if (keyMap.containsKey(key2) ) {
+          try {
+            linkN = (LinkingNode)keyMap.get(key2);
+          } catch (ClassCastException e) {
+            throw new BuildException("The key "+key2+" has the same label as a non-linking node.");
+          }
+        
         } else {
           linkN = new LinkingNode();;
           linkN.label(label);
-          linkN.key(key);
+          linkN.key(key1);
           linkN.y((prevNode.y() + currentNode.y())/2);
           linkN.x((prevNode.x() + currentNode.x())/2);
-          keyMap.put(linkN.key(),linkN);
+          keyMap.put(key1,linkN);
+          keyMap.put(key2,linkN);
         }
         // add both links
         // From the link node to the current node.
@@ -819,7 +831,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
   }
 
   /*
-   * Look for the maximum x (so far) of all nodes.
+   * Look for the maximum y (so far) of all nodes.
    */
 
   int maxRow(TreeMap<String,Node> keyMap) {
@@ -929,7 +941,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     }
     public String toJSON(Integer id) {
       return "{\"id\":"+id.toString() +
-          (label==null?"":",\"label\":\""+cleanUp(label)+"\"") +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement)+",\"labelY\":"+(y()*pixPerElement-pixLabelOffset)) +
           ",\"x\":"+x()*pixPerElement +
           ",\"y\":"+y()*pixPerElement +
           ",\"orient\":\"0\""+
@@ -963,7 +975,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     @Override
     public String toJSON(Integer id) {
       return "{\"id\":"+id.toString() +
-          (label==null?"":",\"label\":\""+cleanUp(label)+"\"")+
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement)+",\"labelY\":"+(y()*pixPerElement-pixLabelOffset)) +
           ",\"tooltip\":\""+info()+"\""+
           ",\"x\":"+x()*pixPerElement +
           ",\"y\":"+y()*pixPerElement +
@@ -973,8 +985,23 @@ public class BiopaxPathwayConverter extends BioFileConverter
           "}";
     }
   }
-
-  private class InputNode extends Node {
+  
+  private class IONode extends Node {
+    public TreeSet<String> reactions = new TreeSet<String>();
+    // for the input/output nodes, default label is below
+    @Override
+    public String toJSON(Integer id) {
+      return "{\"id\":"+id.toString() +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement)+",\"labelY\":"+(y()*pixPerElement+pixLabelOffset)) +
+          ",\"x\":"+x()*pixPerElement +
+          ",\"y\":"+y()*pixPerElement +
+          ",\"orient\":\"0\""+
+          ",\"type\":\""+nodeType+"\""+
+          ",\"key\":"+key +
+          "}";
+    }
+  }
+  private class InputNode extends IONode {
     public TreeSet<String> reactions = new TreeSet<String>();
     public InputNode() {
       nodeType = "input";
@@ -983,7 +1010,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
       return "InputNode:"+label+" with components "+reactions;
     }
   }
-  private class OutputNode extends Node {
+  private class OutputNode extends IONode {
     public TreeSet<String> reactions = new TreeSet<String>();
     public OutputNode() {
       nodeType = "output";
@@ -997,14 +1024,37 @@ public class BiopaxPathwayConverter extends BioFileConverter
       nodeType = "link";
     }
   }
+
   private class SourceNode extends Node {
     public SourceNode() {
       nodeType = "source";
+    }
+    @Override
+    public String toJSON(Integer id) {
+      return "{\"id\":"+id.toString() +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement-pixLabelOffset)+",\"labelY\":"+(y()*pixPerElement)) +
+          ",\"x\":"+x()*pixPerElement +
+          ",\"y\":"+y()*pixPerElement +
+          ",\"orient\":\"0\""+
+          ",\"type\":\"source\""+
+          ",\"key\":"+key +
+          "}";
     }
   }
   private class DrainNode extends Node {
     public DrainNode() {
       nodeType = "drain";
+    }
+    @Override
+    public String toJSON(Integer id) {
+      return "{\"id\":"+id.toString() +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement+pixLabelOffset)+",\"labelY\":"+(y()*pixPerElement)) +
+          ",\"x\":"+x()*pixPerElement +
+          ",\"y\":"+y()*pixPerElement +
+          ",\"orient\":\"0\""+
+          ",\"type\":\"drain\""+
+          ",\"key\":"+key +
+          "}";
     }
   }
   private class SpontaneousNode extends Node {

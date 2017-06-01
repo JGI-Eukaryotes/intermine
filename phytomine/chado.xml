@@ -1256,3 +1256,54 @@
     <property name="assemblyVersion" value="v5" />
     <property name="dataSetTitle" value="Phytozome v11" />
   </source>
+  <source name="phytozome-chado-S.bicolor-454" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="cereal grass" />
+    <property name="genus" value="Sorghum" />
+    <property name="name" value="Sorghum bicolor" />
+    <property name="species" value="bicolor" />
+    <property name="assemblyDbxrefId" value="14200437" />
+    <property name="proteomeId" value="454" />
+    <property name="taxonId" value="4558" />
+    <property name="annotationVersion" value="v3.1.1" />
+    <property name="dataSourceName" value="phytozome-S.bicolor" />
+    <property name="shortName" value="S. bicolor" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="14200439" />
+    <property name="assemblyVersion" value="v3.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-B.distachyon_Bd21-3-460" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Brachypodium distachyon Bd21-3" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium distachyon Bd21-3" />
+    <property name="species" value="distachyon Bd21-3" />
+    <property name="assemblyDbxrefId" value="14502402" />
+    <property name="proteomeId" value="460" />
+    <property name="taxonId" value="15368" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-B.distachyon_Bd21-3" />
+    <property name="shortName" value="B. distachyon Bd21-3 early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14502403" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>
+  <source name="phytozome-chado-H.vulgare-462" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="barley" />
+    <property name="genus" value="Hordeum" />
+    <property name="name" value="Hordeum vulgare" />
+    <property name="species" value="vulgare" />
+    <property name="assemblyDbxrefId" value="14574757" />
+    <property name="proteomeId" value="462" />
+    <property name="taxonId" value="4513" />
+    <property name="annotationVersion" value="r1" />
+    <property name="dataSourceName" value="phytozome-H.vulgare" />
+    <property name="shortName" value="H. vulgare early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14574760" />
+    <property name="assemblyVersion" value="r1" />
+    <property name="dataSetTitle" value="Phytozome v11" />
+  </source>

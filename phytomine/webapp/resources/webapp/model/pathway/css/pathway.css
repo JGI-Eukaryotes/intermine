@@ -40,7 +40,9 @@
 
 /* tooltip related and any other html styling goes here. styles to control pathway diagram svg with its native attributes treated as variables in head of pathway.js and called inline. */
 html, body {
-  height: 100%; }
+  height: 100%;
+  margin: 0;
+  padding: 0; }
 
 div.container_12 {
   padding-top: 0;
