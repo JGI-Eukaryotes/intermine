@@ -19,7 +19,7 @@
        <tr>
          <th> Experiment Name </th>
          <th> Experiment Group  </th>
-         <th> FPKM </th>
+         <th> Abundance </th>
        </tr>
     </thead>
     <tbody>

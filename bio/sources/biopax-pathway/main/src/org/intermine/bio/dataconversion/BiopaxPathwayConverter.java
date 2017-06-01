@@ -452,6 +452,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
         // if we find that this link has been used before, either leading into the current node
         // or out of the previous node, we'll use that node
         LinkingNode linkN;
+
+        String primaryKey = Integer.toString(new String(prevNode.label() + ":" + currentNode.label()).hashCode());
         String key1 = Integer.toString(new String(label + ":" + currentNode.label()).hashCode());
         String key2 = Integer.toString(new String(prevNode.label() + ":" + label).hashCode());
         if (keyMap.containsKey(key1) ) {
@@ -470,9 +472,10 @@ public class BiopaxPathwayConverter extends BioFileConverter
         } else {
           linkN = new LinkingNode();;
           linkN.label(label);
-          linkN.key(key1);
+          linkN.key(primaryKey);
           linkN.y((prevNode.y() + currentNode.y())/2);
           linkN.x((prevNode.x() + currentNode.x())/2);
+          keyMap.put(primaryKey,linkN);
           keyMap.put(key1,linkN);
           keyMap.put(key2,linkN);
         }
@@ -520,9 +523,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
         currentNode.leftComponents.put(useThisOne,ReactantType.LINK);
         linkingComponent.clear();
         linkingComponent.add(useThisOne);
-        // but for the key, take ALL components. There seems to be inconsistencies
-        // in which is the "starting" components for different organism
-        String key = Integer.toString(new String("start:"+makeComponentNodeLabel(currentNode.leftComponents,true)).hashCode());;
+        // the key for the input molecule is start:<molecule name>
+        String key = Integer.toString(new String("start:"+useThisOne).hashCode());
         SourceNode sourceN = null;
         if (keyMap.containsKey(key)) {
           try {
@@ -561,7 +563,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
         linkingComponent.add(useThisOne);
         // but for the key, take ALL components. There seems to be inconsistencies
         // in which is the "starting" components for different organism
-        String key = Integer.toString(new String(makeComponentNodeLabel(prevNode.rightComponents,true)+":end").hashCode());
+        String key = Integer.toString(new String(useThisOne+":end").hashCode());
         DrainNode drainN = null;
         if (keyMap.containsKey(key)) {
           try {
@@ -696,6 +698,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     TreeSet<Item> components = new TreeSet<Item>();
     for(String key: keyMap.keySet() ) {
       Node activeNode = keyMap.get(key);
+     
       Item component = createItem("PathwayComponent");
       component.setAttribute("key",activeNode.key());
       if ( activeNode.x() != null) component.setAttribute("level",new Integer(activeNode.x()).toString());
@@ -753,13 +756,15 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
     for( String key : keyMap.keySet()) {
       Node activeNode = keyMap.get(key);
-      if( activeNode.x() != null && activeNode.y() != null) {
-        nodeToId.put(key,currentId);
-        if (nodes.length() > 0 ) nodes.append(",");
-        nodes.append(activeNode.toJSON(currentId));
-        currentId = currentId + 1;
-      } else {
-        LOG.warn("There are untraveled reactions in "+pathwayID);
+      if (key.equals(activeNode.key)) {
+        if( activeNode.x() != null && activeNode.y() != null) {
+          nodeToId.put(key,currentId);
+          if (nodes.length() > 0 ) nodes.append(",");
+          nodes.append(activeNode.toJSON(currentId));
+          currentId = currentId + 1;
+        } else {
+          LOG.warn("There are untraveled reactions in "+pathwayID);
+        }
       }
     }
 
@@ -777,6 +782,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     // of single elements for those not otherwise in a group.
     TreeSet<Node> inAGroup = new TreeSet<Node>();
     for( String key : keyMap.keySet() ) {
+      if (key.equals(keyMap.get(key).key)) {
       if (keyMap.get(key) instanceof ReactionNode && keyMap.get(key).y != null) {
         ReactionNode rn = (ReactionNode)keyMap.get(key);
         if (groups.length() > 0) groups.append(",");
@@ -788,12 +794,15 @@ public class BiopaxPathwayConverter extends BioFileConverter
         }
         groups.append("]");
       }
+      }
     }
     // now add loners
     for( String key : keyMap.keySet() ) {
+      if (key.equals(keyMap.get(key).key)) {
       if (keyMap.get(key).y != null && !inAGroup.contains(keyMap.get(key))) {
         if (groups.length() > 0) groups.append(",");
         groups.append("["+nodeToId.get(keyMap.get(key).key)+"]");
+      }
       }
     }
 
@@ -975,7 +984,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     @Override
     public String toJSON(Integer id) {
       return "{\"id\":"+id.toString() +
-          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement)+",\"labelY\":"+(y()*pixPerElement-pixLabelOffset)) +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement)+",\"labelY\":"+(y()*pixPerElement-2*pixLabelOffset)) +
           ",\"tooltip\":\""+info()+"\""+
           ",\"x\":"+x()*pixPerElement +
           ",\"y\":"+y()*pixPerElement +
@@ -1032,7 +1041,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     @Override
     public String toJSON(Integer id) {
       return "{\"id\":"+id.toString() +
-          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement-pixLabelOffset)+",\"labelY\":"+(y()*pixPerElement)) +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement-pixLabelOffset)+",\"labelY\":"+(y()*pixPerElement-2*pixLabelOffset)) +
           ",\"x\":"+x()*pixPerElement +
           ",\"y\":"+y()*pixPerElement +
           ",\"orient\":\"0\""+
@@ -1048,7 +1057,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     @Override
     public String toJSON(Integer id) {
       return "{\"id\":"+id.toString() +
-          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement+pixLabelOffset)+",\"labelY\":"+(y()*pixPerElement)) +
+          (label==null?"":",\"label\":\""+cleanUp(label)+"\",\"labelX\":"+(x()*pixPerElement+pixLabelOffset)+",\"labelY\":"+(y()*pixPerElement-2*pixLabelOffset)) +
           ",\"x\":"+x()*pixPerElement +
           ",\"y\":"+y()*pixPerElement +
           ",\"orient\":\"0\""+

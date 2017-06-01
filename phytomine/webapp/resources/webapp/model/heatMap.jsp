@@ -181,7 +181,7 @@
             var fpkmHeatMap = new CanvasXpress('canvas_fp',
                                          ${cufflinksScoreJSON},
                                          {graphType: 'Heatmap',
-                                          title: 'FPKM',
+                                          title: 'Abundance',
                                           // heatmapType: 'yellow-purple',
                                           dendrogramSpace: 6,
                                           smpDendrogramPosition: 'right',

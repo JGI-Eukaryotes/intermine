@@ -184,8 +184,8 @@ var getSvgElementDimensions = function(element) {
 
 var setSvgElementDimensions = function (element) {
   var bbox = getSvgElementDimensions(element);
-  var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
-  var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
+  var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 150;
+  var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 150;
   var x = Math.floor(bbox.x) - 50;
   var y = Math.floor(bbox.y) - 50;
   element.attr("width", w)
@@ -342,11 +342,18 @@ var renderLabels = function (d) {
         .append("foreignObject")
          .attr("width",lineSize.width)
          .attr("x",placementOptions.x)
-         .attr("y",placementOptions.y)
+         .attr("y", function () { if (d.type === "link") {
+                                    return placementOptions.y - 8;
+                                  } else {
+                                    return placementOptions.y;
+                                  }})
          .attr("height",baseFontSize)
          .attr("class","foreign-object")
          .append("xhtml:body")
-        //  .attr("xmlns", "http://www.w3.org/1999/xhtml")
+         .attr("xmlns", "http://www.w3.org/1999/xhtml")
+         .style("padding", 0)
+         .style("margin", 0)
+         .style("background-color","rgba(255,255,255,0)")
          .append("xhtml:div")
          .style("font-size", fontAttrs.size)
          .style("color", fontAttrs.color)
@@ -426,7 +433,7 @@ var loadPathwayDiagram = function(container,json,optArgs) {
     var blob = new Blob(["<?xml version=\"1.0\" standalone=\"no\"?>" +
                          "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "+
                          "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" +
-                         svg.outerHTML],
+                         svg.outerHTML.replace(/<br>/ig, '<br />')],
                          { type: "image/svg+xml"});
     var url = URL.createObjectURL(blob);
     var link = document.createElement("a");
@@ -562,7 +569,7 @@ var loadPathwayDiagram = function(container,json,optArgs) {
     d.forEach( function(e) { parents[e] = thisId; });
   });
 
-  // and insert them. This is initially unpositioed.
+  // and insert them. This is initially unpositioned.
   // we'll position it as we populate it with the elements
   var nodeGroups = masterGroup.selectAll("g")
               .data(containerData,function(e) { return e.id })
