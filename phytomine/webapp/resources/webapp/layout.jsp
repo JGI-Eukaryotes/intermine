@@ -108,6 +108,10 @@ jQuery(document).ready(function() {
   });
 
 setOption(['CDN'], 'server', "${WEB_PROPERTIES['head.cdn.location']}");
+if (typeof imtables != "undefined" && typeof imtables != null) {
+    // Make sure IM Tables knows about the host CDN (for code generation)
+    imtables.configure("CDN.server", "${WEB_PROPERTIES['head.cdn.location']}");
+}
 
 if ((typeof intermine != 'undefined') && (intermine.Service != null)) {
     // Set up the service, if required.

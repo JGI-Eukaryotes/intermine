@@ -288,20 +288,20 @@
     </source-->
 
     <source name="cufflinks-S.bicolor-geneAtlas" type="cufflinks">
-      <property name="proteomeId" value="313" />
+      <property name="proteomeId" value="454" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
       <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
       <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq" />
     </source>
     <source name="coexpression-S.bicolor-geneAtlas" type="coexpression">
-      <property name="proteomeId" value="313" />
+      <property name="proteomeId" value="454" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
       <property name="src.data.dir.includes" value="coexpression.tsv" />
       <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
       <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq" />
     </source>
     <source name="cufflinks-S.bicolor-geneAtlas-info" type="rnaseq-experiment-info">
-      <property name="proteomeId" value="313" />
+      <property name="proteomeId" value="454" />
       <property name="src.data.dir" location="/projectb/sandbox/plant/phytomine/rna-seq/Sbicolor-geneAtlas/" />
       <property name="dataSourceName" value="rnaseq-S.bicolor-geneAtlas" />
       <property name="dataSetTitle" value="S.bicolor-geneAtlas RNA-seq Info" />
