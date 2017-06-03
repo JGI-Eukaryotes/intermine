@@ -235,21 +235,32 @@ var labelReactions = function (d) {
   var lineCtr = 0;
   var ecData = [];
   d.ecs.forEach( function(dd) {
+    var menu = [{title: 'ExPASy Information',
+               action: function() { doLinkout("http://enzyme.expasy.org/EC/"+dd)} }];
     ecData.push({ content: dd,
                   class: "highlighter diagram ec",
                   baseColor: ecLabelAttrs.diagramColor,
                   highlightedColor: ecLabelAttrs.highlightedColor,
+                  menu: menu,
                   line: lineCtr }
                 );
     lineCtr++;
   });
+
   var pData = [];
   d.genes.forEach( function(dd) {
+    var menu = [];
+    dd.links.forEach( function(ee) {
+       if (/PhytoWeb/.test(ee.label)) ee.label = "Phytozome Gene Report";
+        menu.push({title: ee.label,
+                   action: function() {doLinkout(ee.url)}});
+       });
     pData.push({ content: dd.name,
                  class: "highlighter diagram gene",
                  baseColor: geneLabelAttrs.diagramColor,
            highlightedColor: geneLabelAttrs.highlightedColor,
-                  line: lineCtr }
+                 menu: menu,
+                 line: lineCtr }
                );
     lineCtr++;
   });
@@ -257,6 +268,8 @@ var labelReactions = function (d) {
   el.text("")
     .attr("font-size", fontAttrs.size);
 
+  // for more that 4 lines, we're going to truncate a that
+  lineCtr = (lineCtr>5)?5:lineCtr;
   // placement.
   placementOptions = {};
   switch( quadrantOf(d.orient) ) {
@@ -272,6 +285,11 @@ var labelReactions = function (d) {
                        .attr("class", function (dd) { return dd.class })
                        .text(function(dd) { return dd.content })
                        .style("fill", function(dd) { return dd.baseColor });
+                       //.on("contextmenu", function(dd) {return d3.contextMenu(dd.menu) });
+
+  geneTspan.each( function (d) {
+           var thisElement = d3.select(this);
+           thisElement.on("contextmenu", d3.contextMenu(d.menu)) });
 
 
   // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
@@ -303,7 +321,6 @@ var labelReactions = function (d) {
 
 var styledWith = function (p1, styleAttrs) {
   var stylesString = ""
-  console.log(p1);
   Object.keys(styleAttrs).forEach( function (key) {
     stylesString += key + ":" + styleAttrs[key] + ";"
   })
@@ -313,10 +330,10 @@ var styledWith = function (p1, styleAttrs) {
 var renderLabels = function (d) {
   var el = d3.select(this);
   if (d.label) {
-    console.log('for label '+d.label+' x,y,text-anchor are '+el.attr('x')+', '+el.attr('y')+', '+el.attr('text-anchor')+'.');
+    //console.log('for label '+d.label+' x,y,text-anchor are '+el.attr('x')+', '+el.attr('y')+', '+el.attr('text-anchor')+'.');
     var parent = this.parentElement;
     var label = d.label.split("<br>").join("<br />")
-    console.log('label', label)
+    //console.log('label', label)
     // var lines = d.label.split('<br>');
     // var lineCtr = 0;
     // lines.forEach( function(e) {
@@ -337,7 +354,7 @@ var renderLabels = function (d) {
                          .replace(/<(sub)>/ig, function(match, p1) { return styledWith(p1, subAttrs) })
                          .replace(/<(sup)>/ig, function(match, p1) { return styledWith(p1, supAttrs) })
                          .replace(/'/g,'&#39;');
-      console.log('html for label:', styledD);
+      //console.log('html for label:', styledD);
       d3.select(parent).append('g')
         .append("foreignObject")
          .attr("width",lineSize.width)
@@ -737,7 +754,7 @@ var loadPathwayDiagram = function(container,json,optArgs) {
       case 3: sweep = 0; break;
       case 4: sweep = 0; break;
     }
-    console.log('input quad and sweep are '+quadrantOf(f.orient)+" "+sweep);
+    //console.log('input quad and sweep are '+quadrantOf(f.orient)+" "+sweep);
 
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+"," +
@@ -755,7 +772,7 @@ var loadPathwayDiagram = function(container,json,optArgs) {
       case 3: sweep = 0; break;
       case 4: sweep = 0; break;
     }
-    console.log('output quad and sweep are '+quadrantOf(f.orient)+" "+sweep);
+    //console.log('output quad and sweep are '+quadrantOf(f.orient)+" "+sweep);
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+","+
               Math.abs(f.y1-f.y2)+" 0 0 "+sweep+" "+
