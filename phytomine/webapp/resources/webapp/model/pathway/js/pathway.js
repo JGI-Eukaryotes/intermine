@@ -273,9 +273,9 @@ var labelReactions = function (d) {
   // placement.
   placementOptions = {};
   switch( quadrantOf(d.orient) ) {
-    case 1: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"bottom" }; break;
+    case 1: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"left" }; break;
     case 2: placementOptions = { "x":d.x, "y":d.y, "align":"left" }; break;
-    case 3: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"bottom" }; break;
+    case 3: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"left" }; break;
     case 4: placementOptions = { "x":d.x, "y":d.y, "align":"right" }; break;
   }
 
@@ -285,7 +285,6 @@ var labelReactions = function (d) {
                        .attr("class", function (dd) { return dd.class })
                        .text(function(dd) { return dd.content })
                        .style("fill", function(dd) { return dd.baseColor });
-                       //.on("contextmenu", function(dd) {return d3.contextMenu(dd.menu) });
 
   geneTspan.each( function (d) {
            var thisElement = d3.select(this);
