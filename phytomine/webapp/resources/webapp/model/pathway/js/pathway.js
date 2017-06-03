@@ -269,13 +269,13 @@ var labelReactions = function (d) {
     .attr("font-size", fontAttrs.size);
 
   // for more that 4 lines, we're going to truncate a that
-  lineCtr = (lineCtr>5)?5:lineCtr;
+  lineCtr = (lineCtr>4)?4:lineCtr;
   // placement.
   placementOptions = {};
   switch( quadrantOf(d.orient) ) {
-    case 1: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-2), "align":"bottom" }; break;
+    case 1: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"bottom" }; break;
     case 2: placementOptions = { "x":d.x, "y":d.y, "align":"left" }; break;
-    case 3: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-2), "align":"bottom" }; break;
+    case 3: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"bottom" }; break;
     case 4: placementOptions = { "x":d.x, "y":d.y, "align":"right" }; break;
   }
 
@@ -364,7 +364,8 @@ var renderLabels = function (d) {
                                   } else {
                                     return placementOptions.y;
                                   }})
-         .attr("height",baseFontSize)
+         //.attr("height",baseFontSize)
+         .attr("height",lineSize.height)
          .attr("class","foreign-object")
          .append("xhtml:body")
          .attr("xmlns", "http://www.w3.org/1999/xhtml")
