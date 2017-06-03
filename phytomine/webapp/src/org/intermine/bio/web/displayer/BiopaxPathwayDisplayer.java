@@ -405,8 +405,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     String pMTem = p.getProperty("webapp.path");
 
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("Pathway.id",
-        "Pathway.organism.shortName"
+    query.addViews("Pathway.organism.shortName",
+        "Pathway.id"
         );
     query.addConstraint(Constraints.eq("Pathway.pathwayInfo.id",pathway.getPathwayInfo().getId().toString()));
     query.addConstraint(Constraints.neq("Pathway.organism.id",pathway.getOrganism().getId().toString()));
@@ -415,8 +415,8 @@ public class BiopaxPathwayDisplayer extends ReportDisplayer {
     JSONArray jLinks = new JSONArray();
     while (result.hasNext()) {
       List<ResultElement> row = result.next();
-      Integer pId = (Integer)row.get(0).getField();
-      String orgName = row.get(1).getField().toString();
+      String orgName = row.get(0).getField().toString();
+      Integer pId = (Integer)row.get(1).getField();
       jLinks.put(makeJL(orgName,"/"+pMTem+"/report.do?id="+pId));
     }
     return jLinks;
