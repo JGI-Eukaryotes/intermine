@@ -532,11 +532,12 @@
                          exportField="primaryIdentifier"
                          typeClass="Gene"
                          columnTitle="Genes"
-                         views="primaryIdentifier, symbol, organism.shortName,
+                         views="homolog.gene.primaryIdentifier, homolog.gene.symbol, homolog.gene.organism.shortName,
                                 homolog.ortholog_gene.primaryIdentifier,
                                 homolog.ortholog_gene.symbol,
                                 homolog.ortholog_gene.organism.shortName,
-                                homolog.relationship" />
+                                homolog.relationship,
+                                homolog.groupName" />
 
       <!--enrichmentwidgetdisplayer id="pathway_enrichment"
 					 title="Pathway Enrichment"

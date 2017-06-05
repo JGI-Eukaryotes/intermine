@@ -1,16 +1,9 @@
 <template-queries>
-<template name="All_Gene_Homolog" title="All homologs of a specific gene in any organism" comment="">
-  <query name="All_Gene_Homolog" model="genomic" view="Homolog.gene1.primaryIdentifier Homolog.gene2.primaryIdentifier Homolog.organism2.shortName Homolog.relationship" longDescription="Retrieve the homologs of a specific gene in any organism as determined by inParanoid" sortOrder="Homolog.gene1.primaryIdentifier asc" constraintLogic="A and B and C">
-    <constraint path="Homolog.gene1.primaryIdentifier" code="A" editable="true" op="=" value="AT1G20960"/>
-    <constraint path="Homolog.organism1.shortName" code="B" editable="true" op="=" value="A. thaliana"/>
-    <constraint path="Homolog.organism2.shortName" code="C" editable="true" op="!=" value="A. thaliana"/>
-  </query>
-</template>
-<template name="All_Gene_Homolog_1" title="All homologs of a specific gene in any organism" comment="">
-  <query name="All_Gene_Homolog_1" model="genomic" view="Homolog.gene1.primaryIdentifier Homolog.gene2.primaryIdentifier Homolog.organism2.shortName Homolog.relationship" longDescription="Retrieve the homologs of a specific gene in any organism as determined by inParanoid" sortOrder="Homolog.gene1.primaryIdentifier asc" constraintLogic="A and B and C">
-    <constraint path="Homolog.gene1.primaryIdentifier" code="A" editable="true" op="=" value="AT1G20960"/>
-    <constraint path="Homolog.organism1.shortName" code="B" editable="true" op="=" value="A. thaliana"/>
-    <constraint path="Homolog.organism2.shortName" code="C" editable="true" op="!=" value="A. thaliana"/>
+<template name="All_Gene_Homolog_2" title="All homologs of a specific gene in any organism" comment="">
+  <query name="All_Gene_Homolog_2" model="genomic" view="Homolog.gene.primaryIdentifier Homolog.ortholog_gene.primaryIdentifier Homolog.ortholog_organism.shortName Homolog.relationship" longDescription="Retrieve the homologs of a specific gene in any organism as determined by inParanoid" sortOrder="Homolog.gene.primaryIdentifier asc" constraintLogic="A and B and C">
+    <constraint path="Homolog.gene.primaryIdentifier" code="A" editable="true" op="=" value="AT1G20960"/>
+    <constraint path="Homolog.organism.shortName" code="B" editable="true" op="=" value="A. thaliana"/>
+    <constraint path="Homolog.ortholog_organism.shortName" code="C" editable="true" op="!=" value="A. thaliana"/>
   </query>
 </template>
 <template name="Families_of_a_Specified_Organism" title="Protein Families of a Specified Organism" comment="">
@@ -61,7 +54,12 @@
   </query>
 </template>
 <template name="Gene_Expression" title="Expression score for all genes in an organism." comment="">
-  <query name="Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpression.abundance Gene.rnaSeqExpression.experiment.name Gene.rnaSeqExpression.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+  <query name="Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+    <constraint path="Gene.organism.shortName" editable="true" op="=" value="G. max"/>
+  </query>
+</template>
+<template name="Gene_Expression_1" title="Expression score for all genes in an organism." comment="">
+  <query name="Gene_Expression_1" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpressions.abundance Gene.rnaSeqExpressions.experiment.name Gene.rnaSeqExpressions.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
     <constraint path="Gene.organism.shortName" editable="true" op="=" value="G. max"/>
   </query>
 </template>
@@ -122,12 +120,12 @@
   </query>
 </template>
 <template name="MRNA_Expression" title="Expression score for all mRNAs in an organism." comment="">
-  <query name="MRNA_Expression" model="genomic" view="MRNA.primaryIdentifier MRNA.rnaSeqExpression.abundance MRNA.rnaSeqExpression.experiment.name MRNA.rnaSeqExpression.experiment.experimentGroup" longDescription="" sortOrder="MRNA.primaryIdentifier asc">
+  <query name="MRNA_Expression" model="genomic" view="MRNA.primaryIdentifier MRNA.cufflinksscores.fpkm MRNA.cufflinksscores.experiment.name MRNA.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="MRNA.primaryIdentifier asc">
     <constraint path="MRNA.organism.shortName" editable="true" op="=" value="G. max"/>
   </query>
 </template>
 <template name="One_Gene_Expression" title="Expression score for one specific gene." comment="">
-  <query name="One_Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpression.abundance Gene.rnaSeqExpression.experiment.name Gene.rnaSeqExpression.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+  <query name="One_Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
     <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Glyma.01G000700"/>
   </query>
 </template>
@@ -229,7 +227,7 @@
   </query>
 </template>
 <template name="all_pathways_for_an_organism" title="All Pathways for an Organism" comment="">
-  <query name="all_pathways_for_an_organism" model="genomic" view="Pathway.primaryIdentifier Pathway.method Pathway.status Pathway.pathwayInfo.name" longDescription="" sortOrder="Pathway.primaryIdentifier asc">
+  <query name="all_pathways_for_an_organism" model="genomic" view="Pathway.identifier Pathway.method Pathway.pathwayInfo.name" longDescription="Show all metabolic pathway data derived from pathologic" sortOrder="Pathway.identifier asc">
     <constraint path="Pathway.organism.shortName" editable="true" op="=" value="A. thaliana"/>
   </query>
 </template>

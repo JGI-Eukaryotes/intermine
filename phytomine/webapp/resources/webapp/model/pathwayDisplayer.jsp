@@ -73,7 +73,6 @@
     getScripts(pathwayScripts, function(){
                 jQuery.getScript("model/pathway/js/d3-context-menu.js");
                 jQuery.getScript("model/pathway/js/split.js");
-                jQuery.getScript("model/pathway/js/d3-gridforce.js");
 		jQuery.when(ensureDataReceived(${jsonPathway}), 
     			    ensureDataReceived(${jsonExpression}))
 	  	      .done(function () {
