@@ -12,11 +12,14 @@ package org.intermine.bio.dataconversion;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.commons.io.input.ReaderInputStream;
+import org.apache.commons.text.similarity.FuzzyScore;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.biopax.paxtools.impl.level3.BiochemicalPathwayStepImpl;
@@ -38,6 +41,7 @@ import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.xml.full.Item;
+import org.intermine.xml.full.ReferenceList;
 
 /** Load the data from owl files into the pathway tables.
  * This is designed to be run in two different modes: once without
@@ -56,6 +60,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
   private String method = null;
   private Item organism = null;
+  private String prefix = null;
   private Item enzymeOntology = null;
   private Item pathwayOntology = null;
   private boolean loadingJSON;
@@ -89,17 +94,12 @@ public class BiopaxPathwayConverter extends BioFileConverter
     // If the organism is not set, then we are loading the
     // pathwayInfo table. This is the owl file that will be
     // used to load the json for the network.
-    if (organism == null ||
-        (organism.getAttribute("proteomeId") == null &&
-        organism.getAttribute("shortName") == null )) {
+    if (organism == null || organism.getAttribute("proteomeId") == null ) {
       loadingJSON = true;
+    } else if (prefix == null ) {
+      throw new BuildException("Organism-specific prefix for pathway name must be set.");
     } else {
-      if (organism.getAttribute("proteomeId")==null ||
-          organism.getAttribute("shortName") == null ) {
-        throw new BuildException("Organism must be set to load pathways. Was shortName set?");
-      } else {
-        loadingJSON = false;
-      }
+      loadingJSON = false;
     }
 
     SimpleIOHandler handler = new SimpleIOHandler(BioPAXLevel.L3);
@@ -198,6 +198,35 @@ public class BiopaxPathwayConverter extends BioFileConverter
         // which are also inputs for the current.
 
         HashSet<Node[]> linkSet = new HashSet<Node[]>();
+        // if a pathway is purely cyclic, we need to pick one more or less
+        // at random. But we cannot pick one that is really part of the cycle
+        // and is not on some siding.
+        // pick one at random, then walk backwards untill we hit something we've
+        // already seen.
+        if (initialNodes.size() == 0 && keyMap.keySet().size() > 0) {
+          // if a pathway is purely cyclic, we need to pick one more or less
+          // at random. But we cannot pick one that is really part of the cycle
+          // and is not on some siding.
+          // pick one at random, then walk backwards untill we hit something we've
+          // already seen.
+          LOG.warn("Pathway "+pathwayID+" has no initial nodes. Picking...");
+          LinkedList<String> toBeExamined = new LinkedList<String>();
+          toBeExamined.add((String) keyMap.keySet().toArray()[0]);
+          HashSet<String> seen = new HashSet<String>();
+          while(initialNodes.size() == 0 && toBeExamined.size() > 0) {
+            String node = toBeExamined.removeFirst();
+            if (seen.contains(node)) {
+              // we've doubled back on this. We're done
+              LOG.warn("Pathway "+pathwayID+" has no initial nodes. Picking "+keyMap.keySet().toArray()[0]);
+              initialNodes.add(node);
+            } else {
+              seen.add(node);
+              for(String n: ((ReactionNode)keyMap.get(node)).prevNode) {
+                toBeExamined.add(n);
+              }
+            }
+          }
+        }
         if(initialNodes.size() > 0) {
           // we need to track node pairs we've visited to avoid double tracking
           beenThereDoneThat = new HashSet<String>();
@@ -236,6 +265,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
 
           storePathway(pathwayID,pathwayName,keyMap,proteinHash,enzymeHash,linkSet);
 
+        } else {
+          LOG.warn("Pathway "+pathwayID+" has no initial nodes and cannot find one.");
         }
       }
     }
@@ -302,6 +333,8 @@ public class BiopaxPathwayConverter extends BioFileConverter
           // return 'false'. They were returning 'L-R' Take any non-null to be true.
           if (b.getSpontaneous() != null  && !b.getSpontaneous() ) {
             activeNode.isSpontaneous = true;
+            // use this as a label in case nothing else comes up
+            activeNode.label("<em>spontaneois</em>");
           }
           for ( Xref xref: b.getXref() ) {
             if (xref.getDb() != null && xref.getDb().endsWith("Cyc")) {
@@ -373,6 +406,10 @@ public class BiopaxPathwayConverter extends BioFileConverter
           System.out.println("Unexpected process: "+proc);
         }
       }
+      // sanity
+      if (activeNode.isSpontaneous && (activeNode.proteins.size() > 0 || activeNode.ecs.size() > 0)) {
+        LOG.warn("A spontaneous node in "+pathwayID+" has proteins or ecs.");
+      }
 
       // determine the next reaction step(s)
       for( PathwayStep nS: step.getNextStep() ) {
@@ -390,7 +427,6 @@ public class BiopaxPathwayConverter extends BioFileConverter
       } catch (ClassCastException e) {
         throw new BuildException("Cannot cast "+step+" to a BiochemicalPathwayStepImpl.");
       }
-      LOG.info("ReactionNode\t"+getShortName()+"\t"+pathwayID+"\t"+activeNode.label+"\t"+activeNode.info+"\t"+activeNode.proteins);
 
       // store only processed ones.
       if (activeNode.key() != null) retSet.put(activeNode.uniqueName,activeNode);
@@ -419,7 +455,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
         // we want to make a common node for all components that
         // are in both reactions. But separate ones if the component
         // is only in the left or right.
-        if( prevNode!=null && prevNode.rightComponents.containsKey(component) ) {
+        if(prevNode.rightComponents.containsKey(component) ) {
           linkingComponent.add(component);
         }
       }
@@ -491,12 +527,72 @@ public class BiopaxPathwayConverter extends BioFileConverter
         a[1] = linkN;
         linkSet.add(a);
       } else {
+        // if we cannot find a good match, try a fuzzy match
+        FuzzyScore fS = new FuzzyScore(Locale.ENGLISH);
+        Integer bestScore = new Integer(0);
+        String bestLeft = null;
+        String bestRight = null;
+        for( String lComponent: currentNode.leftComponents.keySet()) {
+          for( String rComponent: prevNode.rightComponents.keySet()) {
+            Integer thisScore = fS.fuzzyScore(lComponent,rComponent);
+            LOG.info("FuzzyScore of "+lComponent+" and "+rComponent+" is "+thisScore);
+            if (thisScore > bestScore) {
+              bestLeft = lComponent;
+              bestRight = rComponent;
+              bestScore = thisScore;
+            }
+          }
+        }
+        if (bestLeft != null) {
+          LOG.info("Best FuzzyPair is "+bestLeft+" and "+bestRight);
+          currentNode.leftComponents.put(bestLeft,ReactantType.LINK);
+          prevNode.rightComponents.put(bestRight,ReactantType.LINK);
+          LinkingNode linkN;
+          String primaryKey = Integer.toString(new String(prevNode.label() + ":" + currentNode.label()).hashCode());
+          String key1 = Integer.toString(new String(bestRight + ":" + currentNode.label()).hashCode());
+          String key2 = Integer.toString(new String(prevNode.label() + ":" + bestLeft).hashCode());
+          if (keyMap.containsKey(key1) ) {
+            try {
+              linkN = (LinkingNode)keyMap.get(key1);
+            } catch (ClassCastException e) {
+              throw new BuildException("The key "+key2+" has the same label as a non-linking node.");
+            }
+          } else if (keyMap.containsKey(key2) ) {
+            try {
+              linkN = (LinkingNode)keyMap.get(key2);
+            } catch (ClassCastException e) {
+              throw new BuildException("The key "+key2+" has the same label as a non-linking node.");
+            }
+          
+          } else {
+            linkN = new LinkingNode();;
+            linkN.label(bestRight+"/"+bestLeft);
+            linkN.key(primaryKey);
+            linkN.y((prevNode.y() + currentNode.y())/2);
+            linkN.x((prevNode.x() + currentNode.x())/2);
+            keyMap.put(primaryKey,linkN);
+            keyMap.put(key1,linkN);
+            keyMap.put(key2,linkN);
+          }
+          // add both links
+          // From the link node to the current node.
+          Node [] a = new Node[2];
+          a[0] = linkN;
+          a[1] = currentNode;
+          linkSet.add(a);
+          // and from the previous node to the link node.
+          a = new Node[2];
+          a[0] = prevNode;
+          a[1] = linkN;
+          linkSet.add(a);
+        }
+        
         /*SpontaneousNode sN = new SpontaneousNode();
-        sN.uniqueName = prevNode.uniqueName + ":" + currentNode.uniqueName;
+        sN.key(Integer.toString(new String(prevNode.label() + ":" + currentNode.label()).hashCode()));
         sN.label("<i>spontaneous</i>");
-        sN.column((prevNode.column() + currentNode.column())/2);
-        sN.row((prevNode.row() + currentNode.row())/2);
-        nodeMap.put(sN.uniqueName,sN);
+        sN.x((prevNode.x() + currentNode.x())/2);
+        sN.y((prevNode.y() + currentNode.y())/2);
+        keyMap.put(sN.key(),sN);
         Node[] a = new Node[2];
         a[0] = sN;
         a[1] = currentNode;
@@ -738,10 +834,12 @@ public class BiopaxPathwayConverter extends BioFileConverter
           }
           component.addToCollection("ontologyTerms",enzymeHash.get(ec));
         }
+      } else if (activeNode instanceof SpontaneousNode) {
+        component.setAttribute("type","link");
       } else {
         throw new BuildException("Unknown node type. Is this a node? "+key+" "+keyMap.get(key));
       }
-      components.add(component);
+     components.add(component);
     }
 
     // Now build the json.
@@ -821,10 +919,22 @@ public class BiopaxPathwayConverter extends BioFileConverter
     if (!loadingJSON) {
       // and the specific instance
       Item pathway = createItem("Pathway");
-      pathway.setAttribute("identifier",organism.getAttribute("shortName").getValue()+
+      pathway.setAttribute("identifier",prefix+
           " "+pathwayInfo.getAttribute("identifier").getValue());
       pathway.setReference("pathwayInfo",pathwayInfo);
       pathway.setReference("organism",organism);
+      ReferenceList allProts = new ReferenceList("proteins");
+      // look at all components and add the proteins for each
+      // one at a time. This will prevent redundancies
+      for( Item component: components) {
+        ReferenceList prots = component.getCollection("proteins");
+        if (prots != null) {
+          for(String refId: prots.getRefIds()) {
+            allProts.addRefId(refId);
+          }
+        }
+      }
+      pathway.addCollection(allProts);
       if (method != null) pathway.setAttribute("method",method);
       store(pathway);
     }
@@ -832,7 +942,11 @@ public class BiopaxPathwayConverter extends BioFileConverter
     // and the components
     for(Item component: components) {
       component.setReference("pathwayInfo",pathwayInfo.getIdentifier());
-      store(component);
+      // if we're nt loading the JSON, we only need to touch the reactions
+      // to get the proteins and ECs in.
+      if(loadingJSON || component.getAttribute("type").getValue().equals("reaction")) {
+        store(component);
+      }
     }
   }
   String cleanUp(String a) {
@@ -885,18 +999,11 @@ public class BiopaxPathwayConverter extends BioFileConverter
     return label.toString().replaceAll("\"","&quot;");
   }
 
-  public void setShortName(String shortName) throws ObjectStoreException {
-    if (organism == null) {
-      organism = createItem("Organism");
-    }
-    organism.setAttribute("shortName",shortName);
-    if (organism.getAttribute("proteomeId") != null) {
-      store(organism);
-    }
+  public void setOrganismPrefix(String prefix) {
+    this.prefix = prefix;
   }
-  public String getShortName() {
-    if (organism==null) return null;
-    else return organism.getAttribute("shortName").getValue();
+  public String getOrganismPrefix() {
+    return prefix;
   }
 
   public void setProteomeId(String proteomeId) throws ObjectStoreException {
@@ -908,9 +1015,7 @@ public class BiopaxPathwayConverter extends BioFileConverter
     } catch (NumberFormatException e) {
       throw new ObjectStoreException("proteomeId is not an integer.");
     }
-    if (organism.getAttribute("shortName") != null) {
-      store(organism);
-    }
+    store(organism);
   }
 
   public void setMethod(String method) {
