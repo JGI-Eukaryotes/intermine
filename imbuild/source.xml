@@ -140,6 +140,7 @@
   <target name="-retrieve-tgt-from-custom-file"
           depends="-set-custom-file-includes, -set-custom-file-excludes" 
           if="have.file.custom.tgt">
+    <slack-notify source="${source}" message="started" properties="intermine.properties" />
     <convert-file clsName="${converter.class}"
                   osName="osw.${common.os.prefix}-tgt-items"
                   modelName="${target.model}">
@@ -156,6 +157,7 @@
   -->
   <target name="-retrieve-tgt-from-custom-dir"
           if="have.dir.custom.tgt">
+    <slack-notify source="${source}" message="started" properties="intermine.properties" />
     <convert-dir clsName="${converter.class}"
                  osName="osw.${common.os.prefix}-tgt-items"
                  modelName="${target.model}"
@@ -169,6 +171,7 @@
   -->
   <target name="-retrieve-tgt-from-db"
           if="have.db.tgt">
+    <slack-notify source="${source}" message="started" properties="intermine.properties" />
     <convert-db clsName="${converter.class}"
                 dbAlias="db.${source.db.name}"
                 modelName="${target.model}"
@@ -322,6 +325,7 @@
     <echo>
       Loading ${source.name} (${source.type}) tgt items into production DB
     </echo>
+    <slack-notify source="${source}" message="load started" properties="intermine.properties" />
     <data-load integrationWriter="integration.production"
                source="os.${common.os.prefix}-translated"
                sourceName="${source.name}"
@@ -329,7 +333,7 @@
                ignoreDuplicates="${ignore.duplicates}"
                allSources="${allsources.list}"/>
     <!-- not standard. -->
-    <slack-notify source="${source}" properties="intermine.properties" />
+    <slack-notify source="${source}" message="completed" properties="intermine.properties" />
   </target>
 
   <target name="postprocess" depends="init, -init-deps" if="postprocessor.class">
