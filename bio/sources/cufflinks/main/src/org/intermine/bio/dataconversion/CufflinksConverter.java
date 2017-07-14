@@ -391,7 +391,7 @@ public class CufflinksConverter extends BioFileConverter
 
   private Item createExperiment(String name) {
     if (!experimentMap.containsKey(name) ) {
-      Item experiment = createItem("RNAseqExperiment");
+      Item experiment = createItem("RNASeqExperiment");
       experiment.setAttribute("name",name);
       experiment.setReference("organism",organism);
       experimentMap.put(name,experiment);
