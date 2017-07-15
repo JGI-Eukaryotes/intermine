@@ -4,7 +4,7 @@
 <classes>
 <!-- add any <class> elements here -->
 
-  <class name="RNAseqExperiment" is_interface="true">
+  <class name="RNASeqExperiment" is_interface="true">
     <attribute name="name" type="java.lang.String" />
     <attribute name="experimentGroup" type="java.lang.String" />
     <attribute name="description" type="java.lang.String" />
