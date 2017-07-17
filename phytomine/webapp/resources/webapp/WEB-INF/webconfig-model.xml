@@ -152,10 +152,22 @@
   </class>
 
   <class className="org.intermine.model.bio.GOAnnotation">
+    <headerconfig>
+    <inlinelist>
+      <table path="evidence.code.code" label="Evidence Code" showInHeader="true" />
+    </inlinelist>
+    </headerconfig>
     <fields>
       <fieldconfig fieldExpr="ontologyTerm.identifier" label="GO Term"/>
       <fieldconfig fieldExpr="subject.primaryIdentifier" label="Gene Name"/>
       <fieldconfig fieldExpr="subject.organism.name" label="Organism"/>
+    </fields>
+  </class>
+
+
+  <class className="org.intermine.model.bio.GOEvidenceCode">
+    <fields>
+      <fieldconfig fieldExpr="code"/>
     </fields>
   </class>
 
@@ -358,7 +370,13 @@
   <reportdisplayers>
 
 
-   <reportdisplayer javaClass="org.intermine.bio.web.displayer.GeneOntologyDisplayer"
+    <reportdisplayer javaClass="org.intermine.bio.web.displayer.GeneEnrichmentDisplayer"
+                     jspName="model/geneEnrichmentDisplayer.jsp"
+                     replacesFields="geneEnrichment"
+                     placement="Genomics"
+                     types="Gene"/>
+
+    <reportdisplayer javaClass="org.intermine.bio.web.displayer.GeneOntologyDisplayer"
                      jspName="model/geneOntologyDisplayer.jsp"
                      replacesFields="goAnnotation,ontologyAnnotations"
                      placement="Genomics"
