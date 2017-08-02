@@ -21,6 +21,7 @@ import java.util.Set;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.intermine.metadata.ClassDescriptor;
+import org.intermine.metadata.CollectionDescriptor;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.ReferenceDescriptor;
@@ -195,6 +196,7 @@ public class BuildTriggerMaker extends Task
 
             makerPW.print(writeDisclaimer());
             removerPW.print(removeDisclaimer());
+            HashSet<CollectionDescriptor> indirections = new HashSet<CollectionDescriptor>();
 
             makerPW.print(writeSequence());
             for (ClassDescriptor cld : model.getBottomUpLevelTraversal()) {
@@ -215,7 +217,13 @@ public class BuildTriggerMaker extends Task
                     makerPW.print(writeInterMineObjectActions(cld));
                     removerPW.print(removeInterMineObjectActions(cld));
                     for( ReferenceDescriptor rD: cld.getAllReferenceDescriptors() ) {
-                      keyCheckPW.print(writeForeignKeyCheck(cld,rD));
+                      keyCheckPW.print(writeForeignKeyCheck(cld,rD,model.getVersion()));
+                    }
+                    for( CollectionDescriptor cD: cld.getAllCollectionDescriptors() ) {
+                      if (!indirections.contains(cD) && cD.relationType() == FieldDescriptor.M_N_RELATION) {
+                        indirections.add(cD);
+                        keyCheckPW.print(writeCollectionKeyCheck(cld,cD,model.getVersion()));
+                      }
                     }
                 }
             }
@@ -226,26 +234,47 @@ public class BuildTriggerMaker extends Task
             removerPW.close();
             keyCheckPW.close();
         } catch (Exception e) {
-            throw new BuildException("Something bad happened: " + e.getMessage());
+            throw new BuildException("Something bad happened: " + e.getClass());
         }
     }
 
     /**
-     * Generate SQL that propagates actions from a table to InterMineObject.
+     * Generate SQL that checks for dangling foreign keys.
      *
      * @param c
      *          ClassDescriptor for the base table
      * @return SQL to generate functions and triggers
      */
-    private static String writeForeignKeyCheck(final ClassDescriptor c,final ReferenceDescriptor r) {
+    private static String writeForeignKeyCheck(final ClassDescriptor c,final ReferenceDescriptor r,int version) {
+      String indirectionColumn = r.getName();
+      String referencedTable = DatabaseUtil.getTableName(r.getReferencedClassDescriptor());
       return "SELECT CASE WHEN COUNT(*)>0 THEN "
-          + "COUNT(*) || ' "+r.getName()+"s missing from "+c.getUnqualifiedName()+"' ELSE "
+          + "COUNT(*) || ' "+r.getName()+"(s) missing from "+c.getUnqualifiedName()+"' ELSE "
           + " 'All "+r.getName()+"s found in "+c.getUnqualifiedName()+"' END FROM "
           + " "+c.getUnqualifiedName()+" t LEFT OUTER JOIN "
           + getDBName(r.getReferencedClassDescriptor().getUnqualifiedName())+" r"
           + " ON r.id=t."+r.getName()+"id WHERE r.id IS NULL AND t."+r.getName()+"id IS NOT NULL"
           + " AND t.class='"+c.getName()+"';\n";
       
+    }
+       /**
+     * Generate SQL that checks for dangling foreign keys.
+     *
+     * @param c
+     *          ClassDescriptor for the base table
+     * @return SQL to generate functions and triggers
+     */
+    private static String writeCollectionKeyCheck(final ClassDescriptor c,final CollectionDescriptor cD,int version) {
+
+      String indirectionTable = DatabaseUtil.getIndirectionTableName(cD);
+      String indirectionColumn = DatabaseUtil.getInwardIndirectionColumnName(cD, version);
+      String referencedTable = DatabaseUtil.getTableName(cD.getReferencedClassDescriptor());
+      return "SELECT CASE WHEN COUNT(*)>0 THEN "
+          + "COUNT(*) || ' "+indirectionColumn+"(s) missing from "+indirectionTable+"' ELSE "
+          + " 'All "+indirectionColumn+" found in "+indirectionTable+"' END FROM "
+          + " "+indirectionTable+" t LEFT OUTER JOIN "
+          + referencedTable +" r"
+          + " ON r.id=t."+indirectionColumn+" WHERE r.id IS NULL AND t."+indirectionColumn+" IS NOT NULL;\n\n";
     }
     /**
      * Generate SQL that propagates actions from a table to InterMineObject.
