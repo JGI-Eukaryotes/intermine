@@ -153,3 +153,10 @@
     <property name="createrelations" value="false" />
     <property name="methodIds" value="5209" />
   </source>
+  <source name="phytozome-cluster-crown12.1.2" type="phytozome-clusters">
+    <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Phytozome V12" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5232,5233,5234,5235" />
+  </source>

@@ -1092,15 +1092,15 @@
     <property name="genus" value="Populus" />
     <property name="name" value="Populus deltoides WV94" />
     <property name="species" value="deltoides WV94" />
-    <property name="assemblyDbxrefId" value="13640200" />
+    <property name="assemblyDbxrefId" value="16142204" />
     <property name="proteomeId" value="445" />
     <property name="taxonId" value="3696" />
-    <property name="annotationVersion" value="v1.1" />
+    <property name="annotationVersion" value="v2.1" />
     <property name="dataSourceName" value="phytozome-P.deltoides_WV94" />
     <property name="shortName" value="P. deltoides WV94 early-release" />
     <property name="version" value="early-release" />
-    <property name="annotationDbxrefId" value="13658079" />
-    <property name="assemblyVersion" value="v1.0" />
+    <property name="annotationDbxrefId" value="16142533" />
+    <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
   <source name="phytozome-chado-B.oleracea_capitata-446" type="phytozome-db">
@@ -1345,14 +1345,14 @@
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="sorghum rio" />
     <property name="genus" value="Sorghum" />
-    <property name="name" value="Sorghum bicolor rio" />
-    <property name="species" value="bicolor rio" />
+    <property name="name" value="Sorghum bicolor Rio" />
+    <property name="species" value="bicolor Rio" />
     <property name="assemblyDbxrefId" value="15056298" />
     <property name="proteomeId" value="468" />
     <property name="taxonId" value="4558" />
     <property name="annotationVersion" value="v2.1" />
     <property name="dataSourceName" value="phytozome-S.bicolor_rio" />
-    <property name="shortName" value="S. bicolor rio early-release" />
+    <property name="shortName" value="S. bicolor Rio early-release" />
     <property name="version" value="early-release" />
     <property name="annotationDbxrefId" value="15056852" />
     <property name="assemblyVersion" value="v2.0" />
@@ -1372,6 +1372,40 @@
     <property name="shortName" value="V. unguiculata early-release" />
     <property name="version" value="early-release" />
     <property name="annotationDbxrefId" value="14947266" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-B.sylvaticum-490" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Brachypodium sylvaticum" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium sylvaticum" />
+    <property name="species" value="sylvaticum" />
+    <property name="assemblyDbxrefId" value="15315309" />
+    <property name="proteomeId" value="490" />
+    <property name="taxonId" value="29664" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-B.sylvaticum" />
+    <property name="shortName" value="B. sylvaticum early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="15315311" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-C.arietinum-492" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="chickpea" />
+    <property name="genus" value="Cicer" />
+    <property name="name" value="Cicer arietinum" />
+    <property name="species" value="arietinum" />
+    <property name="assemblyDbxrefId" value="15286666" />
+    <property name="proteomeId" value="492" />
+    <property name="taxonId" value="3827" />
+    <property name="annotationVersion" value="v1.0" />
+    <property name="dataSourceName" value="phytozome-C.arietinum" />
+    <property name="shortName" value="C. arietinum early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="15286668" />
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>

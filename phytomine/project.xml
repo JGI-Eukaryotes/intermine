@@ -366,6 +366,15 @@
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
+    <source name="phytozome-homologs4" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    </source>
+
+    <source name="phytozome-homologs12.1.2" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    </source>
 
     <source name="pathologic-pathway-Metacyc" type="biopax-pathway">
       <property name="src.data.dir.includes" value="Metacyc.owl" />
@@ -944,8 +953,8 @@
       <property name="proteomeId" value="468" />
       <property name="organism.prefix" value="SbicolorRio-EARLY-RELEASE" />
       <property name="src.data.dir.includes" value="SbicolorRio_468.owl" />
-      <property name="method" value="pathologic"/>
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
+      <property name="method" value="pathologic"/>
     </source>
 
     <source name="pathologic-pathway-Vunguiculata_469" type="biopax-pathway">
@@ -956,6 +965,21 @@
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
     </source>
 
+    <source name="pathologic-pathway-Bsylvaticum_490" type="biopax-pathway">
+      <property name="proteomeId" value="490" />
+      <property name="organism.prefix" value="Bsylvaticum-EARLY-RELEASE" />
+      <property name="src.data.dir.includes" value="Bsylvaticum_490.owl" />
+      <property name="src.data.dir" value="/global/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="method" value="pathologic"/>
+    </source>
+
+    <source name="pathologic-pathway-Carietinum_492" type="biopax-pathway">
+      <property name="proteomeId" value="492" />
+      <property name="organism.prefix" value="Carietinum-EARLY-RELEASE" />
+      <property name="src.data.dir.includes" value="Carietinum_492.owl" />
+      <property name="src.data.dir" value="/global/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="method" value="pathologic"/>
+    </source>
 
     <source name="TAIR-GO" type="go-annotation">
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/go/" />
@@ -1114,3 +1138,4 @@
     <post-process name="create-lucene-index" />
   </post-processing>
 </project>
+
