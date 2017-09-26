@@ -1409,3 +1409,71 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
+  <source name="phytozome-chado-O.europaea-451" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="olive" />
+    <property name="genus" value="Olea" />
+    <property name="name" value="Olea europaea" />
+    <property name="species" value="europaea" />
+    <property name="assemblyDbxrefId" value="14149749" />
+    <property name="proteomeId" value="451" />
+    <property name="taxonId" value="4146" />
+    <property name="annotationVersion" value="v1.0" />
+    <property name="dataSourceName" value="phytozome-O.europaea" />
+    <property name="shortName" value="O. europaea early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="14149751" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-H.annuus-494" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="sunflower" />
+    <property name="genus" value="Helianthus" />
+    <property name="name" value="Helianthus annuus" />
+    <property name="species" value="annuus" />
+    <property name="assemblyDbxrefId" value="16470273" />
+    <property name="proteomeId" value="494" />
+    <property name="taxonId" value="4232" />
+    <property name="annotationVersion" value="r1.2" />
+    <property name="dataSourceName" value="phytozome-H.annuus" />
+    <property name="shortName" value="H. annuus early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="16470275" />
+    <property name="assemblyVersion" value="r1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-P.hallii-495" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Hall's panicgrass" />
+    <property name="genus" value="Panicum" />
+    <property name="name" value="Panicum hallii" />
+    <property name="species" value="hallii" />
+    <property name="assemblyDbxrefId" value="16522520" />
+    <property name="proteomeId" value="495" />
+    <property name="taxonId" value="206008" />
+    <property name="annotationVersion" value="v3.1" />
+    <property name="dataSourceName" value="phytozome-P.hallii" />
+    <property name="shortName" value="P. hallii early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="16522522" />
+    <property name="assemblyVersion" value="v3.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-P.hallii_HAL-496" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Panicum hallii HAL" />
+    <property name="genus" value="Panicum" />
+    <property name="name" value="Panicum hallii HAL" />
+    <property name="species" value="hallii HAL" />
+    <property name="assemblyDbxrefId" value="16427748" />
+    <property name="proteomeId" value="496" />
+    <property name="taxonId" value="206008" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-P.hallii_HAL" />
+    <property name="shortName" value="P. hallii HAL early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="16427749" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>

@@ -376,6 +376,11 @@
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
 
+    <source name="phytozome-homologs12.1.3" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    </source>
+
     <source name="pathologic-pathway-Metacyc" type="biopax-pathway">
       <property name="src.data.dir.includes" value="Metacyc.owl" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
@@ -977,6 +982,38 @@
       <property name="proteomeId" value="492" />
       <property name="organism.prefix" value="Carietinum-EARLY-RELEASE" />
       <property name="src.data.dir.includes" value="Carietinum_492.owl" />
+      <property name="src.data.dir" value="/global/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="method" value="pathologic"/>
+    </source>
+
+    <source name="pathologic-pathway-Oeuropaea_451" type="biopax-pathway">
+      <property name="proteomeId" value="451" />
+      <property name="organism.prefix" value="Oeuropaea-EARLY-RELEASE" />
+      <property name="src.data.dir.includes" value="Oeuropaea_451.owl" />
+      <property name="src.data.dir" value="/global/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="method" value="pathologic"/>
+    </source>
+
+    <source name="pathologic-pathway-Phallii_495" type="biopax-pathway">
+      <property name="proteomeId" value="495" />
+      <property name="organism.prefix" value="Phallii-EARLY-RELEASE" />
+      <property name="src.data.dir.includes" value="Phallii_495.owl" />
+      <property name="src.data.dir" value="/global/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="method" value="pathologic"/>
+    </source>
+
+    <source name="pathologic-pathway-PhalliiHAL_496" type="biopax-pathway">
+      <property name="proteomeId" value="496" />
+      <property name="organism.prefix" value="PhalliiHAL-EARLY-RELEASE" />
+      <property name="src.data.dir.includes" value="PhalliiHAL_496.owl" />
+      <property name="src.data.dir" value="/global/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+      <property name="method" value="pathologic"/>
+    </source>
+
+    <source name="pathologic-pathway-Hannuus_494" type="biopax-pathway">
+      <property name="proteomeId" value="494" />
+      <property name="organism.prefix" value="Hannuus-EARLY-RELEASE" />
+      <property name="src.data.dir.includes" value="Hannuus_494.owl" />
       <property name="src.data.dir" value="/global/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
       <property name="method" value="pathologic"/>
     </source>
