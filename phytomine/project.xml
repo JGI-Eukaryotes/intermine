@@ -381,6 +381,11 @@
       <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
     </source>
 
+    <source name="phytozome-homologs12.1.4" type="inparanoid-homologs" >
+      <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/inparanoid-homologs/" />
+      <property name="src.data.dir.includes" value="table.*.fa-*.fa" />
+    </source>
+
     <source name="pathologic-pathway-Metacyc" type="biopax-pathway">
       <property name="src.data.dir.includes" value="Metacyc.owl" />
       <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/"/>
