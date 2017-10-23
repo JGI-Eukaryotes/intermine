@@ -280,6 +280,7 @@
   <class className="org.intermine.model.bio.Homolog">
     <fields>
       <fieldconfig fieldExpr="gene.primaryIdentifier"/>
+      <fieldconfig fieldExpr="ortholog_organism.shortName"/>
       <fieldconfig fieldExpr="ortholog_gene.primaryIdentifier"/>
     </fields>
   </class>
