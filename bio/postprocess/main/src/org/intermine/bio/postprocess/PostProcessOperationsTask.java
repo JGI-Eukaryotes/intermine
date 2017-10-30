@@ -224,15 +224,15 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
                 cloi.create();
             } else if ("transfer-go-terms".equals(operation)) {
               TransferGOAnnotations task = new TransferGOAnnotations(getObjectStoreWriter());
-              task.execute();           
+              task.execute();
+            } else if ("transfer-pathways-to-genes".equals(operation)) {
+              TransferPathwaysToGenes task = new TransferPathwaysToGenes(getObjectStoreWriter());
+              task.execute();    
             } else if ("transfer-ontology-terms".equals(operation)) {
               TransferOntologyAnnotations task = new TransferOntologyAnnotations(getObjectStoreWriter());
               task.execute();
             } else if ("transfer-protein-domains".equals(operation)) {
               TransferDomainAnnotations task = new TransferDomainAnnotations(getObjectStoreWriter());
-              task.execute();
-            } else if ("add-singleton-sequence".equals(operation)) {
-              SingletonSequenceTransfer task = new SingletonSequenceTransfer(getObjectStoreWriter());
               task.execute();
             } else if ("populate-child-features".equals(operation)) {
             	PopulateChildFeatures jb = new PopulateChildFeatures(getObjectStoreWriter());

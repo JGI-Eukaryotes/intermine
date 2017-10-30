@@ -1,65 +1,75 @@
 package org.intermine.bio.postprocess;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
+
 import org.intermine.bio.util.Constants;
-import org.intermine.metadata.ConstraintOp;
+import org.intermine.model.bio.CrossReference;
 import org.intermine.model.bio.Gene;
-import org.intermine.model.bio.Organism;
 import org.intermine.model.bio.Pathway;
 import org.intermine.model.bio.Protein;
+import org.intermine.model.bio.ProteinDomain;
+import org.intermine.model.bio.ProteinAnalysisFeature;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.intermine.ObjectStoreInterMineImpl;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.ContainsConstraint;
+import org.intermine.objectstore.query.SimpleConstraint;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryCollectionReference;
 import org.intermine.objectstore.query.QueryField;
-import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.QueryValue;
+import org.intermine.objectstore.query.QueryObjectReference;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
-import org.intermine.objectstore.query.SimpleConstraint;
-import org.intermine.postprocess.PostProcessor;
 
-public class BiopaxPathwayPostProcess extends PostProcessor {
+/**
+ * Take any GOAnnotation objects assigned to proteins and copy them to corresponding genes and proteins.
+ * The GO terms are stored slightly differently. At the gene level, they are GOAnnotations. The
+ * proteins are stored as OntologyAnnotations.
+ *
+ * Modified for phytozome schema from GoPostprocess
+ * 
+ * @author J Carlson 
+ */
 
-  protected String organismPrefix = null;
-  protected Integer proteomeId = null;
-  
-  protected static final Logger LOG =
-      Logger.getLogger(BiopaxPathwayPostProcess.class);
+public class TransferPathwaysToGenes {
+
+  private static final Logger LOG = Logger.getLogger(TransferPathwaysToGenes.class);
+  protected ObjectStore os;
+  protected ObjectStoreWriter osw = null;
 
   /**
-   * Constructor
-   * @param writer the ItemWriter used to handle the resultant items
-   * @param model the Model
+   * Create a new UpdateOrthologes object from an ObjectStoreWriter
+   * @param osw writer on genomic ObjectStore
    */
-  public BiopaxPathwayPostProcess(ObjectStoreWriter writer) {
-    super(writer);
+  public  TransferPathwaysToGenes(ObjectStoreWriter osw) {    
+    this.osw = osw;
+    this.os = osw.getObjectStore();
   }
 
   /**
-   *
-   *
-   * {@inheritDoc}
+   * Copy all Protein Domains annotations from the ProteinAnalysisFeature cross reference objects 
+   * to the corresponding Protein(s)
+   * @throws ObjectStoreException if anything goes wrong
    */
-  public void postProcess() throws BuildException, ObjectStoreException {
+  public void execute() throws ObjectStoreException {
+
+    long startTime = System.currentTimeMillis();
     // we need to associate genes with the pathways.
     LOG.info("In the postprocessor.");
-    // if this is null, then there is nothing to do.
-    if (proteomeId==null) return;
     
     Query q = new Query();
     ConstraintSet cs = new ConstraintSet(ConstraintOp.AND);
-    QueryClass qcOrganism = new QueryClass(Organism.class);
     QueryClass qcGene = new QueryClass(Gene.class);
     QueryClass qcPathway = new QueryClass(Pathway.class);
     QueryClass qcProtein = new QueryClass(Protein.class);
@@ -68,7 +78,6 @@ public class BiopaxPathwayPostProcess extends PostProcessor {
     q.addToSelect(qcGene);
     q.addFrom(qcPathway);
     q.addToSelect(qcPathway);
-    q.addFrom(qcOrganism);
     q.addFrom(qcProtein);
 
     q.addToOrderBy(qcPathway);
@@ -78,13 +87,6 @@ public class BiopaxPathwayPostProcess extends PostProcessor {
     
     QueryCollectionReference proteinGene = new QueryCollectionReference(qcProtein,"genes");
     cs.addConstraint(new ContainsConstraint(proteinGene, ConstraintOp.CONTAINS, qcGene));
-
-    QueryField qfProteome = new QueryField(qcOrganism,"proteomeId");
-    QueryValue qvProteome = new QueryValue(proteomeId);
-    cs.addConstraint(new SimpleConstraint(qfProteome, ConstraintOp.EQUALS, qvProteome));
-    
-    QueryObjectReference pathwayOrganism = new QueryObjectReference(qcPathway,"organism");
-    cs.addConstraint(new ContainsConstraint(pathwayOrganism, ConstraintOp.CONTAINS, qcOrganism));
 
     q.setConstraint(cs);
     ObjectStore os = osw.getObjectStore();
@@ -142,16 +144,6 @@ public class BiopaxPathwayPostProcess extends PostProcessor {
     LOG.info("Created " + count + " Gene.pathways collections");
     
   }
-  
-  public void setOrganismPrefix(String s) {
-    this.organismPrefix = s;
-  }
 
-  public void setProteomeId(String proteomeId) throws ObjectStoreException {
-    try {
-      this.proteomeId = new Integer(proteomeId);
-    } catch (NumberFormatException e) {
-      throw new BuildException("proteomeId is not an integer.");
-    }
-  }
 }
+
