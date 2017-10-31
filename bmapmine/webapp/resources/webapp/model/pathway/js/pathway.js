@@ -213,9 +213,11 @@ var extractMenuItems = function (d) {
   d.genes.forEach( function(e) {
     var gN = e.name;
     geneLinks[gN] = [];
-    e.links.forEach( function(f) {
-      geneLinks[gN].push({"label":f.label,"url":f.url});
-    } )
+    if (e.links) {
+      e.links.forEach( function(f) {
+        geneLinks[gN].push({"label":f.label,"url":f.url});
+      } )
+    }
   });
 }
 
@@ -250,19 +252,21 @@ var labelReactions = function (d) {
   var pData = [];
   d.genes.forEach( function(dd) {
     var menu = [];
-    dd.links.forEach( function(ee) {
-       if (/PhytoWeb/.test(ee.label)) ee.label = "Phytozome Gene Report";
-        menu.push({title: ee.label,
+    if( dd.links) {
+       dd.links.forEach( function(ee) {
+         if (/PhytoWeb/.test(ee.label)) ee.label = "Phytozome Gene Report";
+          menu.push({title: ee.label,
                    action: function() {doLinkout(ee.url)}});
-       });
-    pData.push({ content: dd.name,
-                 class: "highlighter diagram gene",
-                 baseColor: geneLabelAttrs.diagramColor,
-           highlightedColor: geneLabelAttrs.highlightedColor,
-                 menu: menu,
-                 line: lineCtr }
-               );
-    lineCtr++;
+         });
+      pData.push({ content: dd.name,
+                   class: "highlighter diagram gene",
+                   baseColor: geneLabelAttrs.diagramColor,
+             highlightedColor: geneLabelAttrs.highlightedColor,
+                   menu: menu,
+                   line: lineCtr }
+                 );
+      lineCtr++;
+    }
   });
 
   el.text("")
