@@ -13,10 +13,13 @@ package org.intermine.webservice.server.query;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.intermine.api.InterMineAPI;
+import org.intermine.objectstore.intermine.ObjectStoreInterMineRestrictedImpl;
 import org.intermine.web.context.InterMineContext;
 import org.intermine.webservice.server.Format;
 import org.intermine.webservice.server.WebService;
@@ -59,7 +62,7 @@ public abstract class AbstractQueryService extends WebService
             final Properties webProperties = InterMineContext.getWebProperties();
             String baseUrl = webProperties.getProperty("webapp.baseurl");
             String path = webProperties.getProperty("webapp.path");
-            String relPath = path + "/service/" + XML_SCHEMA_LOCATION;
+            String relPath = path + "/" + XML_SCHEMA_LOCATION;
             URL url = new URL(baseUrl + "/" + relPath);
             return url.toString();
         } catch (MalformedURLException e) {
@@ -86,7 +89,24 @@ public abstract class AbstractQueryService extends WebService
      * @return Whether or not the format is for JSON-Objects
      */
     protected boolean formatIsJsonObj() {
-        return getFormat() == Format.OBJECTS;
+      return getFormat() == Format.OBJECTS;
     }
 
+    /**
+     * @Override
+     */
+    protected void initState() {
+      Method m;
+      try {
+        m = im.getObjectStore().getClass().getDeclaredMethod("initState",HttpServletRequest.class);
+      } catch (NoSuchMethodException | SecurityException e) {
+        return;
+      }
+      try {
+        m.invoke(im.getObjectStore(),request);
+      } catch (IllegalAccessException | IllegalArgumentException
+          | InvocationTargetException e) {
+        return;
+      }
+    }
 }

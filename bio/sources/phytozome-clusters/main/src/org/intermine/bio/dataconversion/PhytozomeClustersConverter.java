@@ -1,25 +1,14 @@
 package org.intermine.bio.dataconversion;
 
-/*
- * Copyright (C) 2002-2016 FlyMine
- *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  See the LICENSE file for more
- * information or http://www.gnu.org/copyleft/lesser.html.
- *
- */
-
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,7 +21,6 @@ import java.util.zip.Inflater;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
-import org.intermine.dataloader.IntegrationWriterDataTrackingImpl;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.CrossReference;
@@ -45,9 +33,7 @@ import org.intermine.model.bio.Protein;
 import org.intermine.model.bio.ProteinFamily;
 import org.intermine.model.bio.ProteinFamilyMember;
 import org.intermine.model.bio.Sequence;
-import org.intermine.model.fulldata.Reference;
 import org.intermine.objectstore.ObjectStoreException;
-import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.objectstore.query.ConstraintSet;
 import org.intermine.objectstore.query.PendingClob;
 import org.intermine.objectstore.query.Query;
@@ -392,7 +378,7 @@ public class PhytozomeClustersConverter extends DBDirectDataLoaderTask
     try {
       Statement stmt = connection.createStatement();
       //String query = "SELECT zMSA,zHMM,sequence,clusterName,"
-      String query = "SELECT zMSA,zHMM,null as sequence,clusterName,"
+      String query = "SELECT null as zMSA,null as zHMM,sequence,clusterName,"
           + " clusterDetail.id as clusterId,"
           + " methodId AS methodId"
           + " FROM"

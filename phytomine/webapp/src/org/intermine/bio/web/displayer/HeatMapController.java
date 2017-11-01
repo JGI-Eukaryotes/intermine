@@ -12,28 +12,24 @@ package org.intermine.bio.web.displayer;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
-import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
-import org.apache.tools.ant.BuildException;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -43,21 +39,11 @@ import org.intermine.api.results.ResultElement;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
-import org.intermine.objectstore.query.Query;
-import org.intermine.objectstore.query.QueryClass;
-import org.intermine.objectstore.query.QueryField;
-import org.intermine.objectstore.query.QueryFunction;
-import org.intermine.objectstore.query.QueryNode;
-import org.intermine.objectstore.query.Results;
-import org.intermine.objectstore.query.ResultsRow;
 import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.OrderDirection;
 import org.intermine.pathquery.PathQuery;
 import org.intermine.web.logic.session.SessionMethods;
-import org.intermine.xml.full.Item;
-import org.jfree.util.Log;
 import org.json.JSONObject;
-import org.intermine.model.bio.CufflinksScore;
 
 /**
  * Class that generates heatMap data for a list of genes or exons.
@@ -288,20 +274,20 @@ public class HeatMapController extends TilesAction
 
         // Add views
         query.addViews(
-                bagType + ".cufflinksscores.bioentity.primaryIdentifier",
-                bagType + ".cufflinksscores.fpkm",
-                bagType + ".cufflinksscores.experiment.name",
+                bagType + ".rnaSeqExpressions.bioentity.primaryIdentifier",
+                bagType + ".rnaSeqExpressions.abundance",
+                bagType + ".rnaSeqExpressions.experiment.name",
                 bagType + ".organism.taxonId"
         );
 
         // Add orderby
-        query.addOrderBy(bagType + ".cufflinksscores.bioentity.primaryIdentifier",
+        query.addOrderBy(bagType + ".rnaSeqExpressions.bioentity.primaryIdentifier",
             OrderDirection.ASC);
-        query.addOrderBy(bagType + ".cufflinksscores.experiment.name",
+        query.addOrderBy(bagType + ".rnaSeqExpressions.experiment.name",
             OrderDirection.ASC);
 
         // Add constraints
-        query.addConstraint(Constraints.in(bagType + ".cufflinksscores.bioentity",
+        query.addConstraint(Constraints.in(bagType + ".rnaSeqExpressions.bioentity",
                 bag.getName()));
 
         return query;

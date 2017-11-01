@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 import org.apache.log4j.Logger;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.ProfileManager;
+import org.intermine.api.tracker.TrackerDelegate;
 import org.intermine.api.profile.Caliban;
 import org.intermine.util.PropertiesUtil;
 import org.intermine.web.logic.profile.LoginHandler;
@@ -125,6 +126,8 @@ public class CalibanAuthenticator extends HttpServlet {
       String token = identity.get("token");
       prof.setApiKey(token);
       LoginHandler.doStaticLogin(request, identity.get("login"), null);
+      // track this login.
+      SessionMethods.getInterMineAPI(request).getTrackerDelegate().trackLogin(identity.get("login"));
       response.sendRedirect(
           InterMineAction.getWebProperties(request).getProperty("project.sitePrefix")+returnTo);
     }

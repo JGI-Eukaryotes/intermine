@@ -44,13 +44,13 @@ import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
-import org.intermine.model.userprofile.PermanentToken;
+import org.intermine.modelproduction.MetadataManager;
+import org.intermine.model.userprofile.PermanentToken;;
 import org.intermine.model.userprofile.SavedBag;
 import org.intermine.model.userprofile.SavedQuery;
 import org.intermine.model.userprofile.SavedTemplateQuery;
 import org.intermine.model.userprofile.Tag;
 import org.intermine.model.userprofile.UserProfile;
-import org.intermine.modelproduction.MetadataManager;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStoreWriter;
@@ -594,24 +594,35 @@ public class ProfileManager
             UserProfile userProfile = getUserProfile(userId);
 
             if (userProfile != null) {
-                // delete all templates and queries in the database
-                // we're going to load the ones in memory into the database next
-                // this should be cleverer
+                userProfile.setApiKey(profile.getApiKey());
                 for (Iterator i = userProfile.getSavedQuerys().iterator(); i.hasNext();) {
                     uosw.delete((InterMineObject) i.next());
                 }
+
                 for (Iterator i = userProfile.getSavedTemplateQuerys().iterator();
-                        i.hasNext();) {
+                     i.hasNext();) {
                     uosw.delete((InterMineObject) i.next());
                 }
             } else {
-                throw new RuntimeException("Cannot save this profile: The UserProfile is null");
+                // Should not happen
+                // throw new RuntimeException("The UserProfile is null");
+                // no. it can happen. For accounts created through external procedures.
+                 userProfile = new UserProfile();
+                 userProfile.setUsername(profile.getUsername());
+                 userProfile.setPassword(profile.getPassword());
+                 userProfile.setId(userId);
+                 userProfile.setDateRegistered(new Date());
+                 // this is going to be incremented very soon.
+                 userProfile.setLoginCount(new Integer(-1));
             }
 
             userProfile.setApiKey(profile.getApiKey());
+            userProfile.setLoginCount(userProfile.getLoginCount()+1);
 
             syncSavedQueries(profile, userProfile);
             syncTemplates(profile, userProfile);
+            
+            userProfile.setDateLogin(new Date());
 
             uosw.store(userProfile);
             profile.setUserId(userProfile.getId());
@@ -629,31 +640,46 @@ public class ProfileManager
                 savedTemplate.setUserProfile(userProfile);
             }
             String xml = TemplateQueryBinding.marshal(template, pathQueryFormat);
-            try {
-                savedTemplate.setTemplateQuery(xml);
-                uosw.store(savedTemplate);
-                template.setSavedTemplateQuery(savedTemplate);
-            } catch (Exception e) {
-                LOG.error("Failed to marshal and save template: " + template, e);
+            if (!xml.equals(savedTemplate.getTemplateQuery())) { // Different - needs update.
+                try {
+                    savedTemplate.setTemplateQuery(xml);
+                    uosw.store(savedTemplate);
+                    template.setSavedTemplateQuery(savedTemplate);
+                } catch (Exception e) {
+                    LOG.error("Failed to marshal and save template: " + template, e);
+                }
             }
         }
     }
 
     private void syncSavedQueries(Profile profile, UserProfile userProfile)
         throws ObjectStoreException {
+        // Index the currently saved queries by their query XML,
+        // so we know if we need to update them.
+        Map<String, SavedQuery> toDelete = new HashMap<String, SavedQuery>();
+        for (SavedQuery sq: userProfile.getSavedQuerys()) {
+            //uosw.delete(sq);
+            toDelete.put(sq.getQuery(), sq);
+        }
+
         for (Entry<String, org.intermine.api.profile.SavedQuery> entry
                 : profile.getSavedQueries().entrySet()) {
             org.intermine.api.profile.SavedQuery query = entry.getValue();
             try {
                 String xml = SavedQueryBinding.marshal(query, pathQueryFormat);
-                SavedQuery savedQuery = new SavedQuery();
-                savedQuery.setQuery(xml);
-                savedQuery.setUserProfile(userProfile);
-                uosw.store(savedQuery);
-
+                SavedQuery savedQuery = toDelete.remove(xml);
+                if (savedQuery == null) { // Need to write a new one.
+                    savedQuery = new SavedQuery();
+                    savedQuery.setQuery(xml);
+                    savedQuery.setUserProfile(userProfile);
+                    uosw.store(savedQuery);
+                }
             } catch (Exception e) {
                 LOG.error("Failed to marshal and save query: " + query, e);
             }
+        }
+        for (SavedQuery delendum: toDelete.values()) {
+            uosw.delete(delendum);
         }
     }
 
@@ -745,6 +771,10 @@ public class ProfileManager
             userProfile.setPassword(PasswordHasher.hashPassword(profile.getPassword()));
         }
         userProfile.setSuperuser(profile.isSuperUser);
+        Date now = new Date();
+        userProfile.setDateRegistered(now);
+        userProfile.setDateLogin(now);
+        userProfile.setLoginCount(new Integer(0));
 
         try {
             uosw.store(userProfile);
@@ -1454,21 +1484,60 @@ public class ProfileManager
     }
 
     private Profile getProfileByApiKey(String token, Map<String,
-            List<FieldDescriptor>> classKeys) {
-        UserProfile profile = new UserProfile();
+        List<FieldDescriptor>> classKeys) {
+      UserProfile profile = new UserProfile();
+      
+      // Phytozome modification. We will query caliban to
+      // see if this token is a legitimate session id.
+      boolean useCalibanAuthenticator = true;
+      
+      if (!useCalibanAuthenticator) {
         profile.setApiKey(token);
         Set<String> fieldNames = new HashSet<String>();
         fieldNames.add("apiKey");
         try {
-            profile = uosw.getObjectByExample(profile, fieldNames);
-        } catch (ObjectStoreException e) {
-            return null; // Could not be found.
+          profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
+        } catch (ObjectStoreException e1) {
+          return null;
         }
-        if (profile == null) {
-            throw new AuthenticationException(
-                "'" + token + "' is not a valid API access key");
+      } else {
+        HashMap<String,String> identity = null;
+        try {
+          // this will validate the token every time.
+          identity = Caliban.getIdentityHash(token);
+        } catch (Exception e) {}
+        if ( identity != null) {
+          Set<String> fieldNames = new HashSet<String>();
+          fieldNames.add("username");
+          profile = new UserProfile();
+          profile.setUsername(identity.get("login"));
+          profile.setApiKey(token);
+          try {
+            profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
+          } catch (ObjectStoreException e1) {
+            return null;
+          }
+          // if the identity hash is not null, but profile is null, this is
+          // a new user. We need to create a new user profile.
+          if (profile == null) {
+            Caliban.createUserAccount(this,identity);
+            // and repeat
+            profile = new UserProfile();
+            profile.setUsername(identity.get("login"));
+            profile.setApiKey(token);
+            try {
+              profile = (UserProfile) uosw.getObjectByExample(profile, fieldNames);
+            } catch (ObjectStoreException e1) {
+              return null;
+            }
+          }
         }
-        return getProfile(profile.getUsername(), classKeys);
+      }
+      if (profile == null) {
+        throw new AuthenticationException(
+            "'" + token + "' is not a valid API access key");
+      }
+      return getProfile(profile.getUsername(), classKeys);
     }
 
     /**

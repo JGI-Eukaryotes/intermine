@@ -5,6 +5,9 @@
     <attribute name="apiKey" type="java.lang.String"/>
     <attribute name="localAccount" type="boolean"/>
     <attribute name="superuser" type="boolean"/>
+    <attribute name="dateRegistered" type="java.util.Date"/>
+    <attribute name="dateLogin" type="java.util.Date"/>
+    <attribute name="loginCount" type="java.lang.Integer"/>
     <collection name="savedBags" referenced-type="SavedBag" reverse-reference="userProfile"/>
     <collection name="savedQuerys" referenced-type="SavedQuery" reverse-reference="userProfile"/>
     <collection name="savedTemplateQuerys" referenced-type="SavedTemplateQuery" reverse-reference="userProfile"/>

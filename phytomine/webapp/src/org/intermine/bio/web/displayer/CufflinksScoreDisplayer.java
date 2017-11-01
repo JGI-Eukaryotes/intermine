@@ -1,27 +1,21 @@
 package org.intermine.bio.web.displayer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.query.PathQueryExecutor;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
-import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.BioEntity;
-import org.intermine.model.bio.ProteinFamily;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.pathquery.Constraints;
 import org.intermine.pathquery.OrderDirection;
 import org.intermine.pathquery.PathQuery;
-import org.intermine.util.DynamicUtil;
 import org.intermine.web.displayer.ReportDisplayer;
 import org.intermine.web.logic.config.ReportDisplayerConfig;
 import org.intermine.web.logic.results.ReportObject;
@@ -76,23 +70,24 @@ public class CufflinksScoreDisplayer extends ReportDisplayer {
   }
   private PathQuery getScores(BioEntity b) {
     PathQuery query = new PathQuery(im.getModel());
-    query.addViews("CufflinksScore.experiment.name","CufflinksScore.experiment.experimentGroup",
-        "CufflinksScore.fpkm");
-    query.addOrderBy("CufflinksScore.experiment.name", OrderDirection.ASC);
-    query.addConstraint(Constraints.eq("CufflinksScore.bioentity.id",b.getId().toString()));
+    query.addViews("RNASeqExpression.experiment.name","RNASeqExpression.experiment.experimentGroup",
+        "RNASeqExpression.abundance");
+    query.addOrderBy("RNASeqExpression.experiment.name", OrderDirection.ASC);
+    query.addConstraint(Constraints.eq("RNASeqExpression.bioentity.id",b.getId().toString()));
+    query.addConstraint(Constraints.eq("RNASeqExpression.method","cufflinks"));
     return query;
   }
   public class Score {
     private String experiment;
     private String group;
-    private Float fpkm;
-    public Score(String experiment,String group, Float fpkm) {
+    private Float abundance;
+    public Score(String experiment,String group, Float abundance) {
       this.experiment = experiment;
       this.group = group;
-      this.fpkm = fpkm;
+      this.abundance = abundance;
     }
     public String getExperiment() { return experiment; }
     public String getGroup() { return group; }
-    public Float getFpkm() { return fpkm; }
+    public Float getAbundance() { return abundance; }
     }
 }

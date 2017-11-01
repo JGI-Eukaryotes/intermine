@@ -49,7 +49,8 @@ public class CreateFlankingRegions
     /**
      * The sizes in kb of flanking regions to create.
      */
-    private static double[] distances = new double[] {0.5, 1, 2, 5, 10};
+    // InterMine default: private static double[] distances = new double[] {0.5, 1, 2, 5, 10};
+    private static double[] distances = new double[] { 5};
 
     /**
      * The values strings for up/down stream from a gene.

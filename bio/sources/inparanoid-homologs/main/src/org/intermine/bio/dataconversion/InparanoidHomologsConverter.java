@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.intermine.dataconversion.ItemWriter;
@@ -145,12 +144,12 @@ public class InparanoidHomologsConverter extends BioFileConverter
                 continue;
               } else {
                 Item o = createItem("Homolog");
-                o.setReference("organism1",organismMap.get(Integer.parseInt(p1)));
-                o.setReference("organism2", organismMap.get(Integer.parseInt(p2)));
+                o.setReference("organism",organismMap.get(Integer.parseInt(p1)));
+                o.setReference("orthlog_organism", organismMap.get(Integer.parseInt(p2)));
                 String gene1 = "PAC:"+fields1[i1];
                 String gene2 = "PAC:"+fields2[i2];
-                o.setReference("gene1",getGene(gene1,p1));
-                o.setReference("gene2",getGene(gene2,p2));
+                o.setReference("gene",getGene(gene1,p1));
+                o.setReference("ortholog_gene",getGene(gene2,p2));
                 o.setAttribute("groupName",groupName);
                 //o.setAttribute("method", "inParanoid");
                 o.setAttribute("relationship", relationship);

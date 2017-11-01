@@ -19,7 +19,7 @@
        <tr>
          <th> Experiment Name </th>
          <th> Experiment Group  </th>
-         <th> FPKM </th>
+         <th> Abundance </th>
        </tr>
     </thead>
     <tbody>
@@ -27,7 +27,7 @@
         <tr>
            <td> ${row.experiment} </td>
            <td> ${row.group} </td>
-           <td> ${row.fpkm} </td>
+           <td> ${row.abundance} </td>
         </tr>
       </c:forEach>
     </tbody>

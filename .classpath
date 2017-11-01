@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="phytomine/webapp/src"/>
+	<classpathentry kind="src" path="intermine/api/model/userprofile/src"/>
 	<classpathentry kind="src" path="bio/postprocess/main/src"/>
+	<classpathentry kind="src" path="bio/sources/differential-expression/main/src"/>
 	<classpathentry kind="src" path="phytomine/dbmodel/build/gen/src"/>
 	<classpathentry kind="src" path="intermine/integrate/model/fulldata/build/gen/src"/>
 	<classpathentry kind="src" path="bio/sources/e2p2-enzymes/main/src"/>
@@ -75,7 +78,6 @@
 	<classpathentry kind="src" path="intermine/web/main/src"/>
 	<classpathentry kind="src" path="intermine/webapp/main/src"/>
 	<classpathentry kind="src" path="bio/sources/biopax-pathway/main/src"/>
-	<classpathentry kind="src" path="phytomine/webapp/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/phytomine-load/dbmodel/build/classes" sourcepath="phytomine-load/dbmodel/build/gen/src"/>
 	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/imbuild/lib/im-ant-tasks.jar"/>
@@ -95,6 +97,7 @@
 	<classpathentry kind="lib" path="intermine/web/main/lib/struts-extras-1.3.10.jar"/>
 	<classpathentry kind="lib" path="intermine/web/main/lib/struts-taglib-1.3.10.jar"/>
 	<classpathentry kind="lib" path="intermine/web/main/lib/struts-tiles-1.3.10.jar"/>
-	<classpathentry kind="lib" path="bio/sources/biopax-pathway/main/lib/paxtools-4.3.1.jar"/>
+	<classpathentry kind="lib" path="bio/sources/biopax-pathway/main/lib/paxtools-4.3.1.jar" sourcepath="/global/u1/j/jcarlson/workspace/Paxtools/paxtools-core"/>
+	<classpathentry kind="lib" path="bio/sources/biopax-pathway/main/lib/commons-text-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

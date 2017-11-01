@@ -16,6 +16,8 @@ var geneLinks = {}; // derived from pathway diagram's json, needed in expression
  * downloaded as a single, dependency free file.
 */
 
+var baseFontSize = 16;
+
 var pathAttrs = {
   stroke: "#444",
   strokeWidth: 1.6,
@@ -39,6 +41,18 @@ var smallFontAttrs = {
   color: "#222",
   size: "10px"
 };
+
+var supAttrs = {
+  "vertical-align": "super",
+  "font-size": "65%"
+}
+var subAttrs = {
+  "vertical-align": "sub",
+  "font-size": "65%"
+}
+var italicAttrs = {
+  "font-style": "italic"
+}
 
 var ecLabelAttrs = {
   diagramColor: "#222", //#d80",
@@ -101,6 +115,13 @@ var adjustPanesHeight = function(d) {
     }
 
 };
+ 
+  // what is the quadrant (1-4) given an angle in degrees?
+var quadrantOf = function (d) {
+    // map into the range of [0,360)
+    var ranged = (parseInt(d)%360 + 360)%360;
+    return (parseInt((parseInt(ranged)+45)/90))%4+1;
+  }
 
 var splits = {};
 
@@ -163,8 +184,8 @@ var getSvgElementDimensions = function(element) {
 
 var setSvgElementDimensions = function (element) {
   var bbox = getSvgElementDimensions(element);
-  var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 50;
-  var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 50;
+  var h = Math.ceil(bbox.height === 0 ? 1000 : bbox.height) + 150;
+  var w = Math.ceil(bbox.width === 0 ? 1000 : bbox.width) + 150;
   var x = Math.floor(bbox.x) - 50;
   var y = Math.floor(bbox.y) - 50;
   element.attr("width", w)
@@ -188,6 +209,7 @@ var setFlex = function() {
 
 
 var extractMenuItems = function (d) {
+  if (!d.genes) return;
   d.genes.forEach( function(e) {
     var gN = e.name;
     geneLinks[gN] = [];
@@ -199,52 +221,82 @@ var extractMenuItems = function (d) {
 
 var labelReactions = function (d) {
   var el = d3.select(this);
+
+  // optionally label with reaction names
+  // this is really just for development.
+  if (options.labelRxnNames) {
+    el.text(d.label);
+    return;
+  }
+
   // do not touch the label if there are no ECs and no genes.
-  if (d.ecs.length == 0 && d.genes.length == 0 ) return;
+  if ( (!d.genes || d.genes.length == 0) && (!d.ecs || d.ecs.length == 0) ) return;
+
+  var lineCtr = 0;
+  var ecData = [];
+  d.ecs.forEach( function(dd) {
+    var menu = [{title: 'ExPASy Information',
+               action: function() { doLinkout("http://enzyme.expasy.org/EC/"+dd)} }];
+    ecData.push({ content: dd,
+                  class: "highlighter diagram ec",
+                  baseColor: ecLabelAttrs.diagramColor,
+                  highlightedColor: ecLabelAttrs.highlightedColor,
+                  menu: menu,
+                  line: lineCtr }
+                );
+    lineCtr++;
+  });
+
+  var pData = [];
+  d.genes.forEach( function(dd) {
+    var menu = [];
+    dd.links.forEach( function(ee) {
+       if (/PhytoWeb/.test(ee.label)) ee.label = "Phytozome Gene Report";
+        menu.push({title: ee.label,
+                   action: function() {doLinkout(ee.url)}});
+       });
+    pData.push({ content: dd.name,
+                 class: "highlighter diagram gene",
+                 baseColor: geneLabelAttrs.diagramColor,
+           highlightedColor: geneLabelAttrs.highlightedColor,
+                 menu: menu,
+                 line: lineCtr }
+               );
+    lineCtr++;
+  });
 
   el.text("")
     .attr("font-size", fontAttrs.size);
 
-  var ecData = [];
-  d.ecs.forEach( function(dd) {
-    ecData.push({ content: dd,
-                  class: "highlighter diagram ec",
-                  baseColor: ecLabelAttrs.diagramColor,
-                  highlightedColor: ecLabelAttrs.highlightedColor }
-                );
-  });
-  var pData = [];
-  d.genes.forEach( function(dd) {
-    pData.push({ content: dd.name,
-                 class: "highlighter diagram gene",
-                 baseColor: geneLabelAttrs.diagramColor,
-           highlightedColor: geneLabelAttrs.highlightedColor }
-               );
-  });
-  el.selectAll("tspan").data(ecData).enter().append("tspan")
-                       .attr("x",el.attr("x"))
-                       .attr("dy","1em")
+  // for more that 4 lines, we're going to truncate a that
+  lineCtr = (lineCtr>4)?4:lineCtr;
+  // placement.
+  placementOptions = {};
+  switch( quadrantOf(d.orient) ) {
+    case 1: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"left" }; break;
+    case 2: placementOptions = { "x":d.x, "y":d.y, "align":"left" }; break;
+    case 3: placementOptions = { "x":d.x, "y":d.y-baseFontSize*(lineCtr-1), "align":"left" }; break;
+    case 4: placementOptions = { "x":d.x, "y":d.y, "align":"right" }; break;
+  }
+
+  var geneTspan = el.selectAll("tspan").data(ecData.concat(pData)).enter().append("tspan")
+                       .attr("x",placementOptions.x)
+                       .attr("y",function(d) { return placementOptions.y+baseFontSize*d.line})
                        .attr("class", function (dd) { return dd.class })
                        .text(function(dd) { return dd.content })
                        .style("fill", function(dd) { return dd.baseColor });
 
-  var geneTspan = el.selectAll("tspan").filter(function (e) { return 0;}).data(pData)
-                       .enter().append("tspan")
-                       .attr("x",el.attr("x"))
-                       .attr("dy","1em")
-                       .attr("class", function(dd) { return dd.class })
-                       .text(function(dd) { return dd.content })
-                       .style("fill", function(dd) { return dd.baseColor } );
+  geneTspan.each( function (d) {
+           var thisElement = d3.select(this);
+           thisElement.on("contextmenu", d3.contextMenu(d.menu)) });
 
 
   // add elements and class names to hide / show excess ecs & genes in reaction label if necessary.
-  // see setPathwayEventHandlers() below for the click handlers.
-
   if (el.selectAll("tspan").size() > 4) {
           el.classed("has-ellipse", true);
 
        el.append("tspan")
-           .attr("x", el.attr("x"))
+           .attr("x",d.labelX)
            .attr("dy", "1em")
            .attr("text-decoration", "underline")
            .classed("reaction-control", true)
@@ -256,7 +308,7 @@ var labelReactions = function (d) {
            .classed("no-display hidable", true);
 
        el.insert("tspan", ":nth-child(4)")
-           .attr("x", el.attr("x"))
+           .attr("x",placementOptions.x)
            .attr("dy", "1em")
            .attr("text-decoration", "underline")
            .classed("reaction-control hidable", true)
@@ -266,22 +318,72 @@ var labelReactions = function (d) {
   }
 }
 
+var styledWith = function (p1, styleAttrs) {
+  var stylesString = ""
+  Object.keys(styleAttrs).forEach( function (key) {
+    stylesString += key + ":" + styleAttrs[key] + ";"
+  })
+  return '<' + p1 + ' style="' + stylesString + '">'
+}
+
 var renderLabels = function (d) {
   var el = d3.select(this);
   if (d.label) {
+    //console.log('for label '+d.label+' x,y,text-anchor are '+el.attr('x')+', '+el.attr('y')+', '+el.attr('text-anchor')+'.');
     var parent = this.parentElement;
-    var lines = d.label.split('<br>');
-    var lineCtr = -lines.length/2.;
-    lines.forEach( function(e) {
-      var lineSize = measureText(e,15);
-      d3.select(parent).append('g').append("foreignObject")
-        .attr("width",lineSize.width)
-        .attr("x",(el.attr('text-anchor')==='end')?parseInt(el.attr("x"))-lineSize.width:el.attr('x'))
-        .attr("y",parseInt(el.attr("y"))+15*lineCtr++)
-        .attr("height",15)
-        .append("xhtml:span")
-        .html(e);
-      });
+    var label = d.label.split("<br>").join("<br />")
+    //console.log('label', label)
+    // var lines = d.label.split('<br>');
+    // var lineCtr = 0;
+    // lines.forEach( function(e) {
+      var lineSize = measureText(label, baseFontSize);
+      // placement.
+      placementOptions = {};
+      switch( quadrantOf(d.orient) ) {
+        case 1: placementOptions = { "x":d.x - lineSize.width/2,
+                                     "y":d.y};
+                break;
+        case 2: placementOptions = { "x":"0", "dy":"0", "align":"left" }; break;
+        case 3: placementOptions = { "x":d.x - lineSize.width/2,
+                                     "y":d.y};
+                break;
+        case 4: placementOptions = { "x":"0", "dy":"0", "align":"right" }; break;
+      }
+      var styledD = label.replace(/<(i)>|<(em)>/ig, function(match, p1) { return styledWith(p1, italicAttrs) })
+                         .replace(/<(sub)>/ig, function(match, p1) { return styledWith(p1, subAttrs) })
+                         .replace(/<(sup)>/ig, function(match, p1) { return styledWith(p1, supAttrs) })
+                         .replace(/'/g,'&#39;');
+      //console.log('html for label:', styledD);
+      d3.select(parent).append('g')
+        .append("foreignObject")
+         .attr("width",lineSize.width)
+         .attr("x",placementOptions.x)
+         .attr("y", function () { if (d.type === "link") {
+                                    return placementOptions.y - 8;
+                                  } else {
+                                    return placementOptions.y;
+                                  }})
+         //.attr("height",baseFontSize)
+         .attr("height",lineSize.height)
+         .attr("class","foreign-object")
+         .append("xhtml:body")
+         .attr("xmlns", "http://www.w3.org/1999/xhtml")
+         .style("padding", 0)
+         .style("margin", 0)
+         .style("background-color","rgba(255,255,255,0)")
+         .append("xhtml:div")
+         .style("font-size", fontAttrs.size)
+         .style("color", fontAttrs.color)
+         .style("font-family", fontAttrs.family)
+        // these 3 lines weare an experiment in short form of names with a long form on mouseover.
+        // replace with .html(styledD) to revert.
+        // .attr("onmouseover","innerHTML='"+styledD+"'")
+        // .attr("onmouseout","innerHTML='"+styledD.substr(0,30)+(styledD.length>30?"...'":"'"))
+        // .html(styledD.substr(0,30)+(styledD.length>30?"...":""));
+        // comment out this line if the previous 3 are uncommented
+         .html(styledD);
+      // lineCtr++;
+      // });
   }
   return;
 };
@@ -296,6 +398,7 @@ var measureText = function(pText, pFontSize) {
   lDiv.style.top = -1000;
   lDiv.innerHTML = pText;
   var lResult = {
+    // it seems that we need to skosh this up a bit.
     width: lDiv.clientWidth,
     height: lDiv.clientHeight
   };
@@ -330,7 +433,11 @@ var getCoords = function (elem) { // crossbrowser version
 
 // Pathway diagram main function //
 
-var loadPathwayDiagram = function(container,json) {
+var options = {};
+
+var loadPathwayDiagram = function(container,json,optArgs) {
+
+  if(optArgs != null) options = optArgs;
 
   // the 'save svg' handler.
   d3.select("#save").on("click",function() {
@@ -343,7 +450,7 @@ var loadPathwayDiagram = function(container,json) {
     var blob = new Blob(["<?xml version=\"1.0\" standalone=\"no\"?>" +
                          "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" "+
                          "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" +
-                         svg.outerHTML],
+                         svg.outerHTML.replace(/<br>/ig, '<br />')],
                          { type: "image/svg+xml"});
     var url = URL.createObjectURL(blob);
     var link = document.createElement("a");
@@ -385,7 +492,7 @@ var loadPathwayDiagram = function(container,json) {
                                          .style("font-family", fontAttrs.family)
                                          .style("color", fontAttrs.color);
 
-  
+
   // defs: arrowheads, dropshadows
   var refX = 7;
   var refY = 2.5;
@@ -474,17 +581,18 @@ var loadPathwayDiagram = function(container,json) {
   json.groups.forEach( function(d) {
     // each group has up to 3 members. This will generate a name
     // that is unique enough
-    var thisId = d[0] + ":" + d[1] + ":" + d[2];
+    var thisId = 'node-group' + d[0] + "-" + d[1] + "-" + d[2];
     containerData.push({"id":thisId});
     d.forEach( function(e) { parents[e] = thisId; });
   });
 
-  // and insert them. This is initially unpositioed.
+  // and insert them. This is initially unpositioned.
   // we'll position it as we populate it with the elements
   var nodeGroups = masterGroup.selectAll("g")
-              .data(containerData)
+              .data(containerData,function(e) { return e.id })
               .enter()
               .append("g")
+              .attr("orient",0)
               .attr("id",function(d){return d.id; })
               .attr("class","moveable")
 
@@ -499,60 +607,57 @@ var loadPathwayDiagram = function(container,json) {
     var parentGroup = masterGroup.selectAll("g")
                                  .filter(function(dd){return dd.id === parentGroupId;});
 
-    // if the type of the node is "reaction" or "link", the location
-    // of this node is the anchor point for the group. This is where
-    // the line goes to.
-    if ( d.type === 'link' || d.type == 'reaction') {
+    // if the type of the node is "reaction", "link", "source" or "drain",
+    // the location of this node is the anchor point for the group.
+    // This is where the line goes to.
+    if (d.type === 'link' || d.type == 'reaction' || d.type === 'source' || d.type == 'drain') {
       // we'll keep track of both the original (x,y) and current (x,y)
-      parentGroup.each(function(e) { e.x = 5*d.x; e.y = 15*d.y ; e.baseX = e.x; e.baseY = e.y} );
+      parentGroup.each(function(e) { e.x = d.x;
+                                     e.y = d.y ;
+                                     e.baseX = e.x;
+                                     e.baseY = e.y;
+                                     e.orient=d.orient} );
     }
 
     // each node has a rectangle and text. These will be their own group one level lower.
     var nodeGroup = parentGroup.selectAll("g")
                                .filter(function(dd) { return dd.id === d.id; })
-                               .data([{id:d.id,x:5.*d.x,y:15.*d.y}])
+                               .data([{"id":d.id,
+                                        "x":d.x,
+                                        "y":d.y,
+                                        "labelX":d.labelX,
+                                        "labelY":d.labelY,
+                                        "orient":d.orient,
+                                        "type":d.type}],function(e) { return e.id})
                                .enter()
                                .append("g")
+                               .attr("class","anchored")
                                .attr("id", d.id);
 
     // put a rectangle in the group, and with tooltip if it's a reaction
     nodeGroup.selectAll("rect")
-               .data([{"id":d.id,"groupId":parentGroupId,"tooltip":d.tooltip}])
+               .data([{"id":d.id,"groupId":parentGroupId,"tooltip":d.tooltip,"orient":d.orient}],
+                      function(e) { return e.id })
                .enter()
                .append("rect")
                .attr("id", "rect-" + d.id)
                .attr("class","rect no-display")
-               .attr("x", 5*d.x)
-               .attr("y", 15*d.y);
+               .attr("height",10)
+               .attr("width",10)
+               .attr("orient",d.orient)
+               .attr("x", d.x-5)
+               .attr("y", d.y-5);
 
     // and the text holder, with a tooltip that will show up if it's in the data
     nodeGroup.selectAll("text")
                .data([{"id":d.id,"label":d.label,
-                        "type":d.type, "xCoor":d.x,
-                        "yCoor":d.y, "labelHeight":d.height,
+                        "type":d.type, "x":d.labelX,
+                        "y":d.labelY, "labelHeight":d.height,"orient":d.orient,
                         "tooltip":d.tooltip, "genes":d.genes, "ecs":d.ecs}])
                .enter().append("text")
-               .attr("x", function(d){
-                 if (d.type === "reaction" || d.type === "link") {
-                   return 5 * d.xCoor;
-                 }
-                 return 5*d.xCoor + 10;
-                 })
-               .attr("y", function(d){
-                 if (d.labelHeight === 1) {
-                   return 15 * d.yCoor + 8;
-                 } else if (d.type === "reaction" && ( d.genes.length + d.ecs.length > 3)) {
-                   return 15 * (d.yCoor - 1.5);
-                 }
-                 return 15 * d.yCoor;
-                 })
-               .attr("text-anchor", function(d){
-                 if (d.type === "link") {
-                   return "beginning";
-                 }
-                 return "end";
-                 })
-               .attr("text-anchor",(d.type==="input"||d.type==="output")?"beginning":"end")
+               .attr("x", function(d){ return textPlacement(d).x;})
+               .attr("y", function(d){ return textPlacement(d).y;})
+               .attr("text-anchor", function(d){ return textPlacement(d).anchor;})
                .attr("alignment-baseline","middle")
                .attr("class", function(dd){
                  if (dd.type === "reaction") {
@@ -585,6 +690,8 @@ var loadPathwayDiagram = function(container,json) {
            });
 
   });
+
+
 
   // dismiss the tooltip if the pathway diagram is scrolled
 
@@ -640,25 +747,42 @@ var loadPathwayDiagram = function(container,json) {
 
   function inputArcFunction(f) {
     // how to draw an arc for an input compound
+    var sweep;
+    switch(quadrantOf(f.orient)) {
+      case 1: sweep = 1; break;
+      case 2: sweep = 1; break;
+      case 3: sweep = 0; break;
+      case 4: sweep = 0; break;
+    }
+    //console.log('input quad and sweep are '+quadrantOf(f.orient)+" "+sweep);
+
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+"," +
-              Math.abs(f.y1-f.y2)+" 0 0 0 "+
+              Math.abs(f.y1-f.y2)+" 0 0 "+sweep+" "+
               f.x2+","+f.y2;
     return str;
   }
 
   function outputArcFunction(f) {
     // how to draw an arc for an output compound
+    var sweep;
+    switch(quadrantOf(f.orient)) {
+      case 1: sweep = 1; break;
+      case 2: sweep = 1; break;
+      case 3: sweep = 0; break;
+      case 4: sweep = 0; break;
+    }
+    //console.log('output quad and sweep are '+quadrantOf(f.orient)+" "+sweep);
     var str = "M"+f.x1+","+f.y1+
               " A"+Math.abs(f.x1-f.x2)+","+
-              Math.abs(f.y1-f.y2)+" 0 0 0 "+
+              Math.abs(f.y1-f.y2)+" 0 0 "+sweep+" "+
               f.x2+","+f.y2;
     return str;
   }
 
+
   // create links.
-  // This data structure is what we're going to pass to the force layout
-  var forceLinkData = [];
+  var linkData = [];
   json.links.forEach( function(d) {
     // source and target
     // at this point we don"t know what we have.
@@ -676,7 +800,9 @@ var loadPathwayDiagram = function(container,json) {
                                          "x1":parseInt(source.attr("x"))+5,
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
-                                         "y2":parseInt(target.attr("y"))+5 }],
+                                         "y2":parseInt(target.attr("y"))+5,
+                                         "orient":target.attr("orient")}
+                                         ],
                                          function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
                                          .append("path")
@@ -695,24 +821,37 @@ var loadPathwayDiagram = function(container,json) {
                                          "x1":parseInt(source.attr("x"))+5,
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
-                                         "y2":parseInt(target.attr("y"))+5 }],
+                                         "y2":parseInt(target.attr("y"))+5,
+                                         "orient":source.attr("orient")}
+                                        ],
                                          function(dd){return dd.id===d.source+":"+d.target;})
                                          .enter()
                                          .append("path")
                                          .style("stroke", pathAttrs.stroke)
                                          .style("stroke-width", pathAttrs.strokeWidth)
                                          .style("fill", pathAttrs.fill)
-                                         .attr("marker-end","url(#n_degree_arrowend)")
+                                         .attr("marker-end","url(#arrowend)")
                                          .attr("d",outputArcFunction);
     } else if (type === 'link') {
       // a movable line
-      forceLinkData.push( {"id":parents[d.source]+'->'+parents[d.target], "source":parents[d.source],"target":parents[d.target] } );
+      //
+      var sourceGroup = masterGroup.selectAll("g")
+                                 .filter(function(ddd) { return ddd.id===parents[d.source]; });
+      var targetGroup = masterGroup.selectAll("g")
+                                 .filter(function(ddd) { return ddd.id===parents[d.target]; });
+      sourceGroup.each( function(a) { targetGroup.each ( function(b) {
+                       linkData.push( {"id":parents[d.source]+'->'+parents[d.target],
+                                        "source":a,
+                                        "target":b,
+                                        "orient": d.orient} );
+                                        });
+                      });
     }
 
   });
 
   var link = masterGroup.append("g").selectAll("line")
-                                    .data(forceLinkData)
+                                    .data(linkData)
                                     .enter()
                                     .append("line")
                                     .attr("marker-end","url(#arrowend)")
@@ -722,42 +861,19 @@ var loadPathwayDiagram = function(container,json) {
 
   // discover how large the svg is and explicitly set it on the root <svg> node
   setSvgElementDimensions(svgContainer);
+  refreshPositions();
 
-  // initiate the layout.
-  simulation = d3.forceSimulation()
-                     .force("link", d3.forceGridLink())
-                     .force("collision", d3.forceGridCollision())
-                     .force("gravity",d3.forceGravity())
-                     ;
-
-  simulation.force("link").distance(100).strength(1).id(function (d) { return d.id;});
-  simulation.force("collision").strength(1);
-  simulation.force("collision").exclude(forceLinkData);
-  simulation.force("collision").distanceX(200).distanceY(75);
-  simulation.force("gravity").strengthY(function(d) { return 10*d.y/svgContainer.attr('height');} );
-
-  simulation.nodes(containerData).on("tick", refreshPositions);
-  simulation.force("link").links(forceLinkData);
-
-  simulation.on('end',function() {
-    // install the zoom handler on the zoom buttons
-    d3.select("#zoom-in").on("click", function() {
-         zoomDiagram.scaleBy(svgContainer, 1.25);
-        });
-    d3.select("#zoom-out").on("click", function() {
-         zoomDiagram.scaleBy(svgContainer, 0.8);
-        });
-    // install a drag handler for every group inside the master group that has an 'id'
-    masterGroup.selectAll("g.moveable").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
-
-    // development. remove for production
-    svgContainer.on('mousemove', function() { console.log("Mouse is at "+d3.mouse(this)); });
-
-
-   });
+  // install the zoom handler on the zoom buttons
+  d3.select("#zoom-in").on("click", function() {
+       zoomDiagram.scaleBy(svgContainer, 1.25);
+      });
+  d3.select("#zoom-out").on("click", function() {
+       zoomDiagram.scaleBy(svgContainer, 0.8);
+      });
+  // install a drag handler for every group inside the master group that has an 'id'
+  masterGroup.selectAll("g.moveable").filter(function(dd) { return (dd.id && !(dd.id in parents)); }).call(drag);
 
   function refreshPositions() {
-    simulation.force("gravity").strengthY(function(d) { return 10*d.y/svgContainer.attr('height');} );
     link
         .attr("x1", function(d) { return d.source.x+5; })
         .attr("y1", function(d) { return d.source.y; })
@@ -1296,11 +1412,13 @@ var loadExpressionTable = function(initialContainer, rawJson) {
       }
 
       var menu = [];
-      geneLinks[geneName].forEach( function(f) {
-        if (/PhytoWeb/.test(f.label)) f.label = "Phytozome Gene Report";
-        menu.push({title: f.label,
+      if( geneLinks[geneName]) {
+        geneLinks[geneName].forEach( function(f) {
+          if (/PhytoWeb/.test(f.label)) f.label = "Phytozome Gene Report";
+          menu.push({title: f.label,
                    action: function() { doLinkout(f.url)}});
-      });
+        });
+      }
       menu.push({ title: "Plot " + geneName,
                   action: function(elem, d, i) { makeBarplot(d, gene, colorScale) }});
 
@@ -1412,6 +1530,44 @@ var setDiagramEventHandlers = function () {
     // });
 
 };
+
+var textPlacement = function(d) {
+  // a place holder for the return.
+  // maybe not the best values; but something.
+  var result = { x: d.x, y: d.y, anchor: 'middle' };
+  // the orientatation angle in the range of [0,360)
+  var rangedOrient = (d.orient%360 + 360)%360;
+
+  if (rangedOrient <= 45 || rangedOrient > 315) {
+    // flow is left to right
+    switch(d.type) {
+      case "source":
+        result.anchor = "end";
+        break;
+      case "drain":
+        result.anchor = "beginning";
+        break;
+      default:
+        result.anchor = "middle";
+    }
+    return result;
+  } else if (rangedOrient <= 135) {
+    switch(d.type) {
+      case "link":
+        result.anchor = "beginning";
+        break;
+      default:
+        result.anchor = "middle";
+    }
+    return result;
+  } else if (rangedOrient <= 225) {
+    // flow is right to left
+    return result;
+  } else if (rangedOrient <= 316) {
+    // flow is bottom to top
+    return result;
+  }
+}
 
 
 // handlers for expression tables / graph / interaction between these and diagram

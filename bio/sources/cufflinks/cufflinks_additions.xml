@@ -5,10 +5,10 @@
 <!-- add any <class> elements here -->
 
   <class name="BioEntity" is-interface="true">
-    <collection name="cufflinksscores" referenced-type="CufflinksScore" reverse-reference="bioentity" />
+    <collection name="rnaSeqExpressions" referenced-type="RNASeqExpression" reverse-reference="bioentity" />
   </class>
 
-  <class name="RNAseqExperiment" is_interface="true">
+  <class name="RNASeqExperiment" is_interface="true">
     <attribute name="name" type="java.lang.String" />
     <attribute name="experimentGroup" type="java.lang.String" />
     <attribute name="description" type="java.lang.String" />
@@ -16,8 +16,9 @@
     <reference name="organism" referenced-type="Organism" />
   </class>
 
-  <class name="CufflinksScore" is_interface="true">
-    <attribute name="fpkm" type="java.lang.Float" />
+  <class name="RNASeqExpression" is_interface="true">
+    <attribute name="method" type="java.lang.String" />
+    <attribute name="abundance" type="java.lang.Float" />
     <attribute name="conflo" type="java.lang.Float" />
     <attribute name="confhi" type="java.lang.Float" />
     <attribute name="count" type="java.lang.Float" />
@@ -28,6 +29,19 @@
     <attribute name="libraryExpressionLevel" type="java.lang.String" />"
     <attribute name="locusExpressionLevel" type="java.lang.String" />"
     <reference name="bioentity" referenced-type="BioEntity" />
-    <reference name="experiment" referenced-type="RNAseqExperiment" />
+    <reference name="experiment" referenced-type="RNASeqExperiment" />
   </class>
+
+  <class name="RNASeqEnrichment" is_interface="true">
+    <attribute name="logChange" type="java.lang.Float" />
+    <attribute name="stat" type="java.lang.Float" />
+    <attribute name="pvalue" type="java.lang.Float" />
+    <attribute name="padj" type="java.lang.Float" />
+    <attribute name="method" type="java.lang.String" />
+    <reference name="bioentity" referenced-type="BioEntity" />
+    <reference name="experiment" referenced-type="RNASeqExperiment" />
+    <reference name="referenceExperiment" referenced-type="RNASeqExperiment" />
+    <reference name="organism" referenced-type="Organism" />
+  </class>
+
 </classes>

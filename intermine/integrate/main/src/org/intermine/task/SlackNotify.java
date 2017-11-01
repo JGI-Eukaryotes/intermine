@@ -18,6 +18,7 @@ public class SlackNotify extends Task {
   
   private Properties projectProperties;
   private String sourceAttribute = "all sources.";
+  private String messageAttribute = "<unknown>";
 
   /**
    * Set and load properties. The propertiesFile must lie in the classpath.
@@ -45,6 +46,11 @@ public class SlackNotify extends Task {
   public void setSource(String source) {
       this.sourceAttribute = source.replaceAll(" ","+");
   }
+
+  public void setMessage(String message) {
+      this.messageAttribute = message.replaceAll(" ","+");
+  }
+  
   
   public void execute() throws BuildException {
     
@@ -59,7 +65,7 @@ public class SlackNotify extends Task {
     }
 
     System.out.println("Sending notification for completion of "+sourceAttribute);
-    String urlParameters = "token="+token+"&channel="+channel+"&text=Loaded+source+"+sourceAttribute+"&username=InterMine+Builder";
+    String urlParameters = "token="+token+"&channel="+channel+"&text=Source+"+sourceAttribute+"+"+messageAttribute+".&username=InterMine+Builder";
     
     HttpsURLConnection con;
     try {

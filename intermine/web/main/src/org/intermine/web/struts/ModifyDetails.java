@@ -1,5 +1,8 @@
 package org.intermine.web.struts;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /*
  * Copyright (C) 2002-2016 FlyMine
  *
@@ -278,6 +281,18 @@ public class ModifyDetails extends DispatchAction
         HttpSession session = request.getSession();
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         ObjectStore os = im.getObjectStore();
+        
+        // call initState on the objectstore if you can.
+        try {
+          Method m = os.getClass().getDeclaredMethod("initState",HttpServletRequest.class);
+          try {
+            m.invoke(os,request);
+          } catch (IllegalAccessException | IllegalArgumentException
+              | InvocationTargetException e) {
+          }
+        } catch (NoSuchMethodException | SecurityException e) {
+        }
+   
 
         try {
             InterMineObject o = os.getObjectById(new Integer(reportObjectID));

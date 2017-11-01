@@ -2,34 +2,31 @@
 <classes>
 
 <class name="Pathway" is-interface="true">
-  <attribute name="primaryIdentifier" type="java.lang.String" />
+  <attribute name="identifier" type="java.lang.String" />
   <attribute name="method" type="java.lang.String" />
   <attribute name="status" type="java.lang.String" />
   <reference name="organism" referenced-type="Organism" reverse-reference="pathways" />
   <reference name="pathwayInfo" referenced-type="PathwayInfo" reverse-reference="pathways" />
-  <collection name="components" referenced-type="PathwayComponent" reverse-reference="pathway"/>
   <collection name="proteins" referenced-type="Protein" reverse-reference="pathways"/>
   <collection name="genes" referenced-type="Gene" reverse-reference="pathways"/>
 </class>
 <class name="PathwayJSON" is_interface="false" extends="java.lang.Object">
   <attribute name="json" type="java.lang.String" />
-  <reference name="pathway" referenced-type="Pathway" />
+  <reference name="pathwayInfo" referenced-type="PathwayInfo" />
 </class>
-
-
 <class name="PathwayInfo" is-interface="true" >
   <attribute name="identifier" type="java.lang.String"/>
   <attribute name="name" type="java.lang.String"/>
   <attribute name="description" type="java.lang.String"/>
+  <collection name="components" referenced-type="PathwayComponent" reverse-reference="pathwayInfo"/>
   <collection name="pathways" referenced-type="Pathway" reverse-reference="pathwayInfo"/>
 </class>
 <class name="PathwayComponent" is-interface="true">
-  <attribute name="identifier" type="java.lang.String"/>
-  <attribute name="name" type="java.lang.String" />
   <attribute name="type" type="java.lang.String" />
+  <attribute name="key" type="java.lang.String" />
   <attribute name="step" type="java.lang.Integer" />
   <attribute name="level" type="java.lang.Integer" />
-  <reference name="pathway" referenced-type="Pathway" reverse-reference="components" />
+  <reference name="pathwayInfo" referenced-type="PathwayInfo" reverse-reference="components" />
   <collection name="proteins" referenced-type="Protein" reverse-reference="pathwayComponents" />
   <collection name="ontologyTerms" referenced-type="OntologyTerm" reverse-reference="pathwayComponents" />
 </class>
