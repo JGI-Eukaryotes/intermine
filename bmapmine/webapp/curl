@@ -1,0 +1,2 @@
+#!/bin/tcsh
+curl -g "https://bmap-dev.jgi.doe.gov/bmapmine/service/regions/sequence?query=%7B%22regions%22:[%22Alys_scaffold24%5Ct162566%5Ct162625%22],%22organism%22:%22472%22%7D"
