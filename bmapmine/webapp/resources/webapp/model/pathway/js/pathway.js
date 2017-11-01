@@ -258,15 +258,15 @@ var labelReactions = function (d) {
           menu.push({title: ee.label,
                    action: function() {doLinkout(ee.url)}});
          });
-      pData.push({ content: dd.name,
-                   class: "highlighter diagram gene",
-                   baseColor: geneLabelAttrs.diagramColor,
-             highlightedColor: geneLabelAttrs.highlightedColor,
-                   menu: menu,
-                   line: lineCtr }
-                 );
-      lineCtr++;
     }
+    pData.push({ content: dd.name,
+                 class: "highlighter diagram gene",
+                 baseColor: geneLabelAttrs.diagramColor,
+           highlightedColor: geneLabelAttrs.highlightedColor,
+                 menu: menu,
+                 line: lineCtr }
+               );
+    lineCtr++;
   });
 
   el.text("")
