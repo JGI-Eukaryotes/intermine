@@ -1,2 +1,2 @@
 #!/bin/tcsh
-wget -q -O /dev/stdout "http://phytozome.jgi.doe.gov/phytomine/service/regions/sequence?query=%7B%22regions%22:[%22Chr1%5Ct10692566%5Ct10692625%22],%22organism%22:%22167%22%7D"
+wget --no-check-certificate -v -O /dev/stdout "https://phytozome.jgi.doe.gov/phytomine/service/regions/sequence?query=%7B%22regions%22:[%22Chr1%5Ct10692566%5Ct10692625%22],%22organism%22:%22167%22%7D"
