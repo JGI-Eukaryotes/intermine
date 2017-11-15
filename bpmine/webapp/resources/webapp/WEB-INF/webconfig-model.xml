@@ -213,11 +213,11 @@
                      placement="summary"
                      types="SequenceFeature"/>
 
-    <reportdisplayer javaClass="org.intermine.bio.web.displayer.UniProtCommentsDisplayer"
+    <!--reportdisplayer javaClass="org.intermine.bio.web.displayer.UniProtCommentsDisplayer"
                      jspName="model/uniProtCommentsDisplayer.jsp"
                      replacesFields=""
                      placement="Proteins"
-                     types="Gene,Protein"/>
+                     types="Gene,Protein"/-->
 
   </reportdisplayers>
 
