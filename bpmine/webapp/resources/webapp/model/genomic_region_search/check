@@ -1,0 +1,64 @@
+create temp table j (short_name varchar(50), p_name text);
+copy j from stdin;
+A. trichopoda	evm_27.model.AmTr_v1.0_scaffold00019.73
+A. coerulea	Aquca_007_00918.1
+A. lyrata	491970
+A. lyrata	491701
+A. thaliana	AT4G28070.2
+A. thaliana	AT4G30490.1
+B. stricta	Bostr.7867s0641.1.p
+B. stricta	Bostr.7867s0901.1.p
+B. distachyon	Bradi3g19280.4.p
+B. stacei	Brast03G069600.1.p
+B. rapa FPsc	Brara.A01778.1.p
+B. rapa FPsc	Brara.K00821.1.p
+C. grandiflora	Cagra.1225s0091.1.p
+C. grandiflora	Cagra.0380s0076.1.p
+C. rubella	Carubv10004798m
+C. papaya	evm.model.supercontig_199.4
+C. clementina	Ciclev10008098m
+C. sativus	Cucsa.170370.1
+E. grandis	Eucgr.C01238.1.p
+E. salsugineum	Thhalv10025004m
+E. salsugineum	Thhalv10025101m
+G. max	Glyma.17G069900.1.p
+G. max	Glyma.02G207800.1.p
+G. raimondii	Gorai.004G105600.1
+K. laxiflora	Kalax.0203s0043.1.p
+K. laxiflora	Kalax.0586s0016.1.p
+K. laxiflora	Kalax.0007s0201.1.p
+K. laxiflora	Kalax.0079s0057.1.p
+M. domestica	MDP0000133901
+M. esculenta	Manes.14G150200.1.p
+M. truncatula	Medtr4g129950.2
+M. guttatus	Migut.J01404.1.p
+M. guttatus	Migut.K00290.1.p
+M. acuminata	GSMUA_Achr1P10190_001
+M. acuminata	GSMUA_Achr3P28020_001
+O. sativa	LOC_Os08g16480.1
+P. hallii	Pahal.D01608.1
+P. hallii	Pahal.F02096.1
+P. virgatum	Pavir.Fa01243.1.p
+P. virgatum	Pavir.J36130.1.p
+P. vulgaris	Phvul.003G152600.1
+P. trichocarpa	Potri.018G100900.1
+P. persica	Prupe.1G100000.1.p
+R. communis	27622.m000149
+S. purpurea	SapurV1A.0332s0110.1.p
+S. italica	Seita.6G099000.1.p
+S. italica	Seita.3G361700.1.p
+S. viridis	Sevir.6G108300.1.p
+S. viridis	Sevir.3G378400.1.p
+S. lycopersicum	Solyc07g006160.2.1
+S. tuberosum	PGSC0003DMP400019726
+S. bicolor	Sobic.007G095200.1.p
+S. bicolor	Sobic.006G153400.1.p
+S. polyrhiza	Spipo28G0013700
+T. cacao	Thecc1EG038478t2
+V. vinifera	GSVIVT01023713001
+Z. mays	GRMZM2G062412_P01
+Z. mays	GRMZM2G164649_P02
+\.
+
+select proteinfamilyid,count(*) from j, organism o, protein p, proteinfamily f, proteinfamilymember m where p.primaryidentifier=p_name and p.organismid=o.id and o.shortname=j.short_name and proteinid=p.id  and f.id=proteinfamilyid and methodname='Angiosperm' group by 1;
+
