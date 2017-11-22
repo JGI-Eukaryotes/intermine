@@ -20,14 +20,14 @@
     <tbody>
       <tr>
       <td class="seq-piece" >
-      <div style="background:rgb(235,235,235); line-height: 1em">
-                 ${fn:replace(fn:replace(alignment," ","&nbsp"),"\\n","<br>")} </pre>
+      <div style="background:rgb(235,235,235);">
+                 ${fn:replace(fn:replace(alignment," ","&nbsp"),"\\n","<br>")} </div>
       </td>
       </tr>
       <tr>
       <td class="hmm-piece" >
-      <div style="background:rgb(235,235,235); line-height: 1em">
-                 ${fn:replace(fn:replace(HMM," ","&nbsp"),"\\n","<br>")} </pre>
+      <div style="background:rgb(235,235,235);">
+                 ${fn:replace(fn:replace(HMM," ","&nbsp"),"\\n","<br>")} </div>
       </td>
       </tr>
     </tbody>
