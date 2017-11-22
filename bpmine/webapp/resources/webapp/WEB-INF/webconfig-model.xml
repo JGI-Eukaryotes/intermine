@@ -307,12 +307,13 @@
     </headerconfig>
      <fields>
       <fieldconfig fieldExpr="protein.primaryIdentifier" label="Protein Name" />
+      <!--fieldconfig fieldExpr="protein" displayer="/model/sequenceShortDisplayerWithField.jsp" /-->
       <fieldconfig fieldExpr="protein.organism.shortName" label="Organism Name" />
       <fieldconfig fieldExpr="proteinFamily.clusterId" label="Cluster ID" />
       <fieldconfig fieldExpr="proteinFamily.clusterName" label="Cluster Name" />
       <fieldconfig fieldExpr="count" label="Same Organism Count" />
-      <fieldconfig fieldExpr="proteinFamily.methodId" label="Method ID"/>
-      <fieldconfig fieldExpr="proteinFamily.methodName" label="Method Name"/>
+      <!--fieldconfig fieldExpr="proteinFamily.methodId" label="Method ID"/-->
+      <!--fieldconfig fieldExpr="proteinFamily.methodName" label="Method Name"/-->
     </fields>
   </class>
 
