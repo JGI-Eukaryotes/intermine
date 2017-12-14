@@ -179,31 +179,7 @@
       </script>
     </div><%-- #share --%>
 
-  <div id="lists_links">
-      <div id="in-lists">
-        <tiles:insert name="reportInList.tile">
-          <tiles:put name="object" beanName="object"/>
-        </tiles:insert>
-      </div>
 
-      <c:set var="object_bk" value="${object}"/>
-      <c:set var="object" value="${reportObject.object}" scope="request"/>
-      <div id="external-links">
-        <tiles:insert name="otherMinesLink.tile" />
-        <tiles:insert name="attributeLinks.tile" >
-            <tiles:put name="reportObject" beanName="object" />
-        </tiles:insert>
-      </div>
-      <c:set var="object" value="${object_bk}"/>
-
-      <%-- shown in a sidebar displayers --%>
-      <div id="displayers" class="table">
-        <tiles:insert page="/reportDisplayers.jsp">
-          <tiles:put name="placement" value="sidebar" />
-          <tiles:put name="reportObject" beanName="object" />
-        </tiles:insert>
-      </div>
-  </div><%-- #lists_links --%>
 </div><%-- #header_wrap --%>
 
 <div id="content">
@@ -287,6 +263,7 @@
     })();
   //]]>
   </script>
+
 </c:if>
 
 <div class="container_12">
@@ -302,6 +279,32 @@
   //]]>-->
 </script>
 <script type="text/javascript" src="js/inlinetemplate.js"></script>
+
+  <div id="lists_links" style="float:right;" class="grid_2 sidebar">
+      <div id="in-lists">
+        <tiles:insert name="reportInList.tile">
+          <tiles:put name="object" beanName="object"/>
+        </tiles:insert>
+      </div>
+
+      <c:set var="object_bk" value="${object}"/>
+      <c:set var="object" value="${reportObject.object}" scope="request"/>
+      <div id="external-links">
+        <tiles:insert name="attributeLinks.tile" >
+            <tiles:put name="reportObject" beanName="object" />
+        </tiles:insert>
+        <tiles:insert name="otherMinesLink.tile" />
+      </div>
+      <c:set var="object" value="${object_bk}"/>
+
+      <%-- shown in a sidebar displayers --%>
+      <div id="displayers" class="table">
+        <tiles:insert page="/reportDisplayers.jsp">
+          <tiles:put name="placement" value="sidebar" />
+          <tiles:put name="reportObject" beanName="object" />
+        </tiles:insert>
+      </div>
+  </div><%-- #lists_links --%>
 
 <div class="grid_10">
 

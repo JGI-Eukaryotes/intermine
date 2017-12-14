@@ -754,6 +754,7 @@ ul#submenulist li div { border-left-color:#7A7A7A; }
 #pagecontentcontainer.report-page #fixed-menu div.wrap a { color:#FFF; }
 #pagecontentcontainer.report-page #toc-menu-wrap div.wrap a.current,
 #pagecontentcontainer.report-page #fixed-menu div.wrap a.current { background:#FFF; color:#333; border-color:#629c2e; }
+#pagecontentcontainer.report-page #external-links h3.heading { background:#EBEBEB !important; border-color:#bbb; color:#333 !important; /*text-shadow:1px 1px 3px #ccc;*/ border: 0;}
 #pagecontentcontainer.report-page #in-lists div.heading { background:#EBEBEB !important; border-color:#bbb; color:#333 !important; /*text-shadow:1px 1px 3px #ccc;*/ border: 0;}
 #pagecontentcontainer.report-page .container_12 .highlight { background-color: #FFF3D3; }
 #pagecontentcontainer.report-page #object_header #headerLink a { color:#629c2e; }

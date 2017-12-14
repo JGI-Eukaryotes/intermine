@@ -1477,3 +1477,123 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
+  <source name="phytozome-chado-B.hybridum-463" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Brachypodium hybridum" />
+    <property name="genus" value="Brachypodium" />
+    <property name="name" value="Brachypodium hybridum" />
+    <property name="species" value="hybridum" />
+    <property name="assemblyDbxrefId" value="17033180" />
+    <property name="proteomeId" value="463" />
+    <property name="taxonId" value="1071398" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-B.hybridum" />
+    <property name="shortName" value="B. hybridum early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="17033182" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="pathologic-pathway-B.hybridum-463" type="biopax-pathway">
+    <property name="proteomeId" value="463" />
+    <property name="organism.prefix" value="Bhybridum" />
+    <property name="src.data.dir.includes" value="Bhybridum_463.owl" />
+    <property name="method" value="pathologic" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+  </source>
+  <source name="phytozome-chado-M.sinensis-497" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Miscanthus sinensis" />
+    <property name="genus" value="Miscanthus" />
+    <property name="name" value="Miscanthus sinensis" />
+    <property name="species" value="sinensis" />
+    <property name="assemblyDbxrefId" value="16862082" />
+    <property name="proteomeId" value="497" />
+    <property name="taxonId" value="62337" />
+    <property name="annotationVersion" value="v7.1" />
+    <property name="dataSourceName" value="phytozome-M.sinensis" />
+    <property name="shortName" value="M. sinensis early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="16862084" />
+    <property name="assemblyVersion" value="v7.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="pathologic-pathway-M.sinensis-497" type="biopax-pathway">
+    <property name="proteomeId" value="497" />
+    <property name="organism.prefix" value="Msinensis" />
+    <property name="src.data.dir.includes" value="Msinensis_497.owl" />
+    <property name="method" value="pathologic" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+  </source>
+  <source name="phytozome-chado-A.officinalis-498" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="garden asparagus" />
+    <property name="genus" value="Asparagus" />
+    <property name="name" value="Asparagus officinalis" />
+    <property name="species" value="officinalis" />
+    <property name="assemblyDbxrefId" value="16951571" />
+    <property name="proteomeId" value="498" />
+    <property name="taxonId" value="4686" />
+    <property name="annotationVersion" value="V1.1" />
+    <property name="dataSourceName" value="phytozome-A.officinalis" />
+    <property name="shortName" value="A. officinalis early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="16951573" />
+    <property name="assemblyVersion" value="Aspof.V1" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="pathologic-pathway-A.officinalis-498" type="biopax-pathway">
+    <property name="proteomeId" value="498" />
+    <property name="organism.prefix" value="Aofficinalis" />
+    <property name="src.data.dir.includes" value="Aofficinalis_498.owl" />
+    <property name="method" value="pathologic" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+  </source>
+  <source name="phytozome-chado-O.sativa_Kitaake-499" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Oryza sativa Kitaake" />
+    <property name="genus" value="Oryza" />
+    <property name="name" value="Oryza sativa Kitaake" />
+    <property name="species" value="sativa Kitaake" />
+    <property name="assemblyDbxrefId" value="17163585" />
+    <property name="proteomeId" value="499" />
+    <property name="taxonId" value="4530" />
+    <property name="annotationVersion" value="v3.1" />
+    <property name="dataSourceName" value="phytozome-O.sativa_Kitaake" />
+    <property name="shortName" value="O. sativa Kitaake early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="17115006" />
+    <property name="assemblyVersion" value="v3.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="pathologic-pathway-O.sativa_Kitaake-499" type="biopax-pathway">
+    <property name="proteomeId" value="499" />
+    <property name="organism.prefix" value="Osativa_Kitaake" />
+    <property name="src.data.dir.includes" value="Osativa_Kitaake_499.owl" />
+    <property name="method" value="pathologic" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+  </source>
+  <source name="phytozome-chado-S.viridis-500" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Setaria viridis" />
+    <property name="genus" value="Setaria" />
+    <property name="name" value="Setaria viridis" />
+    <property name="species" value="viridis" />
+    <property name="assemblyDbxrefId" value="16980718" />
+    <property name="proteomeId" value="500" />
+    <property name="taxonId" value="4556" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-S.viridis" />
+    <property name="shortName" value="S. viridis early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="16980720" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="pathologic-pathway-S.viridis-500" type="biopax-pathway">
+    <property name="proteomeId" value="500" />
+    <property name="organism.prefix" value="Sviridis-EARLY-RELEASE" />
+    <property name="src.data.dir.includes" value="Sviridis_500.owl" />
+    <property name="method" value="pathologic" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+  </source>
