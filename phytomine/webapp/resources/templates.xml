@@ -53,13 +53,8 @@
     <constraint path="Gene.organism.shortName" code="B" editable="true" op="=" value="P. trichocarpa"/>
   </query>
 </template>
-<template name="Gene_Expression" title="Expression score for all genes in an organism." comment="">
-  <query name="Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
-    <constraint path="Gene.organism.shortName" editable="true" op="=" value="G. max"/>
-  </query>
-</template>
-<template name="Gene_Expression_1" title="Expression score for all genes in an organism." comment="">
-  <query name="Gene_Expression_1" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpressions.abundance Gene.rnaSeqExpressions.experiment.name Gene.rnaSeqExpressions.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+<template name="Gene_Expression" title="Expression score for all genes in an organism" comment="">
+  <query name="Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpressions.abundance Gene.rnaSeqExpressions.experiment.name Gene.rnaSeqExpressions.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
     <constraint path="Gene.organism.shortName" editable="true" op="=" value="G. max"/>
   </query>
 </template>
@@ -119,13 +114,13 @@
     <constraint path="Protein.proteinAnalysisFeatures.crossReference.source.name" code="A" editable="true" op="=" value="PFAM"/>
   </query>
 </template>
-<template name="MRNA_Expression" title="Expression score for all mRNAs in an organism." comment="">
-  <query name="MRNA_Expression" model="genomic" view="MRNA.primaryIdentifier MRNA.cufflinksscores.fpkm MRNA.cufflinksscores.experiment.name MRNA.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="MRNA.primaryIdentifier asc">
-    <constraint path="MRNA.organism.shortName" editable="true" op="=" value="G. max"/>
+<template name="MRNA_Expression" title="Expression score for all mRNAs in an organism" comment="">
+  <query name="MRNA_Expression" model="genomic" view="Transcript.primaryIdentifier Transcript.rnaSeqExpressions.abundance Transcript.rnaSeqExpressions.experiment.name Transcript.rnaSeqExpressions.experiment.experimentGroup" longDescription="" sortOrder="Transcript.primaryIdentifier asc">
+    <constraint path="Transcript.organism.shortName" editable="true" op="=" value="G. max"/>
   </query>
 </template>
-<template name="One_Gene_Expression" title="Expression score for one specific gene." comment="">
-  <query name="One_Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.cufflinksscores.fpkm Gene.cufflinksscores.experiment.name Gene.cufflinksscores.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
+<template name="One_Gene_Expression" title="Expression score for one specific gene" comment="">
+  <query name="One_Gene_Expression" model="genomic" view="Gene.primaryIdentifier Gene.rnaSeqExpressions.abundance Gene.rnaSeqExpressions.experiment.name Gene.rnaSeqExpressions.experiment.experimentGroup" longDescription="" sortOrder="Gene.primaryIdentifier asc">
     <constraint path="Gene.primaryIdentifier" editable="true" op="=" value="Glyma.01G000700"/>
   </query>
 </template>
@@ -226,8 +221,8 @@
     <constraint path="Homolog.gene2.organism.shortName" code="B" editable="true" op="=" value="G. max"/>
   </query>
 </template>
-<template name="all_pathways_for_an_organism" title="All Pathways for an Organism" comment="">
-  <query name="all_pathways_for_an_organism" model="genomic" view="Pathway.identifier Pathway.method Pathway.pathwayInfo.name" longDescription="Show all metabolic pathway data derived from pathologic" sortOrder="Pathway.identifier asc">
+<template name="all_pathways_for_an_organism_1" title="All Pathways for an Organism" comment="">
+  <query name="all_pathways_for_an_organism_1" model="genomic" view="Pathway.identifier Pathway.method Pathway.pathwayInfo.name" longDescription="Show all metabolic pathway data derived from pathologic" sortOrder="Pathway.identifier asc">
     <constraint path="Pathway.organism.shortName" editable="true" op="=" value="A. thaliana"/>
   </query>
 </template>
