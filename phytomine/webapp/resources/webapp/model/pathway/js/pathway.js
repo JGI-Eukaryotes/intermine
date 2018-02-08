@@ -21,13 +21,13 @@ var baseFontSize = 16;
 var pathAttrs = {
   stroke: "#444",
   strokeWidth: 1.6,
-  fill: "transparent"
+  fill: "none"
 };
 
 var markerPathAttrs = {
   stroke: "#444",
   strokeWidth: 0.9,
-  fill: "transparent"
+  fill: "none"
 };
 
 var fontAttrs = {
@@ -116,24 +116,18 @@ var adjustPanesHeight = function(d) {
 
 };
  
-  // what is the quadrant (1-4) given an angle in degrees?
-var quadrantOf = function (d) {
-    // map into the range of [0,360)
-    var ranged = (parseInt(d)%360 + 360)%360;
-    return (parseInt((parseInt(ranged)+45)/90))%4+1;
-  }
 
 var splits = {};
 
-var loadPathway = function(json, expression) {
-  loadPathwayDiagram("#pathway-diagram", json);
+var loadPathway = function(pathJSON, exprJSON) {
+  loadPathwayDiagram("#pathway-diagram", pathJSON);
   setDiagramEventHandlers();
 
-  if (expression.data.length > 0) {
+  if (exprJSON.data.length > 0) {
     d3.select("#pathway")
       .style("height", "98vh");
 
-    loadExpressionTable("#pathway-expression-table", expression);
+    loadExpressionTable("#pathway-expression-table", exprJSON);
 
     // these needed for interaction between expression data table / graph and diagram
     setExpressionEventHandlers();
@@ -178,6 +172,16 @@ var loadPathway = function(json, expression) {
 
 // Helper functions for pathway diagram //
 
+// what is the quadrant (1-4) given an angle in degrees?
+var quadrantOf = function (d) {
+    // map into the range of [0,360)
+    var ranged = (parseInt(d)%360 + 360)%360;
+    // add 45, integer divide by 90 and calculate modulo 4
+    // (to make angles 315 to 359.99+ the same as 0 to 44.99+)
+    // then add 1.
+    return (parseInt((parseInt(ranged)+45)/90))%4+1;
+  }
+
 var getSvgElementDimensions = function(element) {
     return element.node().getBBox();
 };
@@ -207,7 +211,6 @@ var setFlex = function() {
   }
 }
 
-
 var extractMenuItems = function (d) {
   if (!d.genes) return;
   d.genes.forEach( function(e) {
@@ -221,13 +224,6 @@ var extractMenuItems = function (d) {
 
 var labelReactions = function (d) {
   var el = d3.select(this);
-
-  // optionally label with reaction names
-  // this is really just for development.
-  if (options.labelRxnNames) {
-    el.text(d.label);
-    return;
-  }
 
   // do not touch the label if there are no ECs and no genes.
   if ( (!d.genes || d.genes.length == 0) && (!d.ecs || d.ecs.length == 0) ) return;
@@ -331,59 +327,62 @@ var renderLabels = function (d) {
   if (d.label) {
     //console.log('for label '+d.label+' x,y,text-anchor are '+el.attr('x')+', '+el.attr('y')+', '+el.attr('text-anchor')+'.');
     var parent = this.parentElement;
-    var label = d.label.split("<br>").join("<br />")
-    //console.log('label', label)
-    // var lines = d.label.split('<br>');
-    // var lineCtr = 0;
-    // lines.forEach( function(e) {
-      var lineSize = measureText(label, baseFontSize);
-      // placement.
-      placementOptions = {};
-      switch( quadrantOf(d.orient) ) {
-        case 1: placementOptions = { "x":d.x - lineSize.width/2,
-                                     "y":d.y};
-                break;
-        case 2: placementOptions = { "x":"0", "dy":"0", "align":"left" }; break;
-        case 3: placementOptions = { "x":d.x - lineSize.width/2,
-                                     "y":d.y};
-                break;
-        case 4: placementOptions = { "x":"0", "dy":"0", "align":"right" }; break;
-      }
-      var styledD = label.replace(/<(i)>|<(em)>/ig, function(match, p1) { return styledWith(p1, italicAttrs) })
-                         .replace(/<(sub)>/ig, function(match, p1) { return styledWith(p1, subAttrs) })
-                         .replace(/<(sup)>/ig, function(match, p1) { return styledWith(p1, supAttrs) })
-                         .replace(/'/g,'&#39;');
-      //console.log('html for label:', styledD);
-      d3.select(parent).append('g')
-        .append("foreignObject")
-         .attr("width",lineSize.width)
-         .attr("x",placementOptions.x)
-         .attr("y", function () { if (d.type === "link") {
-                                    return placementOptions.y - 8;
-                                  } else {
-                                    return placementOptions.y;
-                                  }})
-         //.attr("height",baseFontSize)
-         .attr("height",lineSize.height)
-         .attr("class","foreign-object")
-         .append("xhtml:body")
-         .attr("xmlns", "http://www.w3.org/1999/xhtml")
-         .style("padding", 0)
-         .style("margin", 0)
-         .style("background-color","rgba(255,255,255,0)")
-         .append("xhtml:div")
-         .style("font-size", fontAttrs.size)
-         .style("color", fontAttrs.color)
-         .style("font-family", fontAttrs.family)
-        // these 3 lines weare an experiment in short form of names with a long form on mouseover.
-        // replace with .html(styledD) to revert.
-        // .attr("onmouseover","innerHTML='"+styledD+"'")
-        // .attr("onmouseout","innerHTML='"+styledD.substr(0,30)+(styledD.length>30?"...'":"'"))
-        // .html(styledD.substr(0,30)+(styledD.length>30?"...":""));
-        // comment out this line if the previous 3 are uncommented
-         .html(styledD);
-      // lineCtr++;
-      // });
+    var label = d.label
+    var lineSize = measureText(label, baseFontSize);
+    // placement.
+    placementOptions = {};
+    switch( quadrantOf(d.orient) ) {
+      case 1: placementOptions = { "x":d.x - lineSize.width/2,
+                                   "y":d.y};
+              break;
+      case 2: placementOptions = { "x":"0", "dy":"0", "align":"left" }; break;
+      case 3: placementOptions = { "x":d.x - lineSize.width/2,
+                                   "y":d.y};
+              break;
+      case 4: placementOptions = { "x":"0", "dy":"0", "align":"right" }; break;
+    }
+
+    // we'll add chunks of text to the list 'd'. Each list
+    // element will have the list of classes depending on which
+    // html tags (sub, sup,...). <br> is a special case; we'll
+    // need to keep track of where those happen.
+    t = {'text-label':1};
+    d = [];
+    addBreak = 0;
+    var tagToClass = { 'i' : 'text-italic',
+                       'sub' : 'text-subscript',
+                       'sup' : 'text-superscript',
+                       'em'  : 'text-emphasis',
+                       'small' : 'text-small',
+                       'br' : 'text-break'};
+    window.htmlParser.parser.parse(label, { openElement: (a) => { c = a.toLowerCase();
+                                            if (c==='br') {
+                                              addBreak = 1;
+                                            } else {
+                                              t[tagToClass[c]||'']=1;
+                                            } },
+                         closeElement: (a) => { c = a.toLowerCase();
+                                                delete t[tagToClass[c]] ;},
+                         text: (a) => { d.push( { 'addBreak': addBreak,
+                                                  'classes': Object.keys(t).join(' '),
+                                                   'text':a}); addBreak = 0 }
+                          });
+
+    //console.log('html for label:', styledD);
+    d3.select(parent).append('g')
+      .append("text")
+      .attr("x",placementOptions.x)
+      .attr("y",function () { if (d.type === "link") {
+                                  return placementOptions.y - 8;
+                                } else {
+                                  return placementOptions.y;
+                                }})
+      .selectAll("tspan")
+      .data(d).enter()
+      .append("tspan").text( (a) => { return window.parser.decode(a.text)})
+      .attr("dy", (a) => { return a['addBreak']?15:0 })
+      .attr("x", (a) => { if (a['addBreak']) return placementOptions.x})
+      .attr("class", (a) => { return a['classes'] });
   }
   return;
 };
@@ -433,11 +432,7 @@ var getCoords = function (elem) { // crossbrowser version
 
 // Pathway diagram main function //
 
-var options = {};
-
-var loadPathwayDiagram = function(container,json,optArgs) {
-
-  if(optArgs != null) options = optArgs;
+var loadPathwayDiagram = function(container,pathJSON) {
 
   // the 'save svg' handler.
   d3.select("#save").on("click",function() {
@@ -486,12 +481,20 @@ var loadPathwayDiagram = function(container,json,optArgs) {
              });
 
 
+  var styles = ".text-label { text-align: center; }\n" +
+               ".text-subscript { baseline-shift: sub; font-size: 65% }\n" +
+               ".text-superscript { baseline-shift: super; font-size: 65% }\n" +
+               ".text-italic { font-style: italic; }\n" +
+               ".text-emphasis { font-style: italic; }\n" +
+               ".text-small { font-size: small;} \n";
+
   // make the SVG Container, we'll add height and width when everything's constructed
   var svgContainer = d3.select(container).append("svg")
                                          .attr("id","pathway-svg")
                                          .style("font-family", fontAttrs.family)
                                          .style("color", fontAttrs.color);
 
+  svgContainer.append("style").text(styles);
 
   // defs: arrowheads, dropshadows
   var refX = 7;
@@ -556,16 +559,6 @@ var loadPathwayDiagram = function(container,json,optArgs) {
                                 .append("g")
                                 .attr("id",function(d) { return d.id});
 
-  // for testing. Draw a ruler
-  //masterGroup.append('line')
-              //.attr('id','ruler')
-              //.attr('x1','10')
-              //.attr('y1','10')
-              //.attr('x2','60')
-              //.attr('y2','10')
-              //.attr('stroke','red')
-              //.attr('stroke-width','2');
-
   // and a div for the tooltip
   var tooltipDiv = d3.select("body")
                      .append("div")
@@ -578,10 +571,10 @@ var loadPathwayDiagram = function(container,json,optArgs) {
   // Make a <g> for the node groups and associate each node with its node group
   var containerData = [];
   var parents = {};
-  json.groups.forEach( function(d) {
+  pathJSON.groups.forEach( function(d) {
     // each group has up to 3 members. This will generate a name
     // that is unique enough
-    var thisId = 'node-group' + d[0] + "-" + d[1] + "-" + d[2];
+    var thisId = 'node-group-' + d[0] + "-" + d[1] + "-" + d[2];
     containerData.push({"id":thisId});
     d.forEach( function(e) { parents[e] = thisId; });
   });
@@ -589,23 +582,21 @@ var loadPathwayDiagram = function(container,json,optArgs) {
   // and insert them. This is initially unpositioned.
   // we'll position it as we populate it with the elements
   var nodeGroups = masterGroup.selectAll("g")
-              .data(containerData,function(e) { return e.id })
+              .data(containerData)
               .enter()
               .append("g")
-              .attr("orient",0)
               .attr("id",function(d){return d.id; })
               .attr("class","moveable")
 
   var processedGroups = [];
-  json.nodes.forEach( function(d) {
+  pathJSON.nodes.forEach( function(d) {
 
     // every node is already part of a group, even if the
-    // group only has 1 node in it. The json was generated this way.
+    // group only has 1 node in it. The pathJSON was generated this way.
     var parentGroupId = parents[d.id];
 
     // the group that owns this node has already been registered
-    var parentGroup = masterGroup.selectAll("g")
-                                 .filter(function(dd){return dd.id === parentGroupId;});
+    var parentGroup = d3.select("#"+parentGroupId);
 
     // if the type of the node is "reaction", "link", "source" or "drain",
     // the location of this node is the anchor point for the group.
@@ -621,8 +612,8 @@ var loadPathwayDiagram = function(container,json,optArgs) {
 
     // each node has a rectangle and text. These will be their own group one level lower.
     var nodeGroup = parentGroup.selectAll("g")
-                               .filter(function(dd) { return dd.id === d.id; })
-                               .data([{"id":d.id,
+                               .filter(function(dd) { return dd.id === "node-"+d.id; })
+                               .data([{"id":'node-'+d.id,
                                         "x":d.x,
                                         "y":d.y,
                                         "labelX":d.labelX,
@@ -632,11 +623,11 @@ var loadPathwayDiagram = function(container,json,optArgs) {
                                .enter()
                                .append("g")
                                .attr("class","anchored")
-                               .attr("id", d.id);
+                               .attr("id",'node-'+d.id);
 
     // put a rectangle in the group, and with tooltip if it's a reaction
     nodeGroup.selectAll("rect")
-               .data([{"id":d.id,"groupId":parentGroupId,"tooltip":d.tooltip,"orient":d.orient}],
+               .data([{"id":'rect-'+d.id,"groupId":parentGroupId,"tooltip":d.tooltip,"orient":d.orient}],
                       function(e) { return e.id })
                .enter()
                .append("rect")
@@ -644,17 +635,17 @@ var loadPathwayDiagram = function(container,json,optArgs) {
                .attr("class","rect no-display")
                .attr("height",10)
                .attr("width",10)
-               .attr("orient",d.orient)
                .attr("x", d.x-5)
                .attr("y", d.y-5);
 
     // and the text holder, with a tooltip that will show up if it's in the data
     nodeGroup.selectAll("text")
-               .data([{"id":d.id,"label":d.label,
+               .data([{"id":'text-'+d.id,"label":d.label,
                         "type":d.type, "x":d.labelX,
                         "y":d.labelY, "labelHeight":d.height,"orient":d.orient,
                         "tooltip":d.tooltip, "genes":d.genes, "ecs":d.ecs}])
                .enter().append("text")
+               .attr("id","text-"+d.id)
                .attr("x", function(d){ return textPlacement(d).x;})
                .attr("y", function(d){ return textPlacement(d).y;})
                .attr("text-anchor", function(d){ return textPlacement(d).anchor;})
@@ -783,27 +774,26 @@ var loadPathwayDiagram = function(container,json,optArgs) {
 
   // create links.
   var linkData = [];
-  json.links.forEach( function(d) {
+  pathJSON.links.forEach( function(d) {
     // source and target
     // at this point we don"t know what we have.
-    var source = masterGroup.selectAll("rect").filter(function(dd){ return dd.id===d.source;});
-    var target = masterGroup.selectAll("rect").filter(function(dd){ return dd.id===d.target;});
+    var source = d3.selectAll("#rect-"+d.source);
+    var target = d3.selectAll("#rect-"+d.target);
     var type = d.type;
 
     if (type === 'input') {
       // draw an arc with arrow for inputs.
-      var thisGroup = masterGroup.selectAll("g")
-                                 .filter(function(ddd) { return ddd.id===parents[d.source]; });
-      thisGroup.selectAll("path").data([{"id":d.source+":"+d.target,
+      var thisGroup = d3.select("#"+parents[d.source]);
+      thisGroup.selectAll("path").data([{"id":"link-"+d.source+"-"+d.target,
                                          "source":d.source,
                                          "target":d.target,
+                                         "type":"input",
                                          "x1":parseInt(source.attr("x"))+5,
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
                                          "y2":parseInt(target.attr("y"))+5,
-                                         "orient":target.attr("orient")}
-                                         ],
-                                         function(dd){return dd.id===d.source+":"+d.target;})
+                                         "orient":target.data()[0].orient}],
+                                               function(dd){return dd.id;})
                                          .enter()
                                          .append("path")
                                          .attr("d",inputArcFunction)
@@ -813,37 +803,33 @@ var loadPathwayDiagram = function(container,json,optArgs) {
 
     } else if (type === 'output') {
       // draw an arc with arrow for inputs.
-      var thisGroup = masterGroup.selectAll("g")
-                                 .filter(function(ddd) { return ddd.id===parents[d.source]; });
-      thisGroup.selectAll("path").data([{"id":d.source+":"+d.target,
+      var thisGroup = d3.select("#"+parents[d.source]);
+      thisGroup.selectAll("path").data([{"id":"link-"+d.source+"-"+d.target,
                                          "source":d.source,
-                                         "target":d.output,
+                                         "target":d.target,
+                                         "type":"output",
                                          "x1":parseInt(source.attr("x"))+5,
                                          "y1":parseInt(source.attr("y"))+5,
                                          "x2":parseInt(target.attr("x"))+5,
                                          "y2":parseInt(target.attr("y"))+5,
-                                         "orient":source.attr("orient")}
-                                        ],
-                                         function(dd){return dd.id===d.source+":"+d.target;})
+                                         "orient":source.data()[0].orient}],
+                                          function(dd){return dd.id;})
                                          .enter()
                                          .append("path")
+                                         .attr("d",outputArcFunction)
                                          .style("stroke", pathAttrs.stroke)
                                          .style("stroke-width", pathAttrs.strokeWidth)
                                          .style("fill", pathAttrs.fill)
-                                         .attr("marker-end","url(#arrowend)")
-                                         .attr("d",outputArcFunction);
+                                         .attr("marker-end","url(#arrowend)");
     } else if (type === 'link') {
       // a movable line
       //
-      var sourceGroup = masterGroup.selectAll("g")
-                                 .filter(function(ddd) { return ddd.id===parents[d.source]; });
-      var targetGroup = masterGroup.selectAll("g")
-                                 .filter(function(ddd) { return ddd.id===parents[d.target]; });
+      var sourceGroup = d3.select("#"+parents[d.source]);
+      var targetGroup = d3.select("#"+parents[d.target]);
       sourceGroup.each( function(a) { targetGroup.each ( function(b) {
-                       linkData.push( {"id":parents[d.source]+'->'+parents[d.target],
+                       linkData.push( {"id":"link-"+parents[d.source]+':'+parents[d.target],
                                         "source":a,
-                                        "target":b,
-                                        "orient": d.orient} );
+                                        "target":b});
                                         });
                       });
     }
@@ -854,6 +840,10 @@ var loadPathwayDiagram = function(container,json,optArgs) {
                                     .data(linkData)
                                     .enter()
                                     .append("line")
+                                    .attr("x1", function(d) { return d.source.x+5; })
+                                    .attr("y1", function(d) { return d.source.y; })
+                                    .attr("x2", function(d) { return d.target.x+5; })
+                                    .attr("y2", function(d) { return d.target.y; })
                                     .attr("marker-end","url(#arrowend)")
                                     .attr('stroke-width',pathAttrs.strokeWidth)
                                     .attr('stroke',pathAttrs.stroke)
@@ -1545,7 +1535,7 @@ var textPlacement = function(d) {
         result.anchor = "end";
         break;
       case "drain":
-        result.anchor = "beginning";
+        result.anchor = "start";
         break;
       default:
         result.anchor = "middle";
@@ -1554,7 +1544,7 @@ var textPlacement = function(d) {
   } else if (rangedOrient <= 135) {
     switch(d.type) {
       case "link":
-        result.anchor = "beginning";
+        result.anchor = "start";
         break;
       default:
         result.anchor = "middle";

@@ -1597,3 +1597,27 @@
     <property name="method" value="pathologic" />
     <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
   </source>
+  <source name="phytozome-chado-B.braunii_Showa-502" type="phytozome-db">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Botryococcus braunii Showa" />
+    <property name="genus" value="Botryococcus" />
+    <property name="name" value="Botryococcus braunii Showa" />
+    <property name="species" value="braunii Showa" />
+    <property name="assemblyDbxrefId" value="17165144" />
+    <property name="proteomeId" value="502" />
+    <property name="taxonId" value="38881" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-B.braunii_Showa" />
+    <property name="shortName" value="B. braunii Showa early-release" />
+    <property name="version" value="early-release" />
+    <property name="annotationDbxrefId" value="17165148" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="pathologic-pathway-B.braunii_Showa-502" type="biopax-pathway">
+    <property name="proteomeId" value="502" />
+    <property name="organism.prefix" value="Bbraunii_Showa" />
+    <property name="src.data.dir.includes" value="Bbraunii_Showa_502.owl" />
+    <property name="method" value="pathologic" />
+    <property name="src.data.dir" value="/projectb/sandbox/plant/phytomine/pathologic-pathway/" />
+  </source>

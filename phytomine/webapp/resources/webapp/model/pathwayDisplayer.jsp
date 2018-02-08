@@ -67,7 +67,9 @@
 
     var pathwayScripts = [ "model/pathway/js/d3.v4.min.js",
   		    	   "model/pathway/js/pathway.js",
-			   "model/pathway/js/sort-by.min.js"];
+                   "model/pathway/js/parse-entities.js",
+                   "model/pathway/js/html-parser.js",
+			       "model/pathway/js/sort-by.min.js"];
 
 
     getScripts(pathwayScripts, function(){
