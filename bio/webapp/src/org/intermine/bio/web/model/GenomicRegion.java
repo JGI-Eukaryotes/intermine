@@ -1,7 +1,7 @@
 package org.intermine.bio.web.model;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2017 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -25,7 +25,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     private Integer extendedRegionSize = new Integer(0); // user add region flanking
     private Integer extendedStart;
     private Integer extendedEnd;
-    
+
     private Boolean minusStrand;    // for strand-specific matching
 
     //user identifier to tag the order of input e.g. X:7880589..7880644:5 is the 5th input
@@ -163,7 +163,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
      * @param minusStrand as boolean
      */
     public void setMinusStrand(boolean minusStrand) {
-        this.minusStrand = new Boolean(minusStrand);
+        this.minusStrand = minusStrand;
     }
 
     /**
@@ -263,12 +263,12 @@ public class GenomicRegion implements Comparable<GenomicRegion>
         }
 
         if (this.getChr().compareTo(gr.getChr()) < 0) {
-
-            return bEFORE; // doesn't make sense, regions on different chromosomes are neither before nor after
+            // doesn't make sense, regions on different chromosomes are neither before nor after
+            return bEFORE;
 
         } else if (this.getChr().compareTo(gr.getChr()) > 0) {
-
-            return aFTER; // doesn't make sense, regions on different chromosomes are neither before nor after
+            // doesn't make sense, regions on different chromosomes are neither before nor after
+            return aFTER;
 
         } else {
 

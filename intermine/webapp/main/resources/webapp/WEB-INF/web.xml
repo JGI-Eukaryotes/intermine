@@ -132,7 +132,7 @@
             of SQL; see the InterMine documentation for a full description of the query XML
             syntax.
         </description>
-        <param required="true" type="XML" schema="/schema/query.xsd" description="A definition of the query to execute in Path-Query XML format">query</param>
+        <param required="true" default="{{query}}" type="XML" schema="/schema/query.xsd" description="A definition of the query to execute in Path-Query XML format">query</param>
         <param type="Integer" required="false" default="2" min="1" max="2" description="The version of the XML format used">version</param>
         <param type="Integer" required="false" default="0" min="0" description="The index of the first result to return.">start</param>
         <param type="Integer" required="false" recommended="true" default="10" description="The maximum size of the result set.">size</param>
@@ -3058,6 +3058,34 @@ The different token types are:
    </servlet-mapping>
 
 
+   <!-- New in version 24 -->
+
+  <servlet>
+    <servlet-name>ws-web-properties</servlet-name>
+    <servlet-class>org.intermine.webservice.server.webproperties.WebPropertiesServlet</servlet-class>
+    <init-param>
+       <param-name>debug</param-name>
+       <param-value>true</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ws-web-properties</servlet-name>
+    <url-pattern>/service/web-properties/*</url-pattern>
+    <metadata>
+        <name>Web properties</name>
+        <method type="GET" authenticationRequired="false">
+            <summary>Get a description of the data model</summary>
+            <description>
+                The InterMine user interface can be customised with a set of properties, e.g.
+                default values for the list upload, default values for the region search etc.
+            </description>
+            <returns>
+                <format>json</format>
+            </returns>
+        </method>
+    </metadata>
+  </servlet-mapping>
 
   <!-- MUST BE LISTED LAST OF ALL WEBSERVICES AS IT IS THE MOST GENERAL -->
   <servlet-mapping>

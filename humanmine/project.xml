@@ -33,11 +33,6 @@
     <source name="ncbi-summaries" type="ncbi-summaries">
       <property name="src.data.dir" location="/micklem/data/ncbi/gene-summaries/current/" />
     </source>
-    <source name="pubmed-gene" type="pubmed-gene">
-      <property name="src.data.dir" location="/micklem/data/pubmed/current" />
-      <property name="pubmed.organisms" value="9606 10090" />
-      <property name="src.data.dir.includes" value="gene2pubmed" />
-    </source>
     <source name="mgi-identifiers" type="mgi-identifiers">
       <property name="src.data.dir" location="/micklem/data/mgi-identifiers/current" />
     </source>
@@ -103,7 +98,9 @@
      <property name="src.data.dir.includes" value="protein2ipr.dat"/>
      <property name="protein2ipr.organisms" value="9606"/>
     </source>
-
+    <source name="signor" type="signor">
+      <property name="src.data.dir" location="/micklem/data/signor/current" />
+    </source>
     <source name="interpro" type="interpro">
       <property name="src.data.dir" location="/micklem/data/interpro/current" />
     </source>
@@ -114,10 +111,9 @@
       <property name="src.data.file" location="/micklem/data/metabolic/mouse-pheno/current/MPheno_OBO.obo" />
     </source>
     <source name="go" type="go">
-      <property name="src.data.file" location="/micklem/data/go-annotation/current/gene_ontology.obo" />
+      <property name="src.data.file" location="/micklem/data/go-annotation/current/go.obo" />
     </source>
     <source name="go-annotation" type="go-annotation">
-      <property name="ontologyfile" location="/micklem/data/go-annotation/current/gene_ontology.obo" />
       <property name="src.data.dir" location="/micklem/data/go-annotation/current/human" />
       <property name="src.data.includes" value="**/gene_association*" />
     </source>
@@ -130,7 +126,7 @@
       <property name="src.data.dir" location="/micklem/data/pdb"/>
       <property name="pdb.organisms" value="9606"/>
     </source>
-    <source name="psi-intact" type="psi" dump="true">
+    <source name="psi-intact" type="psi">
       <property name="src.data.dir" location="/micklem/data/psi/intact/current" />
       <property name="intact.organisms" value="9606 10090" />
     </source>
@@ -174,7 +170,7 @@
       <property name="fasta.includes" value="*.fa"/>
     </source>
 
-    <source name="ncbi-gff" type="ncbi-gff" dump="true">
+    <source name="ncbi-gff" type="ncbi-gff">
       <property name="gff3.taxonId" value="9606"/>
       <property name="gff3.seqClsName" value="Chromosome"/>
       <property name="gff3.dataSourceName" value="NCBI"/>
@@ -190,10 +186,21 @@
     </source>
     <source name="hpo-annotation" type="hpo-annotation">
       <property name="src.data.dir" location="/micklem/data/hpo/current" />
+      <property name="hpo.disease.file" location="/micklem/data/metabolic/omim/current/mimTitles.txt" />
     </source>
 
-    <source name="orphanet" type="orphanet">
+    <source name="orphanet" type="orphanet" dump="true">
       <property name="src.data.dir" location="/micklem/data/human/orphanet/current" />
+    </source>
+
+    <source name="pubmed-gene" type="pubmed-gene">
+      <property name="src.data.dir" location="/micklem/data/pubmed/current" />
+      <property name="pubmed.organisms" value="9606 10090" />
+      <property name="src.data.dir.includes" value="gene2pubmed" />
+    </source>
+
+    <source name="gtex" type="gtex">
+      <property name="src.data.dir" location="/micklem/data/human/GTEx/current" />
     </source>
 
     <source name="update-publications" type="update-publications">

@@ -1,7 +1,7 @@
 package org.intermine.bio.web.model;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2017 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -83,7 +83,7 @@ public class GenomicRegionSearchConstraint
     }
 
     /**
-     * @param strandSpecific
+     * @param strandSpecific whether or not this search specifies a strand
      */
     public void setStrandSpecific(boolean strandSpecific) {
         this.strandSpecific = strandSpecific;
@@ -108,7 +108,7 @@ public class GenomicRegionSearchConstraint
                     && genomicRegionList.equals(c.getGenomicRegionList())
                     && featureTypes.equals(c.getFeatureTypes())
                     && orgName.equals(c.getOrgName())
-                    && strandSpecific==c.getStrandSpecific());
+                    && strandSpecific == c.getStrandSpecific());
         }
         return false;
     }

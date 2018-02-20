@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.jbrowse.genomic;
 
 /*
- * Copyright (C) 2002-2016 FlyMine
+ * Copyright (C) 2002-2017 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -535,7 +535,7 @@ public class Engine extends CommandRunner
             so.append(w);
             i++;
         }
-        
+
         if (so.toString().contentEquals("CDS")) {
             return so.toString();
         }
