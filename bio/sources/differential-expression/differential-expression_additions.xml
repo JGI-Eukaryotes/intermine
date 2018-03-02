@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+<!-- add any <class> elements here -->
+
+  <class name="Gene" is-interface="true">
+    <collection name="rnaSeqEnrichments" referenced-type="RNASeqEnrichment" reverse-reference="bioentity" />
+  </class>
+
+  <class name="RNASeqExperiment" is_interface="true">
+    <attribute name="name" type="java.lang.String" />
+    <attribute name="experimentGroup" type="java.lang.String" />
+    <attribute name="description" type="java.lang.String" />
+    <attribute name="url" type="java.lang.String" />
+    <reference name="organism" referenced-type="Organism" />
+  </class>
+
+
+  <class name="RNASeqEnrichment" is_interface="true">
+    <attribute name="logChange" type="java.lang.Float" />
+    <attribute name="stat" type="java.lang.Float" />
+    <attribute name="pvalue" type="java.lang.Float" />
+    <attribute name="padj" type="java.lang.Float" />
+    <attribute name="method" type="java.lang.String" />
+    <reference name="bioentity" referenced-type="BioEntity" />
+    <reference name="experiment" referenced-type="RNASeqExperiment" />
+    <reference name="referenceExperiment" referenced-type="RNASeqExperiment" />
+    <reference name="organism" referenced-type="Organism" />
+  </class>
+
+</classes>

@@ -1,0 +1,4 @@
+<project name="protein-hmmscore-tasks" default="default" basedir=".">
+  <description>build protein-hmmscore tasks</description>
+  <import file="../../../../imbuild/library.xml"/> 
+</project>

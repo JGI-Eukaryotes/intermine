@@ -14,6 +14,10 @@
   <attribute name="json" type="java.lang.String" />
   <reference name="pathwayInfo" referenced-type="PathwayInfo" />
 </class>
+<class name="PathwaySVG" is_interface="false" extends="java.lang.Object">
+  <attribute name="svg" type="java.lang.String" />
+  <reference name="pathwayInfo" referenced-type="PathwayInfo" />
+</class>
 <class name="PathwayInfo" is-interface="true" >
   <attribute name="identifier" type="java.lang.String"/>
   <attribute name="name" type="java.lang.String"/>

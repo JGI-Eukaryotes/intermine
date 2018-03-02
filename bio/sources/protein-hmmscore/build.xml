@@ -1,0 +1,27 @@
+<project name="protein-hmmscore" default="default" basedir=".">
+  <description>build, test, package protein-hmmscore</description>
+  
+  <import file="../../../imbuild/source.xml"/>
+
+  <target name="retrieve"/>
+
+  <target name="-init-loader-classname" unless="protein-hmmscore.loaderClassName">
+    <!-- set the default -->
+    <property name="protein-hmmscore.loaderClassName"
+              value="org.intermine.bio.dataconversion.ProteinHMMScoreConverter"/>
+  </target>
+
+  <!-- NOTE: we can do this with dynamic properties -->
+  <target name="load" depends="-init-loader-classname, init, -init-deps">
+    <taskdef name="read-protein-hmmscore"
+      classname="${protein-hmmscore.loaderClassName}"
+      classpathref="task.class.path"/>
+    <read-protein-hmmscore integrationWriterAlias="integration.production"
+                sourceName="${source.name}"
+                sourceDbName="${source.db.name}"
+                methodIds="${methodIds}"
+                sourceType="${source.type}">
+    </read-protein-hmmscore>
+  </target>
+
+</project>

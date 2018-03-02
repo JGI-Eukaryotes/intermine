@@ -13,7 +13,10 @@
   <attribute name="type" type="java.lang.String" />
   <attribute name="method" type="java.lang.String" />
   <attribute name="tree" type="java.lang.String" />
-  <attribute name="bootscore" type="java.lang.Double" />
+  <attribute name="score" type="java.lang.Double" />
+  <attribute name="significance" type="java.lang.Double" />
+  <attribute name="positives" type="java.lang.Integer" />
+  <attribute name="identities" type="java.lang.Integer" />
   <attribute name="groupName" type="java.lang.String" />
   <attribute name="fromJGI" type="java.lang.Boolean" />
   <attribute name="fromInParanoid" type="java.lang.Boolean" />

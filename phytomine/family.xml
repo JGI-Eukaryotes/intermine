@@ -1,7 +1,22 @@
-  <source name="phytozome-cluster-node-5195" type="phytozome-clusters">
+  <source name="phytozome-cluster-crown12.1.6" type="phytozome-clusters">
     <property name="source.db.name" value="PAC" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Phytozome V12" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5258" />
+  </source>
+  <source name="phytozome-cluster-node-5195" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
     <property name="dataSourceName" value="pac-clusters" />
     <property name="dataSetTitle" value="Phytozome V13" />
     <property name="createrelations" value="false" />
     <property name="methodIds" value="5269" />
   </source>
+  <source name="phytozome-hmmscore" type="protein-hmmscore">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5269" />
+  </source>
+    
