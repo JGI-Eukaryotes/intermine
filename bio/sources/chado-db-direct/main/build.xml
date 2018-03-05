@@ -1,0 +1,4 @@
+<project name="chado-db-direct-tasks" default="default" basedir=".">
+  <description>build chado-db-direct tasks</description>
+  <import file="../../../../imbuild/library.xml"/> 
+</project>

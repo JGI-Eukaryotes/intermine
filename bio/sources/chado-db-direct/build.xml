@@ -1,0 +1,37 @@
+<project name="chado-db-direct" default="default" basedir=".">
+  <description>build, test, package chado-db-direct</description>
+  
+  <import file="../../../imbuild/source.xml"/>
+
+  <target name="retrieve"/>
+
+  <target name="-init-loader-classname" unless="chado-db-direct.loaderClassName">
+    <!-- set the default -->
+    <property name="chado-db-direct.loaderClassName"
+              value="org.intermine.bio.dataconversion.ChadoDbDirectConverter"/>
+  </target>
+
+  <!-- NOTE: we can do this with dynamic properties -->
+  <target name="load" depends="-init-loader-classname, init, -init-deps">
+    <taskdef name="read-chado-db-direct"
+      classname="${chado-db-direct.loaderClassName}"
+      classpathref="task.class.path"/>
+    <read-chado-db-direct integrationWriterAlias="integration.production"
+                sourceName="${source.name}"
+                sourceDbName="${source.db.name}"
+                sourceType="${source.type}"
+                commonName="${commonName}"
+                genus="${genus}"
+                species="${species}"
+                assemblyDbxrefId="${assemblyDbxrefId}"
+                proteomeId="${proteomeId}"
+                taxonId="${taxonId}"
+                annotationVersion="${annotationVersion}"
+                shortName="${shortName}"
+                version="${version}"
+                annotationDbxrefId="${annotationDbxrefId}"
+                assemblyVersion="${assemblyVersion}" >
+    </read-chado-db-direct>
+  </target>
+
+</project>

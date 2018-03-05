@@ -86,7 +86,7 @@ public abstract class DirectDataLoaderTask extends Task
      * @return the IntegrationWriter
      * @throws ObjectStoreException  if anything goes wrong
      */
-    protected IntegrationWriter getIntegrationWriter() throws ObjectStoreException {
+    public IntegrationWriter getIntegrationWriter() throws ObjectStoreException {
         if (iw == null) {
             if (integrationWriterAlias == null) {
                 throw new RuntimeException("integrationWriterAlias property is null while "

@@ -27,7 +27,7 @@ public abstract class DBDirectDataLoaderTask extends DirectDataLoaderTask {
     return db;
   }
   
-  protected Connection getConnection() {
+  public Connection getConnection() {
     if (connection == null ) {
       try {
         connection = getDb().getConnection();
