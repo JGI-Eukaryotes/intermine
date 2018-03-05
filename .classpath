@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="phytomine/webapp/src"/>
+	<classpathentry kind="src" path="bio/sources/chado-db-direct/main/src"/>
 	<classpathentry kind="src" path="bio/sources/protein-hmmscore/main/src"/>
 	<classpathentry kind="src" path="bio/sources/chado-families/main/src"/>
 	<classpathentry kind="src" path="intermine/api/model/userprofile/src"/>

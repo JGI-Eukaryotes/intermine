@@ -57,14 +57,12 @@ public class ChadoDbDirectConverter extends DBDirectDataLoaderTask
   Integer annotationDbxrefId = null;
   // the chado organism id
   Integer organismId = null;
-  // what we've stored as the organism
-  String organismIdentifier = null;
   // what we've stored. Key by (chado) feature_id, value is the intermine object
   HashMap<Integer,InterMineObject> storedInterMineObject;
   // what we've stored. Key by (chado) feature_id, value is the (intermine) integer id
-  HashMap<Integer,Integer> storedId;
+  //HashMap<Integer,Integer> storedId;
 
-  public void recordObject(Integer feature,InterMineObject ob) {
+ /* public void recordObject(Integer feature,InterMineObject ob) {
       storedInterMineObject.put(feature, ob);
   }
   public void recordObject(Integer feature,Integer id) {
@@ -81,7 +79,7 @@ public class ChadoDbDirectConverter extends DBDirectDataLoaderTask
       return storedId.get(feature);
     }
     return null;
-  }
+  }*/
   public String[] getFeatureTypes() {
     // return a list of the things we expect to pull out of chado. In
     // the chado CV
@@ -107,37 +105,38 @@ public class ChadoDbDirectConverter extends DBDirectDataLoaderTask
         fillOrganismInfo(connection);
       } catch (SQLException e1) {
         // TODO Auto-generated catch block
-        throw new BuildException("SQL problem creating organism.");
+        throw new BuildException("SQL problem registering organism.");
       }
       // now register the organism
-      Organism o;
+      Organism organismObject;
       try {
-        o = getDirectDataLoader().createObject(Organism.class);
+        organismObject = getDirectDataLoader().createObject(Organism.class);
       } catch (ObjectStoreException e1) {
         throw new BuildException("Problem getting an objectstore.");
-      }
-      if (genus != null) o.setGenus(genus);
-      if (species != null) o.setSpecies(species);
-      if (genus != null && species != null) o.setName(genus+" "+species);
-      if (shortName != null) o.setShortName(shortName);
-      if (proteomeId != null) o.setProteomeId(proteomeId);
-      if (taxonId != null) o.setTaxonId(taxonId);
-      if (version != null) o.setVersion(version);
-      if (commonName != null) o.setCommonName(commonName);
-      if (assemblyVersion != null) o.setAssemblyVersion(assemblyVersion);
-      if (annotationVersion != null) o.setAnnotationVersion(annotationVersion);
-      try {
-        getDirectDataLoader().store(o);
-      } catch (ObjectStoreException e) {
-        throw new BuildException("Trouble storing organism: "+e.getMessage());
       }
       // we must have specified the genome and proteome
       if (assemblyDbxrefId == null || annotationDbxrefId == null) {
         throw new BuildException("assemby or annotation dbxref_id is not set. Not proceeding.");
       }
+      if (genus != null) organismObject.setGenus(genus);
+      if (species != null) organismObject.setSpecies(species);
+      if (genus != null && species != null) organismObject.setName(genus+" "+species);
+      if (shortName != null) organismObject.setShortName(shortName);
+      if (proteomeId != null) organismObject.setProteomeId(proteomeId);
+      if (taxonId != null) organismObject.setTaxonId(taxonId);
+      if (version != null) organismObject.setVersion(version);
+      if (commonName != null) organismObject.setCommonName(commonName);
+      if (assemblyVersion != null) organismObject.setAssemblyVersion(assemblyVersion);
+      if (annotationVersion != null) organismObject.setAnnotationVersion(annotationVersion);
+      
+      try {
+        getDirectDataLoader().store(organismObject);
+      } catch (ObjectStoreException e) {
+        throw new BuildException("Trouble storing organism: "+e.getMessage());
+      }
       
       // the worker bee
-      ChadoDbDirectProcessor p = new ChadoDbDirectProcessor(this,o,organismId,assemblyDbxrefId,annotationDbxrefId);
+      ChadoDbDirectProcessor p = new ChadoDbDirectProcessor(this,organismObject,organismId,assemblyDbxrefId,annotationDbxrefId);
       // release the hounds
       try {
         p.process();
@@ -286,7 +285,7 @@ public class ChadoDbDirectConverter extends DBDirectDataLoaderTask
     try {
       taxonId = new Integer(taxonInput);
     } catch (NumberFormatException e) {
-      throw new BuildException("taxon string "+taxonInput+" cannot be parsed as a integer.");
+      throw new BuildException("Taxon string "+taxonInput+" cannot be parsed as a integer.");
     }
   }
   public void setAssemblyVersion(String assemblyInput) {
@@ -317,21 +316,21 @@ public class ChadoDbDirectConverter extends DBDirectDataLoaderTask
     try {
       proteomeId = new Integer(proteomeString);
     } catch (NumberFormatException e) {
-      throw new BuildException("proteome id "+proteomeString+" cannot be parsed as an integer.");
+      throw new BuildException("Proteome id "+proteomeString+" cannot be parsed as an integer.");
     }
   }
   public void setAssemblyDbxrefId(String assemblyString) {
     try {
       assemblyDbxrefId = new Integer(assemblyString);
     } catch (NumberFormatException e) {
-      throw new BuildException("assembly dbxref_id "+assemblyString+" cannot be parsed as an integer.");
+      throw new BuildException("Assembly dbxref_id "+assemblyString+" cannot be parsed as an integer.");
     }
   }
   public void setAnnotationDbxrefId(String annotationString) {
     try {
       annotationDbxrefId = new Integer(annotationString);
     } catch (NumberFormatException e) {
-      throw new BuildException("annotation dbxref_id "+annotationString+" cannot be parsed as an integer.");
+      throw new BuildException("Annotation dbxref_id "+annotationString+" cannot be parsed as an integer.");
     }
   }
   private void setAttributeIfNotNull(Item o,String attribute,String value) {

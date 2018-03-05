@@ -88,12 +88,12 @@ public class ChadoDbDirectConfig {
   static final HashMap<MultiKey,String> referenceMap;
   static {
     referenceMap = new HashMap<MultiKey,String>();
-    referenceMap.put(new MultiKey("MRNA","Gene"),"getGene");
-    referenceMap.put(new MultiKey("Exon","Gene"),"getGene");
-    referenceMap.put(new MultiKey("MRNA","Protein"),"getProtein");
-    referenceMap.put(new MultiKey("CDS","Gene"),"getGene");
-    referenceMap.put(new MultiKey("CDS","Protein"),"getProtein");
-    referenceMap.put(new MultiKey("CDS","MRNA"),"getTranscript");
+    referenceMap.put(new MultiKey("MRNA","Gene"),"setGene");
+    referenceMap.put(new MultiKey("Exon","Gene"),"setGene");
+    referenceMap.put(new MultiKey("MRNA","Protein"),"setProtein");
+    referenceMap.put(new MultiKey("CDS","Gene"),"setGene");
+    referenceMap.put(new MultiKey("CDS","Protein"),"setProtein");
+    referenceMap.put(new MultiKey("CDS","MRNA"),"setTranscript");
   }
   
   //TODO: is there a way to discover this?
