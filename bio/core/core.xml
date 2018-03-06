@@ -58,7 +58,7 @@
   <class name="Gene" extends="SequenceFeature" is-interface="true">
     <attribute name="description" type="java.lang.String"/>
     <attribute name="briefDescription" type="java.lang.String"/>
-    <collection name="proteins" referenced-type="Protein" reverse-reference="genes"/>
+    <collection name="proteins" referenced-type="Protein" reverse-reference="gene"/>
   </class>
 
   <class name="Location" is-interface="true">
@@ -130,7 +130,7 @@
     <attribute name="length" type="java.lang.Integer"/>
     <attribute name="molecularWeight" type="java.lang.Integer"/>
     <reference name="sequence" referenced-type="Sequence"/>
-    <collection name="genes" referenced-type="Gene" reverse-reference="proteins"/>
+    <reference name="gene" referenced-type="Gene" reverse-reference="proteins"/>
   </class>
 
   <class name="Publication" is-interface="true">

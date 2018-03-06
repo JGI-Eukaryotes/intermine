@@ -1,4 +1,4 @@
-  <source name="phytozome-chado-S.moellendorffii-91" type="phytozome-db">
+  <source name="phytozome-chado-S.moellendorffii-91" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="spikemoss" />
     <property name="genus" value="Selaginella" />
@@ -15,7 +15,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.papaya-113" type="phytozome-db">
+  <source name="phytozome-chado-C.papaya-113" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="papaya" />
     <property name="genus" value="Carica" />
@@ -32,7 +32,7 @@
     <property name="assemblyVersion" value="r.Dec2008" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-R.communis-119" type="phytozome-db">
+  <source name="phytozome-chado-R.communis-119" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="castor bean plant" />
     <property name="genus" value="Ricinus" />
@@ -49,7 +49,7 @@
     <property name="assemblyVersion" value="TIGR.0.1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.sativus-122" type="phytozome-db">
+  <source name="phytozome-chado-C.sativus-122" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cucumber" />
     <property name="genus" value="Cucumis" />
@@ -66,7 +66,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.sinensis-154" type="phytozome-db">
+  <source name="phytozome-chado-C.sinensis-154" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="sweet orange" />
     <property name="genus" value="Citrus" />
@@ -83,7 +83,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.thaliana-167" type="phytozome-db">
+  <source name="phytozome-chado-A.thaliana-167" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="thale cress" />
     <property name="genus" value="Arabidopsis" />
@@ -100,7 +100,7 @@
     <property name="assemblyVersion" value="TAIR9" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-E.salsugineum-173" type="phytozome-db">
+  <source name="phytozome-chado-E.salsugineum-173" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="salt cress" />
     <property name="genus" value="Eutrema" />
@@ -117,7 +117,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.clementina-182" type="phytozome-db">
+  <source name="phytozome-chado-C.clementina-182" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="clementine" />
     <property name="genus" value="Citrus" />
@@ -134,7 +134,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-L.usitatissimum-200" type="phytozome-db">
+  <source name="phytozome-chado-L.usitatissimum-200" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="flax" />
     <property name="genus" value="Linum" />
@@ -151,7 +151,7 @@
     <property name="assemblyVersion" value="BGIv1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-G.raimondii-221" type="phytozome-db">
+  <source name="phytozome-chado-G.raimondii-221" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cotton" />
     <property name="genus" value="Gossypium" />
@@ -168,7 +168,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.subellipsoideaC-169-227" type="phytozome-db">
+  <source name="phytozome-chado-C.subellipsoideaC-169-227" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Coccomyxa subellipsoidea C-169" />
     <property name="genus" value="Coccomyxa" />
@@ -185,7 +185,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.pusillaCCMP1545-228" type="phytozome-db">
+  <source name="phytozome-chado-M.pusillaCCMP1545-228" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Micromonas pusilla CCMP1545" />
     <property name="genus" value="Micromonas" />
@@ -202,7 +202,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.spRCC299-229" type="phytozome-db">
+  <source name="phytozome-chado-M.spRCC299-229" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Micromonas sp. RCC299" />
     <property name="genus" value="Micromonas" />
@@ -219,7 +219,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-O.lucimarinus-231" type="phytozome-db">
+  <source name="phytozome-chado-O.lucimarinus-231" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Ostreococcus lucimarinus" />
     <property name="genus" value="Ostreococcus" />
@@ -236,7 +236,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-T.cacao-233" type="phytozome-db">
+  <source name="phytozome-chado-T.cacao-233" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cocoa bean" />
     <property name="genus" value="Theobroma" />
@@ -253,7 +253,7 @@
     <property name="assemblyVersion" value="CGDv1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.guttatus-256" type="phytozome-db">
+  <source name="phytozome-chado-M.guttatus-256" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="monkey flower" />
     <property name="genus" value="Mimulus" />
@@ -270,7 +270,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.halleri-264" type="phytozome-db">
+  <source name="phytozome-chado-A.halleri-264" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Arabidopsis halleri" />
     <property name="genus" value="Arabidopsis" />
@@ -287,7 +287,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.grandiflora-266" type="phytozome-db">
+  <source name="phytozome-chado-C.grandiflora-266" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Capsella grandiflora" />
     <property name="genus" value="Capsella" />
@@ -304,7 +304,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-G.max-275" type="phytozome-db">
+  <source name="phytozome-chado-G.max-275" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="soybean" />
     <property name="genus" value="Glycine" />
@@ -321,7 +321,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.rapaFPsc-277" type="phytozome-db">
+  <source name="phytozome-chado-B.rapaFPsc-277" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="turnip mustard" />
     <property name="genus" value="Brassica" />
@@ -338,7 +338,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.stricta-278" type="phytozome-db">
+  <source name="phytozome-chado-B.stricta-278" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Drummond's rockcress" />
     <property name="genus" value="Boechera" />
@@ -355,7 +355,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.reinhardtii-281" type="phytozome-db">
+  <source name="phytozome-chado-C.reinhardtii-281" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="green algae" />
     <property name="genus" value="Chlamydomonas" />
@@ -372,7 +372,7 @@
     <property name="assemblyVersion" value="v5.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.truncatula-285" type="phytozome-db">
+  <source name="phytozome-chado-M.truncatula-285" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="barrel medic" />
     <property name="genus" value="Medicago" />
@@ -389,7 +389,7 @@
     <property name="assemblyVersion" value="Mt4.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.purpurea-289" type="phytozome-db">
+  <source name="phytozome-chado-S.purpurea-289" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="shrub willow" />
     <property name="genus" value="Salix" />
@@ -406,7 +406,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.polyrhiza-290" type="phytozome-db">
+  <source name="phytozome-chado-S.polyrhiza-290" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="greater duckweed" />
     <property name="genus" value="Spirodela" />
@@ -423,7 +423,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.trichopoda-291" type="phytozome-db">
+  <source name="phytozome-chado-A.trichopoda-291" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="amborella" />
     <property name="genus" value="Amborella" />
@@ -440,7 +440,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-T.aestivum-296" type="phytozome-db">
+  <source name="phytozome-chado-T.aestivum-296" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="wheat" />
     <property name="genus" value="Triticum" />
@@ -457,7 +457,7 @@
     <property name="assemblyVersion" value="v2" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-E.grandis-297" type="phytozome-db">
+  <source name="phytozome-chado-E.grandis-297" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="eucalyptus" />
     <property name="genus" value="Eucalyptus" />
@@ -474,7 +474,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.persica-298" type="phytozome-db">
+  <source name="phytozome-chado-P.persica-298" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="peach" />
     <property name="genus" value="Prunus" />
@@ -491,7 +491,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.acuminata-304" type="phytozome-db">
+  <source name="phytozome-chado-M.acuminata-304" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="banana" />
     <property name="genus" value="Musa" />
@@ -508,7 +508,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.esculenta-305" type="phytozome-db">
+  <source name="phytozome-chado-M.esculenta-305" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cassava" />
     <property name="genus" value="Manihot" />
@@ -525,7 +525,7 @@
     <property name="assemblyVersion" value="v6.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-K.laxiflora-309" type="phytozome-db">
+  <source name="phytozome-chado-K.laxiflora-309" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Kalanchoe laxiflora" />
     <property name="genus" value="Kalanchoe" />
@@ -542,7 +542,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.fallax-310" type="phytozome-db">
+  <source name="phytozome-chado-S.fallax-310" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Sphagnum fallax" />
     <property name="genus" value="Sphagnum" />
@@ -559,7 +559,7 @@
     <property name="assemblyVersion" value="v0.5" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.italica-312" type="phytozome-db">
+  <source name="phytozome-chado-S.italica-312" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="foxtail millet" />
     <property name="genus" value="Setaria" />
@@ -576,7 +576,7 @@
     <property name="assemblyVersion" value="v2" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyon-314" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyon-314" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="purple false brome" />
     <property name="genus" value="Brachypodium" />
@@ -593,7 +593,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.stacei-316" type="phytozome-db">
+  <source name="phytozome-chado-B.stacei-316" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium stacei" />
     <property name="genus" value="Brachypodium" />
@@ -610,7 +610,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-V.carteri-317" type="phytozome-db">
+  <source name="phytozome-chado-V.carteri-317" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="volvox" />
     <property name="genus" value="Volvox" />
@@ -627,7 +627,7 @@
     <property name="assemblyVersion" value="v2" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.patens-318" type="phytozome-db">
+  <source name="phytozome-chado-P.patens-318" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="moss" />
     <property name="genus" value="Physcomitrella" />
@@ -644,7 +644,7 @@
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.polymorpha-320" type="phytozome-db">
+  <source name="phytozome-chado-M.polymorpha-320" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="common liverwort" />
     <property name="genus" value="Marchantia" />
@@ -661,7 +661,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.comosus-321" type="phytozome-db">
+  <source name="phytozome-chado-A.comosus-321" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="pineapple" />
     <property name="genus" value="Ananas" />
@@ -678,7 +678,7 @@
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.coerulea-322" type="phytozome-db">
+  <source name="phytozome-chado-A.coerulea-322" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Colorado blue columbine" />
     <property name="genus" value="Aquilegia" />
@@ -695,7 +695,7 @@
     <property name="assemblyVersion" value="v3" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-O.sativa-323" type="phytozome-db">
+  <source name="phytozome-chado-O.sativa-323" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="rice" />
     <property name="genus" value="Oryza" />
@@ -712,7 +712,7 @@
     <property name="assemblyVersion" value="v7.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-Z.marina-324" type="phytozome-db">
+  <source name="phytozome-chado-Z.marina-324" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="common eelgrass" />
     <property name="genus" value="Zostera" />
@@ -729,7 +729,7 @@
     <property name="assemblyVersion" value="v2.2" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-D.salina-325" type="phytozome-db">
+  <source name="phytozome-chado-D.salina-325" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Dunaliella salina" />
     <property name="genus" value="Dunaliella" />
@@ -746,7 +746,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-K.fedtschenkoi-382" type="phytozome-db">
+  <source name="phytozome-chado-K.fedtschenkoi-382" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Kalanchoe fedtschenkoi" />
     <property name="genus" value="Kalanchoe" />
@@ -763,7 +763,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.lyrata-384" type="phytozome-db">
+  <source name="phytozome-chado-A.lyrata-384" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Lyrate rockcress" />
     <property name="genus" value="Arabidopsis" />
@@ -780,7 +780,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-T.pratense-385" type="phytozome-db">
+  <source name="phytozome-chado-T.pratense-385" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="red clover" />
     <property name="genus" value="Trifolium" />
@@ -797,7 +797,7 @@
     <property name="assemblyVersion" value="v2" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-O.thomaeum-386" type="phytozome-db">
+  <source name="phytozome-chado-O.thomaeum-386" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Oropetium thomaeum" />
     <property name="genus" value="Oropetium" />
@@ -814,7 +814,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-D.carota-388" type="phytozome-db">
+  <source name="phytozome-chado-D.carota-388" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="carrots" />
     <property name="genus" value="Daucus" />
@@ -831,7 +831,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.lycopersicum-390" type="phytozome-db">
+  <source name="phytozome-chado-S.lycopersicum-390" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="tomato" />
     <property name="genus" value="Solanum" />
@@ -848,7 +848,7 @@
     <property name="assemblyVersion" value="v2.5" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.quinoa-392" type="phytozome-db">
+  <source name="phytozome-chado-C.quinoa-392" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="quinoa" />
     <property name="genus" value="Chenopodium" />
@@ -865,7 +865,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.vulgaris-442" type="phytozome-db">
+  <source name="phytozome-chado-P.vulgaris-442" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="common bean" />
     <property name="genus" value="Phaseolus" />
@@ -882,7 +882,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-Z.maysPH207-443" type="phytozome-db">
+  <source name="phytozome-chado-Z.maysPH207-443" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="maize" />
     <property name="genus" value="Zea" />
@@ -899,7 +899,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.trichocarpa-444" type="phytozome-db">
+  <source name="phytozome-chado-P.trichocarpa-444" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="western poplar" />
     <property name="genus" value="Populus" />
@@ -916,7 +916,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.deltoidesWV94-445" type="phytozome-db">
+  <source name="phytozome-chado-P.deltoidesWV94-445" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="eastern cottonwood" />
     <property name="genus" value="Populus" />
@@ -933,7 +933,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.oleraceacapitata-446" type="phytozome-db">
+  <source name="phytozome-chado-B.oleraceacapitata-446" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cabbage" />
     <property name="genus" value="Brassica" />
@@ -950,7 +950,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.thaliana-447" type="phytozome-db">
+  <source name="phytozome-chado-A.thaliana-447" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="thale cress" />
     <property name="genus" value="Arabidopsis" />
@@ -967,7 +967,7 @@
     <property name="assemblyVersion" value="TAIR9" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.tuberosum-448" type="phytozome-db">
+  <source name="phytozome-chado-S.tuberosum-448" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="potato" />
     <property name="genus" value="Solanum" />
@@ -984,7 +984,7 @@
     <property name="assemblyVersion" value="v4.03" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.occidentale-449" type="phytozome-db">
+  <source name="phytozome-chado-A.occidentale-449" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cashew" />
     <property name="genus" value="Anacardium" />
@@ -1001,7 +1001,7 @@
     <property name="assemblyVersion" value="v0.9" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.virgatum-450" type="phytozome-db">
+  <source name="phytozome-chado-P.virgatum-450" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="switchgrass" />
     <property name="genus" value="Panicum" />
@@ -1018,7 +1018,7 @@
     <property name="assemblyVersion" value="v4.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-O.europaea-451" type="phytozome-db">
+  <source name="phytozome-chado-O.europaea-451" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="olive" />
     <property name="genus" value="Olea" />
@@ -1035,7 +1035,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.arabica-453" type="phytozome-db">
+  <source name="phytozome-chado-C.arabica-453" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="coffee" />
     <property name="genus" value="Coffea" />
@@ -1052,7 +1052,7 @@
     <property name="assemblyVersion" value="v0.5" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.bicolor-454" type="phytozome-db">
+  <source name="phytozome-chado-S.bicolor-454" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cereal grass" />
     <property name="genus" value="Sorghum" />
@@ -1069,7 +1069,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-O.sativaKitaake-499" type="phytozome-db">
+  <source name="phytozome-chado-O.sativaKitaake-499" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Oryza sativa Kitaake" />
     <property name="genus" value="Oryza" />
@@ -1086,7 +1086,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.umbilicalis-456" type="phytozome-db">
+  <source name="phytozome-chado-P.umbilicalis-456" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="seaweed" />
     <property name="genus" value="Porphyra" />
@@ -1103,7 +1103,7 @@
     <property name="assemblyVersion" value="v1.5" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-V.vinifera-457" type="phytozome-db">
+  <source name="phytozome-chado-V.vinifera-457" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="grape vine" />
     <property name="genus" value="Vitis" />
@@ -1120,7 +1120,7 @@
     <property name="assemblyVersion" value="Genoscope.12X" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-G.hirsutum-458" type="phytozome-db">
+  <source name="phytozome-chado-G.hirsutum-458" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="upland cotton" />
     <property name="genus" value="Gossypium" />
@@ -1137,7 +1137,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.hypochondriacus-459" type="phytozome-db">
+  <source name="phytozome-chado-A.hypochondriacus-459" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="grain amaranth" />
     <property name="genus" value="Amaranthus" />
@@ -1154,7 +1154,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd21-3-460" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd21-3-460" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd21-3" />
     <property name="genus" value="Brachypodium" />
@@ -1171,7 +1171,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.zofingiensis-461" type="phytozome-db">
+  <source name="phytozome-chado-C.zofingiensis-461" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Chromochloris zofingiensis" />
     <property name="genus" value="Chromochloris" />
@@ -1189,7 +1189,7 @@
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
 
-  <source name="phytozome-chado-H.vulgare-462" type="phytozome-db">
+  <source name="phytozome-chado-H.vulgare-462" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="barley" />
     <property name="genus" value="Hordeum" />
@@ -1206,7 +1206,7 @@
     <property name="assemblyVersion" value="r1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.hybridum-463" type="phytozome-db">
+  <source name="phytozome-chado-B.hybridum-463" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium hybridum" />
     <property name="genus" value="Brachypodium" />
@@ -1223,7 +1223,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-L.sativa-467" type="phytozome-db">
+  <source name="phytozome-chado-L.sativa-467" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Lactuca sativa" />
     <property name="genus" value="Lactuca" />
@@ -1240,7 +1240,7 @@
     <property name="assemblyVersion" value="v8" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.bicolorRio-468" type="phytozome-db">
+  <source name="phytozome-chado-S.bicolorRio-468" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="sorghum Rio" />
     <property name="genus" value="Sorghum" />
@@ -1257,7 +1257,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-V.unguiculata-469" type="phytozome-db">
+  <source name="phytozome-chado-V.unguiculata-469" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="cowpea" />
     <property name="genus" value="Vigna" />
@@ -1274,7 +1274,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.rubella-474" type="phytozome-db">
+  <source name="phytozome-chado-C.rubella-474" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="red shepherd's purse" />
     <property name="genus" value="Capsella" />
@@ -1291,7 +1291,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.sylvaticum-490" type="phytozome-db">
+  <source name="phytozome-chado-B.sylvaticum-490" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium sylvaticum" />
     <property name="genus" value="Brachypodium" />
@@ -1308,7 +1308,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.domestica-491" type="phytozome-db">
+  <source name="phytozome-chado-M.domestica-491" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="apple" />
     <property name="genus" value="Malus" />
@@ -1325,7 +1325,7 @@
     <property name="assemblyVersion" value="GDDH13v1.1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.arietinum-492" type="phytozome-db">
+  <source name="phytozome-chado-C.arietinum-492" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="chickpea" />
     <property name="genus" value="Cicer" />
@@ -1342,7 +1342,7 @@
     <property name="assemblyVersion" value="v1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-Z.mays-493" type="phytozome-db">
+  <source name="phytozome-chado-Z.mays-493" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="maize" />
     <property name="genus" value="Zea" />
@@ -1359,7 +1359,7 @@
     <property name="assemblyVersion" value="APGv4" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-H.annuus-494" type="phytozome-db">
+  <source name="phytozome-chado-H.annuus-494" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="sunflower" />
     <property name="genus" value="Helianthus" />
@@ -1376,7 +1376,7 @@
     <property name="assemblyVersion" value="r1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.hallii-495" type="phytozome-db">
+  <source name="phytozome-chado-P.hallii-495" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Hall's panicgrass" />
     <property name="genus" value="Panicum" />
@@ -1393,7 +1393,7 @@
     <property name="assemblyVersion" value="v3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-P.halliiHAL-496" type="phytozome-db">
+  <source name="phytozome-chado-P.halliiHAL-496" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Panicum hallii var. hallii" />
     <property name="genus" value="Panicum" />
@@ -1410,7 +1410,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.sinensis-497" type="phytozome-db">
+  <source name="phytozome-chado-M.sinensis-497" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Miscanthus sinensis" />
     <property name="genus" value="Miscanthus" />
@@ -1427,7 +1427,7 @@
     <property name="assemblyVersion" value="v7.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.officinalis-498" type="phytozome-db">
+  <source name="phytozome-chado-A.officinalis-498" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="garden asparagus" />
     <property name="genus" value="Asparagus" />
@@ -1444,7 +1444,7 @@
     <property name="assemblyVersion" value="Aspof.V1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.viridis-500" type="phytozome-db">
+  <source name="phytozome-chado-S.viridis-500" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Setaria viridis" />
     <property name="genus" value="Setaria" />
@@ -1461,7 +1461,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.brauniiShowa-502" type="phytozome-db">
+  <source name="phytozome-chado-B.brauniiShowa-502" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Botryococcus braunii Showa" />
     <property name="genus" value="Botryococcus" />
@@ -1478,7 +1478,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.amplexicaulis-470" type="phytozome-db">
+  <source name="phytozome-chado-C.amplexicaulis-470" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Caulanthus amplexicaulis" />
     <property name="genus" value="Caulanthus" />
@@ -1495,7 +1495,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.perfoliatum-471" type="phytozome-db">
+  <source name="phytozome-chado-M.perfoliatum-471" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Myagrum perfoliatum" />
     <property name="genus" value="Myagrum" />
@@ -1512,7 +1512,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-A.linifolium-472" type="phytozome-db">
+  <source name="phytozome-chado-A.linifolium-472" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Alyssum linifolium" />
     <property name="genus" value="Alyssum" />
@@ -1529,7 +1529,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-R.islandica-473" type="phytozome-db">
+  <source name="phytozome-chado-R.islandica-473" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Rorippa islandica" />
     <property name="genus" value="Rorippa" />
@@ -1546,7 +1546,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-I.tinctoria-475" type="phytozome-db">
+  <source name="phytozome-chado-I.tinctoria-475" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Isatis tinctoria" />
     <property name="genus" value="Isatis" />
@@ -1563,7 +1563,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-L.annua-476" type="phytozome-db">
+  <source name="phytozome-chado-L.annua-476" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Lunaria annua" />
     <property name="genus" value="Lunaria" />
@@ -1580,7 +1580,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-M.maritima-477" type="phytozome-db">
+  <source name="phytozome-chado-M.maritima-477" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Malcolmia maritima" />
     <property name="genus" value="Malcolmia" />
@@ -1597,7 +1597,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-L.sativum-478" type="phytozome-db">
+  <source name="phytozome-chado-L.sativum-478" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Lepidium sativum" />
     <property name="genus" value="Lepidium" />
@@ -1614,7 +1614,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-T.arvense-479" type="phytozome-db">
+  <source name="phytozome-chado-T.arvense-479" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Thlaspi arvense" />
     <property name="genus" value="Thlaspi" />
@@ -1631,7 +1631,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.alba-480" type="phytozome-db">
+  <source name="phytozome-chado-S.alba-480" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Sinapis alba" />
     <property name="genus" value="Sinapis" />
@@ -1648,7 +1648,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.maritima-481" type="phytozome-db">
+  <source name="phytozome-chado-C.maritima-481" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Cakile maritima" />
     <property name="genus" value="Cakile" />
@@ -1665,7 +1665,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-D.sophioides-482" type="phytozome-db">
+  <source name="phytozome-chado-D.sophioides-482" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Descurainia sophioides" />
     <property name="genus" value="Descurainia" />
@@ -1682,7 +1682,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-E.syriacum-483" type="phytozome-db">
+  <source name="phytozome-chado-E.syriacum-483" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Euclidium syriacum" />
     <property name="genus" value="Euclidium" />
@@ -1699,7 +1699,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.violacea-484" type="phytozome-db">
+  <source name="phytozome-chado-C.violacea-484" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Cleome violacea" />
     <property name="genus" value="Cleome" />
@@ -1716,7 +1716,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-I.amara-485" type="phytozome-db">
+  <source name="phytozome-chado-I.amara-485" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Iberis amara" />
     <property name="genus" value="Iberis" />
@@ -1733,7 +1733,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-S.pinnata-486" type="phytozome-db">
+  <source name="phytozome-chado-S.pinnata-486" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Stanleya pinnata" />
     <property name="genus" value="Stanleya" />
@@ -1750,7 +1750,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-E.vesicaria-487" type="phytozome-db">
+  <source name="phytozome-chado-E.vesicaria-487" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Eruca vesicaria" />
     <property name="genus" value="Eruca" />
@@ -1767,7 +1767,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-C.hispanica-488" type="phytozome-db">
+  <source name="phytozome-chado-C.hispanica-488" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Crambe hispanica" />
     <property name="genus" value="Crambe" />
@@ -1784,7 +1784,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-D.strictus-489" type="phytozome-db">
+  <source name="phytozome-chado-D.strictus-489" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Diptychocarpus strictus" />
     <property name="genus" value="Diptychocarpus" />
@@ -1801,7 +1801,7 @@
     <property name="assemblyVersion" value="v1" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-F.vesca-501" type="phytozome-db">
+  <source name="phytozome-chado-F.vesca-501" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="strawberry" />
     <property name="genus" value="Fragaria" />
@@ -1818,7 +1818,7 @@
     <property name="assemblyVersion" value="v2.0.a2" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyon-283" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyon-283" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="purple false brome" />
     <property name="genus" value="Brachypodium" />
@@ -1835,7 +1835,7 @@
     <property name="assemblyVersion" value="v2.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonPer1-326" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonPer1-326" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Per1" />
     <property name="genus" value="Brachypodium" />
@@ -1852,7 +1852,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonUni2-327" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonUni2-327" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Uni2" />
     <property name="genus" value="Brachypodium" />
@@ -1869,7 +1869,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd3-1-328" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd3-1-328" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd3-1" />
     <property name="genus" value="Brachypodium" />
@@ -1886,7 +1886,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR7a-329" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR7a-329" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR7a" />
     <property name="genus" value="Brachypodium" />
@@ -1903,7 +1903,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonKoz-1-330" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonKoz-1-330" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Koz-1" />
     <property name="genus" value="Brachypodium" />
@@ -1920,7 +1920,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd21Refv2-331" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd21Refv2-331" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd21Refv2" />
     <property name="genus" value="Brachypodium" />
@@ -1937,7 +1937,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonTek-4-332" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonTek-4-332" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Tek-4" />
     <property name="genus" value="Brachypodium" />
@@ -1954,7 +1954,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR9-333" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR9-333" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR9" />
     <property name="genus" value="Brachypodium" />
@@ -1971,7 +1971,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR13a-334" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR13a-334" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR13a" />
     <property name="genus" value="Brachypodium" />
@@ -1988,7 +1988,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonpangenome-335" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonpangenome-335" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon pangenome" />
     <property name="genus" value="Brachypodium" />
@@ -2005,7 +2005,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR6-336" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR6-336" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR6" />
     <property name="genus" value="Brachypodium" />
@@ -2022,7 +2022,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR2-337" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR2-337" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR2" />
     <property name="genus" value="Brachypodium" />
@@ -2039,7 +2039,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBis-1-338" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBis-1-338" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bis-1" />
     <property name="genus" value="Brachypodium" />
@@ -2056,7 +2056,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonGaz-8-339" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonGaz-8-339" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Gaz-8" />
     <property name="genus" value="Brachypodium" />
@@ -2073,7 +2073,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonS8iiC-340" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonS8iiC-340" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon S8iiC" />
     <property name="genus" value="Brachypodium" />
@@ -2090,7 +2090,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonTek-2-341" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonTek-2-341" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Tek-2" />
     <property name="genus" value="Brachypodium" />
@@ -2107,7 +2107,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonKah-5-342" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonKah-5-342" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Kah-5" />
     <property name="genus" value="Brachypodium" />
@@ -2124,7 +2124,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR3-343" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR3-343" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR3" />
     <property name="genus" value="Brachypodium" />
@@ -2141,7 +2141,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd30-1-344" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd30-1-344" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd30-1" />
     <property name="genus" value="Brachypodium" />
@@ -2158,7 +2158,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR1i-345" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR1i-345" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR1i" />
     <property name="genus" value="Brachypodium" />
@@ -2175,7 +2175,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd29-1-346" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd29-1-346" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd29-1" />
     <property name="genus" value="Brachypodium" />
@@ -2192,7 +2192,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonLuc1-347" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonLuc1-347" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Luc1" />
     <property name="genus" value="Brachypodium" />
@@ -2209,7 +2209,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR8i-348" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR8i-348" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR8i" />
     <property name="genus" value="Brachypodium" />
@@ -2226,7 +2226,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd1-1-349" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd1-1-349" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd1-1" />
     <property name="genus" value="Brachypodium" />
@@ -2243,7 +2243,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonMon3-350" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonMon3-350" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Mon3" />
     <property name="genus" value="Brachypodium" />
@@ -2260,7 +2260,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonKah-1-351" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonKah-1-351" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Kah-1" />
     <property name="genus" value="Brachypodium" />
@@ -2277,7 +2277,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR12c-352" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR12c-352" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR12c" />
     <property name="genus" value="Brachypodium" />
@@ -2294,7 +2294,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd2-3-353" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd2-3-353" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd2-3" />
     <property name="genus" value="Brachypodium" />
@@ -2311,7 +2311,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR3c-354" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR3c-354" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR3c" />
     <property name="genus" value="Brachypodium" />
@@ -2328,7 +2328,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonArn1-355" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonArn1-355" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Arn1" />
     <property name="genus" value="Brachypodium" />
@@ -2345,7 +2345,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR8-356" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR8-356" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR8" />
     <property name="genus" value="Brachypodium" />
@@ -2362,7 +2362,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR11g-357" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR11g-357" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR11g" />
     <property name="genus" value="Brachypodium" />
@@ -2379,7 +2379,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR9k-358" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR9k-358" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR9k" />
     <property name="genus" value="Brachypodium" />
@@ -2396,7 +2396,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonAdi-12-359" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonAdi-12-359" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Adi-12" />
     <property name="genus" value="Brachypodium" />
@@ -2413,7 +2413,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonRon2-360" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonRon2-360" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Ron2" />
     <property name="genus" value="Brachypodium" />
@@ -2430,7 +2430,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd21Control-361" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd21Control-361" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd21Control" />
     <property name="genus" value="Brachypodium" />
@@ -2447,7 +2447,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd18-1-362" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd18-1-362" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd18-1" />
     <property name="genus" value="Brachypodium" />
@@ -2464,7 +2464,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR11i-363" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR11i-363" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR11i" />
     <property name="genus" value="Brachypodium" />
@@ -2481,7 +2481,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR4-364" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR4-364" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR4" />
     <property name="genus" value="Brachypodium" />
@@ -2498,7 +2498,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR13c-365" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR13c-365" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR13c" />
     <property name="genus" value="Brachypodium" />
@@ -2515,7 +2515,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonFoz1-366" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonFoz1-366" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Foz1" />
     <property name="genus" value="Brachypodium" />
@@ -2532,7 +2532,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR2g-367" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR2g-367" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR2g" />
     <property name="genus" value="Brachypodium" />
@@ -2549,7 +2549,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonKoz-3-368" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonKoz-3-368" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Koz-3" />
     <property name="genus" value="Brachypodium" />
@@ -2566,7 +2566,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR7-369" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR7-369" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR7" />
     <property name="genus" value="Brachypodium" />
@@ -2583,7 +2583,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR5i-370" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR5i-370" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR5i" />
     <property name="genus" value="Brachypodium" />
@@ -2600,7 +2600,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonSig2-371" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonSig2-371" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Sig2" />
     <property name="genus" value="Brachypodium" />
@@ -2617,7 +2617,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonAdi-2-372" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonAdi-2-372" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Adi-2" />
     <property name="genus" value="Brachypodium" />
@@ -2634,7 +2634,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonMur1-373" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonMur1-373" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Mur1" />
     <property name="genus" value="Brachypodium" />
@@ -2651,7 +2651,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR10c-374" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR10c-374" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR10c" />
     <property name="genus" value="Brachypodium" />
@@ -2668,7 +2668,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonJer1-375" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonJer1-375" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Jer1" />
     <property name="genus" value="Brachypodium" />
@@ -2685,7 +2685,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR2b-376" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR2b-376" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR2b" />
     <property name="genus" value="Brachypodium" />
@@ -2702,7 +2702,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonMig3-377" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonMig3-377" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Mig3" />
     <property name="genus" value="Brachypodium" />
@@ -2719,7 +2719,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBd21-3-378" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBd21-3-378" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Bd21-3" />
     <property name="genus" value="Brachypodium" />
@@ -2736,7 +2736,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonABR5-379" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonABR5-379" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon ABR5" />
     <property name="genus" value="Brachypodium" />
@@ -2753,7 +2753,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonBdTR11a-380" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonBdTR11a-380" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon BdTR11a" />
     <property name="genus" value="Brachypodium" />
@@ -2770,7 +2770,7 @@
     <property name="assemblyVersion" value="1.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>
-  <source name="phytozome-chado-B.distachyonAdi-10-381" type="phytozome-db">
+  <source name="phytozome-chado-B.distachyonAdi-10-381" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
     <property name="commonName" value="Brachypodium distachyon Adi-10" />
     <property name="genus" value="Brachypodium" />

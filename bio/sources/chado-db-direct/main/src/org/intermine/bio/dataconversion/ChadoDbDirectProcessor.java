@@ -15,7 +15,7 @@ import java.util.Set;
 
 import org.intermine.bio.dataconversion.ChadoDbDirectConfig;
 import org.intermine.bio.util.OrganismData;
-
+import org.intermine.dataloader.IntegrationWriterDataTrackingImpl;
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
@@ -57,6 +57,7 @@ public class ChadoDbDirectProcessor {
   protected Map<String,HashMap<String,InterMineObject>> crossReferenceMap;
   // and we're also going to make an entry in the ontology term table.
   protected Map<String,InterMineObject> ontologyMap;
+  protected Map<String,InterMineObject> soTermMap;
   protected Map<String,InterMineObject> goTermMap;
   protected Map<String,HashMap<String,InterMineObject>> ontologyTermMap;
   // and entered protein domains
@@ -70,6 +71,7 @@ public class ChadoDbDirectProcessor {
   Integer assemblyDbxrefId;
   Integer annotationDbxrefId;
   ChadoDbDirectConfig config;
+  Ontology sequenceOntology;
   
   public ChadoDbDirectProcessor(ChadoDbDirectConverter conv,
       Organism o,Integer oId, Integer assembly,Integer annotation) {
@@ -85,13 +87,50 @@ public class ChadoDbDirectProcessor {
     goTermMap = new HashMap<String,InterMineObject>();
     ontologyTermMap = new HashMap<String,HashMap<String,InterMineObject>>();
     proteindomainMap = new HashMap<String,InterMineObject>();
+    soTermMap = new HashMap<String,InterMineObject>();
     prefillSimpleMap(dataSourceMap,DataSource.class,"name");
     prefillSimpleMap(ontologyMap,Ontology.class,"name");
     prefillSimpleMap(goTermMap,GOTerm.class,"identifier");
     prefillDoubleMap(ontologyTermMap,Ontology.class,"name",OntologyTerm.class,"identifier");
     prefillDoubleMap(crossReferenceMap,DataSource.class,"name",CrossReference.class,"identifier");
     prefillSimpleMap(proteindomainMap,ProteinDomain.class,"primaryIdentifier");
+    prefillSimpleMap(soTermMap,SOTerm.class,"name");
     storedChadoObjects = new HashMap<Integer,InterMineObject>();
+    
+    try {
+      // register the SO terms here.
+      // do we need to register the sequence ontology?
+      if (!ontologyMap.containsKey("Sequence Ontology") ) {
+        sequenceOntology = conv.getDirectDataLoader().createObject(Ontology.class);
+        sequenceOntology.setName("Sequence Ontology");
+        conv.getDirectDataLoader().store(sequenceOntology);
+        ontologyMap.put("Sequence Ontology",sequenceOntology);
+      } else {
+        sequenceOntology = (Ontology) ontologyMap.get("Sequence Ontology");
+      }
+      for(String term: config.CHROMOSOME_FEATURES) {
+        if (!soTermMap.containsKey(term)) {
+          SOTerm sT;
+          sT = conv.getDirectDataLoader().createObject(SOTerm.class);
+          sT.setName(term);
+          sT.setOntology(sequenceOntology);
+          conv.getDirectDataLoader().store(sT);
+          soTermMap.put(term,sT); 
+        }
+      }
+      for(String term: config.ANNOTATION_FEATURES) {
+        if (!soTermMap.containsKey(term)) {
+          SOTerm sT;
+          sT = conv.getDirectDataLoader().createObject(SOTerm.class);
+          sT.setName(term);
+          sT.setOntology(sequenceOntology);
+          conv.getDirectDataLoader().store(sT);
+          soTermMap.put(term,sT); 
+        }
+      }
+    } catch (ObjectStoreException e) {
+      throw new BuildException("Problem registering SO term");
+    }
   }
   
   public void process() throws SQLException, ObjectStoreException {
@@ -320,10 +359,11 @@ public class ChadoDbDirectProcessor {
       feat.setFieldValue("organism",organism);
       if (seq != null) feat.setFieldValue("sequence",seq);
       
-      // if there is a chromosome field, set it.
+      // Some of these fields are not in every InterMine record. Ignore.
       try {
         feat.getFieldType("chromosome");
         feat.setFieldValue("chromosome",(Chromosome)storedChadoObjects.get(srcFeatureId));
+        feat.setFieldValue("sequenceOntologyTerm",soTermMap.get(chadoType));
       } catch (IllegalArgumentException e) {}
       // see if we can set a location. Some features do not have one
       try {
@@ -616,7 +656,7 @@ public class ChadoDbDirectProcessor {
       }
       // we handle InterPro (protein domains) slightly differently. In addition
       // to a ontology annotation, we add a protein domain.
-      if (dbName.equals("InterPro") && ChadoDbDirectConfig.getIntermineType(config.cvTermInv(typeId)).equals("Protein")) {
+      if (dbName.equals("InterPro") && ChadoDbDirectConfig.getIntermineTypeName(config.cvTermInv(typeId)).equals("Protein")) {
         if (!proteindomainMap.containsKey(accession)) {
           ProteinDomain pD = converter.getDirectDataLoader().createObject(ProteinDomain.class);
           pD.setPrimaryIdentifier(accession);
@@ -636,7 +676,7 @@ public class ChadoDbDirectProcessor {
         converter.getDirectDataLoader().store(newTerm);
         ontologyTermMap.get(dbName).put(accession, newTerm);
       }
-      if (dbName.equals("GO") && ChadoDbDirectConfig.getIntermineType(config.cvTermInv(typeId)).equals("Gene")) {
+      if (dbName.equals("GO") && ChadoDbDirectConfig.getIntermineTypeName(config.cvTermInv(typeId)).equals("Gene")) {
         GOAnnotation oA = converter.getDirectDataLoader().createObject(GOAnnotation.class);
         oA.setSubject((BioEntity)storedChadoObjects.get(featureId));
         oA.setOntologyTerm((OntologyTerm)ontologyTermMap.get(dbName).get(accession));
@@ -790,33 +830,50 @@ public class ChadoDbDirectProcessor {
       String intermineSubjectType = ChadoDbDirectConfig.getIntermineTypeName(subjectType);
       String intermineObjectType = ChadoDbDirectConfig.getIntermineTypeName(objectType);
       
+      //System.out.println("1 Connecting "+intermineSubjectType+" and "+intermineObjectType);
+      
       if( ChadoDbDirectConfig.hasReference(intermineSubjectType,intermineObjectType)) {
+        
         String refMethod = ChadoDbDirectConfig.referenceMethod(intermineSubjectType,intermineObjectType);
+        //System.out.println("Connection exists using "+ChadoDbDirectConfig.referenceMethod(intermineSubjectType,intermineObjectType+" using "+refMethod));
         Method m;
         try {
-          m = storedChadoObjects.get(subjectId).getClass().getMethod(refMethod,ChadoDbDirectConfig.getIntermineType(objectType));
+          // hack
+          m = storedChadoObjects.get(subjectId).getClass().getMethod(refMethod,ChadoDbDirectConfig.getIntermineType(objectType)==MRNA.class?
+              Transcript.class:ChadoDbDirectConfig.getIntermineType(objectType));
           m.invoke(storedChadoObjects.get(subjectId),storedChadoObjects.get(objectId));
         } catch (Exception e) {
-          throw new BuildException("Problem creating reference.");
+          //System.out.println("Cannot create link1 between "+intermineSubjectType+" and "+intermineObjectType+" using "+refMethod);
+          //throw new BuildException("Problem creating reference.");
         }
         //converter.getDirectDataLoader().store(storedChadoObjects.get(subjectId));
         LOG.debug("Linked types "+objectType+" and "+subjectType+" ids "+objectId+","+subjectId +
             " in aSubject-Object reference.");
         count++;
+      } else {
+        //System.out.println("No connection.");
       }
+
+      //System.out.println("2 Connecting "+intermineObjectType+" and "+intermineSubjectType);
+      
       if( ChadoDbDirectConfig.hasReference(intermineObjectType, intermineSubjectType)) {
         String refMethod = ChadoDbDirectConfig.referenceMethod(intermineObjectType,intermineSubjectType);
+        //System.out.println("Connection exists between "+intermineObjectType+" and "+intermineSubjectType+" using "+refMethod);
         Method m;
         try {
-          m = storedChadoObjects.get(objectId).getClass().getMethod(refMethod,ChadoDbDirectConfig.getIntermineType(subjectType));
+          m = storedChadoObjects.get(objectId).getClass().getMethod(refMethod,ChadoDbDirectConfig.getIntermineType(subjectType)==MRNA.class?
+              Transcript.class:ChadoDbDirectConfig.getIntermineType(subjectType));
           m.invoke(storedChadoObjects.get(objectId),storedChadoObjects.get(subjectId));
         } catch (Exception e) {
-          throw new BuildException("Problem creating reference.");
+          //System.out.println("Cannot create link2 between "+intermineObjectType+" and "+intermineSubjectType+" using "+refMethod);
+          //throw new BuildException("Problem creating reference.");
         }
         //converter.getDirectDataLoader().store(storedChadoObjects.get(objectId));
         LOG.debug("Linked types "+subjectType+" and "+objectType+" ids "+objectId+","+subjectId +
             " in aSubject-Object reference.");
         count++;
+        } else {
+         // System.out.println("No connection.");
       }
 
     }
@@ -834,8 +891,11 @@ public class ChadoDbDirectProcessor {
     QueryField qFName = new QueryField(qC,key);
     q.addToSelect(qFName);
     q.addToSelect(qC);
+    QueryField qFId = new QueryField(qC,"id");
+    q.addToSelect(qFId);
 
-    LOG.info("Prefilling DataSourcess. Query is "+q);
+
+    LOG.info("Prefilling map. Query is "+q);
     try {
       Results res = converter.getIntegrationWriter().getObjectStore().execute(q,100000,false,false,false);
       Iterator<Object> resIter = res.iterator();
@@ -845,7 +905,9 @@ public class ChadoDbDirectProcessor {
         ResultsRow<Object> rr = (ResultsRow<Object>) resIter.next();
         String name = (String)rr.get(0);
         InterMineObject obj = (InterMineObject)rr.get(1);
+        Integer id = (Integer)rr.get(2);
         map.put(name,obj);
+        ((IntegrationWriterDataTrackingImpl)converter.getIntegrationWriter()).markAsStored(id);
       }
     } catch (Exception e) {
       throw new BuildException("Problem in prefilling simple map: " + e.getMessage());
@@ -866,8 +928,10 @@ public class ChadoDbDirectProcessor {
     q.addToSelect(qFName1);
     q.addToSelect(qFName2);
     q.addToSelect(qC2);
+    QueryField qFId = new QueryField(qC2,"id");
+    q.addToSelect(qFId);
 
-    LOG.info("Prefilling DataSourcess. Query is "+q);
+    LOG.info("Prefilling double map. Query is "+q);
     try {
       Results res = converter.getIntegrationWriter().getObjectStore().execute(q,100000,false,false,false);
       Iterator<Object> resIter = res.iterator();
@@ -878,6 +942,8 @@ public class ChadoDbDirectProcessor {
         String name0 = (String)rr.get(0);
         String name1 = (String)rr.get(1);
         InterMineObject obj = (InterMineObject)rr.get(2);
+        Integer id = (Integer)rr.get(3);
+        ((IntegrationWriterDataTrackingImpl)converter.getIntegrationWriter()).markAsStored(id);
         if (!map.containsKey(name0) ) {
           map.put(name0,new HashMap<String,InterMineObject>());
         }

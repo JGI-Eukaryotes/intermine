@@ -645,14 +645,14 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
         // throw an exception if any skeletons have been stored but never replace
         // by a real object to give early warning.
         if (!(skeletons.size() == 0)) {
-            if (skeletons.size() <= 100000) {
+            if (skeletons.size() <= 1000000) {
                 LOG.info("Some skeletons were not replaced by real objects: "
                         + skeletons.toString());
             } else {
                 LOG.info(skeletons.size() + " skeletons were not replaced by real objects"
                        + " - too many to log.");
             }
-            if (idMap.size() <= 100000) {
+            if (idMap.size() <= 1000000) {
                 LOG.info("IDMAP CONTENTS:" + idMap.toString());
             }
             throw new ObjectStoreException("Some skeletons were not replaced by real "

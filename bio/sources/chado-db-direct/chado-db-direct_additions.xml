@@ -2,6 +2,37 @@
 <!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
 
 <classes>
-<!-- add any <class> elements here -->
-
+  <class name="Protein" is-interface="true">
+    <attribute name="genbankIdentifier" type="java.lang.String"/>
+    <collection name="proteinDomains" referenced-type="ProteinDomain" reverse-reference="proteins" />
+    <collection name="proteinAnalysisFeatures" referenced-type="ProteinAnalysisFeature" reverse-reference="protein" />
+  </class>
+  <class name="ProteinDomain" extends="BioEntity" is-interface="true">
+    <collection name="proteins" referenced-type="Protein" reverse-reference="proteinDomains"/>
+  </class>
+  <class name="ProteinAnalysisFeature" extends="BioEntity" is-interface="true">
+    <reference name="crossReference" referenced-type="CrossReference" />
+    <attribute name="programname" type="java.lang.String" />
+    <attribute name="normscore" type="java.lang.Double" />
+    <attribute name="rawscore" type="java.lang.Double" />
+    <attribute name="significance" type="java.lang.Double" />
+    <reference name="protein" referenced-type="Protein" reverse-reference="proteinAnalysisFeatures" />
+  </class>
+  <class name="Organism" is-interface="true">
+    <attribute name="version" type="java.lang.String" />
+    <attribute name="assemblyVersion" type="java.lang.String" />
+    <attribute name="annotationVersion" type="java.lang.String" />
+    <attribute name="proteomeId" type="java.lang.Integer" />
+  </class>
+  <class name="Transcript" is-interface="true">
+    <attribute name="primaryTranscript" type="java.lang.Boolean" />
+  </class>
+  <class name="Gene" is-interface="true">
+    <attribute name="genomicOrder" type="java.lang.Integer" />
+    <reference name="alternateDescription" referenced-type="AlternateDescription" reverse-reference="gene" />
+  </class>
+  <class name="AlternateDescription" is-interface="true">
+    <attribute name="value" type="java.lang.String" />
+    <reference name="gene" referenced-type="Gene" reverse-reference="alternateDescription" />
+  </class>
 </classes>

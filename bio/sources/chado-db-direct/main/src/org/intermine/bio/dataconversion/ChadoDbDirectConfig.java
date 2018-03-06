@@ -73,8 +73,8 @@ public class ChadoDbDirectConfig {
   static {
     typeNameMap = new HashMap<String, String>();
     typeNameMap.put("gene", "Gene");
-    typeNameMap.put("mRNA", "MRNA.");
-    typeNameMap.put("exon", " Exon.");
+    typeNameMap.put("mRNA", "MRNA");
+    typeNameMap.put("exon", "Exon");
     typeNameMap.put("polypeptide","Protein");
     typeNameMap.put("protein","Protein");
     typeNameMap.put("five_prime_UTR","FivePrimeUTR");
@@ -89,11 +89,17 @@ public class ChadoDbDirectConfig {
   static {
     referenceMap = new HashMap<MultiKey,String>();
     referenceMap.put(new MultiKey("MRNA","Gene"),"setGene");
-    referenceMap.put(new MultiKey("Exon","Gene"),"setGene");
-    referenceMap.put(new MultiKey("MRNA","Protein"),"setProtein");
     referenceMap.put(new MultiKey("CDS","Gene"),"setGene");
+    referenceMap.put(new MultiKey("Protein","Gene"),"setGene");
+    referenceMap.put(new MultiKey("Protein","CDS"),"setCDS");
+    referenceMap.put(new MultiKey("MRNA","Protein"),"setProtein");
     referenceMap.put(new MultiKey("CDS","Protein"),"setProtein");
+    referenceMap.put(new MultiKey("Exon","MRNA"),"setTranscript");
+    referenceMap.put(new MultiKey("Intron","MRNA"),"setTranscript");
     referenceMap.put(new MultiKey("CDS","MRNA"),"setTranscript");
+    referenceMap.put(new MultiKey("UTR","MRNA"),"setTranscript");
+    referenceMap.put(new MultiKey("FivePrimeUTR","MRNA"),"setTranscript");
+    referenceMap.put(new MultiKey("ThreePrimeUTR","MRNA"),"setTranscript");
   }
   
   //TODO: is there a way to discover this?

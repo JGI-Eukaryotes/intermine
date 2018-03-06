@@ -3,21 +3,20 @@
 
     <class name="CDS" is-interface="true">
       <reference name="gene" referenced-type="Gene" reverse-reference="CDSs"/>
-      <reference name="protein" referenced-type="Protein" reverse-reference="CDSs"/>
+      <reference name="protein" referenced-type="Protein" reverse-reference="CDS"/>
     </class>
 
     <class name="Exon" is-interface="true">
-      <reference name="gene" referenced-type="Gene" reverse-reference="exons"/>
+      <reference name="transcript" referenced-type="Transcript" reverse-reference="exons"/>
     </class>
 
     <class name="Gene" is-interface="true">
       <reference name="upstreamIntergenicRegion" referenced-type="IntergenicRegion"/>
       <reference name="downstreamIntergenicRegion" referenced-type="IntergenicRegion"/>  
-      <collection name="UTRs" referenced-type="UTR" reverse-reference="gene"/>
-      <collection name="exons" referenced-type="Exon" reverse-reference="gene"/>
       <collection name="CDSs" referenced-type="CDS" reverse-reference="gene"/>
+      <collection name="proteins" referenced-type="Protein" reverse-reference="gene"/>
       <collection name="flankingRegions" referenced-type="GeneFlankingRegion" reverse-reference="gene"/>
-      <collection name="introns" referenced-type="Intron" reverse-reference="genes"/>
+      <collection name="transcripts" referenced-type="Transcript" reverse-reference="gene"/>
     </class>
 
     <class name="GeneFlankingRegion" extends="SequenceFeature" is-interface="true">
@@ -32,12 +31,13 @@
 	 </class>
 
     <class name="Intron" is-interface="true">
-      <collection name="genes" referenced-type="Gene" reverse-reference="introns"/>
+      <reference name="transcript" referenced-type="Transcript" reverse-reference="introns"/>
     </class>
 
     <class name="Protein" is-interface="true">
-      <collection name="CDSs" referenced-type="CDS" reverse-reference="protein"/>
-      <collection name="transcripts" referenced-type="Transcript" reverse-reference="protein"/>
+      <reference name="CDS" referenced-type="CDS" reverse-reference="protein"/>
+      <reference name="gene" referenced-type="Gene" reverse-reference="proteins"/>
+      <reference name="transcript" referenced-type="Transcript" reverse-reference="protein"/>
     </class>
 
     <class name="SequenceVariant" is-interface="true">
@@ -45,10 +45,14 @@
     </class>
         
     <class name="Transcript" is-interface="true">
-      <reference name="protein" referenced-type="Protein" reverse-reference="transcripts"/>
+      <reference name="protein" referenced-type="Protein" reverse-reference="transcript"/>
+      <reference name="gene" referenced-type="Gene" reverse-reference="transcripts"/>
+      <collection name="UTRs" referenced-type="UTR" reverse-reference="transcript"/>
+      <collection name="exons" referenced-type="Exon" reverse-reference="transcript" />
+      <collection name="introns" referenced-type="Intron" reverse-reference="transcript"/>
     </class>
     
     <class name="UTR" is-interface="true">
-      <reference name="gene" referenced-type="Gene" reverse-reference="UTRs"/>
+      <reference name="transcript" referenced-type="Transcript" reverse-reference="UTRs"/>
     </class>
 </classes>
