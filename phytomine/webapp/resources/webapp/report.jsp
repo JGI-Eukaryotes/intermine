@@ -373,7 +373,8 @@
         <ol>
           <li>going to the <a href="/">home page</a></li>
           <li>using the <a href="/keywordSearchResults.do">quicksearch</a></li>
-          <li>or <a onclick="showContactForm()">Contact us</a> at support [at] flymine.org</li>
+          <li>or <a onclick="showContactForm()">Contact us</a> at phytozome [at] jgi-psf.org
+</li>
         </ol>
       </p>
     </div>
