@@ -334,31 +334,23 @@ public class GenomicRegionSearchService
           LOG.warn("Exception thrown while writing featureMapOrg: "+e.getMessage()+".");
         }
       }
+    }
 
-      // Get all feature types
-      for (Set<String> ftSet : orgFeatureMap.values()) {
-        // Exclude some feature types
-        if (excludedFeatureTypes != null) {
-          ftSet.removeAll(excludedFeatureTypes);
-        }
-
-        if (featureTypesInOrgs == null) {
-          featureTypesInOrgs = new HashSet<String>();
-        }
-        featureTypesInOrgs.addAll(ftSet);
+    // Get all feature types
+    for (Set<String> ftSet : orgFeatureMap.values()) {
+      // Exclude some feature types
+      if (excludedFeatureTypes != null) {
+        ftSet.removeAll(excludedFeatureTypes);
       }
 
+      if (featureTypesInOrgs == null) {
+        featureTypesInOrgs = new HashSet<String>();
+      }
+      featureTypesInOrgs.addAll(ftSet);
     }
+
     return orgFeatureMap;
   }
-  /*
-   * problem with the merge
-        long elapsed = (new Date()).getTime() - start;
-        LOG.info("Created featureTypeInOrgMap in "+elapsed+" milliseconds.");
-
-        getFeatureTypeToSOTermMap();
-        getOrganismToTaxonMap();
-   */
   // build JSON string to display region search options
   private String buildJSONString(List<String> orgList, Map<String, Set<String>> resultsMap) {
     // Parse data to JSON string
@@ -807,7 +799,7 @@ public class GenomicRegionSearchService
   public Map<String, List<String>> getFeatureTypeToSOTermMap() {
     if (featureTypeToSOTermMap == null) {
 
-      File featureSOMapFile = new File("webapps/"+webProperties.getProperty("webapp.path")+"/featureSOMap.obj");
+      File featureSOMapFile = new File(request.getSession().getServletContext().getRealPath("/")+"/featureSOMap.obj");
       if (featureSOMapFile.exists() && featureSOMapFile.canRead()) {
         try {
           ObjectInputStream ois = new ObjectInputStream(new FileInputStream(featureSOMapFile));
