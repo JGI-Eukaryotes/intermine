@@ -21,6 +21,7 @@ import java.util.Map;
 import java.lang.NumberFormatException;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
+import org.apache.log4j.Logger;
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.seq.Sequence;
 import org.biojava.bio.seq.io.FastaFormat;
@@ -43,6 +44,8 @@ public class GenomicRegionSequenceExporter
     private ObjectStore os;
     private OutputStream out;
     
+    private static final Logger LOG = Logger.getLogger(GenomicRegionSequenceExporter.class);
+
     /**
      * Instructor
      *
@@ -63,7 +66,7 @@ public class GenomicRegionSequenceExporter
         GenomicRegion aRegion = grList.get(0);
         Organism org = (Organism) DynamicUtil.createObject(Collections
                 .singleton(Organism.class));
-        
+        LOG.info("Exporting sequence for "+aRegion.toString());
         // phytomine tweak. An integer is a proteome id
         try {
           org.setProteomeId(Integer.parseInt(aRegion.getOrganism()));
@@ -90,13 +93,12 @@ public class GenomicRegionSequenceExporter
             int end;
 
             if (gr.getExtendedRegionSize() > 0) {
-                start = gr.getExtendedStart();
-                end = gr.getExtendedEnd();
+              start = gr.getExtendedStart();
+              end = gr.getExtendedEnd();
             } else {
-                start = gr.getStart();
-                end = gr.getEnd();
+              start = gr.getStart();
+              end = gr.getEnd();
             }
-
             /* 
              * if start > end, we'll interpret this as "gimme sequence 
              * from end to start but rev-comp'ed"
@@ -108,8 +110,10 @@ public class GenomicRegionSequenceExporter
               start = end;
               end = save;
             }
-            end = Math.min(end, chrLength);
-            start = Math.max(start, 1);
+
+            // ensure range.
+            start = Math.max(Math.min(start, chrLength),1);
+            end = Math.max(Math.min(end, chrLength),1);
 
             List<String> headerBits = new ArrayList<String>();
             headerBits.add(gr.getChr() + ":" + start + ".." + end);
