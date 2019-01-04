@@ -53,11 +53,12 @@ public class ChadoFamiliesConverter extends DBDirectDataLoaderTask
     // these are strings since they're part of SQL statements.
     private static final String PACMethodDbId = "180";
     private static final String PACProteomeDbId = "172";
-    private static final String ChadoFamilyTypeId = "1991";
+    private static final String ChadoFamilyTypeId = "ANY('{39259,39260}')";
     private static final String ChadoProteinTypeId = "219";
     private static final String ChadoAlignmentTypeId = "39215";
     private static final String ChadoMemberTypeId = "39217";
     private static final String ChadoHmmTypeId = "39216";
+    private static final int MaxAlignmentToStore = 1000000;
 
     private static final Logger LOG = Logger.getLogger(ChadoFamiliesConverter.class);
     private Connection connection;
@@ -175,6 +176,7 @@ public class ChadoFamiliesConverter extends DBDirectDataLoaderTask
                 }
               }
             } catch (ObjectStoreException e) {
+              LOG.error("ObjectStoreException: "+e.getMessage());
               throw new BuildException("Problem storing protein family." + e.getMessage());
             }
           }
@@ -323,20 +325,32 @@ public class ChadoFamiliesConverter extends DBDirectDataLoaderTask
           res = stmt.executeQuery(query);
  
           while ( res.next() ) {
-            fasta.append(">jgi|"+res.getString("transcriptId")+ " "+
-                     res.getString("proteomeId")+" "+res.getString("proteinName")+"\n");
+            String header = ">jgi|"+res.getString("transcriptId")+ " "+
+                res.getString("proteomeId")+" "+res.getString("proteinName")+"\n";
+            if (fasta.length() + header.length() > MaxAlignmentToStore) {
+              res.close();
+              LOG.info("Alignment is too long for "+clusterId.toString());
+              return new String("<Alignment too long to store>");
+            }
+            fasta.append(header);
             String residues = res.getString("value");
             int i = 0;
             while(i < residues.length()) {
               int toEat = (i+60<residues.length())?60:(residues.length()-i);
+              if( fasta.length() + toEat + 1 > MaxAlignmentToStore) {
+                res.close();
+                LOG.info("Alignment is too long for "+clusterId.toString());
+                return new String("<Alignment too long to store>");
+              }
               fasta.append(residues.substring(i,i+toEat)+"\\n");
               i+=60;
             }
           }
+          res.close();
         } catch (SQLException e) {
           throw new BuildException("Trouble getting family members names: " + e.getMessage());
         }
-        return fasta.toString();
+        return fasta.length()>0?fasta.toString():null;
       }
 
       public ResultSet getFamilyMembers(Integer clusterId) {

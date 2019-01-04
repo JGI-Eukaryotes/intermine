@@ -14,10 +14,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.BuildException;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
@@ -242,13 +244,28 @@ public class OntologyTermsFileConverter extends BioFileConverter
      * the cleanup can only be done after we have all values.
      */
     String cleanId(String id) {
-      return id;
+      if (id==null) return null;
+      try {
+        return new String(id.getBytes("UTF-8"),"UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        throw new BuildException("Cannot get UTF-8 encoded form of id "+id);
+      }
     }
     String cleanName(String name) {
-      return name;
+      if (name==null) return null;
+      try {
+        return new String(name.getBytes("UTF-8"),"UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        throw new BuildException("Cannot get UTF-8 encoded form of name "+name);
+      }
     }
     String cleanDescription(String desc) {
-      return desc;
+      if (desc==null) return null;
+      try {
+        return new String(desc.getBytes("UTF-8"),"UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        throw new BuildException("Cannot get UTF-8 encoded form of description "+desc);
+      }
     }
     /**
      * Getters and setters for ontology attribures

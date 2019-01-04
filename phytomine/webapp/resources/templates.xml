@@ -207,7 +207,7 @@
 </template>
 <template name="Transcript_peptide_sequence" title="Peptide sequence for a specific transcript" comment="">
   <query name="Transcript_peptide_sequence" model="genomic" view="Protein.primaryIdentifier Protein.sequence.residues" longDescription="Displays the conceptual translation of a transcript's CDS" sortOrder="Protein.primaryIdentifier asc">
-    <constraint path="Protein.transcripts.primaryIdentifier" editable="true" op="=" value="Potri.007G077100.1"/>
+    <constraint path="Protein.transcript.primaryIdentifier" editable="true" op="=" value="Potri.007G077100.1"/>
   </query>
 </template>
 <template name="Transcript_transcript_sequence" title="Nucleotide sequence for a specific transcript" comment="">

@@ -30,8 +30,8 @@ import org.intermine.xml.full.Item;
 public class RnaseqExperimentInfoConverter extends BioFileConverter
 {
   //
-  private static final String DATASET_TITLE = "RNAseq Experiment Info";
-  private static final String DATA_SOURCE_NAME = "RNAseq Experiment";
+  private static final String DATASET_TITLE = "RNASeq Experiment Info";
+  private static final String DATA_SOURCE_NAME = "RNASeq Experiment";
   private static final Logger LOG = Logger.getLogger(RnaseqExperimentInfoConverter.class);
   private Integer proteomeId = null;
   private Item org = null;
@@ -90,7 +90,7 @@ public class RnaseqExperimentInfoConverter extends BioFileConverter
             // header field. Is there anything we want to do?
           } else {
             if (fields.length > 1) {
-              Item sample = createItem("RNAseqExperiment");
+              Item sample = createItem("RNASeqExperiment");
               sample.setAttribute("name",cleanUpExperimentName(fields[0]));
               setIfNotNull(sample,"experimentGroup",fields[1]);
               if (fields.length > 2) setIfNotNull(sample,"description",fields[2]);

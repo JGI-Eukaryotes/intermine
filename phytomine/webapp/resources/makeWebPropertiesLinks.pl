@@ -38,16 +38,16 @@ my $list = `psql -h $minehost -t $mine -c "select proteomeId,taxonId,name from o
 
 my @list = split(/\n/,$list);
 
-my @inList;
+my %inList;
 
-map { push(@inList, (split(/\|/,$_))[0] ) } @list;
-map { s/\s+//g } @inList;
+sub trim { my $a = shift; $a =~ s/^\s*//; $a =~ s/\s*$//; return $a }
 
-my $inList = '('.join(',',@inList).')';
+map { my @f = split(/\|/,$_);
+      $inList{trim($f[0])} = { 'taxon' => trim($f[1]), 'name' => trim($f[2])}; } @list;
 
 print "Extracted ".scalar(@list)." proteome ids\n";
 
-my $pac_out = `mysql -h dbcompgen PAC2_0 --skip-column-names -e "select id,taxId,jBrowsename,name from proteome where id in $inList"`;
+my $pac_out = `mysql -h dbcompgen deploy_config_metadata --skip-column-names -e "select proteome_id,m1.value from deploy_release, release_metadata m1  where deploy_id=5 and release_id=id and type_id=1"`;
 
 open(FIL,">web.properties.links");
 
@@ -56,7 +56,10 @@ print FIL "## created by makeWebPropertiesLinks.pl at ".localtime(time)."\n";
 my @lines = split(/\n/,$pac_out);
 
 foreach my $line (@lines) {
-  my ($id,$taxon,$jBName,$name) = split(/\s+/,$line,4);
+  my ($id,$jBName) = split(/\s+/,$line,2);
+  die "Proteome id $id not in the mine.\n" unless exists($inList{$id});
+  my $taxon = $inList{$id}->{taxon};
+  my $name = $inList{$id}->{name};
   print FIL "attributelink.JBrowse.Gene.".$id.
             ".chromosomeLocation.paddedRegion.url=/jbrowse/index.html?data=genomes%2F".
             $jBName."&tracks=Transcripts%2CAlt_Transcripts%2CBlastx_protein&highlight=&loc=<<attributeValue>>\n";
@@ -64,20 +67,20 @@ foreach my $line (@lines) {
             ".chromosomeLocation.paddedRegion.url=/jbrowse/index.html?data=genomes%2F".
             $jBName."&tracks=Transcripts%2CAlt_Transcripts%2CBlastx_protein&highlight=&loc=<<attributeValue>>\n";
   print FIL "attributelink.JBrowse.Protein.".$id.
-            ".transcripts.chromosomeLocation.paddedRegion.url=/jbrowse/index.html?data=genomes%2F".
+            ".transcript.chromosomeLocation.paddedRegion.url=/jbrowse/index.html?data=genomes%2F".
             $jBName."&tracks=Transcripts%2CAlt_Transcripts%2CBlastx_protein&highlight=&loc=<<attributeValue>>\n";
 
   print FIL "attributelink.Phytozome.Gene.".$id.
-            ".primaryIdentifier.url=/pz/portal.html#!gene?organism=".$jBName.
-            "&searchText=locusName:<<attributeValue>>\n";
+            ".primaryIdentifier.url=/report/gene/".$jBName.
+            "/<<attributeValue>>\n";
   print FIL "attributelink.Phytozome.Transcript.".$id.
-            ".primaryIdentifier.url=/pz/portal.html#!gene?organism=".$jBName.
-            "&searchText=transcriptName:<<attributeValue>>\n";
+            ".primaryIdentifier.url=/report/transcript/".$jBName.
+            "/<<attributeValue>>\n";
   print FIL "attributelink.Phytozome.Protein.".$id.
-            ".transcript.primaryIdentifier.url=/pz/portal.html#!gene?organism=".$jBName.
-            "&searchText=peptideName:<<attributeValue>>\n";
+            ".primaryIdentifier.url=/report/protein/".$jBName.
+            "/<<attributeValue>>\n";
 
-  print "organism $name\n";
+  print "proteome $id $jBName\n";
   if (exists($friendlyMines{$name}) ) {
     my $mine = $friendlyMines{$name}->{label};
     my $url = $friendlyMines{$name}->{url};
@@ -103,6 +106,4 @@ foreach my $line (@lines) {
 print FIL "## end of section created by makeWebPropertiesLinks.pl\n";
 
 close(FIL);
-
-
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="phytomine/webapp/src"/>
+	<classpathentry kind="src" path="bio/sources/direct-demo/main/src"/>
 	<classpathentry kind="src" path="bio/sources/chado-db-direct/main/src"/>
 	<classpathentry kind="src" path="bio/sources/protein-hmmscore/main/src"/>
 	<classpathentry kind="src" path="bio/sources/chado-families/main/src"/>
@@ -102,5 +103,7 @@
 	<classpathentry kind="lib" path="intermine/web/main/lib/struts-tiles-1.3.10.jar"/>
 	<classpathentry kind="lib" path="bio/sources/biopax-pathway/main/lib/paxtools-4.3.1.jar" sourcepath="/global/u1/j/jcarlson/workspace/Paxtools/paxtools-core"/>
 	<classpathentry kind="lib" path="bio/sources/biopax-pathway/main/lib/commons-text-1.1.jar"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/bio/core/main/lib/bbop.jar"/>
+	<classpathentry kind="lib" path="/global/u1/j/jcarlson/src/intermine/bio/core/main/lib/obo.jar" sourcepath="/global/u1/j/jcarlson/src/geneontology-svn/java/obo/trunk/src/obosrc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

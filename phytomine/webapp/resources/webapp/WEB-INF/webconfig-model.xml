@@ -189,7 +189,7 @@
     <inlinelist>
       <table path="synonyms.value" showLinksToObjects="true" showInHeader="true" />
       <table path="genes.primaryIdentifier" showLinksToObjects="true" showInHeader="true" />
-      <table path="transcripts.primaryIdentifier" showLinksToObjects="true" showInHeader="true" />
+      <table path="transcript.primaryIdentifier" showLinksToObjects="true" showInHeader="true" />
     </inlinelist>
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier"/>

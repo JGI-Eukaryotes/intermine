@@ -1,3 +1,5 @@
-#!/bin/bash
-../bio/scripts/project_build -l -v -a phytozome-chado-S.moellendorffii-91--phytozome-chado-P.virgatum-450 localhost ${BSCRATCH}/phytomine
+#!/bin/tcsh
+setenv ANT_OPTS -Xmx128G
+
+../bio/scripts/project_build -l -v -a phytozome-chado-S.moellendorffii-91--phytozome-chado-D.alata-504 localhost ${SCRATCH}/phytomine
   

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,12 +22,18 @@ import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.query.ClobAccess;
+import org.intermine.objectstore.query.ConstraintSet;
+import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.PendingClob;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryClass;
 import org.intermine.objectstore.query.QueryField;
+import org.intermine.objectstore.query.QueryObjectReference;
+import org.intermine.objectstore.query.QueryValue;
 import org.intermine.objectstore.query.Results;
 import org.intermine.objectstore.query.ResultsRow;
+import org.intermine.objectstore.query.SimpleConstraint;
+import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.*;
@@ -48,8 +55,8 @@ public class ChadoDbDirectProcessor {
   
   // the name of the temporary tables we create from the feature table
   // to speed up processing
-  protected String tempChromosomeTableName = "intermine_chado_chromosomes";
-  protected String tempFeatureTableName = "intermine_chado_features";
+  protected String tempChromosomeTableName = "scratch.intermine_chado_chromosomes";
+  protected String tempFeatureTableName = "scratch.intermine_chado_features";
 
   // PRIVATE HASHMAPS
   // these keep track of the interproscan db's and hits in the db's.
@@ -91,8 +98,8 @@ public class ChadoDbDirectProcessor {
     prefillSimpleMap(dataSourceMap,DataSource.class,"name");
     prefillSimpleMap(ontologyMap,Ontology.class,"name");
     prefillSimpleMap(goTermMap,GOTerm.class,"identifier");
-    prefillDoubleMap(ontologyTermMap,Ontology.class,"name",OntologyTerm.class,"identifier");
-    prefillDoubleMap(crossReferenceMap,DataSource.class,"name",CrossReference.class,"identifier");
+    prefillDoubleMap(ontologyTermMap,Ontology.class,"name",OntologyTerm.class,"identifier","ontology");
+    prefillDoubleMap(crossReferenceMap,DataSource.class,"name",CrossReference.class,"identifier","source");
     prefillSimpleMap(proteindomainMap,ProteinDomain.class,"primaryIdentifier");
     prefillSimpleMap(soTermMap,SOTerm.class,"name");
     storedChadoObjects = new HashMap<Integer,InterMineObject>();
@@ -197,9 +204,19 @@ public class ChadoDbDirectProcessor {
       LOG.error("Problem counting the genomes.");
       throw new BuildException("Problem when counting the genomes " + e);
     }
-                                             
+    
+    Connection conn = converter.getConnection();
+    Statement stmt = conn.createStatement();
+    try {
+      stmt.execute("CREATE SCHEMA IF NOT EXISTS scratch");
+      LOG.info("Created schema.");
+    } catch (SQLException e) {
+      throw new BuildException("Trouble making schema: "+
+          e.getMessage());
+    }
+    
     String query =
-        "CREATE TABLE " + tempChromosomeTableName + " AS"
+              "CREATE TABLE " + tempChromosomeTableName + " AS"
             + " SELECT c.feature_id, c.name, c.uniquename,"
             + " c.seqlen, c.residues,"
             + " md5(c.residues) as md5checksum, c.organism_id"
@@ -216,14 +233,12 @@ public class ChadoDbDirectProcessor {
             + "  AND g.organism_id="+organismId
             + "  AND c.organism_id="+organismId;         
 
-    Connection conn = converter.getConnection();
-    Statement stmt = conn.createStatement();
+
     LOG.info("executing createChromosomeTempTable(): " + query);
     try {
       stmt.execute(query);
       LOG.info("Done with query.");
-      String idIndexQuery = "CREATE INDEX " + tempChromosomeTableName +
-          "_feature_index ON " + tempChromosomeTableName + "(feature_id)";
+      String idIndexQuery = "CREATE INDEX ON " + tempChromosomeTableName + "(feature_id)";
       LOG.info("Executing: " + idIndexQuery);
       stmt.execute(idIndexQuery);
       String analyze = "ANALYZE " + tempChromosomeTableName;
@@ -304,8 +319,7 @@ public class ChadoDbDirectProcessor {
     try {
       stmt.execute(query);
       LOG.info("Done with feature query.");
-      String idIndexQuery = "CREATE INDEX " + tempFeatureTableName +
-          "_feature_index ON " + tempFeatureTableName + "(feature_id)";
+      String idIndexQuery = "CREATE INDEX ON " + tempFeatureTableName + "(feature_id)";
       LOG.info("executing: " + idIndexQuery);
       stmt.execute(idIndexQuery);
       String analyze = "ANALYZE " + tempFeatureTableName;
@@ -528,26 +542,25 @@ public class ChadoDbDirectProcessor {
       DataSource dS = converter.getDirectDataLoader().createObject(DataSource.class);
       dS.setName(dbName);
       converter.getDirectDataLoader().store(dS);
-      crossReferenceMap.put(dbName,new HashMap<String,InterMineObject>());
       dataSourceMap.put(dbName,dS);
-      // this also means we need a ontology
+      crossReferenceMap.put(dbName,new HashMap<String,InterMineObject>());
+    }
+    if(!ontologyMap.containsKey(dbName)) {
       Ontology oN = converter.getDirectDataLoader().createObject(Ontology.class);
       oN.setName(dbName);
       converter.getDirectDataLoader().store(oN);
       ontologyMap.put(dbName,oN);
       ontologyTermMap.put(dbName, new HashMap<String,InterMineObject> ());
     }
-    DataSource dataSourceIdentifier = (DataSource)dataSourceMap.get(dbName);
 
     if (!crossReferenceMap.get(dbName).containsKey(accession)) {
       CrossReference newItem = converter.getDirectDataLoader().createObject(CrossReference.class);
       newItem.setIdentifier(accession);
-      newItem.setSource((DataSource)dataSourceMap.get(dataSourceIdentifier));
+      newItem.setSource((DataSource)dataSourceMap.get(dbName));
       converter.getDirectDataLoader().store(newItem);
       crossReferenceMap.get(dbName).put(accession,newItem);
     }
     if (!ontologyTermMap.get(dbName).containsKey(accession) ) {
-      // and ontology term. If desired
       OntologyTerm newTerm = converter.getDirectDataLoader().createObject(OntologyTerm.class);
       newTerm.setOntology((Ontology)ontologyMap.get(dbName));
       newTerm.setIdentifier(accession);
@@ -769,6 +782,7 @@ public class ChadoDbDirectProcessor {
             tempFeatureTableName + " o " +
             "WHERE o.feature_id=r.object_id " +
             "AND s.feature_id=r.subject_id " +
+            "AND r.type_id != 39254 " +
             "UNION " +
             "SELECT " +
             "s.type_id as subject_type_id, " +
@@ -783,6 +797,8 @@ public class ChadoDbDirectProcessor {
             "AND i.feature_id=r2.subject_id " +
             "AND i.feature_id=r1.object_id " +
             "AND s.feature_id=r1.subject_id " +
+            "AND r1.type_id != 39254 " +
+            "AND r2.type_id != 39254 " +
             "UNION " +
             "SELECT " +
             "s.type_id as subject_type_id, " +
@@ -798,6 +814,8 @@ public class ChadoDbDirectProcessor {
             "AND i.feature_id=r1.subject_id " +
             "AND s.feature_id=r1.object_id " +
             "AND s.type_id != o.type_id "+
+            "AND r1.type_id != 39254 " +
+            "AND r2.type_id != 39254 " +
             "UNION " +
             "SELECT " +
             "s.type_id as subject_type_id, " +
@@ -812,7 +830,9 @@ public class ChadoDbDirectProcessor {
             "AND i.feature_id=r2.object_id " +
             "AND i.feature_id=r1.object_id " +
             "AND s.feature_id=r1.subject_id " +
-            "AND s.type_id != o.type_id";
+            "AND s.type_id != o.type_id " +
+            "AND r2.type_id != 39254 " +
+            "AND r1.type_id != 39254 ";
 
     Connection conn = converter.getConnection();
     Statement stmt = conn.createStatement();
@@ -916,17 +936,17 @@ public class ChadoDbDirectProcessor {
 
   }
   public void prefillDoubleMap(Map<String,HashMap<String,InterMineObject>> map,Class<? extends InterMineObject> objectClass1,
-                                            String key1,Class<? extends InterMineObject> objectClass2,String key2) {
+      String key1,Class<? extends InterMineObject> objectClass2,String key2,String link) {
 
-    Query q = new Query();
+    /*    Query q = new Query();
     QueryClass qC1 = new QueryClass(objectClass1);
     q.addFrom(qC1);
     QueryClass qC2 = new QueryClass(objectClass2);
     q.addFrom(qC2);
     QueryField qFName1 = new QueryField(qC1,key1);
     QueryField qFName2 = new QueryField(qC2,key2);
-    q.addToSelect(qFName1);
     q.addToSelect(qFName2);
+    q.addToSelect(qFName1);
     q.addToSelect(qC2);
     QueryField qFId = new QueryField(qC2,"id");
     q.addToSelect(qFId);
@@ -939,8 +959,8 @@ public class ChadoDbDirectProcessor {
       while (resIter.hasNext()) {
         @SuppressWarnings("unchecked")
         ResultsRow<Object> rr = (ResultsRow<Object>) resIter.next();
-        String name0 = (String)rr.get(0);
-        String name1 = (String)rr.get(1);
+        String name1 = (String)rr.get(0);
+        String name0 = (String)rr.get(1);
         InterMineObject obj = (InterMineObject)rr.get(2);
         Integer id = (Integer)rr.get(3);
         ((IntegrationWriterDataTrackingImpl)converter.getIntegrationWriter()).markAsStored(id);
@@ -948,11 +968,73 @@ public class ChadoDbDirectProcessor {
           map.put(name0,new HashMap<String,InterMineObject>());
         }
         map.get(name0).put(name1,obj);
+      }*/
+
+    ArrayList<Integer> ids = new ArrayList<Integer>();
+    HashMap<Integer,String> idToName = new HashMap<Integer,String>();
+
+    try {
+      Query q1 = new Query();
+      QueryClass qC1 = new QueryClass(objectClass1);
+      q1.addFrom(qC1);
+      QueryField qFName1 = new QueryField(qC1,key1);
+      q1.addToSelect(qFName1);
+      QueryField qFid1 = new QueryField(qC1,"id");
+      q1.addToSelect(qFid1);
+
+      LOG.info("Prefilling first list map. Query is "+q1);
+      Results res1 = converter.getIntegrationWriter().getObjectStore().execute(q1,100000,false,false,false);
+      Iterator<Object> res1Iter = res1.iterator();
+      LOG.info("Iterating...");
+      while (res1Iter.hasNext()) {
+        @SuppressWarnings("unchecked")
+        ResultsRow<Object> rr = (ResultsRow<Object>) res1Iter.next();
+        String name0 = (String)rr.get(0);
+        Integer id0 = (Integer)rr.get(1);
+        ids.add(id0);
+        idToName.put(id0,name0);
+
+        if (!map.containsKey(name0) ) {
+          map.put(name0,new HashMap<String,InterMineObject>());
+        }
+      }
+
+      for( Integer key: ids) {
+        Query q2 = new Query();
+        QueryField qF1 = new QueryField(qC1,"id");
+        QueryClass qC2 = new QueryClass(objectClass2);
+        q2.addFrom(qC1);
+        q2.addFrom(qC2);
+        QueryField qFName2 = new QueryField(qC2,key2);
+        q2.addToSelect(qFName2);
+        q2.addToSelect(qC2);
+        QueryField qF2 = new QueryField(qC2,"id");
+        q2.addToSelect(qF2);
+
+        QueryObjectReference ref = new QueryObjectReference(qC2,link);
+        ConstraintSet cSet = new ConstraintSet(ConstraintOp.AND);
+        cSet.addConstraint(new ContainsConstraint(ref,ConstraintOp.CONTAINS,qC1));
+        cSet.addConstraint(new SimpleConstraint(qF1,ConstraintOp.EQUALS,new QueryValue(key)));
+        q2.setConstraint(cSet);
+
+        LOG.info("Prefilling nested list map. Query is "+q2);
+        Results res2 = converter.getIntegrationWriter().getObjectStore().execute(q2,100000,false,false,false);
+        Iterator<Object> res2Iter = res2.iterator();
+        LOG.info("Iterating for ontology "+idToName.get(key)+"...");
+        while(res2Iter.hasNext()) {
+          @SuppressWarnings("unchecked")
+          ResultsRow<Object> rr = (ResultsRow<Object>) res2Iter.next();
+          String name0 = (String)rr.get(0);
+          InterMineObject obj = (InterMineObject)rr.get(1);
+          map.get(idToName.get(key)).put(name0,obj);
+          ((IntegrationWriterDataTrackingImpl)converter.getIntegrationWriter()).markAsStored((Integer)rr.get(2));
+        }
+        LOG.info("Retrieved "+map.size()+" objects for key "+idToName.get(key));
       }
     } catch (Exception e) {
-      throw new BuildException("Problem in prefilling simple map: " + e.getMessage());
+      throw new BuildException("Problem in prefilling double map: " + e.getMessage());
     }
-    LOG.info("Retrieved "+map.size()+" Object.");
+    LOG.info("Retrieved "+map.size()+" objects at top level.");
 
   }
 }

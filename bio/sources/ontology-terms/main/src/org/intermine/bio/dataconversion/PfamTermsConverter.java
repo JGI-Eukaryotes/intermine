@@ -29,6 +29,6 @@ public class PfamTermsConverter extends OntologyTermsFileConverter {
   @Override
   String cleanId(String id) {
     // strip off version number
-    return id.replaceAll("\\.\\d+$","");
+    return super.cleanId(id).replaceAll("\\.\\d+$","");
   }
 }

@@ -96,6 +96,11 @@ public class ParallelBatchingFetcher extends BatchingFetcher
                 } catch (InterruptedException e) {
                 }
                 if (!exceptions.isEmpty()) {
+                  for(Exception exception: exceptions) {
+                  System.out.println("An exception inner level is "+exception.getMessage());
+                  System.out.println("Stack Trace:");
+                  exception.printStackTrace(System.out);
+                  }
                     throw new ObjectStoreException("Error in worker thread", exceptions.iterator()
                             .next());
                 }
@@ -107,6 +112,9 @@ public class ParallelBatchingFetcher extends BatchingFetcher
                 }
             }
             if (!exceptions.isEmpty()) {
+              for(Exception exception: exceptions) {
+              System.out.println("An exception outer level is "+exception.getMessage());
+              }
                 throw new ObjectStoreException("Error in worker thread", exceptions.iterator()
                         .next());
             }

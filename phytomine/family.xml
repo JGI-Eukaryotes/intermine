@@ -1,22 +1,140 @@
-  <source name="phytozome-cluster-crown12.1.6" type="phytozome-clusters">
-    <property name="source.db.name" value="PAC" />
-    <property name="dataSourceName" value="pac-clusters" />
-    <property name="dataSetTitle" value="Phytozome V12" />
-    <property name="createrelations" value="false" />
-    <property name="methodIds" value="5258" />
-  </source>
-  <source name="phytozome-cluster-node-5195" type="chado-families">
+  <source name="phytozome-cluster-crown13" type="chado-families">
     <property name="source.db.name" value="phytozome" />
-    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="2290,2296,2298,2307,2312,2395,3127,3246,3254,3299,3304,3305,3306,3307,3352,3464,4432,4433,4434,4435,4436,4612,4614,4759,4850,4851,4865,4907,4908,4909,4987,4988,5004,5006,5008,5010,5011,5013,5014,5015,5016,5017,5018,5039,5040,5078,5079,5080,5081,5083,5084,5085,5086,5087,5088,5089,5090,5091,5092,5093,5094,5095,5193,5210,5211,5228,5229,5230,5232,5233,5234,5235,5236,5237,5238,5239,5240,5241,5242,5243,5244,5245,5246,5258,5276,5277" />
+  </source>
+  <source name="phytozome-cluster-node-5043" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5043" />
+  </source>
+  <source name="phytozome-cluster-node-5260" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5260" />
+  </source>
+  <source name="phytozome-cluster-node-5261" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5261" />
+  </source>
+  <source name="phytozome-cluster-node-5262" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5262" />
+  </source>
+  <source name="phytozome-cluster-node-5263" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5263" />
+  </source>
+  <source name="phytozome-cluster-node-5264" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5264" />
+  </source>
+  <source name="phytozome-cluster-node-5265" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5265" />
+  </source>
+  <source name="phytozome-cluster-node-5266" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5266" />
+  </source>
+  <source name="phytozome-cluster-node-5267" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5267" />
+  </source>
+  <source name="phytozome-cluster-node-5268" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5268" />
+  </source>
+  <source name="phytozome-cluster-node-5269" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
     <property name="dataSetTitle" value="Phytozome V13" />
     <property name="createrelations" value="false" />
     <property name="methodIds" value="5269" />
   </source>
-  <source name="phytozome-hmmscore" type="protein-hmmscore">
+  <source name="phytozome-cluster-node-5270" type="chado-families">
     <property name="source.db.name" value="phytozome" />
-    <property name="dataSourceName" value="pac-clusters" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5270" />
+  </source>
+  <source name="phytozome-cluster-node-5271" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5271" />
+  </source>
+  <source name="phytozome-cluster-node-5272" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5272" />
+  </source>
+  <source name="phytozome-cluster-node-5273" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5273" />
+  </source>
+  <source name="phytozome-cluster-node-5274" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5274" />
+  </source>
+  <source name="phytozome-cluster-node-5275" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5275" />
+  </source>
+  <source name="phytozome-cluster-crown13-2" type="chado-families">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
+    <property name="dataSetTitle" value="Phytozome V13" />
+    <property name="createrelations" value="false" />
+    <property name="methodIds" value="5276,5277,5278,5279,5280,5281,5282,5283,5284,5285,5286" />
+  </source>
+  <source name="phytozome-hmmscore-5269" type="protein-hmmscore">
+    <property name="source.db.name" value="phytozome" />
+    <property name="dataSourceName" value="phytozome-clusters" />
     <property name="dataSetTitle" value="Phytozome V13" />
     <property name="createrelations" value="false" />
     <property name="methodIds" value="5269" />
   </source>
-    

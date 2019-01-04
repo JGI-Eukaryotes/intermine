@@ -10,6 +10,7 @@
 <!-- begin.jsp -->
 <html:xhtml/>
 
+
 <div id="content-wrap">
         <div id="boxes">
                 <div id="search-bochs">

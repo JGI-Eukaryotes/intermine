@@ -168,6 +168,7 @@ public class InterProConverter extends BioFileConverter
             if ("interprodb".equals(qName)) {
                 for (Item item : proteinDomains.values()) {
                     try {
+                      System.out.println("domain item: "+item.toString());
                         store(item);
                     } catch (ObjectStoreException e) {
                         throw new SAXException(e);
@@ -175,6 +176,7 @@ public class InterProConverter extends BioFileConverter
                 }
                 for (Item item : delayedItems) {
                     try {
+                      System.out.println("Delayed item: "+item.toString());
                         store(item);
                     } catch (ObjectStoreException e) {
                         throw new SAXException(e);
@@ -209,6 +211,7 @@ public class InterProConverter extends BioFileConverter
                 item.setAttribute("pubMedId", pubMedId);
                 pubs.put(pubMedId, item.getIdentifier());
                 try {
+                  System.out.println("pub: "+item.toString());
                     store(item);
                 } catch (ObjectStoreException e) {
                     throw new SAXException(e);

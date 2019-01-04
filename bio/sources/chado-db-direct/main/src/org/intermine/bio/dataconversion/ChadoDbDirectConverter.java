@@ -142,9 +142,9 @@ public class ChadoDbDirectConverter extends DBDirectDataLoaderTask
         p.process();
         connection.close();
       } catch (SQLException e) {
-        throw new BuildException("SQL problem creating features.");
+        throw new BuildException("SQL problem creating features: "+e.getMessage());
       } catch (ObjectStoreException e) {
-        throw new BuildException("Problem with the objectstore.");
+        throw new BuildException("Problem with the objectstore: "+e.getMessage());
       }
   }
   

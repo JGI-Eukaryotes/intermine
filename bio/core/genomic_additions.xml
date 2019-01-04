@@ -14,7 +14,6 @@
       <reference name="upstreamIntergenicRegion" referenced-type="IntergenicRegion"/>
       <reference name="downstreamIntergenicRegion" referenced-type="IntergenicRegion"/>  
       <collection name="CDSs" referenced-type="CDS" reverse-reference="gene"/>
-      <collection name="proteins" referenced-type="Protein" reverse-reference="gene"/>
       <collection name="flankingRegions" referenced-type="GeneFlankingRegion" reverse-reference="gene"/>
       <collection name="transcripts" referenced-type="Transcript" reverse-reference="gene"/>
     </class>
@@ -36,7 +35,6 @@
 
     <class name="Protein" is-interface="true">
       <reference name="CDS" referenced-type="CDS" reverse-reference="protein"/>
-      <reference name="gene" referenced-type="Gene" reverse-reference="proteins"/>
       <reference name="transcript" referenced-type="Transcript" reverse-reference="protein"/>
     </class>
 

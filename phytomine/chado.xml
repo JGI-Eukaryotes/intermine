@@ -13,7 +13,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3455678" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.papaya-113" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -30,7 +30,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="950438" />
     <property name="assemblyVersion" value="r.Dec2008" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-R.communis-119" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -47,7 +47,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="950484" />
     <property name="assemblyVersion" value="TIGR.0.1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.sativus-122" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -64,7 +64,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="950445" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.sinensis-154" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -81,7 +81,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="950443" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.thaliana-167" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -98,7 +98,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3637697" />
     <property name="assemblyVersion" value="TAIR9" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-E.salsugineum-173" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -115,7 +115,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="6656198" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.clementina-182" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -132,7 +132,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3506183" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-L.usitatissimum-200" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -149,7 +149,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="950462" />
     <property name="assemblyVersion" value="BGIv1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-G.raimondii-221" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -166,7 +166,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3544392" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.subellipsoideaC-169-227" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -183,7 +183,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3516293" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.pusillaCCMP1545-228" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -200,7 +200,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3516325" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.spRCC299-229" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -217,7 +217,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3506189" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-O.lucimarinus-231" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -234,7 +234,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3518630" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-T.cacao-233" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -251,7 +251,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="3678653" />
     <property name="assemblyVersion" value="CGDv1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.guttatus-256" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -268,7 +268,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7522541" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.halleri-264" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -285,7 +285,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7079026" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.grandiflora-266" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -302,7 +302,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7314903" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-G.max-275" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -319,7 +319,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7136635" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.rapaFPsc-277" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -336,7 +336,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7271523" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.stricta-278" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -353,7 +353,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7341466" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.reinhardtii-281" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -370,7 +370,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9779212" />
     <property name="assemblyVersion" value="v5.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.truncatula-285" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -387,7 +387,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7016637" />
     <property name="assemblyVersion" value="Mt4.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.purpurea-289" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -404,7 +404,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7460890" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.polyrhiza-290" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -421,7 +421,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7441263" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.trichopoda-291" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -438,7 +438,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7414416" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-T.aestivum-296" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -455,7 +455,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7522543" />
     <property name="assemblyVersion" value="v2" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-E.grandis-297" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -472,7 +472,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7816356" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.persica-298" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -489,7 +489,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7816353" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.acuminata-304" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -506,7 +506,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9012391" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.esculenta-305" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -523,7 +523,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9098939" />
     <property name="assemblyVersion" value="v6.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-K.laxiflora-309" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -540,7 +540,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9140341" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.fallax-310" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -557,7 +557,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9295780" />
     <property name="assemblyVersion" value="v0.5" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.italica-312" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -574,7 +574,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9376675" />
     <property name="assemblyVersion" value="v2" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyon-314" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -591,7 +591,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9482077" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.stacei-316" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -608,7 +608,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9259421" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-V.carteri-317" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -625,7 +625,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9543380" />
     <property name="assemblyVersion" value="v2" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.patens-318" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -642,7 +642,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9559456" />
     <property name="assemblyVersion" value="v3" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.polymorpha-320" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -659,7 +659,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9883485" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.comosus-321" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -676,7 +676,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9647471" />
     <property name="assemblyVersion" value="v3" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.coerulea-322" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -693,7 +693,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9674530" />
     <property name="assemblyVersion" value="v3" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-O.sativa-323" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -710,7 +710,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9726783" />
     <property name="assemblyVersion" value="v7.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-Z.marina-324" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -727,7 +727,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9779216" />
     <property name="assemblyVersion" value="v2.2" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-D.salina-325" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -744,7 +744,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9799669" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-K.fedtschenkoi-382" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -761,7 +761,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12975273" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.lyrata-384" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -778,7 +778,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13157555" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-T.pratense-385" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -795,7 +795,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12877275" />
     <property name="assemblyVersion" value="v2" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-O.thomaeum-386" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -812,7 +812,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13114521" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-D.carota-388" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -829,7 +829,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13078579" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.lycopersicum-390" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -846,7 +846,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13157355" />
     <property name="assemblyVersion" value="v2.5" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.quinoa-392" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -863,7 +863,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13447571" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.vulgaris-442" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -880,7 +880,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13493485" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-Z.maysPH207-443" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -897,7 +897,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13620694" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.trichocarpa-444" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -914,7 +914,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13557004" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.deltoidesWV94-445" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -931,7 +931,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16142533" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.oleraceacapitata-446" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -948,7 +948,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13718508" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.thaliana-447" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -965,7 +965,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13753909" />
     <property name="assemblyVersion" value="TAIR9" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.tuberosum-448" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -982,7 +982,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13802366" />
     <property name="assemblyVersion" value="v4.03" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.occidentale-449" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -999,7 +999,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13871173" />
     <property name="assemblyVersion" value="v0.9" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.virgatum-450" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1016,7 +1016,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="13953346" />
     <property name="assemblyVersion" value="v4.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-O.europaea-451" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1033,7 +1033,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14149751" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.arabica-453" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1050,7 +1050,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14077761" />
     <property name="assemblyVersion" value="v0.5" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.bicolor-454" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1067,7 +1067,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14200439" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-O.sativaKitaake-499" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1084,7 +1084,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="17115006" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.umbilicalis-456" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1101,7 +1101,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14263510" />
     <property name="assemblyVersion" value="v1.5" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-V.vinifera-457" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1118,7 +1118,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16587724" />
     <property name="assemblyVersion" value="Genoscope.12X" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-G.hirsutum-458" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1135,7 +1135,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14324327" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.hypochondriacus-459" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1152,7 +1152,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14414152" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd21-3-460" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1169,7 +1169,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14502403" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.zofingiensis-461" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1186,7 +1186,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14485435" />
     <property name="assemblyVersion" value="v5" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
 
   <source name="phytozome-chado-H.vulgare-462" type="chado-db-direct">
@@ -1204,7 +1204,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14574760" />
     <property name="assemblyVersion" value="r1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.hybridum-463" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1221,7 +1221,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="17033182" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-L.sativa-467" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1238,7 +1238,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14977359" />
     <property name="assemblyVersion" value="v8" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.bicolorRio-468" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1255,7 +1255,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15056852" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-V.unguiculata-469" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1272,7 +1272,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="14947266" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.rubella-474" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1289,7 +1289,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16342443" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.sylvaticum-490" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1306,7 +1306,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15315311" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.domestica-491" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1323,7 +1323,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16616331" />
     <property name="assemblyVersion" value="GDDH13v1.1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.arietinum-492" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1340,7 +1340,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15286668" />
     <property name="assemblyVersion" value="v1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-Z.mays-493" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1357,7 +1357,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16688547" />
     <property name="assemblyVersion" value="APGv4" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-H.annuus-494" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1374,7 +1374,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16470275" />
     <property name="assemblyVersion" value="r1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.hallii-495" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1391,7 +1391,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16522522" />
     <property name="assemblyVersion" value="v3.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-P.halliiHAL-496" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1408,7 +1408,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16427749" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.sinensis-497" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1425,7 +1425,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16862084" />
     <property name="assemblyVersion" value="v7.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.officinalis-498" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1442,7 +1442,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16951573" />
     <property name="assemblyVersion" value="Aspof.V1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.viridis-500" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1459,7 +1459,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16980720" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.brauniiShowa-502" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1476,7 +1476,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="17165148" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.amplexicaulis-470" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1493,7 +1493,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15407325" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.perfoliatum-471" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1510,7 +1510,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15458473" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-A.linifolium-472" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1527,7 +1527,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15487895" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-R.islandica-473" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1544,7 +1544,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15572994" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-I.tinctoria-475" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1561,7 +1561,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15605698" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-L.annua-476" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1578,7 +1578,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15721851" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-M.maritima-477" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1595,7 +1595,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15765075" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-L.sativum-478" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1612,7 +1612,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15797582" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-T.arvense-479" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1629,7 +1629,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15854226" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.alba-480" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1646,7 +1646,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15894889" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.maritima-481" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1663,7 +1663,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15948064" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-D.sophioides-482" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1680,7 +1680,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="15542985" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-E.syriacum-483" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1697,7 +1697,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16008181" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.violacea-484" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1714,7 +1714,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16352924" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-I.amara-485" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1731,7 +1731,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16041685" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-S.pinnata-486" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1748,7 +1748,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16109817" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-E.vesicaria-487" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1765,7 +1765,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16167472" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-C.hispanica-488" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1782,7 +1782,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16254634" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-D.strictus-489" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1799,7 +1799,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="16303807" />
     <property name="assemblyVersion" value="v1" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-F.vesca-501" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1816,7 +1816,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="17190128" />
     <property name="assemblyVersion" value="v2.0.a2" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyon-283" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1833,7 +1833,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="7371496" />
     <property name="assemblyVersion" value="v2.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonPer1-326" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1850,7 +1850,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="9956000" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonUni2-327" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1867,7 +1867,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10002230" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd3-1-328" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1884,7 +1884,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10048024" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR7a-329" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1901,7 +1901,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10085259" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonKoz-1-330" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1918,7 +1918,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10130700" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd21Refv2-331" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1935,7 +1935,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10177573" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonTek-4-332" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1952,7 +1952,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10225360" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR9-333" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1969,7 +1969,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10268581" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR13a-334" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -1986,7 +1986,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10303597" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonpangenome-335" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2003,7 +2003,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10350792" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR6-336" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2020,7 +2020,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10411732" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR2-337" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2037,7 +2037,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10457776" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBis-1-338" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2054,7 +2054,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10504414" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonGaz-8-339" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2071,7 +2071,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10550149" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonS8iiC-340" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2088,7 +2088,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10587025" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonTek-2-341" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2105,7 +2105,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10633114" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonKah-5-342" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2122,7 +2122,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10678018" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR3-343" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2139,7 +2139,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10724763" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd30-1-344" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2156,7 +2156,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10771134" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR1i-345" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2173,7 +2173,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10813161" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd29-1-346" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2190,7 +2190,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10859884" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonLuc1-347" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2207,7 +2207,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10904163" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR8i-348" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2224,7 +2224,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10950362" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd1-1-349" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2241,7 +2241,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="10994790" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonMon3-350" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2258,7 +2258,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11037018" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonKah-1-351" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2275,7 +2275,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11081776" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR12c-352" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2292,7 +2292,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11126383" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd2-3-353" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2309,7 +2309,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11170967" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR3c-354" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2326,7 +2326,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11216427" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonArn1-355" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2343,7 +2343,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11259817" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR8-356" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2360,7 +2360,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11305669" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR11g-357" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2377,7 +2377,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11349927" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR9k-358" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2394,7 +2394,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11396656" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonAdi-12-359" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2411,7 +2411,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11441327" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonRon2-360" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2428,7 +2428,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11486698" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd21Control-361" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2445,7 +2445,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11532767" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd18-1-362" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2462,7 +2462,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11579767" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR11i-363" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2479,7 +2479,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11626389" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR4-364" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2496,7 +2496,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11672597" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR13c-365" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2513,7 +2513,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11718707" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonFoz1-366" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2530,7 +2530,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11763793" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR2g-367" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2547,7 +2547,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11810251" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonKoz-3-368" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2564,7 +2564,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11855382" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR7-369" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2581,7 +2581,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11897267" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR5i-370" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2598,7 +2598,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11943561" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonSig2-371" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2615,7 +2615,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="11987912" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonAdi-2-372" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2632,7 +2632,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12034439" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonMur1-373" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2649,7 +2649,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12081000" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR10c-374" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2666,7 +2666,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12126913" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonJer1-375" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2683,7 +2683,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12171213" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR2b-376" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2700,7 +2700,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12217261" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonMig3-377" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2717,7 +2717,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12263236" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBd21-3-378" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2734,7 +2734,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12309314" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonABR5-379" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2751,7 +2751,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12503147" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonBdTR11a-380" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2768,7 +2768,7 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12549739" />
     <property name="assemblyVersion" value="1.0" />
-    <property name="dataSetTitle" value="Phytozome v12" />
+    <property name="dataSetTitle" value="Phytozome v13" />
   </source>
   <source name="phytozome-chado-B.distachyonAdi-10-381" type="chado-db-direct">
     <property name="source.db.name" value="phytozome" />
@@ -2785,5 +2785,192 @@
     <property name="version" value="current" />
     <property name="annotationDbxrefId" value="12599301" />
     <property name="assemblyVersion" value="1.0" />
+    <property name="dataSetTitle" value="Phytozome v13" />
+  </source>
+  <source name="phytozome-chado-T.intermedium-503" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Thinopyrum intermedium" />
+    <property name="genus" value="Thinopyrum" />
+    <property name="name" value="Thinopyrum intermedium" />
+    <property name="species" value="intermedium" />
+    <property name="assemblyDbxrefId" value="17473325" />
+    <property name="proteomeId" value="503" />
+    <property name="taxonId" value="85679" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-T.intermedium" />
+    <property name="shortName" value="T. intermedium" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="17473327" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-D.alata-504" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Dioscorea alata" />
+    <property name="genus" value="Dioscorea" />
+    <property name="name" value="Dioscorea alata" />
+    <property name="species" value="alata" />
+    <property name="assemblyDbxrefId" value="17682305" />
+    <property name="proteomeId" value="504" />
+    <property name="taxonId" value="55571" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-D.alata" />
+    <property name="shortName" value="D. alata" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="17682307" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-M.guttatus_TOL-505" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Mimulus guttatus TOL" />
+    <property name="genus" value="Mimulus" />
+    <property name="name" value="Mimulus guttatus TOL" />
+    <property name="species" value="guttatus TOL" />
+    <property name="assemblyDbxrefId" value="18821689" />
+    <property name="proteomeId" value="505" />
+    <property name="taxonId" value="4155" />
+    <property name="annotationVersion" value="v3.1" />
+    <property name="dataSourceName" value="phytozome-M.guttatus_TOL" />
+    <property name="shortName" value="M. guttatus TOL" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18821693" />
+    <property name="assemblyVersion" value="v3.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-M.guttatus_NONTOL-506" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Mimulus guttatus NONTOL" />
+    <property name="genus" value="Mimulus" />
+    <property name="name" value="Mimulus guttatus NONTOL" />
+    <property name="species" value="guttatus NONTOL" />
+    <property name="assemblyDbxrefId" value="18821691" />
+    <property name="proteomeId" value="506" />
+    <property name="taxonId" value="4155" />
+    <property name="annotationVersion" value="v3.1" />
+    <property name="dataSourceName" value="phytozome-M.guttatus_NONTOL" />
+    <property name="shortName" value="M. guttatus NONTOL" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18856128" />
+    <property name="assemblyVersion" value="v3.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-C.citriodora-507" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="lemon-scented gum" />
+    <property name="genus" value="Corymbia" />
+    <property name="name" value="Corymbia citriodora" />
+    <property name="species" value="citriodora" />
+    <property name="assemblyDbxrefId" value="18337859" />
+    <property name="proteomeId" value="507" />
+    <property name="taxonId" value="34329" />
+    <property name="annotationVersion" value="v2.1" />
+    <property name="dataSourceName" value="phytozome-C.citriodora" />
+    <property name="shortName" value="C. citriodora" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18337861" />
+    <property name="assemblyVersion" value="v2.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-G.max-508" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="soybean" />
+    <property name="genus" value="Glycine" />
+    <property name="name" value="Glycine max" />
+    <property name="species" value="max" />
+    <property name="assemblyDbxrefId" value="18383573" />
+    <property name="proteomeId" value="508" />
+    <property name="taxonId" value="3847" />
+    <property name="annotationVersion" value="Wm82.a4.v1" />
+    <property name="dataSourceName" value="phytozome-G.max" />
+    <property name="shortName" value="G. max" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18383581" />
+    <property name="assemblyVersion" value="v4.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-G.soja-509" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Glycine soja" />
+    <property name="genus" value="Glycine" />
+    <property name="name" value="Glycine soja" />
+    <property name="species" value="soja" />
+    <property name="assemblyDbxrefId" value="18541416" />
+    <property name="proteomeId" value="509" />
+    <property name="taxonId" value="3848" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-G.soja" />
+    <property name="shortName" value="G. soja" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18541418" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-G.max_Lee-510" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Glycine max Lee" />
+    <property name="genus" value="Glycine" />
+    <property name="name" value="Glycine max Lee" />
+    <property name="species" value="max Lee" />
+    <property name="assemblyDbxrefId" value="18543897" />
+    <property name="proteomeId" value="510" />
+    <property name="taxonId" value="3847" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-G.max_Lee" />
+    <property name="shortName" value="G. max Lee" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18545517" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-Z.mays_var_PHJ40-512" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Zea mays var PHJ40" />
+    <property name="genus" value="Zea" />
+    <property name="name" value="Zea mays var PHJ40" />
+    <property name="species" value="mays var PHJ40" />
+    <property name="assemblyDbxrefId" value="18792504" />
+    <property name="proteomeId" value="512" />
+    <property name="taxonId" value="4577" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-Z.mays_var_PHJ40" />
+    <property name="shortName" value="Z. mays var PHJ40" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18792505" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-Z.mays_var_PHB47-513" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="Zea mays var PHB47" />
+    <property name="genus" value="Zea" />
+    <property name="name" value="Zea mays var PHB47" />
+    <property name="species" value="mays var PHB47" />
+    <property name="assemblyDbxrefId" value="18684908" />
+    <property name="proteomeId" value="513" />
+    <property name="taxonId" value="4577" />
+    <property name="annotationVersion" value="v1.1" />
+    <property name="dataSourceName" value="phytozome-Z.mays_var_PHB47" />
+    <property name="shortName" value="Z. mays var PHB47" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18688947" />
+    <property name="assemblyVersion" value="v1.0" />
+    <property name="dataSetTitle" value="Phytozome v12" />
+  </source>
+  <source name="phytozome-chado-S.lycopersicum-514" type="chado-db-direct">
+    <property name="source.db.name" value="phytozome" />
+    <property name="commonName" value="tomato" />
+    <property name="genus" value="Solanum" />
+    <property name="name" value="Solanum lycopersicum" />
+    <property name="species" value="lycopersicum" />
+    <property name="assemblyDbxrefId" value="18893267" />
+    <property name="proteomeId" value="514" />
+    <property name="taxonId" value="4081" />
+    <property name="annotationVersion" value="ITAG3.2" />
+    <property name="dataSourceName" value="phytozome-S.lycopersicum" />
+    <property name="shortName" value="S. lycopersicum" />
+    <property name="version" value="current" />
+    <property name="annotationDbxrefId" value="18893269" />
+    <property name="assemblyVersion" value="SL3.0" />
     <property name="dataSetTitle" value="Phytozome v12" />
   </source>

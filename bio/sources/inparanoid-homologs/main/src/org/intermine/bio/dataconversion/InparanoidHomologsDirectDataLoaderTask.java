@@ -25,7 +25,7 @@ import org.intermine.task.FileDirectDataLoaderTask;
 import org.intermine.util.FormattedTextParser;
 
 /**
- * A DirectDataLoader for Phytozome diversity data. This skips the items step completely
+ * A DirectDataLoader for Phytozome inparanoid data. This skips the items step completely
  * and creates/store InterMineObjects directly, providing significant speed increase and
  * removing need for a separate post-processing step.
  * 
@@ -45,6 +45,7 @@ public class InparanoidHomologsDirectDataLoaderTask extends FileDirectDataLoader
       Logger.getLogger(InparanoidHomologsDirectDataLoaderTask.class);
 
   private HashMap<String,ProxyReference> geneMap = null;
+  private HashMap<String,HashSet<Homolog>> geneHomologs = null;
   Pattern filePattern;
   int orthoRegistered;
   int paraRegistered;
@@ -170,6 +171,7 @@ public class InparanoidHomologsDirectDataLoaderTask extends FileDirectDataLoader
               o.setMethod("inParanoid");
               o.setRelationship(relationship);
               getDirectDataLoader().store(o);
+              geneHomologs.get(pacGene1).add(o);
             } catch (ObjectStoreException e) {
               throw new BuildException("There was a problem storing homolog: "+e.getMessage());
             }
@@ -188,7 +190,8 @@ public class InparanoidHomologsDirectDataLoaderTask extends FileDirectDataLoader
         g.setSecondaryIdentifier(geneName);
         getDirectDataLoader().store(g);
         ProxyReference ref = new ProxyReference(getIntegrationWriter().getObjectStore(),g.getId(),Gene.class);
-        geneMap.put(geneName,ref); 
+        geneMap.put(geneName,ref);
+        geneHomologs.put(geneName,new HashSet<Homolog>());
       } catch (ObjectStoreException e) {
         throw new BuildException("There was a problem storing gene: "+e.getMessage());
       }
@@ -198,6 +201,7 @@ public class InparanoidHomologsDirectDataLoaderTask extends FileDirectDataLoader
 
   private void prefillGeneMap() {
     geneMap = new HashMap<String,ProxyReference>();
+    geneHomologs = new HashMap<String,HashSet<Homolog>>();
     Query q = new Query();
     QueryClass qC = new QueryClass(Gene.class);
     q.addFrom(qC);
@@ -218,6 +222,7 @@ public class InparanoidHomologsDirectDataLoaderTask extends FileDirectDataLoader
         Integer id = (Integer)rr.get(1);
         geneMap.put(name,new ProxyReference(getIntegrationWriter().getObjectStore(),id,Gene.class));
         ((IntegrationWriterDataTrackingImpl)getIntegrationWriter()).markAsStored(id);
+        geneHomologs.put(name,new HashSet<Homolog>());
       }
     } catch (Exception e) {
       throw new BuildException("Problem in prefilling ProxyReferences: " + e.getMessage());

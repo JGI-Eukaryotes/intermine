@@ -135,11 +135,11 @@ public class PostProcessOperationsTask extends DynamicAttributeTask
                 CreateFlankingRegions cfr = new CreateFlankingRegions(getObjectStoreWriter());
                 LOGGER.info("Starting CreateFlankingRegions.createFlankingFeatures()");
                 cfr.createFlankingFeatures();
-            } else if ("create-intron-features".equals(operation)) {
+            /*} else if ("create-intron-features".equals(operation)) {
                 IntronUtil iu = new IntronUtil(getObjectStoreWriter());
                 configureDynamicAttributes(iu);
                 LOGGER.info("Starting IntronUtil.createIntronFeatures()");
-                iu.createIntronFeatures();
+                iu.createIntronFeatures();*/
             } else if ("create-attribute-indexes".equals(operation)) {
                 CreateIndexesTask cit = new CreateIndexesTask();
                 cit.setAttributeIndexes(true);
