@@ -53,7 +53,7 @@
 		     <li>Root, leaf varied by nitrogen source</li>
 		  </ul>
 		</td>
-		<td>6</td>
+		<td>8</td>
 	        <td class="permissions"><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br>JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
@@ -70,7 +70,7 @@
 		    <li>Base, mixed and tip tissues of stem</li>
 		  </ul>
 		</td>
-		<td>62</td>
+		<td>65</td>
 	        <td class="permissions"><a href="https://www.danforthcenter.org/scientists-research/principal-investigators/todd-mockler">Todd Mockler</a><br />Danforth Center<br /><span class="monospace">tmockler AT danforthcenter DOT org</span></td>
 	      </tr>	      
 	      <tr>
@@ -87,7 +87,7 @@
 		    <li>Heterotrophic, photoheterotrophic and phototrophic cultures varied by light exposure, nitrogen source and harvesting time</li>
 		  </ul>
 		</td>
-		<td>133</td>
+		<td>144</td>
 		<td class="permissions"><a href="http://www.chem.ucla.edu/dept/Faculty/merchant/">Sabeeha Merchant</a><br />UCLA<br /><span class="monospace">merchant AT chem DOT ucla DOT edu</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
@@ -118,7 +118,7 @@
 		    <li>Symbiotic conditions for root, nodules, leaf</li>
 		  </ul>
 		</td>
-		<td>26</td>
+		<td>35</td>
 		<td class="permissions"><a href="http://staceylab.missouri.edu/personnel/gary-stacey-ph-d/">Gary Stacey</a><br />Missouri<br /><span class="monospace">STACEYG AT missouri DOT edu</span></td>
 	      </tr>
 	      <tr>
@@ -141,7 +141,7 @@
 		    <li>Root, leaf varied by nitrogen source</li>
 		  </ul>
 		</td>
-		<td>9</td>
+		<td>11</td>
 	        <td class="permissions"><a href="https://sites.cns.utexas.edu/juenger_lab/people/thomas-juenger">Thomas Juenger</a><br />UT, Austin<br /><span class="monospace">tjuenger AT austin DOT utexas DOT edu</span></td>
 	      </tr>
 	      <tr>
@@ -157,7 +157,7 @@
 		    <li>Seed varied by length of germination</li> 
 		  </ul>
 		</td>
-		<td>26</td>
+		<td>27</td>
 	        <td class="permissions"><a href="http://www.noble.org/corefacilities/genomics/">Yuhong Tang</a><br />Noble Foundation<br /><span class="monospace">ytang AT noble DOT org</span></td>
 	      </tr>
 	      <tr>		
@@ -189,6 +189,7 @@
 		<td>32</td>
 	        <td class="permissions"><a href="http://plantco.de/people/Stefan.html">Stefan Rensing</a><br />Marburg<br /><span class="monospace">stefan DOT rensing AT biologie DOT uni-marburg DOT de</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
+
 	      <tr>
 		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ptrichocarpa"><em>Populus trichocarpa</em></a></td>
 		<td class="gene-atlas">yes</td>
@@ -199,8 +200,22 @@
 		    <li>Bud, leaf, male and female flowers varied by maturity</li>
 		  </ul>
 		</td>
-		<td>24</td>
+		<td>25</td>
 		<td class="permissions"><a href="http://www.esd.ornl.gov/PGG/tuskan_bio.htm">Gerald Tuskan</a><br />Oak Ridge NL<br /><span class="monospace">gtk AT ornl DOT gov</span><br /><br /><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
+	      </tr>
+
+	      <tr>
+		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Ptrichocarpa"><em>Populus trichocarpa</em></a></td>
+		<td class="gene-atlas">yes</td>
+		<td>
+		  From a <em>P. tremula </em> &times; <em> alba</em> hybrid aligned to <em>P. trichocarpa</em>:<br /><br />
+		  <ul>
+		    <li>Apical bud and Stem</li>
+		    <li>6 sample times for apical buds, 10 for stems</li>
+		  </ul>
+		</td>
+		<td>16</td>
+		<td class="permissions"><a href="http://www.hagsc.org/about/jschmutz">Jeremy Schmutz</a><br />JGI / HudsonAlpha<br /><span class="monospace">jschmutz AT hudsonalpha DOT org</span></td>
 	      </tr>
 	      <tr>
 		<td class="organism"><a href="/pz/portal.html#!info?alias=Org_Sitalica"><em>Setaria italica</em></a></td>
@@ -214,7 +229,7 @@
 		    <li>Mixed above-ground tissue varied by light condition</li>
 		  </ul>
 		</td>
-		<td>20</td>
+		<td>22</td>
 	      <td class="permissions"><a href="https://www.danforthcenter.org/scientists-research/principal-investigators/thomas-brutnell">Thomas Brutnell</a><br />Danforth Center<br /><span class="monospace">tbrutnell AT danforthcenter DOT org</span>
 		</td>
 	      </tr>
@@ -230,7 +245,7 @@
 		    <li>Mixed above-ground tissue varied by light condition</li>		  
 		  </ul>
 		</td>
-		<td>19</td>
+		<td>21</td>
 		<td class="permissions"><a href="https://www.danforthcenter.org/scientists-research/principal-investigators/thomas-brutnell">Thomas Brutnell</a><br />Danforth Center<br /><span class="monospace">tbrutnell AT danforthcenter DOT org</span>
 		</td>
 	      </tr>
@@ -244,7 +259,7 @@
 		  <li>Root, shoot varied by nitrogen source, control with full fertilization, with H<sub>2</sub>O only</li>
 		 </ul>	    
 		</td>
-		<td>47</td>
+		<td>48</td>
 	        <td class="permissions"><a href="http://biochemistry.tamu.edu/people/mullet-john/">John Mullet</a><br />Texas A&M<br /><span class="monospace">jmullet AT tamu DOT edu</span></td>
 	      </tr>	      
 	     </tbody> 
