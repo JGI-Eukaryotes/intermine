@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.Model;
 import org.intermine.template.SwitchOffAbility;
@@ -170,10 +171,10 @@ public final class JSONQueryHandler
                         if (StringUtils.isNotEmpty(value)) {
                             constraint = new PathConstraintBag(path, constraintOp, value);
                         } else if (idArray != null) {
-                            List<Integer> ids = new ArrayList<Integer>();
+                            List<InterMineId> ids = new ArrayList<InterMineId>();
                             for (int j = 0; j < idArray.length(); j++) {
                                 String id = idArray.get(j).toString();
-                                ids.add(Integer.parseInt(id));
+                                ids.add(Integer.valueOf(Integer.parseInt(id)));
                             }
                             constraint = new PathConstraintIds(path, constraintOp, ids);
                         }

@@ -12,6 +12,7 @@ package org.intermine.web.logic.export;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.Column;
 import org.intermine.pathquery.Path;
 import org.intermine.web.logic.results.PagedTable;
@@ -58,12 +59,12 @@ public final class ExportHelper
      * @param searched searched class
      * @return index of class that is assignable to given class
      */
-    public static List<Integer> getClassIndexes(List<Class<?>> clazzes,
+    public static List<InterMineId> getClassIndexes(List<Class<?>> clazzes,
             Class<?> searched) {
-        List<Integer> ret = new ArrayList<Integer>();
+        List<InterMineId> ret = new ArrayList<InterMineId>();
         for (int i = 0; i < clazzes.size(); i++) {
             if (searched.isAssignableFrom(clazzes.get(i))) {
-                ret.add(i);
+                ret.add(Integer.valueOf(i));
             }
         }
         return ret;

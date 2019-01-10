@@ -10,6 +10,7 @@ package org.intermine.metadata;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.io.Reader;
@@ -96,7 +97,7 @@ public class InterMineModelParser implements ModelParser
                 String versionString = attrs.getValue("version");
                 if (versionString != null) {
                     try {
-                        version = Integer.parseInt(versionString);
+                        version = InterMineId.parseInt(versionString);
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException("Error - version = "
                                 + versionString + " is not a valid version");

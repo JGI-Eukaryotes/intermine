@@ -13,6 +13,7 @@ package org.intermine.objectstore.safe;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.ObjectStorePassthruImpl;
@@ -108,7 +109,7 @@ public class ObjectStoreSafeImpl extends ObjectStorePassthruImpl
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.execute(QueryCloner.cloneQuery(q), start, limit, optimise, explain, sequence);
     }
 
@@ -124,7 +125,7 @@ public class ObjectStoreSafeImpl extends ObjectStorePassthruImpl
      * {@inheritDoc}
      */
     @Override
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.count(QueryCloner.cloneQuery(q), sequence);
     }
 

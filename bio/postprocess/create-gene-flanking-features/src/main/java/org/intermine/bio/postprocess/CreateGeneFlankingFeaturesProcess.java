@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.BioQueries;
 import org.intermine.bio.util.PostProcessUtil;
 import org.intermine.metadata.ClassDescriptor;
@@ -109,7 +110,7 @@ public class CreateGeneFlankingFeaturesProcess extends PostProcessor
         osw.beginTransaction();
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
-            Integer chrId = (Integer) rr.get(0);
+            InterMineId chrId = (Integer) rr.get(0);
             Gene gene = (Gene) rr.get(1);
             Location loc = (Location) rr.get(2);
             createAndStoreFlankingRegion(getChromosome(chrId), loc, gene);
@@ -207,15 +208,15 @@ public class CreateGeneFlankingFeaturesProcess extends PostProcessor
 
                     // if the region hangs off the start or end of a chromosome set it to finish
                     // at the end of the chromosome
-                    location.setStart(new Integer(Math.max(start, 1)));
+                    location.setStart(new InterMineId(Math.max(start, 1)));
                     int e = Math.min(end, chr.getLength().intValue());
-                    location.setEnd(new Integer(e));
+                    location.setEnd(new InterMineId(e));
 
                     location.setStrand(strand);
                     location.setLocatedOn(chr);
                     location.setFeature(region);
 
-                    region.setLength(new Integer((location.getEnd().intValue()
+                    region.setLength(new InterMineId((location.getEnd().intValue()
                             - location.getStart().intValue()) + 1));
 
                     osw.store(location);

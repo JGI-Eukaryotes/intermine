@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.InterMineException;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
@@ -73,7 +74,7 @@ public class XmlDataLoader extends DataLoader
                     LOG.info("InterMine Id " + ((InterMineObject) o).getId());
                     LOG.info("InterMine Id " + ((InterMineObject) o).toString());
                     InterMineObject io = (InterMineObject) o;
-                    io.setId(new Integer(idCounter++));
+                    io.setId(new InterMineId(idCounter++));
                 }
             }
 

@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagQueryResult;
 import org.intermine.api.bag.ConvertedObjectPair;
@@ -77,7 +78,7 @@ public class BagResultOutputKeyFormatter implements BagResultFormatter
                 for (Object o: identToObjects.getValue()) {
                     InterMineObject imo;
                     Map<String, Object> resultItem;
-                    if (o instanceof Integer) {
+                    if (o instanceof InterMineId) {
                         try {
                             imo = im.getObjectStore().getObjectById((Integer) o);
                         } catch (ObjectStoreException e) {

@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.functors.StringValueTransformer;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.BagQueryResult;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.query.MainHelper;
@@ -299,20 +300,20 @@ public class RecordIteratorTest
         int c = 0;
         while (iter.hasNext()) {
             for (Either<ResultCell, SubTable> o: iter.next()) {
-                c += o.accept(new EitherVisitor<ResultCell, SubTable, Integer>() {
-                    public Integer visitLeft(ResultCell a) {return 1;}
-                    public Integer visitRight(SubTable b) { fail("No subtables expected"); return null; }
+                c += o.accept(new EitherVisitor<ResultCell, SubTable, InterMineId>() {
+                    public InterMineId visitLeft(ResultCell a) {return 1;}
+                    public InterMineId visitRight(SubTable b) { fail("No subtables expected"); return null; }
                 });
             }
         }
         assertEquals(c, 14);
     }
 
-    private EitherVisitor<ResultCell, SubTable, Integer> deepCounter = new EitherVisitor<ResultCell, SubTable, Integer>() {
+    private EitherVisitor<ResultCell, SubTable, InterMineId> deepCounter = new EitherVisitor<ResultCell, SubTable, InterMineId>() {
 
-        @Override public Integer visitLeft(ResultCell a) { return 1; }
+        @Override public InterMineId visitLeft(ResultCell a) { return 1; }
 
-        @Override public Integer visitRight(SubTable b) {
+        @Override public InterMineId visitRight(SubTable b) {
             int c = 0;
             for (List<Either<ResultCell, SubTable>> row: b.getRows()) {
                 for (Either<ResultCell, SubTable> item: row) {

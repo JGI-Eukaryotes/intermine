@@ -90,13 +90,13 @@ public class InvitationHandler extends DefaultHandler
                 currentInvite.token = value;
             } else if ("accepted".equals(currentName)) {
                 currentInvite.accepted = (StringUtils.isBlank(value))
-                        ? null : Boolean.parseBoolean(value);
+                        ? null : Boolean.valueOf(Boolean.parseBoolean(value));
             } else if ("acceptedAt".equals(currentName)) {
                 currentInvite.acceptedAt = (StringUtils.isBlank(value))
-                        ? null : new Date(Long.valueOf(value));
+                        ? null : new Date(Long.valueOf(value).longValue());
             } else if ("createdAt".equals(currentName)) {
                 currentInvite.createdAt = (StringUtils.isBlank(value))
-                        ? null : new Date(Long.valueOf(value));
+                        ? null : new Date(Long.valueOf(value).longValue());
             }
         }
         currentValue = null;

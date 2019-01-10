@@ -10,6 +10,7 @@ package org.intermine.web.logic.widget;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class EnrichmentResults
 {
 
     private final Map<String, BigDecimal> pValues;
-    private final Map<String, Integer> counts;
+    private final Map<String, InterMineId> counts;
     private final Map<String, String> labels;
     private final Map<String, PopulationInfo> populationAnnotations;
     private final int analysedTotal, populationTotal;
@@ -39,7 +40,7 @@ public class EnrichmentResults
      * @param populationTotal total size of the population, e.g. count of genes in the database
      * (or background population)
      */
-    protected EnrichmentResults(Map<String, BigDecimal> pValues, Map<String, Integer> counts,
+    protected EnrichmentResults(Map<String, BigDecimal> pValues, Map<String, InterMineId> counts,
             Map<String, String> labels, int analysedTotal,
             Map<String, PopulationInfo> populationAnnotations, int populationTotal) {
         this.pValues = pValues;
@@ -63,7 +64,7 @@ public class EnrichmentResults
      * Get the count of each attribute value found in the sample.
      * @return counts of attribute values in the sample.
      */
-    public Map<String, Integer> getCounts() {
+    public Map<String, InterMineId> getCounts() {
         return counts;
     }
 

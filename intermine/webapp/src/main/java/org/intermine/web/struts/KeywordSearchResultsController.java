@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.searchengine.KeywordSearchFacet;
 import org.intermine.api.searchengine.KeywordSearchFacetData;
@@ -103,7 +104,7 @@ public class KeywordSearchResultsController extends TilesAction
         if (searchBag == null) {
             searchBag = "";
         }
-        List<Integer> ids = getBagIds(im, request, searchBag);
+        List<InterMineId> ids = getBagIds(im, request, searchBag);
         int offset = getOffset(request);
 
         Map<String, String> facetValues = getFacetValues(request, facets);
@@ -158,10 +159,10 @@ public class KeywordSearchResultsController extends TilesAction
         context.putAttribute("jsonFacets", request.getAttribute("jsonFacets"));
 
         // pagination
-        context.putAttribute("searchOffset", Integer.valueOf(offset));
+        context.putAttribute("searchOffset", InterMineId.valueOf(offset));
         context.putAttribute("searchPerPage",
-                Integer.valueOf(KeywordSearchPropertiesManager.PER_PAGE));
-        context.putAttribute("searchTotalHits", Integer.valueOf(totalHits));
+                InterMineId.valueOf(KeywordSearchPropertiesManager.PER_PAGE));
+        context.putAttribute("searchTotalHits", InterMineId.valueOf(totalHits));
 
         context.putAttribute("searchFacets", searchResultsFacets);
 
@@ -179,10 +180,10 @@ public class KeywordSearchResultsController extends TilesAction
 
     private int getOffset(HttpServletRequest request) {
         // offset (-> paging)
-        Integer offset = new Integer(0);
+        InterMineId offset = new InterMineId(0);
         try {
             if (!StringUtils.isBlank(request.getParameter("searchOffset"))) {
-                offset = Integer.valueOf(request.getParameter("searchOffset"));
+                offset = InterMineId.valueOf(request.getParameter("searchOffset"));
             }
         } catch (NumberFormatException e) {
             LOG.info("invalid offset", e);
@@ -191,9 +192,9 @@ public class KeywordSearchResultsController extends TilesAction
         return offset.intValue();
     }
 
-    private  List<Integer> getBagIds(InterMineAPI im, HttpServletRequest request,
+    private  List<InterMineId> getBagIds(InterMineAPI im, HttpServletRequest request,
             String searchBag) {
-        List<Integer> ids = new ArrayList<Integer>();
+        List<InterMineId> ids = new ArrayList<InterMineId>();
         if (!StringUtils.isEmpty(searchBag)) {
             LOG.debug("SEARCH BAG: '" + searchBag + "'");
             InterMineBag bag = im.getBagManager().getBag(

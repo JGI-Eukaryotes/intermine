@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.TagManager;
@@ -80,11 +81,11 @@ public class MyMineController extends TilesAction
 
         if (SessionMethods.isSuperUser(session)) {
             TrackerDelegate td = im.getTrackerDelegate();
-            Map<String, Integer> templateCounter = td.getAccessCounter();
+            Map<String, InterMineId> templateCounter = td.getAccessCounter();
             if (templateCounter != null) {
                 request.setAttribute("templateCounter", templateCounter);
             }
-            Map<String, Integer> templateRank = td.getRank(im.getTemplateManager());
+            Map<String, InterMineId> templateRank = td.getRank(im.getTemplateManager());
             if (templateRank != null) {
                 request.setAttribute("templateRank", templateRank);
             }

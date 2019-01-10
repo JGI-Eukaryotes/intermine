@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.*;
 import org.intermine.metadata.Model;
 
@@ -121,18 +122,18 @@ public class FullParserTest extends TestCase
             FullParser.realiseObjects(exampleItems, Model.getInstanceByName("testmodel"), true);
         Company c1 = (Company) objects.iterator().next();
         assertEquals("Company1", c1.getName());
-        assertEquals(new Integer(1), c1.getId());
+        assertEquals(new InterMineId(1), c1.getId());
         Address a1 = c1.getAddress();
         assertEquals("\"Company's\" street", a1.getAddress());
-        assertEquals(new Integer(2), a1.getId());
+        assertEquals(new InterMineId(2), a1.getId());
         List departments = new ArrayList(c1.getDepartments());
         Collections.sort(departments, new DepartmentComparator());
         Department d1 = (Department) departments.get(0);
         assertEquals("Department1", d1.getName());
-        assertEquals(new Integer(3), d1.getId());
+        assertEquals(new InterMineId(3), d1.getId());
         Department d2 = (Department) departments.get(1);
         assertEquals("Department2", d2.getName());
-        assertEquals(new Integer(4), d2.getId());
+        assertEquals(new InterMineId(4), d2.getId());
     }
 
     public void testRealiseObjectsWithUnderscoreID() throws Exception {

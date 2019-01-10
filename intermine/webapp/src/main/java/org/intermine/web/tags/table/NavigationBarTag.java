@@ -10,6 +10,7 @@ package org.intermine.web.tags.table;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.io.IOException;
 
 import javax.servlet.jsp.JspWriter;
@@ -24,9 +25,9 @@ public class NavigationBarTag extends SimpleTagSupport
 
     private String baseLink;
 
-    private Integer pageSize;
+    private InterMineId pageSize;
 
-    private Integer currentPage;
+    private InterMineId currentPage;
 
     private boolean nextEnabled = false;
 
@@ -56,11 +57,11 @@ public class NavigationBarTag extends SimpleTagSupport
     public void doTag() throws IOException {
         JspWriter writer = getJspContext().getOut();
         writer.print("<span class=\"navigationBar\" style=\"white-space:nowrap;\">");
-        writer.print(getLinkHtml("< Previous", getPreviousLink(currentPage)));
+        writer.print(getLinkHtml("< Previous", getPreviousLink(currentPage.intValue())));
         writer.print("&nbsp;");
-        writer.print(currentPage + 1);
+        writer.print(currentPage.intValue() + 1);
         writer.print("&nbsp;");
-        writer.print(getLinkHtml("Next >", getNextLink(currentPage)));
+        writer.print(getLinkHtml("Next >", getNextLink(currentPage.intValue())));
         writer.print("</span>");
     }
 
@@ -74,7 +75,7 @@ public class NavigationBarTag extends SimpleTagSupport
     /**
      * @return index of current page, 0-based
      */
-    public Integer getCurrentPage() {
+    public InterMineId getCurrentPage() {
         return currentPage;
     }
 
@@ -104,13 +105,13 @@ public class NavigationBarTag extends SimpleTagSupport
      * @return link to the page of provided index
      */
     public String getPageLink(int pageIndex) {
-        return baseLink + "&start=" + (pageIndex * pageSize) + "&size=" + pageSize;
+        return baseLink + "&start=" + (pageIndex * pageSize.intValue()) + "&size=" + pageSize;
     }
 
     /**
      * @return page size that is number of result per page
      */
-    public Integer getPageSize() {
+    public InterMineId getPageSize() {
         return pageSize;
     }
 
@@ -153,11 +154,11 @@ public class NavigationBarTag extends SimpleTagSupport
     @Override
     public String toString() {
         String ret = "<span class=\"navigationBar\" style=\"white-space:nowrap;\">";
-        ret += getLinkHtml("< Previous", getPreviousLink(currentPage));
+        ret += getLinkHtml("< Previous", getPreviousLink(currentPage.intValue()));
         ret += "&nbsp;";
-        ret += currentPage + 1;
+        ret += currentPage.intValue() + 1;
         ret += "&nbsp;";
-        ret += getLinkHtml("Next >", getNextLink(currentPage));
+        ret += getLinkHtml("Next >", getNextLink(currentPage.intValue()));
         ret += "</span>";
         return ret;
     }

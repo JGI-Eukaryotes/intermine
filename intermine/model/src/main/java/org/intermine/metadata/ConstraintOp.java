@@ -10,6 +10,7 @@ package org.intermine.metadata;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,8 +124,8 @@ public final class ConstraintOp
      * (Only for use in webapp)
      * @return the index
      */
-    public Integer getIndex() {
-        return new Integer(values.indexOf(this));
+    public InterMineId getIndex() {
+        return new InterMineId(values.indexOf(this));
     }
 
     /**

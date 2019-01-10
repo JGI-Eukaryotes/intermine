@@ -88,16 +88,16 @@ public final class WebJobInput implements JobInput
 
     @Override
     public Boolean getCaseSensitive() {
-        return this.caseSensitive;
+        return Boolean.valueOf(this.caseSensitive);
     }
 
     @Override
     public Boolean getWildCards() {
-        return false;
+        return Boolean.FALSE;
     }
 
     @Override
     public Boolean getIgnoreConfig() {
-        return ignoreConfig;
+        return Boolean.valueOf(ignoreConfig);
     }
 }

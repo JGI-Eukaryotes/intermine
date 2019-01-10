@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.web.context.InterMineContext;
@@ -90,7 +91,7 @@ public class GraphService extends WidgetService
                     "Could not find a graph widget called \""
                     + input.getWidgetId() + "\"", e);
         }
-        addOutputInfo("notAnalysed", Integer.toString(widget.getNotAnalysed()));
+        addOutputInfo("notAnalysed", InterMineId.toString(widget.getNotAnalysed()));
         addOutputInfo("simplePathQuery", widget.getSimplePathQuery().toJson());
         addOutputInfo("pathQuery", widget.getPathQuery().toJson());
 

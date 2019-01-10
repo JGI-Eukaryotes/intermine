@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.BioConverterUtil;
 import org.intermine.dataconversion.FileConverter;
 import org.intermine.dataconversion.ItemWriter;
@@ -258,8 +259,8 @@ public abstract class BioFileConverter extends FileConverter
     protected Item makeLocation(String chromosomeId, String sequenceFeatureId, String startString,
             String endString, String strand, boolean store) {
         Item location = createItem("Location");
-        Integer start = new Integer(Integer.parseInt(startString));
-        Integer end = new Integer(Integer.parseInt(endString));
+        InterMineId start = new InterMineId(Integer.parseInt(startString));
+        InterMineId end = new InterMineId(Integer.parseInt(endString));
 
         if (start.compareTo(end) <= 0) {
             location.setAttribute("start", startString);

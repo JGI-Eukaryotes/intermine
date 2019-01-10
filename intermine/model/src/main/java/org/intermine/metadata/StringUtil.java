@@ -20,6 +20,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 
 /**
  * Collection of commonly used String utilities

@@ -24,6 +24,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.apache.commons.collections.IteratorUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.BioEntity;
 import org.intermine.model.bio.Chromosome;
@@ -91,7 +92,7 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
 
         List chrXgeneLocList =  new ArrayList();
         Map chrXlocMap = new HashMap();
-        Integer chrXId = createChrX(chrXgeneLocList, chrXlocMap, 1000);
+        InterMineId chrXId = createChrX(chrXgeneLocList, chrXlocMap, 1000);
         Iterator irIter = iru.createFeatures(new HashSet(chrXgeneLocList), chrXlocMap, chrXId);
 
         {
@@ -102,7 +103,7 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
 
         List chr1geneLocList =  new ArrayList();
         Map chr1locMap = new HashMap();
-        Integer chr1Id = createChr1(chr1geneLocList, chr1locMap, 2000);
+        InterMineId chr1Id = createChr1(chr1geneLocList, chr1locMap, 2000);
         irIter = iru.createFeatures(new HashSet(chr1geneLocList), chr1locMap,
                 chr1Id);
 
@@ -121,7 +122,7 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
         createChrX(chrXgeneLocList, chrXlocMap, 3000);
         List chr1geneLocList =  new ArrayList();
         Map chr1locMap = new HashMap();
-        Integer chr1Id = createChr1(chr1geneLocList, chr1locMap, 4000);
+        InterMineId chr1Id = createChr1(chr1geneLocList, chr1locMap, 4000);
 
         iru.postProcess();
 
@@ -161,7 +162,7 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
 
                 int locStart = loc.getStart().intValue();
                 if (locStart > 0) {
-                    Integer newLoc = new Integer(locStart - 1);
+                    InterMineId newLoc = new InterMineId(locStart - 1);
                     Collection prevGeneIds;
                     if (ir.getChromosome().getId().equals(chr1Id)) {
                         prevGeneIds = getByLoc(newLoc, chr1locMap);
@@ -181,7 +182,7 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
                         if ("1".equals(loc.getStrand())) {
                             IntergenicRegion nextIntergenicRegion =
                                     prevGene.getDownstreamIntergenicRegion();
-                            Integer id = nextIntergenicRegion.getId();
+                            InterMineId id = nextIntergenicRegion.getId();
                             assertEquals(id, ir.getId());
                         } else {
                             assertEquals(prevGene.getUpstreamIntergenicRegion().getId(), ir.getId());
@@ -191,7 +192,7 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
 
                 int locEnd = loc.getEnd().intValue();
                 if (locEnd < ir.getChromosome().getLength().intValue()) {
-                    Integer newLoc = new Integer(locEnd + 1);
+                    InterMineId newLoc = new InterMineId(locEnd + 1);
                     Collection nextGeneIds;
                     if (ir.getChromosome().getId().equals(chr1Id)) {
                         nextGeneIds = getByLoc(newLoc, chr1locMap);
@@ -247,12 +248,12 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
         return retList;
     }
 
-    private Integer createChrX(List geneLocList, Map chrXlocMap, int idStart) throws ObjectStoreException {
+    private InterMineId createChrX(List geneLocList, Map chrXlocMap, int idStart) throws ObjectStoreException {
         Chromosome chr =
                 (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("X");
-        chr.setLength(new Integer(1000));
-        chr.setId(new Integer(101));
+        chr.setLength(new InterMineId(1000));
+        chr.setId(new InterMineId(101));
         chr.setOrganism(organism);
 
         Set toStore = new HashSet();
@@ -275,11 +276,11 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
             int geneId = geneInfo[i][0] + idStart;
             int start = geneInfo[i][1];
             int end = geneInfo[i][2];
-            genes[i].setId(new Integer(geneId));
-            genes[i].setLength(new Integer(end - start + 1));
+            genes[i].setId(new InterMineId(geneId));
+            genes[i].setLength(new InterMineId(end - start + 1));
             genes[i].setChromosome(chr);
             geneLocs[i] = createLocation(chr, genes[i], "1", start, end, Location.class);
-            geneLocs[i].setId(new Integer(100 + geneId));
+            geneLocs[i].setId(new InterMineId(100 + geneId));
             genes[i].setChromosomeLocation(geneLocs[i]);
             Util.addToSetMap(chrXlocMap, geneLocs[i].getStart(), genes[i]);
             Util.addToSetMap(chrXlocMap, geneLocs[i].getEnd(), genes[i]);
@@ -298,12 +299,12 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
         return chr.getId();
     }
 
-    private Integer createChr1(List geneLocList, Map chr1locMap, int idStart) throws ObjectStoreException {
+    private InterMineId createChr1(List geneLocList, Map chr1locMap, int idStart) throws ObjectStoreException {
         Chromosome chr =
                 (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("I");
-        chr.setLength(new Integer(2000));
-        chr.setId(new Integer(102));
+        chr.setLength(new InterMineId(2000));
+        chr.setId(new InterMineId(102));
         chr.setOrganism(organism);
 
         Set toStore = new HashSet();
@@ -330,11 +331,11 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
             int geneId = geneInfo[i][0] + idStart;
             int start = geneInfo[i][1];
             int end = geneInfo[i][2];
-            genes[i].setId(new Integer(geneId));
-            genes[i].setLength(new Integer(end - start + 1));
+            genes[i].setId(new InterMineId(geneId));
+            genes[i].setLength(new InterMineId(end - start + 1));
             genes[i].setChromosome(chr);
             geneLocs[i] = createLocation(chr, genes[i], "1", start, end, Location.class);
-            geneLocs[i].setId(new Integer(100 + geneId));
+            geneLocs[i].setId(new InterMineId(100 + geneId));
             genes[i].setChromosomeLocation(geneLocs[i]);
             Util.addToSetMap(chr1locMap, geneLocs[i].getStart(), genes[i]);
             Util.addToSetMap(chr1locMap, geneLocs[i].getEnd(), genes[i]);
@@ -359,8 +360,8 @@ public class CreateIntergenicRegionFeaturesProcessTest extends TestCase
         loc.setLocatedOn(object);
         loc.setFeature(subject);
         loc.setStrand(strand);
-        loc.setStart(new Integer(start));
-        loc.setEnd(new Integer(end));
+        loc.setStart(new InterMineId(start));
+        loc.setEnd(new InterMineId(end));
         return loc;
     }
 }

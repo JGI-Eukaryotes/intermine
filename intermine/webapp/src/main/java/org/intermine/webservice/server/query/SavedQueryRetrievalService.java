@@ -116,7 +116,7 @@ public class SavedQueryRetrievalService extends JSONService
         for (Entry<String, SavedQuery> pair: allSaved.entrySet()) {
             SavedQuery q = pair.getValue();
             PathQuery pq = q.getPathQuery();
-            if (filter.call(pair.getKey())) {
+            if (filter.call(pair.getKey()).booleanValue()) {
                 queries.put(pair.getKey(), pq);
             }
         }
@@ -157,7 +157,7 @@ public class SavedQueryRetrievalService extends JSONService
 
         @Override
         public Boolean call(String subject) {
-            return true;
+            return Boolean.TRUE;
         }
     }
 
@@ -172,7 +172,7 @@ public class SavedQueryRetrievalService extends JSONService
 
         @Override
         public Boolean call(String subject) {
-            return subject != null && subject.toLowerCase().contains(target);
+            return Boolean.valueOf(subject != null && subject.toLowerCase().contains(target));
         }
     }
 
@@ -187,7 +187,7 @@ public class SavedQueryRetrievalService extends JSONService
 
         @Override
         public Boolean call(String subject) {
-            return subject != null && subject.toLowerCase().endsWith(target);
+            return Boolean.valueOf(subject != null && subject.toLowerCase().endsWith(target));
         }
     }
 
@@ -202,7 +202,7 @@ public class SavedQueryRetrievalService extends JSONService
 
         @Override
         public Boolean call(String subject) {
-            return subject != null && subject.toLowerCase().startsWith(target);
+            return Boolean.valueOf(subject != null && subject.toLowerCase().startsWith(target));
         }
     }
 
@@ -217,7 +217,7 @@ public class SavedQueryRetrievalService extends JSONService
 
         @Override
         public Boolean call(String subject) {
-            return subject != null && subject.equalsIgnoreCase(target);
+            return Boolean.valueOf(subject != null && subject.equalsIgnoreCase(target));
         }
     }
 }

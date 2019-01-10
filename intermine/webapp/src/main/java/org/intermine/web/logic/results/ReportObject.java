@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.api.util.PathUtil;
@@ -178,9 +179,9 @@ public class ReportObject
     }
 
     private String stripTail(String input) {
-        Integer dot = input.indexOf(".");
-        if (dot > 0) {
-            return input.substring(0, dot);
+        InterMineId dot = InterMineId.valueOf(input.indexOf("."));
+        if (dot.intValue() > 0) {
+            return input.substring(0, dot.intValue());
         }
         return input;
     }
@@ -488,7 +489,7 @@ public class ReportObject
                         // There is optional configuration for a maximum number of main header parts
                         if (part.equals(HeaderConfigTitle.MAIN)) {
                             if (headerTitles.get(HeaderConfigTitle.MAIN).size()
-                                    >= hc.getNumberOfMainTitlesToShow()) {
+                                    >= hc.getNumberOfMainTitlesToShow().intValue()) {
                                 break;
                             }
                         }
@@ -589,13 +590,13 @@ public class ReportObject
     /**
      * The said function will resolve the maximum number of rows to show (in Collections)
      *  from webProperties.
-     * @return Integer duh
+     * @return InterMineId duh
      */
-    public Integer getNumberOfTableRowsToShow() {
+    public InterMineId getNumberOfTableRowsToShow() {
         String maxInlineTableSizeString =
             (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
         try {
-            return Integer.parseInt(maxInlineTableSizeString);
+            return InterMineId.valueOf(Integer.parseInt(maxInlineTableSizeString));
         } catch (NumberFormatException e) {
             LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                      + maxInlineTableSizeString);
@@ -647,7 +648,7 @@ public class ReportObject
         }
 
         // place the list
-        if (listConfig.getShowInHeader()) {
+        if (listConfig.getShowInHeader().booleanValue()) {
             inlineListsHeader.add(list);
         } else {
             inlineListsNormal.add(list);
@@ -655,7 +656,7 @@ public class ReportObject
 
         // save name of the collection
         String path = listConfig.getPath();
-        bagOfInlineListNames.put(path.substring(0, path.indexOf('.')), true);
+        bagOfInlineListNames.put(path.substring(0, path.indexOf('.')), Boolean.TRUE);
         long endTime = System.currentTimeMillis();
         LOG.info("TIME initialiseInlineLists took: " + (endTime - startTime) + "ms");
     }
@@ -936,7 +937,7 @@ public class ReportObject
      * @return true if we have inlineListsHeader
      */
     public Boolean getHasHeaderInlineLists() {
-        return (getHeaderInlineLists() != null);
+        return Boolean.valueOf(getHeaderInlineLists() != null);
     }
 
     /**
@@ -944,7 +945,7 @@ public class ReportObject
      * @return true if we have InlineLists with no placement yet
      */
     public Boolean getHasNormalInlineLists() {
-        return (getNormalInlineLists() != null);
+        return Boolean.valueOf(getNormalInlineLists() != null);
     }
 
 }

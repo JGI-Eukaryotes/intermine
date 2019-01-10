@@ -12,6 +12,7 @@ package org.intermine.model;
 
 import java.util.Collection;
 import java.util.TreeMap;
+import org.intermine.model.InterMineId;
 
 /**
  * A CharSequence object representing a String constructed out of a sequence of other Strings.

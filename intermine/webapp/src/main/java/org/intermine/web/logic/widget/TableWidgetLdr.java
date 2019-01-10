@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.util.PathUtil;
 import org.intermine.metadata.AttributeDescriptor;
@@ -170,7 +171,7 @@ public class TableWidgetLdr extends WidgetLdr
                         flattenedRow.add(o.getId());
                     } else if (select instanceof QueryField) {
                         Object queryFieldObj = resRow.get(i);
-                        if (queryFieldObj instanceof Integer) {
+                        if (queryFieldObj instanceof InterMineId) {
                             flattenedRow.add((Integer) queryFieldObj);
                         } else {
                             flattenedRow.add(String.valueOf(resRow.get(i)));

@@ -21,6 +21,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.data.Objects;
 import org.intermine.api.searchengine.KeywordSearchFacet;
@@ -56,7 +57,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
 
     @Override
     public KeywordSearchResults doKeywordSearch(InterMineAPI im, String queryString, Map<String,
-            String> facetValues, List<Integer> ids, int offSet) {
+            String> facetValues, List<InterMineId> ids, int offSet) {
 
         KeywordSearchPropertiesManager keywordSearchPropertiesManager
                 = KeywordSearchPropertiesManager.getInstance(im.getObjectStore());
@@ -67,7 +68,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
 
         SolrDocumentList results = resp.getResults();
 
-        Set<Integer> objectIds = getObjectIds(results);
+        Set<InterMineId> objectIds = getObjectIds(results);
 
         Map<Integer, InterMineObject> objMap = null;
 
@@ -90,9 +91,9 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
     }
 
     @Override
-    public Set<Integer> getObjectIdsFromSearch(InterMineAPI im, String searchString, int offSet,
+    public Set<InterMineId> getObjectIdsFromSearch(InterMineAPI im, String searchString, int offSet,
                                                Map<String, String> facetValues,
-                                               List<Integer> ids, int listSize) {
+                                               List<InterMineId> ids, int listSize) {
 
         if (listSize == 0) {
             listSize = 10000;
@@ -102,7 +103,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
 
         SolrDocumentList results = resp.getResults();
 
-        Set<Integer> objectIds = getObjectIds(results);
+        Set<InterMineId> objectIds = getObjectIds(results);
 
         return objectIds;
     }
@@ -130,9 +131,9 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
      *
      * @return set of IDs found in the search results
      */
-    private Set<Integer> getObjectIds(SolrDocumentList documents) {
+    private Set<InterMineId> getObjectIds(SolrDocumentList documents) {
         long time = System.currentTimeMillis();
-        Set<Integer> objectIds = new HashSet<Integer>();
+        Set<InterMineId> objectIds = new HashSet<InterMineId>();
         for (int i = 0; i < documents.size(); i++) {
 
             SolrDocument document = documents.get(i);
@@ -173,14 +174,14 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
                 if (document == null) {
                     LOG.error("doc is null");
                 } else {
-                    Integer id          = Integer.valueOf(document.getFieldValue("id").toString());
+                    InterMineId id          = InterMineId.valueOf(document.getFieldValue("id").toString());
                     InterMineObject obj = objMap.get(id);
 
-                    Float score = Float.valueOf(document.getFieldValue("score")
-                            .toString()) / maxScore;
+                    Float score = Float.valueOf(Float.valueOf(document.getFieldValue("score")
+                            .toString()).floatValue() / maxScore);
 
                     searchHits.add(
-                            new KeywordSearchResultContainer<SolrDocument>(document, obj, score));
+                            new KeywordSearchResultContainer<SolrDocument>(document, obj, score.floatValue()));
                 }
             } catch (NumberFormatException e) {
                 // ignore
@@ -267,7 +268,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
 
 
     private QueryResponse performSearch(InterMineAPI im, String queryString, Map<String,
-                                        String> facetValues, List<Integer> ids,
+                                        String> facetValues, List<InterMineId> ids,
                                         int offSet, int rowSize) {
 
         SolrClient solrClient = SolrClientManager.getClientInstance(im.getObjectStore());
@@ -307,7 +308,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
             //limiting the query based on search bag
             if (ids != null && !ids.isEmpty()) {
                 for (int id : ids) {
-                    newQuery.addFilterQuery("id", Integer.toString(id));
+                    newQuery.addFilterQuery("id", InterMineId.toString(id));
                 }
             }
 

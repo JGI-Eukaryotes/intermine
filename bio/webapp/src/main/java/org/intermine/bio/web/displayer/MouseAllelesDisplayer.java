@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.query.PathQueryExecutor;
 import org.intermine.api.results.ExportResultsIterator;
@@ -73,7 +74,7 @@ public class MouseAllelesDisplayer extends ReportDisplayer
         // Counts of HLPT Names
         PathQuery q = new PathQuery(model);
 
-        Integer alleleCount = 0;
+        InterMineId alleleCount = 0;
         Boolean mouser = false;
         if (!MouseAllelesDisplayer.isThisAMouser(reportObject)) {
             // to give us some homologue identifier and the actual terms to tag-cloudize
@@ -183,17 +184,17 @@ public class MouseAllelesDisplayer extends ReportDisplayer
             List<ResultElement> row = qResults.next();
             String sourceGeneSymbol = getIdentifier(row);
             // a per source gene map
-            HashMap<String, Integer> terms;
+            HashMap<String, InterMineId> terms;
             if (!counts.containsKey(sourceGeneSymbol)) {
                 HashMap<String, Object> wrapper = new HashMap<String, Object>();
-                terms = new LinkedHashMap<String, Integer>();
+                terms = new LinkedHashMap<String, InterMineId>();
                 wrapper.put("terms", terms);
                 wrapper.put("homologueId", (mouser) ? row.get(2).getField().toString()
                         : row.get(4).getField().toString());
                 wrapper.put("isMouser", mouser);
                 counts.put(sourceGeneSymbol, wrapper);
             } else {
-                terms = (HashMap<String, Integer>) counts.get(sourceGeneSymbol).get("terms");
+                terms = (HashMap<String, InterMineId>) counts.get(sourceGeneSymbol).get("terms");
             }
             // populate the allele term with count
             String alleleTerm = row.get(3).getField().toString();
@@ -211,12 +212,12 @@ public class MouseAllelesDisplayer extends ReportDisplayer
                 Object>>();
         for (String symbol : counts.keySet()) {
             HashMap<String, Object> gene = counts.get(symbol);
-            LinkedHashMap<String, Integer> terms =
-                    (LinkedHashMap<String, Integer>) gene.get("terms");
+            LinkedHashMap<String, InterMineId> terms =
+                    (LinkedHashMap<String, InterMineId>) gene.get("terms");
             if (terms != null) {
                 // sorted by value
-                TreeMap<String, Integer> sorted = new TreeMap<String, Integer>(
-                        new IntegerValueComparator(terms));
+                TreeMap<String, InterMineId> sorted = new TreeMap<String, InterMineId>(
+                        new InterMineIdValueComparator(terms));
                 // deep copy
                 for (String term : terms.keySet()) {
                     sorted.put(term, terms.get(term));
@@ -224,7 +225,7 @@ public class MouseAllelesDisplayer extends ReportDisplayer
                 // "mark" top 20 and order by natural order - the keys
                 TreeMap<String, Map<String, Object>> marked =
                         new TreeMap<String, Map<String, Object>>();
-                Integer i = 0;
+                InterMineId i = 0;
                 for (String term : sorted.keySet()) {
                     // wrapper map
                     HashMap<String, Object> m = new HashMap<String, Object>();
@@ -322,7 +323,7 @@ public class MouseAllelesDisplayer extends ReportDisplayer
      * @author radek
      *
      */
-    class IntegerValueComparator implements Comparator
+    class InterMineIdValueComparator implements Comparator
     {
 
         Map base;
@@ -330,7 +331,7 @@ public class MouseAllelesDisplayer extends ReportDisplayer
          * A constructor
          * @param base parameter
          */
-        public IntegerValueComparator(Map base) {
+        public InterMineIdValueComparator(Map base) {
             this.base = base;
         }
 
@@ -338,12 +339,12 @@ public class MouseAllelesDisplayer extends ReportDisplayer
          * A function
          * @param a parameter
          * @param b parameter
-         * @return Integer
+         * @return InterMineId
          */
         @Override
         public int compare(Object a, Object b) {
-            Integer aV = (Integer) base.get(a);
-            Integer bV = (Integer) base.get(b);
+            InterMineId aV = (Integer) base.get(a);
+            InterMineId bV = (Integer) base.get(b);
 
             if (aV < bV) {
                 return 1;

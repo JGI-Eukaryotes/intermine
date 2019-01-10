@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.query.codegen.WebserviceCodeGenInfo;
@@ -335,7 +336,7 @@ public class TemplateAction extends InterMineAction
             List<TemplateValue> nodeValues = new ArrayList<TemplateValue>();
             templateValues.put(node, nodeValues);
             for (PathConstraint c : template.getEditableConstraints(node)) {
-                String key = Integer.toString(template.getEditableConstraints().indexOf(c) + 1);
+                String key = InterMineId.toString(template.getEditableConstraints().indexOf(c) + 1);
                 TemplateValue value = null;
 
                 SwitchOffAbility switchOffAbility = template.getSwitchOffAbility(c);

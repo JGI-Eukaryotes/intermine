@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.bag.BagQueryConfig;
 import org.intermine.api.config.ClassKeyHelper;
@@ -412,7 +413,7 @@ public class DisplayConstraint
 
     /**
      * Given the path being constrained return the valid constraint operations.  If constraining an
-     * attribute the valid ops depend on the type being constraint - String, Integer, Boolean, etc.
+     * attribute the valid ops depend on the type being constraint - String, InterMineId, Boolean, etc.
      * @return the valid constraint operations
      */
     public List<DisplayConstraintOption> getValidOps() {
@@ -817,16 +818,16 @@ public class DisplayConstraint
      */
     public boolean isInputFieldDisplayed() {
         if (con != null) {
-            int selectedOperator = getSelectedOp().getProperty();
-            if (selectedOperator == ConstraintOp.MATCHES.getIndex()
-                    || selectedOperator == ConstraintOp.DOES_NOT_MATCH.getIndex()
-                    || selectedOperator == ConstraintOp.LOOKUP.getIndex()
-                    || selectedOperator == ConstraintOp.CONTAINS.getIndex()
-                    || selectedOperator == ConstraintOp.DOES_NOT_CONTAIN.getIndex()) {
+            int selectedOperator = getSelectedOp().getProperty().intValue();
+            if (selectedOperator == ConstraintOp.MATCHES.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.DOES_NOT_MATCH.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.LOOKUP.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.CONTAINS.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.DOES_NOT_CONTAIN.getIndex().intValue()) {
                 return true;
             }
-            if (selectedOperator == ConstraintOp.ONE_OF.getIndex()
-                    || selectedOperator == ConstraintOp.NONE_OF.getIndex()) {
+            if (selectedOperator == ConstraintOp.ONE_OF.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.NONE_OF.getIndex().intValue()) {
                 if (con instanceof PathConstraintBag) {
                     return true;
                 }
@@ -853,14 +854,14 @@ public class DisplayConstraint
             if (getSelectedOp() == null) {
                 return false;
             }
-            int selectedOperator = getSelectedOp().getProperty();
-            if (selectedOperator == ConstraintOp.MATCHES.getIndex()
-                    || selectedOperator == ConstraintOp.DOES_NOT_MATCH.getIndex()
-                    || selectedOperator == ConstraintOp.CONTAINS.getIndex()
-                    || selectedOperator == ConstraintOp.DOES_NOT_CONTAIN.getIndex()
-                    || selectedOperator == ConstraintOp.LOOKUP.getIndex()
-                    || selectedOperator == ConstraintOp.ONE_OF.getIndex()
-                    || selectedOperator == ConstraintOp.NONE_OF.getIndex()) {
+            int selectedOperator = getSelectedOp().getProperty().intValue();
+            if (selectedOperator == ConstraintOp.MATCHES.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.DOES_NOT_MATCH.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.CONTAINS.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.DOES_NOT_CONTAIN.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.LOOKUP.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.ONE_OF.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.NONE_OF.getIndex().intValue()) {
                 return false;
             }
             if (getPossibleValues() != null && getPossibleValues().size() > 0) {
@@ -881,9 +882,9 @@ public class DisplayConstraint
      */
     public boolean isMultiValuesDisplayed() {
         if (con != null) {
-            int selectedOperator = getSelectedOp().getProperty();
-            if (selectedOperator == ConstraintOp.ONE_OF.getIndex()
-                    || selectedOperator == ConstraintOp.NONE_OF.getIndex()) {
+            int selectedOperator = getSelectedOp().getProperty().intValue();
+            if (selectedOperator == ConstraintOp.ONE_OF.getIndex().intValue()
+                    || selectedOperator == ConstraintOp.NONE_OF.getIndex().intValue()) {
                 return true;
             }
             return false;
@@ -899,14 +900,14 @@ public class DisplayConstraint
     public class DisplayConstraintOption
     {
         private String label;
-        private Integer property;
+        private InterMineId property;
 
         /**
          * Construct with the constraint lable and index
          * @param label the value to be shown in dropdown
          * @param property the constraint index to be added to form on selection
          */
-        public DisplayConstraintOption(String label, Integer property) {
+        public DisplayConstraintOption(String label, InterMineId property) {
             this.label = label;
             this.property = property;
         }
@@ -923,7 +924,7 @@ public class DisplayConstraint
          * Get the constraint index to be put in form when this op is selected.
          * @return the constraint index
          */
-        public Integer getProperty() {
+        public InterMineId getProperty() {
             return property;
         }
     }

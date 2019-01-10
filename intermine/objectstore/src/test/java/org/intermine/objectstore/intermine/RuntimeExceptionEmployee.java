@@ -10,8 +10,10 @@ package org.intermine.objectstore.intermine;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 public class RuntimeExceptionEmployee {
-    public Integer getId() {
+    public InterMineId getId() {
         throw new RuntimeException();
     }
     public void setId(Integer id) {

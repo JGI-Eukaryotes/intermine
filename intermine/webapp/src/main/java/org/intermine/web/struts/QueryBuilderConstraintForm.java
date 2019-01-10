@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.pathquery.ConstraintValueParser;
 import org.intermine.pathquery.ParseValueException;
@@ -428,9 +429,9 @@ public class QueryBuilderConstraintForm extends ActionForm
                 } else {
                     fieldClass = String.class;
                 }
-                int attributeOperator = Integer.parseInt(attributeOp);
-                if (attributeOperator == ConstraintOp.NONE_OF.getIndex()
-                    || attributeOperator == ConstraintOp.ONE_OF.getIndex()) {
+                int attributeOperator = InterMineId.parseInt(attributeOp);
+                if (attributeOperator == ConstraintOp.NONE_OF.getIndex().intValue()
+                    || attributeOperator == ConstraintOp.ONE_OF.getIndex().intValue()) {
                     if ("".equals(multiValueAttribute)) {
                         errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage("errors.message",
                             "No input given, please supply a valid expression"));

@@ -10,6 +10,8 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Represents an arithmetic or substring expression, analogous to those in SQL
  *
@@ -148,7 +150,7 @@ public class QueryExpression implements QueryEvaluable
             }
             if (String.class.isAssignableFrom(arg1.getType())
                     && String.class.isAssignableFrom(arg2.getType())) {
-                this.type = Integer.class;
+                this.type = InterMineId.class;
             } else {
                 throw new ClassCastException("Invalid arguments (" + arg1.getType() + ", "
                         + arg2.getType() + ") for indexof operation");

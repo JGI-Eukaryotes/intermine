@@ -545,8 +545,8 @@ public class TemplateQuery extends PathQuery
     protected String getCommonJsonConstraintPrefix(String code, PathConstraint con) {
         StringBuilder sb = new StringBuilder(super.getCommonJsonConstraintPrefix(code, con));
         SwitchOffAbility soa = getSwitchOffAbility(con);
-        sb.append(String.format(",\"editable\":%b",     isEditable(con)));
-        sb.append(String.format(",\"switchable\":%b",   soa != SwitchOffAbility.LOCKED));
+        sb.append(String.format(",\"editable\":%b", Boolean.valueOf(isEditable(con))));
+        sb.append(String.format(",\"switchable\":%b", Boolean.valueOf(soa != SwitchOffAbility.LOCKED)));
         sb.append(String.format(",\"switched\":\"%s\"", soa));
         return sb.toString();
     }

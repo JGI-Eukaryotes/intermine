@@ -129,13 +129,13 @@ public class UpdateListTablesTask extends Task
         ResultSet rs = stm.executeQuery(sql2);
         Map<Integer, Boolean> intermineCurrentMap = new HashMap<Integer, Boolean>();
         while (rs.next()) {
-            intermineCurrentMap.put(rs.getInt(1), rs.getBoolean(2));
+            intermineCurrentMap.put(Integer.valueOf(rs.getInt(1)), Boolean.valueOf(rs.getBoolean(2)));
         }
         Boolean intermineCurrentBoolean;
         String intermineCurrent = "";
         for (Entry<Integer, Boolean> entry : intermineCurrentMap.entrySet()) {
             intermineCurrentBoolean = entry.getValue();
-            intermineCurrent = (intermineCurrentBoolean)
+            intermineCurrent = (intermineCurrentBoolean).booleanValue()
                                ? BagState.CURRENT.toString()
                                : BagState.NOT_CURRENT.toString();
             String sql3 = "UPDATE savedbag SET intermine_state='" + intermineCurrent

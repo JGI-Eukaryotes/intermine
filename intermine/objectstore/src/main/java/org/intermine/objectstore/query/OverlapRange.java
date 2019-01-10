@@ -10,6 +10,8 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Represents a range value on an object.
  *
@@ -46,11 +48,11 @@ public class OverlapRange
         }
         if (!Integer.class.equals(start.getType())) {
             throw new IllegalArgumentException("Start parameter (" + start.getType()
-                    + ") is not an Integer");
+                    + ") is not an InterMineId");
         }
         if (!Integer.class.equals(end.getType())) {
             throw new IllegalArgumentException("End parameter (" + end.getType()
-                    + ") is not an Integer");
+                    + ") is not an InterMineId");
         }
         this.start = start;
         this.end = end;

@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
+import org.intermine.model.InterMineId;
 import org.intermine.model.StringConstructor;
 import org.postgresql.PGConnection;
 import org.postgresql.copy.CopyManager;
@@ -113,7 +114,7 @@ public class BatchWriterPostgresCopyImpl extends BatchWriterPreparedStatementImp
     private static void writeObject(PostgresDataOutputStream dos, Object o) throws IOException {
         if (o == null) {
             dos.writeInt(-1);
-        } else if (o instanceof Integer) {
+        } else if (o instanceof InterMineId) {
             dos.writeInt(4);
             dos.writeInt(((Integer) o).intValue());
         } else if (o instanceof Short) {
@@ -144,26 +145,26 @@ public class BatchWriterPostgresCopyImpl extends BatchWriterPreparedStatementImp
             int scale = ((BigDecimal) o).scale();
             int nBaseScale = (scale + 3) / 4;
             int nBaseScaleRemainder = scale % 4;
-            List<Integer> digits = new ArrayList<Integer>();
+            List<InterMineId> digits = new ArrayList<InterMineId>();
             if (nBaseScaleRemainder == 1) {
                 BigInteger[] res = unscaledValue.divideAndRemainder(TEN);
                 int digit = res[1].intValue() * 1000;
-                digits.add(new Integer(digit));
+                digits.add(new InterMineId(digit));
                 unscaledValue = res[0];
             } else if (nBaseScaleRemainder == 2) {
                 BigInteger[] res = unscaledValue.divideAndRemainder(HUNDRED);
                 int digit = res[1].intValue() * 100;
-                digits.add(new Integer(digit));
+                digits.add(new InterMineId(digit));
                 unscaledValue = res[0];
             } else if (nBaseScaleRemainder == 3) {
                 BigInteger[] res = unscaledValue.divideAndRemainder(THOUSAND);
                 int digit = res[1].intValue() * 10;
-                digits.add(new Integer(digit));
+                digits.add(new InterMineId(digit));
                 unscaledValue = res[0];
             }
             while (!unscaledValue.equals(BigInteger.ZERO)) {
                 BigInteger[] res = unscaledValue.divideAndRemainder(TEN_THOUSAND);
-                digits.add(new Integer(res[1].intValue()));
+                digits.add(new InterMineId(res[1].intValue()));
                 unscaledValue = res[0];
             }
             dos.writeInt(8 + (2 * digits.size()));

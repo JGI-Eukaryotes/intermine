@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStore;
@@ -51,7 +52,7 @@ public final class BioUtil
      * @return collection of organism names
      */
     public static Collection<String> getOrganisms(ObjectStore os, String type,
-            List<Integer> bagContents, boolean lowercase) {
+            List<InterMineId> bagContents, boolean lowercase) {
         return getOrganisms(os, type, bagContents, lowercase, "name");
     }
 
@@ -65,7 +66,7 @@ public final class BioUtil
      * @return collection of organism names
      */
     public static Collection<String> getOrganisms(ObjectStore os, String type,
-            List<Integer> bagContentsAsIds,
+            List<InterMineId> bagContentsAsIds,
             boolean lowercase, String organismFieldName) {
 
         Query q = new Query();

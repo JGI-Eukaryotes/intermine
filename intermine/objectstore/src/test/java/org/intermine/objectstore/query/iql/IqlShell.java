@@ -21,6 +21,7 @@ import org.gnu.readline.Readline;
 import org.gnu.readline.ReadlineLibrary;
 import org.gnu.readline.ReadlineCompleter;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreWriter;
@@ -319,7 +320,7 @@ public class IqlShell
                     out.println("Called goFaster in " + (System.currentTimeMillis() - startTime)
                             + " ms");
                 }
-                String sqlString = SqlGenerator.generate(q, 0, Integer.MAX_VALUE, osii.getSchema(),
+                String sqlString = SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, osii.getSchema(),
                         osii.getDatabase(), (Map) null);
                 out.println("SQL: " + sqlString);
                 QueryOptimiserContext context = new QueryOptimiserContext();

@@ -28,6 +28,7 @@ import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.AccessionID;
 import org.biojava.nbio.core.sequence.io.FastaWriterHelper;
 import org.biojava.nbio.ontology.utils.SmallAnnotation;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.bio.web.biojava.BioSequence;
 import org.intermine.bio.web.biojava.BioSequenceFactory;
@@ -78,7 +79,7 @@ public class SequenceExportAction extends InterMineAction
 
         Properties webProps = (Properties) session.getServletContext().
                 getAttribute(Constants.WEB_PROPERTIES);
-        Integer objectId = new Integer(request.getParameter("object"));
+        InterMineId objectId = new InterMineId(request.getParameter("object"));
         InterMineObject obj = getObject(os, webProps, objectId);
 
         if (obj instanceof SequenceFeature || obj instanceof Protein) {
@@ -134,7 +135,7 @@ public class SequenceExportAction extends InterMineAction
     }
 
     private InterMineObject getObject(ObjectStore os, Properties webProps,
-            Integer objectId) throws ObjectStoreException {
+            InterMineId objectId) throws ObjectStoreException {
         String classNames = webProps.getProperty("fasta.export.classes");
         List<Class<?>> classList = new ArrayList<Class<?>>();
         if (classNames != null && classNames.length() != 0) {

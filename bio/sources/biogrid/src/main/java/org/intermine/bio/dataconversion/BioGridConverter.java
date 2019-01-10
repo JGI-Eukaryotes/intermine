@@ -26,6 +26,7 @@ import java.util.Stack;
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismData;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.dataconversion.ItemWriter;
@@ -83,7 +84,7 @@ public class BioGridConverter extends BioFileConverter
     private static final String BLANK_EXPERIMENT_NAME = "NAME NOT AVAILABLE";
     private static final String DEFAULT_IDENTIFIER_FIELD = "primaryIdentifier";
     // interactions are duplicated across XML files -- don't store dupes
-    private Set<Integer> interactionDetails = new HashSet<Integer>();
+    private Set<InterMineId> interactionDetails = new HashSet<InterMineId>();
 
     protected IdResolver rslv;
 

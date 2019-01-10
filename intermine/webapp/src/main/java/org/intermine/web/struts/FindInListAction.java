@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.config.ClassKeyHelper;
@@ -162,7 +163,7 @@ public class FindInListAction extends InterMineAction
 
             if ("java.lang.Integer".equals(attType)) {
                 try {
-                    Integer intSearchTerm = Integer.valueOf(searchTerm);
+                    InterMineId intSearchTerm = InterMineId.valueOf(searchTerm);
                     queryValue = new QueryValue(intSearchTerm);
                 } catch (NumberFormatException e) {
                     // not a number so don't constrain this field

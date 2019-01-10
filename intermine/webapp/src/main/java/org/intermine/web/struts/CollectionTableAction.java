@@ -18,6 +18,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
@@ -61,7 +62,7 @@ public class CollectionTableAction extends Action
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         final ObjectStore os = im.getObjectStore();
         final WebConfig webConfig = SessionMethods.getWebConfig(request);
-        final Integer id = new Integer(request.getParameter("id"));
+        final InterMineId id = new InterMineId(request.getParameter("id"));
         final String field = request.getParameter("field");
 
         InterMineObject o = os.getObjectById(id);

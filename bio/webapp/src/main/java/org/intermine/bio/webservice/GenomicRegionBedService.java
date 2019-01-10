@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.bio.web.export.BEDExporter;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil;
@@ -53,7 +54,7 @@ public class GenomicRegionBedService extends AbstractRegionExportService
 
         String organisms = StringUtils.join(
             SequenceFeatureExportUtil.getOrganisms(pq, im, getPermission().getProfile()), ",");
-        List<Integer> indexes = Arrays.asList(new Integer(0));
+        List<InterMineId> indexes = Arrays.asList(new InterMineId(0));
 
         return new BEDExporter(getPrintWriter(), indexes, sourceName, organisms, isUcsc,
                 trackDescription);

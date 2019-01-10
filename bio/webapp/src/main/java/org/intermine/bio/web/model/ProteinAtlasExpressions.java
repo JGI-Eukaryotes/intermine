@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
 
@@ -256,8 +257,8 @@ public class ProteinAtlasExpressions
         public class StainingLevel
         {
 
-            private Integer overall = 0;
-            private Integer count = 0;
+            private InterMineId overall = 0;
+            private InterMineId count = 0;
             private ByLevelComparator levelComparator;
 
             /**
@@ -323,7 +324,7 @@ public class ProteinAtlasExpressions
          * @param strLevel level
          * @return  level to integer conversion
          */
-        public Integer evaluate(String strLevel) {
+        public InterMineId evaluate(String strLevel) {
             String level = strLevel.toLowerCase();
 
             if ("strong".equals(level) || "high".equals(level)) {
@@ -339,7 +340,7 @@ public class ProteinAtlasExpressions
         }
 
         /**
-         * Integer value to string conversion
+         * InterMineId value to string conversion
          *
          * @param levelValue integer representation of the level
          * @return value in word form
@@ -369,8 +370,8 @@ public class ProteinAtlasExpressions
 
         @Override
         public int compare(String aK, String bK) {
-            Integer aLevel = evaluate(aK);
-            Integer bLevel = evaluate(bK);
+            InterMineId aLevel = evaluate(aK);
+            InterMineId bLevel = evaluate(bK);
 
             if (aLevel < bLevel) {
                 return 1;
@@ -394,8 +395,8 @@ public class ProteinAtlasExpressions
 
         @Override
         public int compare(String aK, String bK) {
-            Integer aSize = results.get(aK).getValues().size();
-            Integer bSize = results.get(bK).getValues().size();
+            InterMineId aSize = results.get(aK).getValues().size();
+            InterMineId bSize = results.get(bK).getValues().size();
 
             if (aSize < bSize) {
                 return 1;

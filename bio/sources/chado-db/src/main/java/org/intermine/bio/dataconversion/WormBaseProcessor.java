@@ -18,6 +18,7 @@ import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.chado.config.ConfigAction;
 import org.intermine.bio.chado.config.SetFieldConfigAction;
 import org.intermine.objectstore.ObjectStoreException;
@@ -44,9 +45,9 @@ public class WormBaseProcessor extends SequenceProcessor
      * {@inheritDoc}
      */
     @Override
-    protected Integer store(Item feature, String taxonId) throws ObjectStoreException {
+    protected InterMineId store(Item feature, String taxonId) throws ObjectStoreException {
         processItem(feature, taxonId);
-        Integer itemId = super.store(feature, taxonId);
+        InterMineId itemId = super.store(feature, taxonId);
         return itemId;
     }
 
@@ -153,11 +154,11 @@ public class WormBaseProcessor extends SequenceProcessor
      * @param pubmedStr id fetched from databaase
      * @return the pubmed id
      */
-    protected Integer fixPubMedId(String pubmedStr) {
+    protected InterMineId fixPubMedId(String pubmedStr) {
         String prefix = "pmid";
         if (pubmedStr.startsWith(prefix)) {
             pubmedStr = pubmedStr.substring(prefix.length());
         }
-        return Integer.parseInt(pubmedStr);
+        return InterMineId.parseInt(pubmedStr);
     }
 }

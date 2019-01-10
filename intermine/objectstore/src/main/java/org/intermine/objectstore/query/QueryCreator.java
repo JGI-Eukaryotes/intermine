@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
 import org.intermine.metadata.ConstraintOp;
@@ -57,7 +58,7 @@ public final class QueryCreator
      * @param clazz a Class in the object
      * @return a Query
      */
-    public static Query createQueryForIds(Collection<Integer> ids,
+    public static Query createQueryForIds(Collection<InterMineId> ids,
             Class<? extends InterMineObject> clazz) {
         Query q = new Query();
 

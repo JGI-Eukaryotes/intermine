@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.util.ConsistentSet;
 
 import antlr.Token;
@@ -1328,9 +1329,9 @@ public class Query implements SQLStringable
      * @param ast an AST node to process
      */
     public void processLimitClause(AST ast) {
-        limit = Integer.parseInt(ast.getText());
+        limit = InterMineId.parseInt(ast.getText());
         if (ast.getNextSibling() != null) {
-            offset = Integer.parseInt(ast.getNextSibling().getText());
+            offset = InterMineId.parseInt(ast.getNextSibling().getText());
         }
     }
 

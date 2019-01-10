@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.query.PathQueryExecutor;
@@ -119,7 +120,7 @@ public class GeneOntologyDisplayer extends ReportDisplayer
                 return;
             }
 
-            PathQuery query = buildQuery(model, new Integer(reportObject.getId()));
+            PathQuery query = buildQuery(model, new InterMineId(reportObject.getId()));
             ExportResultsIterator result;
             try {
                 result = executor.execute(query);
@@ -167,7 +168,7 @@ public class GeneOntologyDisplayer extends ReportDisplayer
         codes.add(evidenceCode);
     }
 
-    private static PathQuery buildQuery(Model model, Integer geneId) {
+    private static PathQuery buildQuery(Model model, InterMineId geneId) {
         PathQuery q = new PathQuery(model);
         q.addViews("Gene.goAnnotation.ontologyTerm.parents.name",
                 "Gene.goAnnotation.ontologyTerm.name",

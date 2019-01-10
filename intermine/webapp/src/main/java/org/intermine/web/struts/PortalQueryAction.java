@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.AdditionalConverter;
 import org.intermine.api.bag.BagQueryConfig;
@@ -187,7 +188,7 @@ public class PortalQueryAction extends InterMineAction
         WebResults webResults = executor.execute(pathQuery, returnBagQueryResults);
 
         String bagName = NameUtil.generateNewName(profile.getSavedBags().keySet(), "link");
-        List<Integer> bagList = new ArrayList<Integer>();
+        List<InterMineId> bagList = new ArrayList<InterMineId>();
 
         // There's only one node, get the first value
         BagQueryResult bagQueryResult = returnBagQueryResults.values().iterator().next();
@@ -213,7 +214,7 @@ public class PortalQueryAction extends InterMineAction
                 if (StringUtils.isNotEmpty(extraValue)) {
                     BagConverter bagConverter = PortalHelper.getBagConverter(im, webConfig,
                             additionalConverter.getClassName());
-                    List<Integer> converted = bagConverter.getConvertedObjectIds(profile,
+                    List<InterMineId> converted = bagConverter.getConvertedObjectIds(profile,
                             className, bagList, extraValue);
                     // No matches
                     if (converted.size() <= 0) {
@@ -287,7 +288,7 @@ public class PortalQueryAction extends InterMineAction
     }
 
     private static ActionForward createBagAndGoToBagDetails(ActionMapping mapping,
-            InterMineBag imBag, List<Integer> bagList) throws ObjectStoreException {
+            InterMineBag imBag, List<InterMineId> bagList) throws ObjectStoreException {
         imBag.addIdsToBag(bagList, imBag.getType());
         return new ForwardParameters(mapping.findForward("bagDetails"))
             .addParameter("bagName", imBag.getName()).forward();
@@ -298,15 +299,15 @@ public class PortalQueryAction extends InterMineAction
             int bagListSize, String extId) {
         if (bagListSize == 0 && bagQueryResultSize == 1) {
             ActionMessage msg = new ActionMessage("results.lookup.noresults.one",
-                    new Integer(bagQueryResultSize), className);
+                    new InterMineId(bagQueryResultSize), className);
             actionMessages.add(Constants.PORTAL_MSG, msg);
         } else if (bagListSize == 0 && bagQueryResultSize > 1) {
             ActionMessage msg = new ActionMessage("results.lookup.noresults.many",
-                    new Integer(bagQueryResultSize), className);
+                    new InterMineId(bagQueryResultSize), className);
             actionMessages.add(Constants.PORTAL_MSG, msg);
         } else if (bagListSize > 0) {
             ActionMessage msg = new ActionMessage("results.lookup.matches.many",
-                    new Integer(bagListSize));
+                    new InterMineId(bagListSize));
             actionMessages.add(". " + Constants.PORTAL_MSG, msg);
         } else if (bagListSize == 0) {
             ActionMessage msg = new ActionMessage("portal.nomatches", extId);

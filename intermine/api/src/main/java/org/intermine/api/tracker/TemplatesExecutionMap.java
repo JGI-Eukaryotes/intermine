@@ -12,6 +12,7 @@ package org.intermine.api.tracker;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.tracker.track.TemplateTrack;
 import org.intermine.api.template.ApiTemplate;
 import org.intermine.api.template.TemplateManager;
@@ -24,8 +25,8 @@ import org.intermine.api.template.TemplateManager;
  */
 public class TemplatesExecutionMap
 {
-    protected Map<String, Map<String, Integer>> templateExecutions =
-                                              new HashMap<String, Map<String, Integer>>();
+    protected Map<String, Map<String, InterMineId>> templateExecutions =
+                                              new HashMap<String, Map<String, InterMineId>>();
 
     /**
      * Add a new template track into the map
@@ -37,18 +38,18 @@ public class TemplatesExecutionMap
                               ? templateTrack.getUserName()
                               : templateTrack.getSessionIdentifier();
         String templateName = templateTrack.getTemplateName();
-        Map<String, Integer> execution;
+        Map<String, InterMineId> execution;
         if (!templateExecutions.containsKey(templateName)) {
-            execution = new HashMap<String, Integer>();
-            execution.put(executionKey, 1);
+            execution = new HashMap<String, InterMineId>();
+            execution.put(executionKey, InterMineId.valueOf(1));
             templateExecutions.put(templateName, execution);
         }
         else {
             execution = templateExecutions.get(templateName);
             if (!execution.containsKey(executionKey)) {
-                execution.put(executionKey, 1);
+                execution.put(executionKey, InterMineId.valueOf(1));
             } else {
-                execution.put(executionKey, execution.get(executionKey).intValue() + 1);
+                execution.put(executionKey, InterMineId.valueOf(execution.get(executionKey).intValue() + 1));
             }
         }
     }
@@ -70,21 +71,21 @@ public class TemplatesExecutionMap
                     templateManager.getValidGlobalTemplates();
                 for (String templateName : templateExecutions.keySet()) {
                     if (publicTemplates.containsKey(templateName)) {
-                        Map<String, Integer> execution = templateExecutions.get(templateName);
+                        Map<String, InterMineId> execution = templateExecutions.get(templateName);
                         double accessLn = 0;
                         for (String key : execution.keySet()) {
-                            accessLn = accessLn + Math.log(execution.get(key) + 1);
+                            accessLn = accessLn + Math.log(execution.get(key).intValue() + 1);
                         }
-                        logarithmMap.put(templateName, accessLn);
+                        logarithmMap.put(templateName, Double.valueOf(accessLn));
                     }
                 }
             }
         } else {
             for (String templateName : templateExecutions.keySet()) {
-                Map<String, Integer> execution = templateExecutions.get(templateName);
+                Map<String, InterMineId> execution = templateExecutions.get(templateName);
                 if (execution.containsKey(executionKey)) {
-                    double accessLn = Math.log(execution.get(executionKey) + 1);
-                    logarithmMap.put(templateName, accessLn);
+                    double accessLn = Math.log(execution.get(executionKey).intValue() + 1);
+                    logarithmMap.put(templateName, Double.valueOf(accessLn));
                 }
             }
         }

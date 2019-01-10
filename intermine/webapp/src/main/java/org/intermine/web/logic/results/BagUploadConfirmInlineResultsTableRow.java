@@ -10,6 +10,8 @@ package org.intermine.web.logic.results;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Used on BagUploadConfirmIssueController (List upload confirm step) to add an identifier the
  *  user was trying to resolve with the number of rows in the ResultsTable corresponding to the
@@ -23,9 +25,9 @@ public class BagUploadConfirmInlineResultsTableRow extends InlineResultsTableRow
     /** @var identifier we were trying to resolve */
     String identifier = null;
     /** @var number of rows in the containing table this identifier corresponds to */
-    Integer rowSpan = null;
+    InterMineId rowSpan = null;
     /** @var show the identifier in this row? */
-    Boolean showIdentifier = false;
+    Boolean showIdentifier = Boolean.FALSE;
 
     /**
      * Set to show the identifier in this row
@@ -64,7 +66,7 @@ public class BagUploadConfirmInlineResultsTableRow extends InlineResultsTableRow
 
     /**
      * Set how many rows this identifier spans
-     * @param rowSpan Integer
+     * @param rowSpan InterMineId
      */
     public void setRowSpan(Integer rowSpan) {
         this.rowSpan = rowSpan;
@@ -75,7 +77,7 @@ public class BagUploadConfirmInlineResultsTableRow extends InlineResultsTableRow
      *
      * @return number of rows this identifier spans
      */
-    public Integer getRowSpan() {
+    public InterMineId getRowSpan() {
         return this.rowSpan;
     }
 

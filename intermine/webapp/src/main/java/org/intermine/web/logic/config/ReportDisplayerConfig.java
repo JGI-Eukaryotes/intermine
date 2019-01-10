@@ -31,7 +31,7 @@ public class ReportDisplayerConfig
     private String types;
     private Set<String> configuredTypes = null;
     private Set<String> replacedFieldNames = null;
-    private Boolean showImmediately = false;
+    private Boolean showImmediately = Boolean.FALSE;
 
     /**
      * Get the comma separated unqualified class names for which this displayer should be displayed.

@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.Util;
 import org.intermine.model.InterMineObject;
@@ -192,7 +193,7 @@ public class IqlQuery
                 retval.append(nodeToString(q, qn, newParameters, null));
             }
         }
-        if (q.getLimit() != Integer.MAX_VALUE) {
+        if (q.getLimit() != InterMineId.MAX_VALUE) {
             retval.append(" LIMIT " + q.getLimit());
         }
         needComma = false;
@@ -492,7 +493,7 @@ public class IqlQuery
             }
         }
         if ((!ref.getSelect().isEmpty()) || (ref.getConstraint() != null)) {
-            Set<Integer> empty = Collections.emptySet();
+            Set<InterMineId> empty = Collections.emptySet();
             Query subQ = ref.getQuery(empty, true);
             retval.append("(");
             boolean needSpace = false;

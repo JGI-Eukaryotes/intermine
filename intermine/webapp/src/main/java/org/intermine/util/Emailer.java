@@ -19,6 +19,7 @@ import java.util.Properties;
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
 import org.intermine.objectstore.ObjectStoreException;
@@ -138,7 +139,7 @@ public class Emailer
         String path = properties.getProperty("webapp.path");
 
         String body = String.format(bodyFmt, appName, owner.getUsername(),
-                bag.getType(), bag.getSize(), bag.getName(), base, path,
+                bag.getType(), InterMineId.valueOf(bag.getSize()), bag.getName(), base, path,
                 URLEncoder.encode(bag.getName(), "UTF-8"));
 
         MailUtils.email(to, subject, body, properties);

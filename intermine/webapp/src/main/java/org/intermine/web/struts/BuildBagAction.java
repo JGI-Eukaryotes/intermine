@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.upload.FormFile;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagQueryRunner;
 import org.intermine.api.idresolution.IDResolver;
@@ -103,7 +104,7 @@ public class BuildBagAction extends InterMineAction
             // attach file name as the name of the bag
             String fileName = formFile.getFileName();
             // strip suffix
-            Integer lastPos = new Integer(fileName.lastIndexOf('.'));
+            InterMineId lastPos = new InterMineId(fileName.lastIndexOf('.'));
             if (lastPos.intValue() > 0) {
                 fileName = fileName.substring(0, lastPos.intValue());
             }
@@ -165,9 +166,9 @@ public class BuildBagAction extends InterMineAction
                     ActionMessage actionMessage = null;
                     if (profile == null || profile.getUsername() == null) {
                         actionMessage = new ActionMessage("bag.bigNotLoggedIn",
-                                                          new Integer(maxBagSize));
+                                                          new InterMineId(maxBagSize));
                     } else {
-                        actionMessage = new ActionMessage("bag.tooBig", new Integer(maxBagSize));
+                        actionMessage = new ActionMessage("bag.tooBig", new InterMineId(maxBagSize));
                     }
                     recordError(actionMessage, request);
                     return mapping.findForward("bags");

@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -68,7 +69,7 @@ public class BagUploadConfirmAction extends InterMineAction
         String idsString = confirmForm.getMatchIDs().trim();
         String[] ids = StringUtil.split(idsString, " ");
 
-        List<Integer> contents = new ArrayList<Integer>();
+        List<InterMineId> contents = new ArrayList<InterMineId>();
 
         String bagType = confirmForm.getBagType();
         for (int i = 0; i < ids.length; i++) {
@@ -76,13 +77,13 @@ public class BagUploadConfirmAction extends InterMineAction
             if (idString.length() == 0) {
                 continue;
             }
-            int id = Integer.parseInt(idString);
-            contents.add(new Integer(id));
+            int id = InterMineId.parseInt(idString);
+            contents.add(new InterMineId(id));
         }
         for (int i = 0; i < confirmForm.getSelectedObjects().length; i++) {
             String idString = confirmForm.getSelectedObjects()[i];
-            int id = Integer.parseInt(idString);
-            contents.add(new Integer(id));
+            int id = InterMineId.parseInt(idString);
+            contents.add(new InterMineId(id));
         }
 
         if (contents.size() == 0) {

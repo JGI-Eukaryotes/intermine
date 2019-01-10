@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.FieldDescriptor;
@@ -276,7 +277,7 @@ public class BatchingFetcher extends HintingFetcher
             Map<InterMineObject, Set<InterMineObject>> results,
             Map<ClassDescriptor, List<InterMineObject>> cldToObjectsForCld,
             long time1) throws ObjectStoreException {
-        Set<Integer> fetchedObjectIds = Collections.synchronizedSet(new HashSet<Integer>());
+        Set<InterMineId> fetchedObjectIds = Collections.synchronizedSet(new HashSet<InterMineId>());
         Map<PrimaryKey, ClassDescriptor> pksNotDone
             = new IdentityHashMap<PrimaryKey, ClassDescriptor>(pksToDo);
         while (!pksToDo.isEmpty()) {
@@ -350,7 +351,7 @@ public class BatchingFetcher extends HintingFetcher
      */
     protected void doPk(PrimaryKey pk, ClassDescriptor cld, Map<InterMineObject,
             Set<InterMineObject>> results, List<InterMineObject> objectsForCld,
-            Set<Integer> fetchedObjectIds) throws ObjectStoreException {
+            Set<InterMineId> fetchedObjectIds) throws ObjectStoreException {
         Iterator<InterMineObject> objectsForCldIter = objectsForCld.iterator();
         while (objectsForCldIter.hasNext()) {
             int objCount = 0;
@@ -394,7 +395,7 @@ public class BatchingFetcher extends HintingFetcher
                                 Object value = object.getFieldProxy(fieldName);
                                 Set<Object> fieldValues;
                                 if (value instanceof InterMineObject) {
-                                    Integer id = idMap.get(((InterMineObject) value).getId());
+                                    InterMineId id = idMap.get(((InterMineObject) value).getId());
                                     if (id == null) {
                                         Set<InterMineObject> eqs = results.get(value);
                                         if (eqs == null) {
@@ -423,7 +424,7 @@ public class BatchingFetcher extends HintingFetcher
                                     if (!savedTimes.containsKey(summaryName)) {
                                         savedTimes.put(summaryName, new Long(System
                                                     .currentTimeMillis() - time));
-                                        savedCounts.put(summaryName, new Integer(0));
+                                        savedCounts.put(summaryName, new InterMineId(0));
                                     }
                                     if (pkQueryFruitless) {
                                         skipObject = true;
@@ -575,7 +576,7 @@ public class BatchingFetcher extends HintingFetcher
 
         @Override
         public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-                boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+                boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
             long time = System.currentTimeMillis();
             List<ResultsRow<Object>> retval = os.execute(q, start, limit, optimise, explain,
                     sequence);

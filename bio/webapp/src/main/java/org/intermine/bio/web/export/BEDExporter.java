@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultElement;
 import org.intermine.bio.io.bed.BEDRecord;
 import org.intermine.bio.web.logic.OrganismGenomeBuildLookup;
@@ -40,7 +41,7 @@ public class BEDExporter implements Exporter
     private boolean makeUcscCompatible = true;
     private int writtenResultsCount = 0;
     private boolean headerPrinted = false;
-    private List<Integer> featureIndexes;
+    private List<InterMineId> featureIndexes;
     private IntPresentSet exportedIds = new IntPresentSet();
     private List<String> orgSet = null;
 
@@ -58,7 +59,7 @@ public class BEDExporter implements Exporter
     private static final String TRACK_USE_SCORE = " useScore=0";
 
     /* State for the exportRow method, to allow several rows to be merged. */
-    private Integer lastLsfId = null;
+    private InterMineId lastLsfId = null;
     private SequenceFeature lastLsf = null;
 
     /**
@@ -70,7 +71,7 @@ public class BEDExporter implements Exporter
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      * @param trackDescription track description in the header
      */
-    public BEDExporter(PrintWriter out, List<Integer> featureIndexes, String sourceName,
+    public BEDExporter(PrintWriter out, List<InterMineId> featureIndexes, String sourceName,
             String organismString, boolean makeUcscCompatible, String trackDescription) {
 
         this.out = out;

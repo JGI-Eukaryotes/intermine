@@ -10,6 +10,7 @@ package org.intermine.objectstore.intermine;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.testmodel.Address;
 import org.intermine.model.testmodel.Bank;
@@ -68,7 +69,7 @@ public class ObjectStoreWriterInterMineImplTest extends ObjectStoreWriterTestCas
 
         Assert.assertFalse(writer.isInTransaction());
         // Now try and do something normal.
-        writer.getObjectById(new Integer(2));
+        writer.getObjectById(new InterMineId(2));
     }
 }
 

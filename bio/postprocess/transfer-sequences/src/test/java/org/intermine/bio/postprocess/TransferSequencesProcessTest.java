@@ -20,6 +20,7 @@ import java.util.Set;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.BioEntity;
 import org.intermine.model.bio.CDS;
@@ -275,8 +276,8 @@ public class TransferSequencesProcessTest extends TestCase
 
         storedChromosome =
                 (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
-        storedChromosome.setLength(new Integer(4000));
-        storedChromosome.setId(new Integer(101));
+        storedChromosome.setLength(new InterMineId(4000));
+        storedChromosome.setId(new InterMineId(101));
         storedChromosome.setPrimaryIdentifier("store_chromosome");
         toStore.add(storedChromosome);
 
@@ -379,8 +380,8 @@ public class TransferSequencesProcessTest extends TestCase
         loc.setLocatedOn(object);
         loc.setFeature(subject);
         loc.setStrand(strand);
-        loc.setStart(new Integer(start));
-        loc.setEnd(new Integer(end));
+        loc.setStart(new InterMineId(start));
+        loc.setEnd(new InterMineId(end));
         return loc;
     }
 }

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.BioQueries;
 import org.intermine.bio.util.PostProcessUtil;
 import org.intermine.metadata.MetaDataException;
@@ -104,14 +105,14 @@ public class CreateIntergenicRegionFeaturesProcess extends PostProcessor
 
         Iterator<?> resIter = results.iterator();
 
-        Integer previousChrId = null;
+        InterMineId previousChrId = null;
         Set<Location> locationSet = new HashSet<Location>();
         Map<Integer, Set<Gene>> locToGeneMap = new HashMap<Integer, Set<Gene>>();
 
         osw.beginTransaction();
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
-            Integer chrId = (Integer) rr.get(0);
+            InterMineId chrId = (Integer) rr.get(0);
             Gene gene = (Gene) rr.get(1);
             Location loc = (Location) rr.get(2);
 
@@ -192,7 +193,7 @@ public class CreateIntergenicRegionFeaturesProcess extends PostProcessor
     protected Iterator<SequenceFeature> createFeatures(
             final Set<Location> locationSet,
             final Map<Integer, Set<Gene>> locToGeneMap,
-            final Integer chrId)
+            final InterMineId chrId)
             throws ObjectStoreException {
         if (os == null) {
             os = osw.getObjectStore();
@@ -261,8 +262,8 @@ public class CreateIntergenicRegionFeaturesProcess extends PostProcessor
                         .createObject(Collections.singleton(igCls));
                 Location location = (Location) DynamicUtil.createObject(
                         Collections.singleton(Location.class));
-                location.setStart(new Integer(newLocStart));
-                location.setEnd(new Integer(newLocEnd));
+                location.setStart(new InterMineId(newLocStart));
+                location.setEnd(new InterMineId(newLocEnd));
                 location.setStrand("1");
 
                 location.setFeature(intergenicRegion);
@@ -274,7 +275,7 @@ public class CreateIntergenicRegionFeaturesProcess extends PostProcessor
                 intergenicRegion.addDataSets(dataSet);
 
                 int length = location.getEnd().intValue() - location.getStart().intValue() + 1;
-                intergenicRegion.setLength(new Integer(length));
+                intergenicRegion.setLength(new InterMineId(length));
 
                 String primaryIdentifier = "intergenic_region_chr"
                         + chr.getPrimaryIdentifier() + "_"
@@ -283,7 +284,7 @@ public class CreateIntergenicRegionFeaturesProcess extends PostProcessor
 
                 Set<Gene> adjacentGenes = new HashSet<Gene>();
 
-                Set<Gene> nextGenes = locToGeneMap.get(new Integer(newLocEnd + 1));
+                Set<Gene> nextGenes = locToGeneMap.get(new InterMineId(newLocEnd + 1));
                 if (nextGenes != null) {
                     Iterator<?> nextGenesIter = nextGenes.iterator();
 
@@ -306,7 +307,7 @@ public class CreateIntergenicRegionFeaturesProcess extends PostProcessor
                     }
                 }
 
-                Set<Gene> prevGenes = locToGeneMap.get(new Integer(newLocStart - 1));
+                Set<Gene> prevGenes = locToGeneMap.get(new InterMineId(newLocStart - 1));
                 if (prevGenes != null) {
                     Iterator<?> prevGenesIter = prevGenes.iterator();
 

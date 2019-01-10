@@ -14,6 +14,7 @@ import java.sql.Connection;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.sql.Database;
 import org.intermine.sql.DatabaseFactory;
 
@@ -47,40 +48,40 @@ public class DataTrackingTest extends TestCase {
         }
 
         try {
-            dt.setSource(new Integer(46), "name", new Source("dummy"));
+            dt.setSource(new InterMineId(46), "name", new Source("dummy"));
             fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
 
         try {
-            dt.setSource(new Integer(46), null, source1);
+            dt.setSource(new InterMineId(46), null, source1);
             fail("Expected NullPointerException");
         } catch (NullPointerException e) {
         }
     }
 
     public void testGetSource() throws Exception {
-        dt.setSource(new Integer(13), "name", source1);
-        assertEquals(source1.getName(), dt.getSource(new Integer(13), "name").getName());
+        dt.setSource(new InterMineId(13), "name", source1);
+        assertEquals(source1.getName(), dt.getSource(new InterMineId(13), "name").getName());
 
         for (int i = 100; i < 200; i++) {
-            dt.setSource(new Integer(i), "name", source2);
+            dt.setSource(new InterMineId(i), "name", source2);
         }
 
-        assertEquals(source1.getName(), dt.getSource(new Integer(13), "name").getName());
+        assertEquals(source1.getName(), dt.getSource(new InterMineId(13), "name").getName());
     }
     
     // This is to investigate a possible bug where the version numbers are initialised from zero
     // for each data source, instead of continuing.
     public void testWrongOrderBug() throws Exception {
-        dt.setSource(new Integer(13), "name", source1);
+        dt.setSource(new InterMineId(13), "name", source1);
         dt.flush();
-        dt.setSource(new Integer(14), "name", source1);
+        dt.setSource(new InterMineId(14), "name", source1);
         dt.flush();
         DataTracker dt2 = new DataTracker(DatabaseFactory.getDatabase("db.unittest"), 30, 10);
-        dt2.setSource(new Integer(14), "name", dt2.stringToSource("Source2"));
+        dt2.setSource(new InterMineId(14), "name", dt2.stringToSource("Source2"));
         dt2.close();
         dt2 = new DataTracker(DatabaseFactory.getDatabase("db.unittest"), 30, 10);
-        assertEquals(source2.getName(), dt2.getSource(new Integer(14), "name").getName());
+        assertEquals(source2.getName(), dt2.getSource(new InterMineId(14), "name").getName());
     }
 }

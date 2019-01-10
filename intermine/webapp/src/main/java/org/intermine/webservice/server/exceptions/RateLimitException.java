@@ -10,6 +10,8 @@ package org.intermine.webservice.server.exceptions;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Exception representation for denying service based on rate limits.
  *
@@ -31,6 +33,6 @@ public class RateLimitException extends ServiceForbiddenException
      * @param limitPerHour The maximum number of requests that can be made in any 1 hour period.
      */
     public RateLimitException(String remoteAddr, int limitPerHour) {
-        super(String.format(MSG, limitPerHour, remoteAddr));
+        super(String.format(MSG, InterMineId.valueOf(limitPerHour), remoteAddr));
     }
 }

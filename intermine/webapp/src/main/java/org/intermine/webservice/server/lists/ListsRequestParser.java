@@ -70,7 +70,7 @@ public class ListsRequestParser
             }
         } else {
             try {
-                ret.setMineId(Integer.parseInt(mineId));
+                ret.setMineId(Integer.valueOf(Integer.parseInt(mineId)));
             } catch (Throwable t) {
                 throw new BadRequestException("invalid parameter: " + MINE_ID_PARAMETER);
             }

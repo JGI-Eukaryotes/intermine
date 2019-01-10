@@ -26,6 +26,7 @@ import java.util.Stack;
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
@@ -602,8 +603,8 @@ public class PsiConverter extends BioFileConverter
 
                 int c;
                 try {
-                    Integer a = new Integer(start);
-                    Integer b = new Integer(end);
+                    InterMineId a = new InterMineId(start);
+                    InterMineId b = new InterMineId(end);
                     c = a.compareTo(b);
                 } catch (NumberFormatException e) {
                     return false;

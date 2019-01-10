@@ -17,6 +17,7 @@ import java.util.*;
 
 import junit.framework.AssertionFailedError;
 
+import org.intermine.model.InterMineId;
 import org.intermine.SummaryAssertionFailedError;
 import org.intermine.SummaryException;
 import org.intermine.metadata.ConstraintOp;
@@ -315,8 +316,8 @@ public abstract class ObjectStoreQueryTestCase {
                 {data.get("CompanyB")}};
         results.put("SelectSimpleObject", ObjectStoreTestUtils.toList(r));
 
-        r = new Object[][]{{"CompanyA", new Integer(5)},
-                {"CompanyB", new Integer(5)}};
+        r = new Object[][]{{"CompanyA", new InterMineId(5)},
+                {"CompanyB", new InterMineId(5)}};
         results.put("SubQuery", ObjectStoreTestUtils.toList(r));
 
         r = new Object[][]{{"CompanyA"}};
@@ -447,8 +448,8 @@ public abstract class ObjectStoreQueryTestCase {
                 {data.get("EmployeeB3")}};
         results.put("SelectInterfaceAndSubClasses3", ObjectStoreTestUtils.toList(r));
 
-        r = new Object[][]{{new Integer(5), "CompanyA"},
-                {new Integer(5), "CompanyB"}};
+        r = new Object[][]{{new InterMineId(5), "CompanyA"},
+                {new InterMineId(5), "CompanyB"}};
         results.put("OrderByAnomaly", ObjectStoreTestUtils.toList(r));
 
         r = new Object[][]{{data.get("Secretary1")},
@@ -485,7 +486,7 @@ public abstract class ObjectStoreQueryTestCase {
                 {data.get("CompanyB")}};
         results.put("InterfaceCollection", ObjectStoreTestUtils.toList(r));
 
-        r = new Object[][]{{data.get("EmployeeB1"), new Integer(340), new Integer(40)}};
+        r = new Object[][]{{data.get("EmployeeB1"), new InterMineId(340), new InterMineId(40)}};
         results.put("DynamicInterfacesAttribute", ObjectStoreTestUtils.toList(r));
 
         r = new Object[][]{{data.get("ContractorA")},
@@ -562,12 +563,12 @@ public abstract class ObjectStoreQueryTestCase {
                 {"60"}};
         results.put("TypeCast", ObjectStoreTestUtils.toList(r));
 
-        r = new Object[][]{{new Integer(5)},
-                {new Integer(5)},
-                {new Integer(5)},
-                {new Integer(5)},
-                {new Integer(5)},
-                {new Integer(5)}};
+        r = new Object[][]{{new InterMineId(5)},
+                {new InterMineId(5)},
+                {new InterMineId(5)},
+                {new InterMineId(5)},
+                {new InterMineId(5)},
+                {new InterMineId(5)}};
         results.put("IndexOf", ObjectStoreTestUtils.toList(r));
 
         r = new Object[][]{{"mp"},
@@ -845,7 +846,7 @@ public abstract class ObjectStoreQueryTestCase {
         minId = Math.min(minId, ((Employee) data.get("EmployeeB1")).getId().intValue());
         minId = Math.min(minId, ((Employee) data.get("EmployeeB2")).getId().intValue());
         minId = Math.min(minId, ((Employee) data.get("EmployeeB3")).getId().intValue());
-        r = new Object[][]{{new Integer(minId)}};
+        r = new Object[][]{{new InterMineId(minId)}};
         results.put("SelectFunctionNoGroup", ObjectStoreTestUtils.toList(r));
         r = new Object[][]{{Address.class, new Long(8)},
                 {DynamicUtil.composeClass(Broke.class, CEO.class), new Long(1)},
@@ -951,7 +952,7 @@ public abstract class ObjectStoreQueryTestCase {
     */
     public static Query subQuery() throws Exception {
         QueryClass c1 = new QueryClass(Company.class);
-        QueryValue v1 = new QueryValue(new Integer(5));
+        QueryValue v1 = new QueryValue(new InterMineId(5));
         Query q1 = new Query();
         q1.alias(c1, "Array");
         q1.addFrom(c1);
@@ -976,7 +977,7 @@ public abstract class ObjectStoreQueryTestCase {
     */
     public static Query whereSimpleEquals() throws Exception {
         QueryClass c1 = new QueryClass(Company.class);
-        QueryValue v1 = new QueryValue(new Integer(1234));
+        QueryValue v1 = new QueryValue(new InterMineId(1234));
         QueryField f1 = new QueryField(c1, "vatNumber");
         QueryField f2 = new QueryField(c1, "name");
         SimpleConstraint sc1 = new SimpleConstraint(f1, ConstraintOp.EQUALS, v1);
@@ -994,7 +995,7 @@ public abstract class ObjectStoreQueryTestCase {
     */
     public static Query whereSimpleNotEquals() throws Exception {
         QueryClass c1 = new QueryClass(Company.class);
-        QueryValue v1 = new QueryValue(new Integer(1234));
+        QueryValue v1 = new QueryValue(new InterMineId(1234));
         QueryField f1 = new QueryField(c1, "vatNumber");
         QueryField f2 = new QueryField(c1, "name");
         SimpleConstraint sc1 = new SimpleConstraint(f1, ConstraintOp.NOT_EQUALS, v1);
@@ -1012,7 +1013,7 @@ public abstract class ObjectStoreQueryTestCase {
     */
     public static Query whereSimpleNegEquals() throws Exception {
         QueryClass c1 = new QueryClass(Company.class);
-        QueryValue v1 = new QueryValue(new Integer(1234));
+        QueryValue v1 = new QueryValue(new InterMineId(1234));
         QueryField f1 = new QueryField(c1, "vatNumber");
         QueryField f2 = new QueryField(c1, "name");
         SimpleConstraint sc1 = new SimpleConstraint(f1, ConstraintOp.EQUALS, v1);
@@ -1067,7 +1068,7 @@ public abstract class ObjectStoreQueryTestCase {
     public static Query whereAndSet() throws Exception {
         QueryClass c1 = new QueryClass(Company.class);
         QueryValue v1 = new QueryValue("Company%");
-        QueryValue v2 = new QueryValue(new Integer(2000));
+        QueryValue v2 = new QueryValue(new InterMineId(2000));
         QueryField f1 = new QueryField(c1, "name");
         QueryField f2 = new QueryField(c1, "vatNumber");
         SimpleConstraint sc1 = new SimpleConstraint(f1, ConstraintOp.MATCHES, v1);
@@ -1091,7 +1092,7 @@ public abstract class ObjectStoreQueryTestCase {
     public static Query whereOrSet() throws Exception {
         QueryClass c1 = new QueryClass(Company.class);
         QueryValue v1 = new QueryValue("CompanyA%");
-        QueryValue v2 = new QueryValue(new Integer(2000));
+        QueryValue v2 = new QueryValue(new InterMineId(2000));
         QueryField f1 = new QueryField(c1, "name");
         QueryField f2 = new QueryField(c1, "vatNumber");
         SimpleConstraint sc1 = new SimpleConstraint(f1, ConstraintOp.MATCHES, v1);
@@ -1115,7 +1116,7 @@ public abstract class ObjectStoreQueryTestCase {
     public static Query whereNotSet() throws Exception {
         QueryClass c1 = new QueryClass(Company.class);
         QueryValue v1 = new QueryValue("Company%");
-        QueryValue v2 = new QueryValue(new Integer(2000));
+        QueryValue v2 = new QueryValue(new InterMineId(2000));
         QueryField f1 = new QueryField(c1, "name");
         QueryField f2 = new QueryField(c1, "vatNumber");
         SimpleConstraint sc1 = new SimpleConstraint(f1, ConstraintOp.MATCHES, v1);
@@ -1580,7 +1581,7 @@ public abstract class ObjectStoreQueryTestCase {
         q1.addFrom(c1);
         q1.addFrom(c2);
         QueryExpression e1 = new QueryExpression(new QueryFunction(f2, QueryFunction.AVERAGE),
-                QueryExpression.ADD, new QueryValue(new Integer(20)));
+                QueryExpression.ADD, new QueryValue(new InterMineId(20)));
         QueryFunction e2 = new QueryFunction(f2, QueryFunction.STDDEV);
         q1.addToSelect(e1);
         q1.addToSelect(e2);
@@ -1674,7 +1675,7 @@ public abstract class ObjectStoreQueryTestCase {
         QueryClass c = new QueryClass(Company.class);
         Query q = new Query();
         q.addFrom(c);
-        q.addToSelect(new QueryValue(new Integer(5)));
+        q.addToSelect(new QueryValue(new InterMineId(5)));
         q.addToSelect(new QueryField(c, "name"));
         return q;
     }
@@ -1785,8 +1786,8 @@ public abstract class ObjectStoreQueryTestCase {
         q1.addToSelect(f1);
         q1.addToSelect(f2);
         ConstraintSet cs = new ConstraintSet(ConstraintOp.AND);
-        cs.addConstraint(new SimpleConstraint(f1, ConstraintOp.GREATER_THAN, new QueryValue(new Integer(0))));
-        cs.addConstraint(new SimpleConstraint(f2, ConstraintOp.GREATER_THAN, new QueryValue(new Integer(0))));
+        cs.addConstraint(new SimpleConstraint(f1, ConstraintOp.GREATER_THAN, new QueryValue(new InterMineId(0))));
+        cs.addConstraint(new SimpleConstraint(f2, ConstraintOp.GREATER_THAN, new QueryValue(new InterMineId(0))));
         q1.setConstraint(cs);
         return q1;
     }
@@ -2078,7 +2079,7 @@ public abstract class ObjectStoreQueryTestCase {
         QueryClass qc = new QueryClass(Employee.class);
         q.addFrom(qc);
         QueryField f = new QueryField(qc, "name");
-        QueryExpression e = new QueryExpression(f, new QueryValue(new Integer(2)), new QueryValue(new Integer(2)));
+        QueryExpression e = new QueryExpression(f, new QueryValue(new InterMineId(2)), new QueryValue(new InterMineId(2)));
         q.addToSelect(e);
         return q;
     }
@@ -2092,7 +2093,7 @@ public abstract class ObjectStoreQueryTestCase {
         QueryClass qc = new QueryClass(Employee.class);
         q.addFrom(qc);
         QueryField f = new QueryField(qc, "name");
-        QueryExpression e = new QueryExpression(f, QueryExpression.SUBSTRING, new QueryValue(new Integer(2)));
+        QueryExpression e = new QueryExpression(f, QueryExpression.SUBSTRING, new QueryValue(new InterMineId(2)));
         q.addToSelect(e);
         return q;
     }
@@ -2230,7 +2231,7 @@ public abstract class ObjectStoreQueryTestCase {
         QueryClass qc = new QueryClass(Employee.class);
         q.addFrom(qc);
         q.addToSelect(qc);
-        q.setConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new Integer(-51))));
+        q.setConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new InterMineId(-51))));
         q.setDistinct(false);
         return q;
     }
@@ -2656,7 +2657,7 @@ public abstract class ObjectStoreQueryTestCase {
      */
     public static Query objectStoreBagsForObject() throws Exception {
         Query q = new Query();
-        ObjectStoreBagsForObject osbfo = new ObjectStoreBagsForObject(new Integer(999));
+        ObjectStoreBagsForObject osbfo = new ObjectStoreBagsForObject(new InterMineId(999));
         q.addToSelect(osbfo);
         q.setDistinct(false);
         return q;
@@ -2671,7 +2672,7 @@ public abstract class ObjectStoreQueryTestCase {
         bags.add(new ObjectStoreBag(10));
         bags.add(new ObjectStoreBag(11));
         bags.add(new ObjectStoreBag(12));
-        ObjectStoreBagsForObject osbfo = new ObjectStoreBagsForObject(new Integer(999), bags);
+        ObjectStoreBagsForObject osbfo = new ObjectStoreBagsForObject(new InterMineId(999), bags);
         q.addToSelect(osbfo);
         q.setDistinct(false);
         return q;
@@ -2752,7 +2753,7 @@ public abstract class ObjectStoreQueryTestCase {
         q.addFrom(qc);
         q.addToSelect(qc);
         ConstraintSet cs1 = new ConstraintSet(ConstraintOp.AND);
-        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new Integer(3))));
+        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new InterMineId(3))));
         cs1.addConstraint(new ConstraintSet(ConstraintOp.OR));
         q.setConstraint(cs1);
         q.setDistinct(false);
@@ -2768,7 +2769,7 @@ public abstract class ObjectStoreQueryTestCase {
         q.addFrom(qc);
         q.addToSelect(qc);
         ConstraintSet cs1 = new ConstraintSet(ConstraintOp.OR);
-        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new Integer(3))));
+        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new InterMineId(3))));
         cs1.addConstraint(new ConstraintSet(ConstraintOp.AND));
         q.setConstraint(cs1);
         q.setDistinct(false);
@@ -2784,7 +2785,7 @@ public abstract class ObjectStoreQueryTestCase {
         q.addFrom(qc);
         q.addToSelect(qc);
         ConstraintSet cs1 = new ConstraintSet(ConstraintOp.OR);
-        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new Integer(3))));
+        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new InterMineId(3))));
         cs1.addConstraint(new ConstraintSet(ConstraintOp.OR));
         q.setConstraint(cs1);
         q.setDistinct(false);
@@ -2800,7 +2801,7 @@ public abstract class ObjectStoreQueryTestCase {
         q.addFrom(qc);
         q.addToSelect(qc);
         ConstraintSet cs1 = new ConstraintSet(ConstraintOp.AND);
-        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new Integer(3))));
+        cs1.addConstraint(new SimpleConstraint(new QueryField(qc, "age"), ConstraintOp.GREATER_THAN, new QueryValue(new InterMineId(3))));
         cs1.addConstraint(new ConstraintSet(ConstraintOp.AND));
         q.setConstraint(cs1);
         q.setDistinct(false);
@@ -3332,7 +3333,7 @@ public abstract class ObjectStoreQueryTestCase {
         QueryClass qc = new QueryClass(new HashSet(Arrays.asList(new Class[] {Broke.class, Employable.class})));
         q.addFrom(qc);
         q.addToSelect(qc);
-        q.setConstraint(new BagConstraint(qc, ConstraintOp.IN, new HashSet(Arrays.asList(new Object[] {data.get("EmployeeA1"), data.get("CompanyA"), new Integer(5), data.get("EmployeeB1")}))));
+        q.setConstraint(new BagConstraint(qc, ConstraintOp.IN, new HashSet(Arrays.asList(new Object[] {data.get("EmployeeA1"), data.get("CompanyA"), new InterMineId(5), data.get("EmployeeB1")}))));
         q.setDistinct(false);
         return q;
     }*/
@@ -3460,7 +3461,7 @@ public abstract class ObjectStoreQueryTestCase {
         q.addToSelect(qc);
         ConstraintSet cs = new ConstraintSet(ConstraintOp.NAND);
         cs.addConstraint(new ContainsConstraint(new QueryCollectionReference(qcb, "employees"), ConstraintOp.CONTAINS, qc));
-        cs.addConstraint(new SimpleConstraint(new QueryValue(new Integer(1)), ConstraintOp.EQUALS, new QueryValue(new Integer(1))));
+        cs.addConstraint(new SimpleConstraint(new QueryValue(new InterMineId(1)), ConstraintOp.EQUALS, new QueryValue(new InterMineId(1))));
         q.setConstraint(cs);
         q.setDistinct(false);
         return q;
@@ -3479,7 +3480,7 @@ public abstract class ObjectStoreQueryTestCase {
         q.addToSelect(qc);
         ConstraintSet cs = new ConstraintSet(ConstraintOp.NOR);
         cs.addConstraint(new ContainsConstraint(new QueryCollectionReference(qcb, "employees"), ConstraintOp.CONTAINS, qc));
-        cs.addConstraint(new SimpleConstraint(new QueryValue(new Integer(1)), ConstraintOp.EQUALS, new QueryValue(new Integer(1))));
+        cs.addConstraint(new SimpleConstraint(new QueryValue(new InterMineId(1)), ConstraintOp.EQUALS, new QueryValue(new InterMineId(1))));
         q.setConstraint(cs);
         q.setDistinct(false);
         return q;

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
@@ -232,8 +233,8 @@ public final class GeneModelCache
      * @param model the data model
      * @return the ids of all objects in the gene model or an empty set
      */
-    public static Set<Integer> getGeneModelIds(InterMineObject object, Model model) {
-        Set<Integer> geneModelIds = new HashSet<Integer>();
+    public static Set<InterMineId> getGeneModelIds(InterMineObject object, Model model) {
+        Set<InterMineId> geneModelIds = new HashSet<InterMineId>();
         for (GeneModel geneModel : getGeneModels(object, model)) {
             geneModelIds.addAll(geneModel.getIds());
         }

@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.profile.BadTemplateException;
@@ -87,8 +88,8 @@ public class TemplatesImportAction extends InterMineAction
                 }
             }
 
-            recordMessage(new ActionMessage("importTemplates.done", new Integer(deleted),
-                        new Integer(imported), new Integer(renamed)), request);
+            recordMessage(new ActionMessage("importTemplates.done", new InterMineId(deleted),
+                        new InterMineId(imported), new InterMineId(renamed)), request);
             if (!validConstraints) {
                 recordError(new ActionMessage("importTemplates.error.noneditablelookup"), request);
             }

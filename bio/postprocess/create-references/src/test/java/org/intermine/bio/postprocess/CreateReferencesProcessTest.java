@@ -18,6 +18,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.Chromosome;
 import org.intermine.model.bio.Exon;
@@ -102,9 +103,9 @@ public class CreateReferencesProcessTest extends TestCase {
 
         Gene resGene = (Gene) row.get(0);
 
-        HashSet<Integer> expectedCollectionIds = new HashSet(Arrays.asList(new Integer[] {storedExon1.getId(), storedExon2.getId(), storedExon3.getId()}));
+        HashSet<InterMineId> expectedCollectionIds = new HashSet(Arrays.asList(new InterMineId[] {storedExon1.getId(), storedExon2.getId(), storedExon3.getId()}));
 
-        HashSet<Integer> actualCollectionIds = new HashSet();
+        HashSet<InterMineId> actualCollectionIds = new HashSet();
         for (Object o : resGene.getExons()) {
             actualCollectionIds.add(((Exon) o).getId());
         }
@@ -128,9 +129,9 @@ public class CreateReferencesProcessTest extends TestCase {
 
         Chromosome resChromosome = (Chromosome) row.get(0);
 
-        HashSet<Integer> expectedCollectionIds = new HashSet(Arrays.asList(new Integer[] {storedGeneLocation1.getId(), storedGeneLocation2.getId()}));
+        HashSet<InterMineId> expectedCollectionIds = new HashSet(Arrays.asList(new InterMineId[] {storedGeneLocation1.getId(), storedGeneLocation2.getId()}));
 
-        HashSet<Integer> actualCollectionIds = new HashSet();
+        HashSet<InterMineId> actualCollectionIds = new HashSet();
         for (Object o : resChromosome.getLocatedFeatures()) {
             actualCollectionIds.add(((Location) o).getId());
         }

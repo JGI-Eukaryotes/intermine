@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.search.Scope;
@@ -120,9 +121,9 @@ public class HtmlHeadController extends TilesAction
                 request.setAttribute("htmlPageTitle", htmlPageTitle);
                 return null;
             }
-            Integer id = null;
+            InterMineId id = null;
             try {
-                id = new Integer(Integer.parseInt(objectId));
+                id = new InterMineId(Integer.parseInt(objectId));
 
                 InterMineObject object = os.getObjectById(id);
                 if (object == null) {
@@ -156,7 +157,7 @@ public class HtmlHeadController extends TilesAction
     /**
      * Determine if we can employ user tracking
      * @param request HTTP Servlet Request
-     * @return Integer 0/1/2 - "[no]/[yes]/[not yet]"
+     * @return InterMineId 0/1/2 - "[no]/[yes]/[not yet]"
      */
     private String canWeUserTrack(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

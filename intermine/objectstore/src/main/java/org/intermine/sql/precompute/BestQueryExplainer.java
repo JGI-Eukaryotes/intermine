@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.intermine.model.InterMineId;
 import org.intermine.sql.query.ExplainResult;
 import org.intermine.sql.query.Query;
 
@@ -32,7 +33,7 @@ public class BestQueryExplainer extends BestQuery
     protected static final int NEVER_EXPLAIN_TABLES = 8;
 
     protected List<Candidate> candidates = new ArrayList<Candidate>();
-    protected int candidateTables = Integer.MAX_VALUE;
+    protected int candidateTables = InterMineId.MAX_VALUE;
     protected Candidate bestCandidate;
     protected Connection con;
     protected Date start = new Date();

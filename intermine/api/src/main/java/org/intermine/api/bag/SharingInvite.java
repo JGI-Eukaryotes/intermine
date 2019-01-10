@@ -226,7 +226,7 @@ public class SharingInvite
             public Void run(PreparedStatement stm) throws SQLException {
                 Date now = new Date();
                 stm.setDate(1, new java.sql.Date(now.getTime()));
-                stm.setBoolean(2, wasAccepted);
+                stm.setBoolean(2, wasAccepted.booleanValue());
                 stm.setString(3, token);
                 stm.executeUpdate();
                 acceptedAt = now;
@@ -265,8 +265,8 @@ public class SharingInvite
             os.performUnsafeOperation(SAVE_SQL, new SQLOperation<Void>() {
                 @Override
                 public Void run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    stm.setInt(2, bag.getProfileId());
+                    stm.setInt(1, bag.getSavedBagId().intValue());
+                    stm.setInt(2, bag.getProfileId().intValue());
                     stm.setString(3, token);
                     stm.setString(4, invitee);
 
@@ -279,8 +279,8 @@ public class SharingInvite
             os.performUnsafeOperation(FULL_SAVE_SQL, new SQLOperation<Void>() {
                 @Override
                 public Void run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    stm.setInt(2, bag.getProfileId());
+                    stm.setInt(1, bag.getSavedBagId().intValue());
+                    stm.setInt(2, bag.getProfileId().intValue());
                     stm.setString(3, token);
                     stm.setString(4, invitee);
                     stm.setDate(5, new java.sql.Date(createdAt.getTime()));
@@ -292,7 +292,7 @@ public class SharingInvite
                     if (accepted == null) {
                         stm.setNull(7, java.sql.Types.BOOLEAN);
                     } else {
-                        stm.setBoolean(7, accepted);
+                        stm.setBoolean(7, accepted.booleanValue());
                     }
                     stm.executeUpdate();
                     return null;
@@ -319,7 +319,7 @@ public class SharingInvite
                 @Override
                 public Collection<IntermediateRepresentation> run(PreparedStatement stm)
                     throws SQLException {
-                    stm.setInt(1, inviter.getUserId());
+                    stm.setInt(1, inviter.getUserId().intValue());
                     ResultSet rs = stm.executeQuery();
 
                     final List<IntermediateRepresentation> results
@@ -370,7 +370,7 @@ public class SharingInvite
             IntermediateRepresentation rep) throws ObjectStoreException {
         ObjectStore os = pm.getProfileObjectStoreWriter();
         Profile inviter = pm.getProfile(rep.inviterId);
-        SavedBag savedBag = (SavedBag) os.getObjectById(rep.bagId, SavedBag.class);
+        SavedBag savedBag = (SavedBag) os.getObjectById(Integer.valueOf(rep.bagId), SavedBag.class);
         InterMineBag bag = bm.getBag(inviter, savedBag.getName());
         return new SharingInvite(bag,
                 rep.invitee, rep.token, rep.createdAt, rep.acceptedAt, rep.accepted);
@@ -444,7 +444,7 @@ public class SharingInvite
         rep.invitee = rs.getString("invitee");
         rep.acceptedAt = rs.getDate("acceptedat");
         rep.createdAt = rs.getDate("createdat");
-        rep.accepted = rs.getBoolean("accepted");
+        rep.accepted = Boolean.valueOf(rs.getBoolean("accepted"));
         return rep;
     }
 

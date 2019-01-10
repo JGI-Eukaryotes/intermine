@@ -10,6 +10,7 @@ package org.intermine.webservice.server.core;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultCell;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
@@ -89,7 +90,7 @@ public final class TableCell implements ResultCell
     }
 
     @Override
-    public Integer getId() {
+    public InterMineId getId() {
         if (fpo instanceof InterMineObject) {
             return ((InterMineObject) fpo).getId();
         }

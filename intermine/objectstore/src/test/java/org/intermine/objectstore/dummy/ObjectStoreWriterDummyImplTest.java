@@ -1,5 +1,6 @@
 package org.intermine.objectstore.dummy;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.testmodel.Company;
@@ -26,7 +27,7 @@ public class ObjectStoreWriterDummyImplTest extends TestCase {
 
         InterMineObject o2 =
             (InterMineObject) DynamicUtil.createObject(Collections.singleton(Company.class));
-        o2.setId(new Integer(1));
+        o2.setId(new InterMineId(1));
         osw.store(o2);
 
         InterMineObject o3 =
@@ -35,7 +36,7 @@ public class ObjectStoreWriterDummyImplTest extends TestCase {
 
         InterMineObject o4 =
             (InterMineObject) DynamicUtil.createObject(Collections.singleton(Company.class));
-        o4.setId(new Integer(100));
+        o4.setId(new InterMineId(100));
         // store twice to make sure we get only one copy
         osw.store(o4);
         osw.store(o4);
@@ -51,16 +52,16 @@ public class ObjectStoreWriterDummyImplTest extends TestCase {
 
         assertEquals(5, storedObjects.size());
 
-        assertTrue(storedObjects.get(new Integer(0)) == o1);
-        assertTrue(((Company) storedObjects.get(new Integer(0))).getId().equals(new Integer(0)));
-        assertTrue(storedObjects.get(new Integer(1)) == o2);
-        assertTrue(((Company) storedObjects.get(new Integer(1))).getId().equals(new Integer(1)));
-        assertTrue(storedObjects.get(new Integer(2)) == o3);
-        assertTrue(((Company) storedObjects.get(new Integer(2))).getId().equals(new Integer(2)));
-        assertTrue(storedObjects.get(new Integer(3)) == o5);
-        assertTrue(((Company) storedObjects.get(new Integer(3))).getId().equals(new Integer(3)));
-        assertTrue(storedObjects.get(new Integer(100)) == o4);
-        assertTrue(((Company) storedObjects.get(new Integer(100))).getId().equals(new Integer(100)));
+        assertTrue(storedObjects.get(new InterMineId(0)) == o1);
+        assertTrue(((Company) storedObjects.get(new InterMineId(0))).getId().equals(new InterMineId(0)));
+        assertTrue(storedObjects.get(new InterMineId(1)) == o2);
+        assertTrue(((Company) storedObjects.get(new InterMineId(1))).getId().equals(new InterMineId(1)));
+        assertTrue(storedObjects.get(new InterMineId(2)) == o3);
+        assertTrue(((Company) storedObjects.get(new InterMineId(2))).getId().equals(new InterMineId(2)));
+        assertTrue(storedObjects.get(new InterMineId(3)) == o5);
+        assertTrue(((Company) storedObjects.get(new InterMineId(3))).getId().equals(new InterMineId(3)));
+        assertTrue(storedObjects.get(new InterMineId(100)) == o4);
+        assertTrue(((Company) storedObjects.get(new InterMineId(100))).getId().equals(new InterMineId(100)));
     }
 
     public void testStoreTransaction() throws Exception {
@@ -76,7 +77,7 @@ public class ObjectStoreWriterDummyImplTest extends TestCase {
 
         InterMineObject o2 =
             (InterMineObject) DynamicUtil.createObject(Collections.singleton(Company.class));
-        o2.setId(new Integer(1));
+        o2.setId(new InterMineId(1));
         osw.store(o2);
 
         InterMineObject o3 =
@@ -93,12 +94,12 @@ public class ObjectStoreWriterDummyImplTest extends TestCase {
 
         assertEquals(3, storedObjects.size());
 
-        assertTrue(storedObjects.get(new Integer(0)) == o1);
-        assertTrue(((Company) storedObjects.get(new Integer(0))).getId().equals(new Integer(0)));
-        assertTrue(storedObjects.get(new Integer(1)) == o2);
-        assertTrue(((Company) storedObjects.get(new Integer(1))).getId().equals(new Integer(1)));
-        assertTrue(storedObjects.get(new Integer(2)) == o3);
-        assertTrue(((Company) storedObjects.get(new Integer(2))).getId().equals(new Integer(2)));
+        assertTrue(storedObjects.get(new InterMineId(0)) == o1);
+        assertTrue(((Company) storedObjects.get(new InterMineId(0))).getId().equals(new InterMineId(0)));
+        assertTrue(storedObjects.get(new InterMineId(1)) == o2);
+        assertTrue(((Company) storedObjects.get(new InterMineId(1))).getId().equals(new InterMineId(1)));
+        assertTrue(storedObjects.get(new InterMineId(2)) == o3);
+        assertTrue(((Company) storedObjects.get(new InterMineId(2))).getId().equals(new InterMineId(2)));
 
 
 
@@ -109,7 +110,7 @@ public class ObjectStoreWriterDummyImplTest extends TestCase {
 
         InterMineObject o4 =
             (InterMineObject) DynamicUtil.createObject(Collections.singleton(Company.class));
-        o4.setId(new Integer(100));
+        o4.setId(new InterMineId(100));
         osw.store(o4);
 
 
@@ -132,11 +133,11 @@ public class ObjectStoreWriterDummyImplTest extends TestCase {
 
         assertEquals(3, storedObjects.size());
 
-        assertTrue(storedObjects.get(new Integer(0)) == o1);
-        assertTrue(((Company) storedObjects.get(new Integer(0))).getId().equals(new Integer(0)));
-        assertTrue(storedObjects.get(new Integer(1)) == o2);
-        assertTrue(((Company) storedObjects.get(new Integer(1))).getId().equals(new Integer(1)));
-        assertTrue(storedObjects.get(new Integer(2)) == o3);
-        assertTrue(((Company) storedObjects.get(new Integer(2))).getId().equals(new Integer(2)));
+        assertTrue(storedObjects.get(new InterMineId(0)) == o1);
+        assertTrue(((Company) storedObjects.get(new InterMineId(0))).getId().equals(new InterMineId(0)));
+        assertTrue(storedObjects.get(new InterMineId(1)) == o2);
+        assertTrue(((Company) storedObjects.get(new InterMineId(1))).getId().equals(new InterMineId(1)));
+        assertTrue(storedObjects.get(new InterMineId(2)) == o3);
+        assertTrue(((Company) storedObjects.get(new InterMineId(2))).getId().equals(new InterMineId(2)));
     }
 }

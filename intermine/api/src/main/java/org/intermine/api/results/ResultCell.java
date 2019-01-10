@@ -10,6 +10,7 @@ package org.intermine.api.results;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.FastPathObject;
 import org.intermine.pathquery.Path;
 
@@ -26,7 +27,7 @@ public interface ResultCell
     boolean isKeyField();
 
     /** @return the id of the object of this cell. **/
-    Integer getId();
+    InterMineId getId();
 
     /** @return the path of this cell **/
     Path getPath();

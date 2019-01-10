@@ -34,6 +34,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.profile.InterMineBag;
@@ -126,7 +127,7 @@ public class QueryUploadService extends WebService
 
         String queriesString = getQueryString();
         Map<String, PathQuery> toSave = new HashMap<String, PathQuery>();
-        int version = getVersion();
+        int version = getVersion().intValue();
 
         Reader r = new StringReader(queriesString);
         Map<String, PathQuery> queries;
@@ -247,8 +248,8 @@ public class QueryUploadService extends WebService
         return sb.toString();
     }
 
-    private Integer getVersion() {
-        return getIntParameter(VERSION_PARAMETER, PathQuery.USERPROFILE_VERSION);
+    private InterMineId getVersion() {
+        return getIntParameter(VERSION_PARAMETER, InterMineId.valueOf(PathQuery.USERPROFILE_VERSION));
     }
 
     @Override

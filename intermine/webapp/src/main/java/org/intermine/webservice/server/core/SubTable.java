@@ -13,6 +13,7 @@ package org.intermine.webservice.server.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultCell;
 import org.intermine.pathquery.Path;
 
@@ -63,7 +64,7 @@ public class SubTable
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(String.format("SubTable [%d %s\n",
-                subrows.size(), joinPath.getLastClassDescriptor().getUnqualifiedName()));
+                InterMineId.valueOf(subrows.size()), joinPath.getLastClassDescriptor().getUnqualifiedName()));
         for (List<Either<ResultCell, SubTable>> row: subrows) {
             sb.append(String.valueOf(row));
             sb.append("\n");

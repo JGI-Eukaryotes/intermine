@@ -63,7 +63,7 @@ public class ListShareDetailsService extends JSONService
         Map<String, String> ownersOfBagsSharedWithMe = new HashMap<String, String>();
 
         for (InterMineBag bag: user.getSharedBags().values()) {
-            ownersOfBagsSharedWithMe.put(bag.getName(), pm.getProfileUserName(bag.getProfileId()));
+            ownersOfBagsSharedWithMe.put(bag.getName(), pm.getProfileUserName(bag.getProfileId().intValue()));
         }
 
         Map<String, Object> data = new HashMap<String, Object>();

@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.tag.TagNames;
 import org.intermine.api.tag.TagTypes;
@@ -127,10 +128,10 @@ public class TemplateTracker extends AbstractTracker
      * @param con db connection
      * @return map with key the template name and executions number
      */
-    protected Map<String, Integer> getAccessCounter(Connection con) {
+    protected Map<String, InterMineId> getAccessCounter(Connection con) {
         ResultSet rs = null;
         Statement stm = null;
-        Map<String, Integer> templateRank = new HashMap<String, Integer>();
+        Map<String, InterMineId> templateRank = new HashMap<String, InterMineId>();
         try {
             stm = con.createStatement();
             String sql = "SELECT tt.templatename, COUNT(tt.templatename) as accessnumbers "
@@ -140,7 +141,7 @@ public class TemplateTracker extends AbstractTracker
                         + "GROUP BY tt.templatename";
             rs = stm.executeQuery(sql);
             while (rs.next()) {
-                templateRank.put(rs.getString(1), rs.getInt(2));
+                templateRank.put(rs.getString(1), InterMineId.valueOf(rs.getInt(2)));
             }
             return templateRank;
         } catch (SQLException sqle) {
@@ -161,8 +162,8 @@ public class TemplateTracker extends AbstractTracker
      * @param templateManager the template manager used to retrieve the global templates
      * @return map with key the template name and rank
      */
-    protected Map<String, Integer> getRank(TemplateManager templateManager) {
-        Map<String, Integer> templateRank = new HashMap<String, Integer>();
+    protected Map<String, InterMineId> getRank(TemplateManager templateManager) {
+        Map<String, InterMineId> templateRank = new HashMap<String, InterMineId>();
         Map<String, Double> templateMergedRank = templatesExecutionCache.getLogarithmMap(null,
                                                                               templateManager);
 
@@ -178,15 +179,15 @@ public class TemplateTracker extends AbstractTracker
 
         //assign rank 1 to the template with higher value
         int rankDisplayed = 0;
-        Double prevValue = 0.0;
+        Double prevValue = Double.valueOf(0.0);
         for (Entry<String, Double> entry : listOrdered) {
             if (entry.getValue().doubleValue() != prevValue.doubleValue()) {
                 rankDisplayed++;
                 prevValue = entry.getValue();
             }
-            templateRank.put(entry.getKey(), rankDisplayed);
+            templateRank.put(entry.getKey(), InterMineId.valueOf(rankDisplayed));
         }
-        templateRank.put("minRank", ++rankDisplayed);
+        templateRank.put("minRank", InterMineId.valueOf(++rankDisplayed));
         return templateRank;
     }
 
@@ -197,8 +198,8 @@ public class TemplateTracker extends AbstractTracker
      * @param templateName template to test
      * @return rank as an integer
      */
-    protected Integer getRank(TemplateManager templateManager, String templateName) {
-        Map<String, Integer> ranks = getRank(templateManager);
+    protected InterMineId getRank(TemplateManager templateManager, String templateName) {
+        Map<String, InterMineId> ranks = getRank(templateManager);
         return ranks.get(templateName);
     }
 
@@ -242,12 +243,12 @@ public class TemplateTracker extends AbstractTracker
         double r1 = 0;
         double r2 = 0;
         for (String templateName : map1.keySet()) {
-            r1 = map1.get(templateName);
+            r1 = map1.get(templateName).doubleValue();
             if (tempMap.containsKey(templateName)) {
-                r2 = tempMap.get(templateName);
+                r2 = tempMap.get(templateName).doubleValue();
                 tempMap.remove(templateName);
             }
-            mergedMap.put(templateName, r1 + r2);
+            mergedMap.put(templateName, Double.valueOf(r1 + r2));
             r1 = 0;
             r2 = 0;
         }

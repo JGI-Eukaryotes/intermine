@@ -91,7 +91,7 @@ public class KeywordSearchResult
 
         this.webconfig = webconfig;
         this.object = object;
-        this.id = object.getId();
+        this.id = object.getId().intValue();
         this.type = classDescriptor.getUnqualifiedName();
         this.score = score;
         this.templates = templates;

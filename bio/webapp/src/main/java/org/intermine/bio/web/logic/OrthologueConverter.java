@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -73,14 +74,14 @@ public class OrthologueConverter extends BagConverter
      * @return list of intermine IDs
      * @throws ObjectStoreException if can't store to database
      */
-    public List<Integer> getConvertedObjectIds(Profile profile, String bagType,
-            List<Integer> bagList, String organismName) throws ObjectStoreException {
+    public List<InterMineId> getConvertedObjectIds(Profile profile, String bagType,
+            List<InterMineId> bagList, String organismName) throws ObjectStoreException {
         PathQuery pathQuery = constructPathQuery(organismName);
         pathQuery.addConstraint(Constraints.inIds("Gene", bagList));
         pathQuery.addView("Gene.homologues.homologue.id");
         PathQueryExecutor executor = im.getPathQueryExecutor(profile);
         ExportResultsIterator it = executor.execute(pathQuery);
-        List<Integer> ids = new ArrayList<Integer>();
+        List<InterMineId> ids = new ArrayList<InterMineId>();
         while (it.hasNext()) {
             List<ResultElement> row = it.next();
             ids.add((Integer) row.get(0).getField());
@@ -109,7 +110,7 @@ public class OrthologueConverter extends BagConverter
             if (count == null) {
                 count = "0";
             }
-            int plusOne = Integer.parseInt(count);
+            int plusOne = InterMineId.parseInt(count);
             results.put(homologue, String.valueOf(++plusOne));
         }
         return results;

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.bio.Chromosome;
 import org.intermine.model.bio.Exon;
 import org.intermine.model.bio.Location;
@@ -37,12 +38,12 @@ public class GFF3UtilTest extends TestCase
         exon.setPrimaryIdentifier("exon1");
         exon.setScore(0.9);
 
-        exonLocation.setStart(new Integer(200));
-        exonLocation.setEnd(new Integer(300));
+        exonLocation.setStart(new InterMineId(200));
+        exonLocation.setEnd(new InterMineId(300));
         exonLocation.setStrand("-1");
 
         chromosome.setPrimaryIdentifier("4");
-        chromosome.setLength(new Integer(1000));
+        chromosome.setLength(new InterMineId(1000));
     }
 
 

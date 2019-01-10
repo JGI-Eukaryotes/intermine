@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.model.InterMineObject;
@@ -45,7 +46,7 @@ import org.intermine.web.logic.session.SessionMethods;
 public class OverlappingFeaturesDisplayer extends ReportDisplayer
 {
     /** @var maximum amount of rows to show per table */
-    private Integer maxCount = 30;
+    private InterMineId maxCount = 30;
 
     protected static final Logger LOG = Logger.getLogger(OverlappingFeaturesDisplayer.class);
 
@@ -64,7 +65,7 @@ public class OverlappingFeaturesDisplayer extends ReportDisplayer
         // TODO check if type is a gene model type
 
         // group other overlapping features by type, to display types and counts
-        Map<String, Integer> featureCounts = new TreeMap<String, Integer>();
+        Map<String, InterMineId> featureCounts = new TreeMap<String, InterMineId>();
         Map<String, InlineResultsTable> featureTables = new TreeMap<String, InlineResultsTable>();
 
         SequenceFeature startFeature = (SequenceFeature) reportObject.getObject();
@@ -121,7 +122,7 @@ public class OverlappingFeaturesDisplayer extends ReportDisplayer
                         List<InterMineObject> s = new ArrayList<InterMineObject>();
 
                         String type = null;
-                        Integer count = this.maxCount;
+                        InterMineId count = this.maxCount;
                         // loop through each row object
                         while (resultsIter.hasNext() && count > 0) {
                             Object o = resultsIter.next();
@@ -167,14 +168,14 @@ public class OverlappingFeaturesDisplayer extends ReportDisplayer
         }
     }
 
-    private void incrementCount(Map<String, Integer> featureCounts, InterMineObject feature) {
+    private void incrementCount(Map<String, InterMineId> featureCounts, InterMineObject feature) {
         String type = DynamicUtil.getSimpleClass(feature).getSimpleName();
-        Integer count = featureCounts.get(type);
+        InterMineId count = featureCounts.get(type);
         if (count == null) {
-            count = new Integer(0);
+            count = new InterMineId(0);
             featureCounts.put(type, count);
         }
-        featureCounts.put(type, new Integer(count.intValue() + 1));
+        featureCounts.put(type, new InterMineId(count.intValue() + 1));
     }
 
 }

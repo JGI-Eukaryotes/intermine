@@ -28,6 +28,7 @@ import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.chado.config.ConfigAction;
 import org.intermine.bio.chado.config.SetFieldConfigAction;
 import org.intermine.objectstore.ObjectStoreException;
@@ -235,7 +236,7 @@ public class ModEncodeFeatureProcessor extends SequenceProcessor
     protected void setGeneSource(FeatureData fdat, String dataSourceName)
         throws ObjectStoreException {
         String source = dataSourceName + "-" + title;
-        Integer imObjectId = fdat.getIntermineObjectId();
+        InterMineId imObjectId = fdat.getIntermineObjectId();
         setAttribute(imObjectId, "source", source);
         // special case:
         // we have a gene model, and we differentiate from FB genes
@@ -330,10 +331,10 @@ public class ModEncodeFeatureProcessor extends SequenceProcessor
      */
     @Override
     protected Map<MultiKey, List<ConfigAction>> getConfig(String taxonId) {
-        MultiKeyMap map = config.get(new Integer(taxonId));
+        MultiKeyMap map = config.get(new InterMineId(taxonId));
         if (map == null) {
             map = new MultiKeyMap();
-            config.put(new Integer(taxonId), map);
+            config.put(new InterMineId(taxonId), map);
             //feature configuration example: for features of class "Gene", from "modENCODE",
             //set the Gene.symbol to be the "name" field from the chado feature
             // map.put(new MultiKey("feature", "Gene", MODENCODE_SOURCE_NAME, "name"),
@@ -604,12 +605,12 @@ public class ModEncodeFeatureProcessor extends SequenceProcessor
         throws SQLException, ObjectStoreException {
         ResultSet res = getPeaksSources(connection);
         while (res.next()) {
-            Integer featureId = res.getInt("feature_id");
-            //            Integer score = res.getInt("data_id");
+            InterMineId featureId = res.getInt("feature_id");
+            //            InterMineId score = res.getInt("data_id");
             String sourceFile = res.getString("value");
             if (featureMap.containsKey(featureId)) {
                 FeatureData fData = featureMap.get(featureId);
-                Integer storedFeatureId = fData.getIntermineObjectId();
+                InterMineId storedFeatureId = fData.getIntermineObjectId();
                 Attribute sourceFileAttribute = new Attribute("sourceFile", sourceFile);
                 getChadoDBConverter().store(sourceFileAttribute, storedFeatureId);
                 //if (scoreProtocolItemId != null) {
@@ -655,7 +656,7 @@ public class ModEncodeFeatureProcessor extends SequenceProcessor
         long bT = System.currentTimeMillis();
         ResultSet res = getFeatureScores(connection);
         while (res.next()) {
-            Integer featureId = res.getInt("feature_id");
+            InterMineId featureId = res.getInt("feature_id");
             Double score = res.getDouble("score");
             String program = res.getString("program");
             if (title.equalsIgnoreCase(SUB_3154_TITLE)) {
@@ -669,7 +670,7 @@ public class ModEncodeFeatureProcessor extends SequenceProcessor
             }
             if (featureMap.containsKey(featureId)) {
                 FeatureData fData = featureMap.get(featureId);
-                Integer storedFeatureId = fData.getIntermineObjectId();
+                InterMineId storedFeatureId = fData.getIntermineObjectId();
                 Attribute scoreAttribute = new Attribute("score", score.toString());
                 getChadoDBConverter().store(scoreAttribute, storedFeatureId);
                 Attribute scoreTypeAttribute = new Attribute("scoreType", program);
@@ -702,11 +703,11 @@ public class ModEncodeFeatureProcessor extends SequenceProcessor
     private void processExpressionLevels(Connection connection) throws SQLException,
         ObjectStoreException {
         ResultSet res = getExpressionLevels(connection);
-        Integer previousId = -1;
+        InterMineId previousId = -1;
         Item level = null;
         while (res.next()) {
-            Integer id = res.getInt("expression_id");
-            Integer featureId = res.getInt("feature_id");
+            InterMineId id = res.getInt("expression_id");
+            InterMineId featureId = res.getInt("feature_id");
             String name = res.getString("uniquename");
             String value = res.getString("value");
             String property = res.getString("property");

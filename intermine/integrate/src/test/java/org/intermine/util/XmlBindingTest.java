@@ -20,6 +20,7 @@ import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.ElementNameAndAttributeQualifier;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
@@ -53,7 +54,7 @@ public class XmlBindingTest extends XMLTestCase {
         int i=1;
         for (Object o : c) {
             if (o instanceof InterMineObject) {
-                ((InterMineObject) o).setId(new Integer(i++));
+                ((InterMineObject) o).setId(new InterMineId(i++));
             }
         }
     }

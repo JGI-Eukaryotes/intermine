@@ -10,6 +10,8 @@ package org.intermine.bio.web.model;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * This Java bean stores the information for span validation use.
  *
@@ -21,7 +23,7 @@ public class ChromosomeInfo
     private String orgName;
     private String chrPID;
     private String chrPIDLowerCase;
-    private Integer chrLength = null;
+    private InterMineId chrLength = null;
 
     /**
      * @return the orgName
@@ -51,7 +53,7 @@ public class ChromosomeInfo
     /**
      * @return the chrLength
      */
-    public Integer getChrLength() {
+    public InterMineId getChrLength() {
         return chrLength;
     }
     /**

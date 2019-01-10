@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
@@ -67,7 +68,7 @@ public class GalaxyExportAction extends InterMineAction
 
         /*
         // >>>>> Reset view - Use Default view for different types of Sequence features
-        Integer index = Integer.parseInt(request.getParameter("index"));
+        InterMineId index = InterMineId.parseInt(request.getParameter("index"));
         String prefix = request.getParameter("prefix");
 
         String type = TypeUtil.unqualifiedName(ExportHelper

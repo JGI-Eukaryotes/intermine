@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.SharingInvite.NotFoundException;
 import org.intermine.api.profile.BagDoesNotExistException;
 import org.intermine.api.profile.InterMineBag;
@@ -122,7 +123,7 @@ public final class SharedBagManager
         uosw.performUnsafeOperation(getStatementCreatingIndex(), new SQLOperation<Void>() {
             @Override
             public Void run(PreparedStatement stm) throws SQLException {
-                if (createdTable) {
+                if (createdTable.booleanValue()) {
                     LOG.info("Creating shared bag table index");
                     stm.execute();
                 }
@@ -178,7 +179,7 @@ public final class SharedBagManager
                         public Map<String, Set<String>> run(PreparedStatement stm)
                             throws SQLException {
                             final Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
-                            stm.setInt(1, profile.getUserId());
+                            stm.setInt(1, profile.getUserId().intValue());
                             ResultSet rs = stm.executeQuery();
                             while (rs.next()) {
                                 String bagName = rs.getString("sharer");
@@ -232,7 +233,7 @@ public final class SharedBagManager
                     @Override
                     public Set<String> run(PreparedStatement stm) throws SQLException {
                         final Set<String> usersWithAccess = new LinkedHashSet<String>();
-                        stm.setInt(1, bag.getSavedBagId());
+                        stm.setInt(1, bag.getSavedBagId().intValue());
                         ResultSet rs = stm.executeQuery();
                         while (rs.next()) {
                             usersWithAccess.add(rs.getString(1));
@@ -300,7 +301,7 @@ public final class SharedBagManager
     public static void rejectInvitation(SharingInvite invitation)
         throws UserNotFoundException, UserAlreadyShareBagException, NotFoundException {
         try { // Try this first, as we don't want to share unless this worked.
-            invitation.setAccepted(false);
+            invitation.setAccepted(Boolean.FALSE);
         } catch (SQLException e) {
             throw new RuntimeException("Error rejecting invitation", e);
         }
@@ -322,7 +323,7 @@ public final class SharedBagManager
         throws UserNotFoundException, UserAlreadyShareBagException, NotFoundException {
 
         try { // Try this first, as we don't want to share unless this worked.
-            invitation.setAccepted(true);
+            invitation.setAccepted(Boolean.TRUE);
         } catch (SQLException e) {
             throw new RuntimeException("Error accepting invitation", e);
         }
@@ -362,12 +363,12 @@ public final class SharedBagManager
         throws UserAlreadyShareBagException {
         final String userName = sharedWith.getUsername();
         try {
-            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    stm.setInt(2, sharedWith.getId());
-                    return stm.executeUpdate();
+                public InterMineId run(PreparedStatement stm) throws SQLException {
+                    stm.setInt(1, bag.getSavedBagId().intValue());
+                    stm.setInt(2, sharedWith.getId().intValue());
+                    return InterMineId.valueOf(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -419,12 +420,12 @@ public final class SharedBagManager
             throw new BagDoesNotExistException("There is not bag named '" + bagName + "'");
         }
         try {
-            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(STORE_SHARE_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getId());
-                    stm.setInt(2, sharedWith.getId());
-                    return stm.executeUpdate();
+                public InterMineId run(PreparedStatement stm) throws SQLException {
+                    stm.setInt(1, bag.getId().intValue());
+                    stm.setInt(2, sharedWith.getId().intValue());
+                    return InterMineId.valueOf(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -453,18 +454,18 @@ public final class SharedBagManager
             return;
         }
         try {
-            Integer deleted = uosw.performUnsafeOperation(
+            InterMineId deleted = uosw.performUnsafeOperation(
                     DELETE_SHARE_SQL,
-                    new SQLOperation<Integer>() {
+                    new SQLOperation<InterMineId>() {
                         @Override
-                        public Integer run(PreparedStatement stm) throws SQLException {
-                            stm.setInt(1, userProfile.getId());
-                            stm.setInt(2, bag.getSavedBagId());
-                            return stm.executeUpdate();
+                        public InterMineId run(PreparedStatement stm) throws SQLException {
+                            stm.setInt(1, userProfile.getId().intValue());
+                            stm.setInt(2, bag.getSavedBagId().intValue());
+                            return InterMineId.valueOf(stm.executeUpdate());
                         }
                     }
             );
-            if (deleted > 0) {
+            if (deleted.intValue() > 0) {
                 informProfileOfChange(userName, new DeletionEvent(bag));
             } else {
                 LOG.warn(format(NOT_ALREADY_SHARED_MSG, bag, userName));
@@ -499,11 +500,11 @@ public final class SharedBagManager
             return;
         }
         try {
-            uosw.performUnsafeOperation(UNSHARE_BAG_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(UNSHARE_BAG_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, bag.getSavedBagId());
-                    return stm.executeUpdate();
+                public InterMineId run(PreparedStatement stm) throws SQLException {
+                    stm.setInt(1, bag.getSavedBagId().intValue());
+                    return InterMineId.valueOf(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -528,17 +529,17 @@ public final class SharedBagManager
      *
      * @param userId An id of a user.
      */
-    public void removeAllInvitesBy(final Integer userId) {
+    public void removeAllInvitesBy(final InterMineId userId) {
         if (userId == null) {
             LOG.warn("I can't remove invites when the user-id is null");
             return;
         }
         try {
-            uosw.performUnsafeOperation(REMOVE_USERS_INVITES_SQL, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(REMOVE_USERS_INVITES_SQL, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, userId.intValue());
-                    return stm.executeUpdate();
+                    return InterMineId.valueOf(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -555,16 +556,16 @@ public final class SharedBagManager
      *
      * @param userId A user id.
      */
-    public void removeAllSharesInvolving(final Integer userId) {
+    public void removeAllSharesInvolving(final InterMineId userId) {
         if (userId == null) {
             return;
         }
         try {
-            uosw.performUnsafeOperation(DELETE_SHARES_WITH, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(DELETE_SHARES_WITH, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setInt(1, userId.intValue());
-                    return stm.executeUpdate();
+                    return InterMineId.valueOf(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {
@@ -590,12 +591,12 @@ public final class SharedBagManager
             throw new IllegalArgumentException("recipient must not be null");
         }
         try {
-            uosw.performUnsafeOperation(DELETE_USERS_SHARES_WITH, new SQLOperation<Integer>() {
+            uosw.performUnsafeOperation(DELETE_USERS_SHARES_WITH, new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, recipient.getUserId());
-                    stm.setInt(2, owner.getUserId());
-                    return stm.executeUpdate();
+                public InterMineId run(PreparedStatement stm) throws SQLException {
+                    stm.setInt(1, recipient.getUserId().intValue());
+                    stm.setInt(2, owner.getUserId().intValue());
+                    return InterMineId.valueOf(stm.executeUpdate());
                 }
             });
         } catch (SQLException e) {

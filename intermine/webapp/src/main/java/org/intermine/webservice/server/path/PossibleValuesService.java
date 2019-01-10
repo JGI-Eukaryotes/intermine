@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.objectstore.ObjectStore;
@@ -169,9 +170,9 @@ public class PossibleValuesService extends JSONService
         int total = im.getObjectStore().count(q, ObjectStore.SEQUENCE_IGNORE);
 
         if (count) {
-            addResultValue(total, false);
+            addResultValue(Integer.valueOf(total), false);
         } else {
-            addOutputInfo("count", Integer.toString(total));
+            addOutputInfo("count", InterMineId.toString(total));
 
             Results results = im.getObjectStore().execute(q, DEFAULT_BATCH_SIZE, true, true, false);
             Iterator<Object> iter = results.iterator();

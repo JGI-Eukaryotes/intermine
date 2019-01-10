@@ -10,6 +10,7 @@ package org.intermine.bio.web.export;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.ClobAccess;
 import org.intermine.bio.util.ClobAccessReverseComplement;
 
@@ -157,7 +158,7 @@ public class SequenceExporter implements Exporter
                     continue;
                 }
 
-                Integer objectId = ((InterMineObject) object).getId();
+                InterMineId objectId = ((InterMineObject) object).getId();
                 if (exportedIDs.contains(objectId)) {
                     // exported already
                     continue;
@@ -346,8 +347,8 @@ public class SequenceExporter implements Exporter
             } else {
                 // Assume if loc exits, the following information should be available
                 String chr = loc.getLocatedOn().getPrimaryIdentifier();
-                Integer start = loc.getStart();
-                Integer end = loc.getEnd();
+                InterMineId start = loc.getStart();
+                InterMineId end = loc.getEnd();
 
                 String locString = chr + ':' + start + '-' + end;
                 headerBits.add(locString);

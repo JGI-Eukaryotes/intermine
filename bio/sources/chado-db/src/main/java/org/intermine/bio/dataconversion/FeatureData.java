@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismData;
 import org.intermine.xml.full.Item;
 
@@ -33,7 +34,7 @@ class FeatureData
     private Set<String> existingSynonyms = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
     private String itemIdentifier;
     private String interMineType;
-    private Integer intermineObjectId;
+    private InterMineId intermineObjectId;
 
     private short flags = 0;
     static final short EVIDENCE_CREATED = 0;
@@ -62,7 +63,7 @@ class FeatureData
      * Return the id of the Item representing this feature.
      * @return the ID
      */
-    public Integer getIntermineObjectId() {
+    public InterMineId getIntermineObjectId() {
         return intermineObjectId;
     }
 

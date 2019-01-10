@@ -19,6 +19,7 @@ import org.apache.solr.client.solrj.request.schema.SchemaRequest;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.intermine.model.InterMineId;
 import org.intermine.api.searchengine.IndexHandler;
 import org.intermine.api.searchengine.KeywordSearchFacetData;
 import org.intermine.api.searchengine.KeywordSearchPropertiesManager;
@@ -161,8 +162,8 @@ public final class SolrIndexHandler implements IndexHandler
         time = System.currentTimeMillis() - time;
         int seconds = (int) Math.floor(time / 1000);
         LOG.info("Indexing of " + indexed + " documents finished in "
-                + String.format("%02d:%02d.%03d", (int) Math.floor(seconds / 60), seconds % 60,
-                time % 1000) + " minutes");
+                + String.format("%02d:%02d.%03d", InterMineId.valueOf((int) Math.floor(seconds / 60)), InterMineId.valueOf(seconds % 60),
+                Long.valueOf(time % 1000)) + " minutes");
     }
 
 
@@ -194,10 +195,10 @@ public final class SolrIndexHandler implements IndexHandler
         Map<String, Object> fieldAttributes = new HashMap();
         fieldAttributes.put("name", fieldName);
         fieldAttributes.put("type", fieldType);
-        fieldAttributes.put("stored", stored);
-        fieldAttributes.put("indexed", indexed);
-        fieldAttributes.put("multiValued", true);
-        fieldAttributes.put("required", false);
+        fieldAttributes.put("stored", Boolean.valueOf(stored));
+        fieldAttributes.put("indexed", Boolean.valueOf(indexed));
+        fieldAttributes.put("multiValued", Boolean.TRUE);
+        fieldAttributes.put("required", Boolean.FALSE);
 
         try {
             SchemaRequest.AddField schemaRequest = new SchemaRequest.AddField(fieldAttributes);
@@ -270,8 +271,8 @@ public final class SolrIndexHandler implements IndexHandler
         Map<String, Object> analyzedFieldTypeAttributes = new HashMap();
         analyzedFieldTypeAttributes.put("name", ANALYZED_FIELD_TYPE_NAME);
         analyzedFieldTypeAttributes.put("class", "solr.TextField");
-        analyzedFieldTypeAttributes.put("positionIncrementGap", 100);
-        analyzedFieldTypeAttributes.put("multiValued", true);
+        analyzedFieldTypeAttributes.put("positionIncrementGap", InterMineId.valueOf(100));
+        analyzedFieldTypeAttributes.put("multiValued", Boolean.TRUE);
 
         AnalyzerDefinition indexAnalyzerDefinition1 = new AnalyzerDefinition();
         Map<String, Object> indexTokenizerAttributes1 = new HashMap<String, Object>();
@@ -315,8 +316,8 @@ public final class SolrIndexHandler implements IndexHandler
         Map<String, Object> rawFieldTypeAttributes = new HashMap();
         rawFieldTypeAttributes.put("name", RAW_FIELD_TYPE_NAME);
         rawFieldTypeAttributes.put("class", "solr.TextField");
-        rawFieldTypeAttributes.put("positionIncrementGap", 100);
-        rawFieldTypeAttributes.put("multiValued", true);
+        rawFieldTypeAttributes.put("positionIncrementGap", InterMineId.valueOf(100));
+        rawFieldTypeAttributes.put("multiValued", Boolean.TRUE);
 
         AnalyzerDefinition indexAnalyzerDefinition2 = new AnalyzerDefinition();
         Map<String, Object> indexTokenizerAttributes2 = new HashMap<String, Object>();

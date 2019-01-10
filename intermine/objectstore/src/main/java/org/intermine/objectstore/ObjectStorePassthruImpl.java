@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.query.Clob;
@@ -85,7 +86,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
      * {@inheritDoc}
      */
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.execute(q, start, limit, optimise, explain, sequence);
     }
 
@@ -107,7 +108,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public List<InterMineObject> getObjectsByIds(Collection<Integer> ids)
+    public List<InterMineObject> getObjectsByIds(Collection<InterMineId> ids)
         throws ObjectStoreException {
         return os.getObjectsByIds(ids);
     }
@@ -157,7 +158,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         return os.count(q, sequence);
     }
 
@@ -201,7 +202,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public Map<Object, Integer> getSequence(Set<Object> tables) {
+    public Map<Object, InterMineId> getSequence(Set<Object> tables) {
         return os.getSequence(tables);
     }
 
@@ -229,7 +230,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public Integer getSerial() throws ObjectStoreException {
+    public InterMineId getSerial() throws ObjectStoreException {
         return os.getSerial();
     }
 

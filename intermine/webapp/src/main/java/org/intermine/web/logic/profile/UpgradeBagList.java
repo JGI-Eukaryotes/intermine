@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.BagQueryResult;
 import org.intermine.api.bag.BagQueryRunner;
 import org.intermine.api.bag.BagQueryUpgrade;
@@ -105,7 +106,7 @@ public class UpgradeBagList implements Runnable
             @SuppressWarnings("rawtypes")
             Map<String, Map<String, List>> otherMatchMap = result.getIssues()
                 .get(BagQueryResult.OTHER);
-            Set<Integer> matchesIds = result.getMatches().keySet();
+            Set<InterMineId> matchesIds = result.getMatches().keySet();
             if (otherMatchMap != null) {
                 @SuppressWarnings("rawtypes")
                 Map<String, List> lowQualityMatches = new LinkedHashMap<String, List>();

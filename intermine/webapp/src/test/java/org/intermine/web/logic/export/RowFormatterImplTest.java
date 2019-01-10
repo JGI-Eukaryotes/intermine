@@ -1,5 +1,6 @@
 package org.intermine.web.logic.export;
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class RowFormatterImplTest extends TestCase
      */
     public void testFormat() {
         RowFormatterImpl formatter = new RowFormatterImpl(",", true);
-        Object o1 = new Integer(1);
+        Object o1 = new InterMineId(1);
         Object o2 = new Date();
         Object o3 = "test";
         List<Object> objs = new ArrayList<Object>();

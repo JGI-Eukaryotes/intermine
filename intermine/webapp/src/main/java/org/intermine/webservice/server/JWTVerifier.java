@@ -104,7 +104,7 @@ public class JWTVerifier
         long secondsSinceExpiry = (System.currentTimeMillis() / 1000L) - expiry;
         if (secondsSinceExpiry >= 0) {
             throw new VerificationError(
-                    String.format("This token expired %d seconds ago", secondsSinceExpiry));
+                    String.format("This token expired %d seconds ago", Long.valueOf(secondsSinceExpiry)));
         }
 
         if (!canVerify(

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.util.IdentityMap;
 
 /**
@@ -266,22 +267,22 @@ public class Function extends AbstractValue
             Function objF = (Function) obj;
             if (operation == objF.operation) {
                 if ((operation == PLUS) || (operation == MULTIPLY)) {
-                    Map<AbstractValue, Integer> a = new HashMap<AbstractValue, Integer>();
+                    Map<AbstractValue, InterMineId> a = new HashMap<AbstractValue, InterMineId>();
                     for (AbstractValue operand : operands) {
                         if (!a.containsKey(operand)) {
-                            a.put(operand, new Integer(1));
+                            a.put(operand, new InterMineId(1));
                         } else {
-                            Integer i = a.get(operand);
-                            a.put(operand, new Integer(1 + i.intValue()));
+                            InterMineId i = a.get(operand);
+                            a.put(operand, new InterMineId(1 + i.intValue()));
                         }
                     }
-                    Map<AbstractValue, Integer> b = new HashMap<AbstractValue, Integer>();
+                    Map<AbstractValue, InterMineId> b = new HashMap<AbstractValue, InterMineId>();
                     for (AbstractValue operand : objF.operands) {
                         if (!b.containsKey(operand)) {
-                            b.put(operand, new Integer(1));
+                            b.put(operand, new InterMineId(1));
                         } else {
-                            Integer i = b.get(operand);
-                            b.put(operand, new Integer(1 + i.intValue()));
+                            InterMineId i = b.get(operand);
+                            b.put(operand, new InterMineId(1 + i.intValue()));
                         }
                     }
                     return (a.equals(b));

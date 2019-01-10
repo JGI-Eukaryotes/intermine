@@ -17,6 +17,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.testmodel.Broke;
 import org.intermine.model.testmodel.CEO;
@@ -217,6 +218,6 @@ public class DynamicUtilTest extends TestCase
     public void testGetNullPrimitives() throws Exception {
         Company c = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
         assertEquals(0, c.getVatNumber());
-        assertEquals(new Integer(0), c.getFieldValue("vatNumber"));
+        assertEquals(new InterMineId(0), c.getFieldValue("vatNumber"));
     }
 }

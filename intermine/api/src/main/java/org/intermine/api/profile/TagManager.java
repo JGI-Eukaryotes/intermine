@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.search.TaggingEvent;
 import org.intermine.api.search.TaggingEvent.TagChange;
 import org.intermine.api.search.WebSearchable;
@@ -341,7 +342,7 @@ public class TagManager
      */
     public synchronized Tag getTagById(int id) {
         try {
-            return (Tag) osWriter.getObjectById(new Integer(id), Tag.class);
+            return (Tag) osWriter.getObjectById(new InterMineId(id), Tag.class);
         } catch (ObjectStoreException e) {
             throw new RuntimeException("Getting tag from database failed", e);
         }

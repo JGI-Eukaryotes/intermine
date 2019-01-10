@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.Constants;
 import org.intermine.bio.util.PostProcessUtil;
 import org.intermine.metadata.MetaDataException;
@@ -137,7 +138,7 @@ public class MakeSpanningLocationsProcess extends PostProcessor
             BioEntity locatedOnObject = (BioEntity) rr.get(3);
 
             // ignore objects that already have locations
-            Integer parentObjectId = parentObject.getId();
+            InterMineId parentObjectId = parentObject.getId();
             if (locatedParents.contains(parentObjectId)) {
                 continue;
             }
@@ -153,7 +154,7 @@ public class MakeSpanningLocationsProcess extends PostProcessor
             SimpleLoc parentObjectSimpleLoc = parentObjectMap.get(parentObjectId);
 
             if (parentObjectSimpleLoc == null) {
-                parentObjectSimpleLoc = new SimpleLoc(-1, -1, Integer.MAX_VALUE, -1, "0");
+                parentObjectSimpleLoc = new SimpleLoc(-1, -1, InterMineId.MAX_VALUE, -1, "0");
                 parentObjectMap.put(parentObjectId, parentObjectSimpleLoc);
             }
 
@@ -178,21 +179,21 @@ public class MakeSpanningLocationsProcess extends PostProcessor
         // make new locations and store them
         Iterator<?> locatedOnObjectIterator = locatedOnObjectMap.keySet().iterator();
         while (locatedOnObjectIterator.hasNext()) {
-            Integer locatedOnObjectId = (Integer) locatedOnObjectIterator.next();
+            InterMineId locatedOnObjectId = (Integer) locatedOnObjectIterator.next();
             BioEntity locatedOnObject = (BioEntity) os.getObjectById(locatedOnObjectId);
             Map<Integer, SimpleLoc> parentObjectMap
                     = locatedOnObjectMap.get(locatedOnObjectId);
             Iterator<?> parentObjectMapIterator = parentObjectMap.keySet().iterator();
 
             while (parentObjectMapIterator.hasNext()) {
-                Integer parentObjectId = (Integer) parentObjectMapIterator.next();
+                InterMineId parentObjectId = (Integer) parentObjectMapIterator.next();
                 BioEntity parentObject = (BioEntity) os.getObjectById(parentObjectId);
                 SimpleLoc parentObjectSimpleLoc = parentObjectMap.get(parentObjectId);
                 Location newLocation =
                         (Location) DynamicUtil.createObject(Collections.singleton(Location.class));
 
-                newLocation.setStart(new Integer(parentObjectSimpleLoc.getStart()));
-                newLocation.setEnd(new Integer(parentObjectSimpleLoc.getEnd()));
+                newLocation.setStart(new InterMineId(parentObjectSimpleLoc.getStart()));
+                newLocation.setEnd(new InterMineId(parentObjectSimpleLoc.getEnd()));
                 newLocation.setStrand(parentObjectSimpleLoc.getStrand());
                 newLocation.setFeature(parentObject);
                 newLocation.setLocatedOn(locatedOnObject);

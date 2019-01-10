@@ -25,6 +25,7 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.response.FacetField;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.searchengine.KeywordSearchFacetData;
@@ -100,12 +101,12 @@ public class QuickSearch extends JSONService
         if (input.getIncludeFacets()) {
             Map<String, Object> facetData = new HashMap<String, Object>();
             for (KeywordSearchFacet kwsf: results.getFacets()) {
-                Map<String, Integer> sfData = new HashMap<String, Integer>();
+                Map<String, InterMineId> sfData = new HashMap<String, InterMineId>();
 
                 List<FacetField.Count> items = kwsf.getItems();
 
                 for ( FacetField.Count key : items) {
-                    sfData.put(key.getName(), (int) key.getCount());
+                    sfData.put(key.getName(), InterMineId.valueOf((int) key.getCount()));
                 }
 
                 facetData.put(kwsf.getField(), sfData);
@@ -167,7 +168,7 @@ public class QuickSearch extends JSONService
 
         private final String searchTerm;
         private final int offset;
-        private final Integer limit;
+        private final InterMineId limit;
         private final String searchBag;
         private final boolean includeFacets;
 
@@ -181,13 +182,13 @@ public class QuickSearch extends JSONService
             }
             LOG.debug(String.format("SEARCH TERM: '%s'", searchTerm));
 
-            includeFacets = !Boolean.valueOf(request.getParameter("nofacets"));
+            includeFacets = !Boolean.valueOf(request.getParameter("nofacets")).booleanValue();
 
             String limitParam = request.getParameter("size");
-            Integer lim = null;
+            InterMineId lim = null;
             if (!StringUtils.isBlank(limitParam)) {
                 try {
-                    lim = Integer.valueOf(limitParam);
+                    lim = InterMineId.valueOf(limitParam);
                 } catch (NumberFormatException e) {
                     throw new BadRequestException("Expected a number for size: got " + limitParam);
                 }
@@ -198,7 +199,7 @@ public class QuickSearch extends JSONService
             int parsed = 0;
             if (!StringUtils.isBlank(offsetP)) {
                 try {
-                    parsed = Integer.valueOf(offsetP);
+                    parsed = InterMineId.valueOf(offsetP).intValue();
                 } catch (NumberFormatException e) {
                     throw new BadRequestException("Expected a number for start: got " + offsetP);
                 }
@@ -212,7 +213,7 @@ public class QuickSearch extends JSONService
             if (limit == null) {
                 return true;
             }
-            return i < limit;
+            return i < limit.intValue();
         }
 
         public boolean getIncludeFacets() {
@@ -221,11 +222,11 @@ public class QuickSearch extends JSONService
 
         public String toString() {
             return String.format("<%s searchTerm=%s offset=%d>",
-                    getClass().getName(), searchTerm, offset);
+                    getClass().getName(), searchTerm, InterMineId.valueOf(offset));
         }
 
-        public List<Integer> getListIds() {
-            List<Integer> ids = new ArrayList<Integer>();
+        public List<InterMineId> getListIds() {
+            List<InterMineId> ids = new ArrayList<InterMineId>();
             if (!StringUtils.isBlank(searchBag)) {
                 LOG.debug("SEARCH BAG: '" + searchBag + "'");
                 final BagManager bm = im.getBagManager();

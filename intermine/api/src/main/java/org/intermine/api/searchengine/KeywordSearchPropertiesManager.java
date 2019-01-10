@@ -14,6 +14,7 @@ package org.intermine.api.searchengine;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
@@ -231,7 +232,7 @@ public final class KeywordSearchPropertiesManager
                     } else if ("index.solrurl".equals(key) && !StringUtils.isBlank(value)) {
                         solrUrl = value;
                     } else if ("index.batch.size".equals(key) && !StringUtils.isBlank(value)) {
-                        indexBatchSize = Integer.parseInt(value);
+                        indexBatchSize = InterMineId.parseInt(value);
                     } else if ("index.optimize".equals(key) && !StringUtils.isBlank(value)) {
                         enableOptimize = Boolean.parseBoolean(value);
                     }

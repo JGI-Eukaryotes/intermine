@@ -31,6 +31,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.StringUtil;
@@ -74,7 +75,7 @@ public class GoConverter extends BioFileConverter
     private Map<GoTermToGene, Set<Evidence>> goTermGeneToEvidence
         = new LinkedHashMap<GoTermToGene, Set<Evidence>>();
     private Map<Integer, List<String>> productCollectionsMap;
-    private Map<String, Integer> storedProductIds;
+    private Map<String, InterMineId> storedProductIds;
 
     // These should be altered for different ontologies:
     protected String termClassName = "GOTerm";
@@ -278,13 +279,13 @@ public class GoConverter extends BioFileConverter
                     allEvidenceForAnnotation = new LinkedHashSet<Evidence>();
                     allEvidenceForAnnotation.add(evidence);
                     goTermGeneToEvidence.put(key, allEvidenceForAnnotation);
-                    Integer storedAnnotationId = createGoAnnotation(productIdentifier, type,
+                    InterMineId storedAnnotationId = createGoAnnotation(productIdentifier, type,
                             goTermIdentifier, organism, qualifier, dataSource, dataSourceCode,
                             annotationExtension);
                     evidence.setStoredAnnotationId(storedAnnotationId);
                 } else {
                     boolean seenEvidenceCode = false;
-                    Integer storedAnnotationId = null;
+                    InterMineId storedAnnotationId = null;
 
                     for (Evidence evidence : allEvidenceForAnnotation) {
                         String evidenceCode = evidence.getEvidenceCode();
@@ -314,12 +315,12 @@ public class GoConverter extends BioFileConverter
     protected void initialiseMapsForFile() {
         goTermGeneToEvidence = new LinkedHashMap<GoTermToGene, Set<Evidence>>();
         productCollectionsMap = new LinkedHashMap<Integer, List<String>>();
-        storedProductIds = new HashMap<String, Integer>();
+        storedProductIds = new HashMap<String, InterMineId>();
     }
 
     private void storeProductCollections() throws ObjectStoreException {
         for (Map.Entry<Integer, List<String>> entry : productCollectionsMap.entrySet()) {
-            Integer storedProductId = entry.getKey();
+            InterMineId storedProductId = entry.getKey();
             List<String> annotationIds = entry.getValue();
             ReferenceList goAnnotation = new ReferenceList(termCollectionName, annotationIds);
             store(goAnnotation, storedProductId);
@@ -329,7 +330,7 @@ public class GoConverter extends BioFileConverter
     private void storeEvidence() throws ObjectStoreException {
         for (Set<Evidence> annotationEvidence : goTermGeneToEvidence.values()) {
             List<String> evidenceRefIds = new ArrayList<String>();
-            Integer goAnnotationRefId = null;
+            InterMineId goAnnotationRefId = null;
             for (Evidence evidence : annotationEvidence) {
                 Item goevidence = createItem("GOEvidence");
                 goevidence.setReference("code", evidenceCodes.get(evidence.getEvidenceCode()));
@@ -359,7 +360,7 @@ public class GoConverter extends BioFileConverter
         }
     }
 
-    private Integer createGoAnnotation(String productIdentifier, String productType,
+    private InterMineId createGoAnnotation(String productIdentifier, String productType,
             String termIdentifier, Item organism, String qualifier, String dataSource,
             String dataSourceCode, String annotationExtension) throws ObjectStoreException {
         Item goAnnotation = createItem(annotationClassName);
@@ -377,12 +378,12 @@ public class GoConverter extends BioFileConverter
         if ("gene".equals(productType)) {
             addProductCollection(productIdentifier, goAnnotation.getIdentifier());
         }
-        Integer storedAnnotationId = store(goAnnotation);
+        InterMineId storedAnnotationId = store(goAnnotation);
         return storedAnnotationId;
     }
 
     private void addProductCollection(String productIdentifier, String goAnnotationIdentifier) {
-        Integer storedProductId = storedProductIds.get(productIdentifier);
+        InterMineId storedProductId = storedProductIds.get(productIdentifier);
         List<String> annotationIds = productCollectionsMap.get(storedProductId);
         if (annotationIds == null) {
             annotationIds = new ArrayList<String>();
@@ -530,7 +531,7 @@ public class GoConverter extends BioFileConverter
         String dataSetIdentifier = getDataset(dataSource, dataSourceCode);
         product.addToCollection("dataSets", dataSetIdentifier);
 
-        Integer storedProductId = store(product);
+        InterMineId storedProductId = store(product);
         storedProductIds.put(product.getIdentifier(), storedProductId);
         productMap.put(key, product.getIdentifier());
         return product.getIdentifier();
@@ -721,7 +722,7 @@ public class GoConverter extends BioFileConverter
     {
         private List<String> publicationRefIds = new ArrayList<String>();
         private String evidenceCode = null;
-        private Integer storedAnnotationId = null;
+        private InterMineId storedAnnotationId = null;
         private String withText = null;
         private Item organism = null;
         private String dataSourceCode = null;
@@ -779,7 +780,7 @@ public class GoConverter extends BioFileConverter
         /**
          * @return the storedAnnotationId
          */
-        protected Integer getStoredAnnotationId() {
+        protected InterMineId getStoredAnnotationId() {
             return storedAnnotationId;
         }
 

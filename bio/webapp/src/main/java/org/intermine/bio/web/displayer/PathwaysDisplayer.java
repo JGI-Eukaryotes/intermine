@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.model.InterMineObject;
 import org.intermine.web.displayer.ReportDisplayer;
@@ -34,8 +35,8 @@ import org.intermine.web.logic.results.ReportObject;
 public class PathwaysDisplayer extends ReportDisplayer
 {
 
-    private Map<Integer, Map<InterMineObject, Integer>> cache =
-        new ConcurrentHashMap<Integer, Map<InterMineObject, Integer>>();
+    private Map<Integer, Map<InterMineObject, InterMineId>> cache =
+        new ConcurrentHashMap<Integer, Map<InterMineObject, InterMineId>>();
 
     /**
      * Construct with config and the InterMineAPI.
@@ -50,21 +51,21 @@ public class PathwaysDisplayer extends ReportDisplayer
     @Override
     public void display(HttpServletRequest request, ReportObject reportObject) {
         InterMineObject gene = reportObject.getObject();
-        Map<InterMineObject, Integer> pathways = getPathways(gene);
+        Map<InterMineObject, InterMineId> pathways = getPathways(gene);
         if (pathways.isEmpty()) {
             request.setAttribute("noPathwayResults", "No pathways found");
         } else {
-            SortedMap<InterMineObject, Integer> sortedPathways =
-                new TreeMap<InterMineObject, Integer>(new ValueComparator(pathways));
+            SortedMap<InterMineObject, InterMineId> sortedPathways =
+                new TreeMap<InterMineObject, InterMineId>(new ValueComparator(pathways));
             sortedPathways.putAll(pathways);
             request.setAttribute("pathways", sortedPathways);
         }
     }
 
-    private Map<InterMineObject, Integer> getPathways(InterMineObject gene) {
+    private Map<InterMineObject, InterMineId> getPathways(InterMineObject gene) {
         if (!cache.containsKey(gene.getId())) {
             try {
-                Map<InterMineObject, Integer> pathways = new HashMap<InterMineObject, Integer>();
+                Map<InterMineObject, InterMineId> pathways = new HashMap<InterMineObject, InterMineId>();
                 Collection col = (Collection) gene.getFieldValue("pathways");
                 for (Object item : col) {
                     InterMineObject pathway = (InterMineObject) item;

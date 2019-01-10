@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
@@ -96,7 +97,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
     protected Set<Object> tablesAltered = new HashSet<Object>();
 
     private Long cumulativeWait = new Long(0);    // just for diagnostic, can be removed
-    private Integer getConnectionCalls = 0;       // as above
+    private InterMineId getConnectionCalls = InterMineId.valueOf(0);       // as above
 
     // if the property is set to true (recommended for the webapp), getConncetion() will get a new
     // connection if the current one has been closed by the back-end.
@@ -419,7 +420,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
             loops++;
         }
 
-        Long start = System.currentTimeMillis();
+        Long start = Long.valueOf(System.currentTimeMillis());
         // If the connection has been closed by the back-end replace it with a new connection.
         // NOTE this has a timeout of 30 seconds. Should this check happens during builds
         // (robustConnection=true, mis-configuration) it would increase significantly building time.
@@ -428,12 +429,12 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
             LOG.info("ObjectStoreWriter connection was closed, fetching new connection");
             conn = this.os.getConnection();
         }
-        Long end = System.currentTimeMillis();
-        getConnectionCalls++;
+        Long end = Long.valueOf(System.currentTimeMillis());
+        null.valueOf(getConnectionCalls)++;
 
-        if (end > start) {
-            cumulativeWait = cumulativeWait + (end - start);
-            LOG.debug("Spent " + (end - start) + " ms checking connections, for a total of "
+        if (end.longValue() > start.longValue()) {
+            cumulativeWait = Long.valueOf(cumulativeWait.longValue() + (end.longValue() - start.longValue()));
+            LOG.debug("Spent " + (end.longValue() - start.longValue()) + " ms checking connections, for a total of "
                     + cumulativeWait + " ms after " + getConnectionCalls + " getConnection calls");
         }
         connInUse = true;
@@ -714,7 +715,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
                                 } else if ("short".equals(fieldType)) {
                                     value = new Short((short) 0);
                                 } else if ("int".equals(fieldType)) {
-                                    value = new Integer(0);
+                                    value = new InterMineId(0);
                                 } else if ("long".equals(fieldType)) {
                                     value = new Long(0L);
                                 } else if ("float".equals(fieldType)) {
@@ -838,7 +839,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * {@inheritDoc}
      */
     @Override
-    public void addToCollection(Integer hasId, Class<?> clazz, String fieldName, Integer hadId)
+    public void addToCollection(Integer hasId, Class<?> clazz, String fieldName, InterMineId hadId)
         throws ObjectStoreException {
         Connection c = null;
         try {
@@ -861,8 +862,8 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * @param hadId the ID of the object to place in the collection
      * @throws ObjectStoreException if an error occurs
      */
-    protected void addToCollectionWithConnection(Connection c, Integer hasId, Class<?> clazz,
-            String fieldName, Integer hadId) throws ObjectStoreException {
+    protected void addToCollectionWithConnection(Connection c, InterMineId hasId, Class<?> clazz,
+            String fieldName, InterMineId hadId) throws ObjectStoreException {
         boolean wasInTransaction = isInTransactionWithConnection(c);
         if (!wasInTransaction) {
             beginTransactionWithConnection(c);
@@ -1050,7 +1051,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
                 if (ca instanceof PendingClob) {
                     // We can't call createClob here - we already have a connection, and
                     // we must use that one.
-                    Clob clob = new Clob(getSerialWithConnection(c));
+                    Clob clob = new Clob(getSerialWithConnection(c).intValue());
                     replaceClobWithConnection(c, clob, ((PendingClob) ca)
                             .toString());
                     DynamicUtil.setFieldValue(o, fieldInfo.getName(), new ClobAccess(this, clob));
@@ -1063,7 +1064,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * {@inheritDoc}
      */
     @Override
-    public void addToBag(ObjectStoreBag osb, Integer element) throws ObjectStoreException {
+    public void addToBag(ObjectStoreBag osb, InterMineId element) throws ObjectStoreException {
         addAllToBag(osb, Collections.singleton(element));
     }
 
@@ -1072,7 +1073,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      */
     @Override
     public void addAllToBag(ObjectStoreBag osb,
-            Collection<Integer> coll) throws ObjectStoreException {
+            Collection<InterMineId> coll) throws ObjectStoreException {
         try {
             Connection c = null;
             try {
@@ -1091,11 +1092,11 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      *
      * @param c a Connection
      * @param osb an ObjectStoreBag
-     * @param coll a Collection of Integers
+     * @param coll a Collection of InterMineIds
      * @throws ObjectStoreException if there is an error in the underlying database
      */
     protected void addAllToBagWithConnection(Connection c, ObjectStoreBag osb,
-            Collection<Integer> coll) throws ObjectStoreException {
+            Collection<InterMineId> coll) throws ObjectStoreException {
         boolean wasInTransaction = isInTransactionWithConnection(c);
         if (!wasInTransaction) {
             beginTransactionWithConnection(c);
@@ -1126,7 +1127,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * {@inheritDoc}
      */
     @Override
-    public void removeFromBag(ObjectStoreBag osb, Integer element) throws ObjectStoreException {
+    public void removeFromBag(ObjectStoreBag osb, InterMineId element) throws ObjectStoreException {
         removeAllFromBag(osb, Collections.singleton(element));
     }
 
@@ -1135,7 +1136,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      */
     @Override
     public void removeAllFromBag(ObjectStoreBag osb,
-            Collection<Integer> coll) throws ObjectStoreException {
+            Collection<InterMineId> coll) throws ObjectStoreException {
         try {
             Connection c = null;
             try {
@@ -1154,11 +1155,11 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      *
      * @param c a Connection
      * @param osb an ObjectStoreBag
-     * @param coll a Collection of Integers
+     * @param coll a Collection of InterMineIds
      * @throws ObjectStoreException if there is an error in the underlying database
      */
     protected void removeAllFromBagWithConnection(Connection c, ObjectStoreBag osb,
-            Collection<Integer> coll) throws ObjectStoreException {
+            Collection<InterMineId> coll) throws ObjectStoreException {
         boolean wasInTransaction = isInTransactionWithConnection(c);
         if (!wasInTransaction) {
             beginTransactionWithConnection(c);
@@ -1197,7 +1198,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
         Class<?> type = select.get(0).getType();
         if (!(Integer.class.equals(type) || InterMineObject.class.isAssignableFrom(type))) {
             throw new IllegalArgumentException("The type of the result colum (" + type.getName()
-                    + ") is not an Integer or InterMineObject");
+                    + ") is not an InterMineId or InterMineObject");
         }
         try {
             Connection c = null;
@@ -1326,12 +1327,12 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
         }
 
         try {
-            Integer clobId = new Integer(clob.getClobId());
+            InterMineId clobId = new InterMineId(clob.getClobId());
             batch.deleteRow(c, CLOB_TABLE_NAME, CLOBID_COLUMN, clobId);
             int length = text.length();
             for (int i = 0; i < length; i += CLOB_PAGE_SIZE) {
                 batch.addRow(c, CLOB_TABLE_NAME, clobId, CLOB_COLUMNS, new Object[] {clobId,
-                    new Integer(i / CLOB_PAGE_SIZE), text.substring(i, Math.min(i + CLOB_PAGE_SIZE,
+                    new InterMineId(i / CLOB_PAGE_SIZE), text.substring(i, Math.min(i + CLOB_PAGE_SIZE,
                             length))});
             }
             tablesAltered.add(clob);
@@ -1658,7 +1659,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * Delegate to the parent ObjectStore.
      */
     @Override
-    public synchronized Map<Object, Integer> getSequence(Set<Object> tables) {
+    public synchronized Map<Object, InterMineId> getSequence(Set<Object> tables) {
         return os.getSequence(tables);
     }
 
@@ -1667,7 +1668,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * Delegate to the parent ObjectStore.
      */
     @Override
-    public synchronized void checkSequence(Map<Object, Integer> sequence, Query q,
+    public synchronized void checkSequence(Map<Object, InterMineId> sequence, Query q,
             String message) throws DataChangedException {
         //if ((!tablesAltered.isEmpty()) && (!sequence.isEmpty())) {
         //    throw new DataChangedException("Cannot query a writer with uncommitted changes");
@@ -1682,7 +1683,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         Connection c = null;
         try {
             c = getConnection();
@@ -1713,7 +1714,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * This method is overridden in order to flush batches properly before the read.
      */
     @Override
-    public int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException {
+    public int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         Connection c = null;
         try {
             c = getConnection();
@@ -1781,12 +1782,12 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * Overrides, in order to store recentSequences.
      *
      * @param c the Connection
-     * @return an Integer
+     * @return an InterMineId
      * @throws SQLException if an error occurs
      */
     @Override
-    protected Integer getSerialWithConnection(Connection c) throws SQLException {
-        Integer retval = super.getSerialWithConnection(c);
+    protected InterMineId getSerialWithConnection(Connection c) throws SQLException {
+        InterMineId retval = super.getSerialWithConnection(c);
         recentSequences.put(retval, Boolean.TRUE);
         return retval;
     }

@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.model.fulldata.Attribute;
 import org.intermine.model.fulldata.Item;
 import org.intermine.model.fulldata.Reference;
@@ -51,7 +52,7 @@ public class ObjectStoreItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public Integer store(Item item) throws ObjectStoreException {
+    public InterMineId store(Item item) throws ObjectStoreException {
         osw.store(item);
         for (Attribute a : item.getAttributes()) {
             osw.store(a);
@@ -76,7 +77,7 @@ public class ObjectStoreItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public void store(ReferenceList refList, Integer itemId) throws ObjectStoreException {
+    public void store(ReferenceList refList, InterMineId itemId) throws ObjectStoreException {
         ProxyReference proxy = new ProxyReference(osw.getObjectStore(), itemId, Item.class);
         refList.proxyItem(proxy);
         osw.store(refList);
@@ -86,7 +87,7 @@ public class ObjectStoreItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public void store(Reference ref, Integer itemId) throws ObjectStoreException {
+    public void store(Reference ref, InterMineId itemId) throws ObjectStoreException {
         ProxyReference proxy = new ProxyReference(osw.getObjectStore(), itemId, Item.class);
         ref.proxyItem(proxy);
         osw.store(ref);
@@ -96,7 +97,7 @@ public class ObjectStoreItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public void store(Attribute att, Integer itemId) throws ObjectStoreException {
+    public void store(Attribute att, InterMineId itemId) throws ObjectStoreException {
         ProxyReference proxy = new ProxyReference(osw.getObjectStore(), itemId, Item.class);
         att.proxyItem(proxy);
         osw.store(att);

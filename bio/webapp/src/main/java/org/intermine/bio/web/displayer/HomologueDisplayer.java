@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.query.PathQueryExecutor;
@@ -119,7 +120,7 @@ public class HomologueDisplayer extends ReportDisplayer
         request.setAttribute("homologues", homologues);
     }
 
-    private static PathQuery getQuery(InterMineAPI im, Integer geneId, Set<String> dataSets) {
+    private static PathQuery getQuery(InterMineAPI im, InterMineId geneId, Set<String> dataSets) {
         PathQuery q = new PathQuery(im.getModel());
         q.addViews("Gene.homologues.homologue.organism.shortName",
                 "Gene.homologues.homologue.primaryIdentifier");

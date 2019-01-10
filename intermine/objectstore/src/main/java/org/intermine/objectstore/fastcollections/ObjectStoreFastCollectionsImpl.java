@@ -21,6 +21,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.CollectionDescriptor;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.FieldDescriptor;
@@ -188,7 +189,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
      */
     @Override
     public List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException {
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException {
         try {
             long time1 = System.currentTimeMillis();
             List<ResultsRow<Object>> results = os.execute(q, start, limit, optimise, explain,
@@ -205,8 +206,8 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                 QuerySelectable node = q.getSelect().get(0);
                 if (node instanceof QueryClass) {
                     Map<Integer, InterMineObject> bagMap = new HashMap<Integer, InterMineObject>();
-                    int lowestId = Integer.MAX_VALUE;
-                    int highestId = Integer.MIN_VALUE;
+                    int lowestId = InterMineId.MAX_VALUE;
+                    int highestId = InterMineId.MIN_VALUE;
                     for (ResultsRow<Object> row : retval) {
                         InterMineObject o = (InterMineObject) row.get(0);
                         bagMap.put(o.getId(), o);
@@ -229,7 +230,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                             CollectionDescriptor coll = (CollectionDescriptor) field;
                             time1 = System.currentTimeMillis();
                             for (Map.Entry<Integer, InterMineObject> entry : bagMap.entrySet()) {
-                                Integer id = entry.getKey();
+                                InterMineId id = entry.getKey();
                                 InterMineObject o = entry.getValue();
                                 @SuppressWarnings("unchecked") ProxyCollection<Object> pc
                                     = (ProxyCollection<Object>) o.getFieldValue(fieldName);
@@ -243,7 +244,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                             }
                             time2 = System.currentTimeMillis();
                             timeSpentPrepare += time2 - time1;
-                            Set<Integer> bag = collections.keySet();
+                            Set<InterMineId> bag = collections.keySet();
                             if ((q.getConstraint() == null) && q.getOrderBy().isEmpty()
                                     && q.getGroupBy().isEmpty()) {
                                 // This is a shortcut query. We know that the original query is
@@ -263,10 +264,10 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                                     subQ.setConstraint(cs);
                                     cs.addConstraint(new SimpleConstraint(qfk,
                                                 ConstraintOp.GREATER_THAN_EQUALS,
-                                                new QueryValue(new Integer(lowestId))));
+                                                new QueryValue(new InterMineId(lowestId))));
                                     cs.addConstraint(new SimpleConstraint(qfk,
                                                 ConstraintOp.LESS_THAN_EQUALS,
-                                                new QueryValue(new Integer(highestId))));
+                                                new QueryValue(new InterMineId(highestId))));
                                 } else {
                                     QueryClass qc1 = new QueryClass(clazz);
                                     QueryClass qc2 = new QueryClass(coll
@@ -284,19 +285,19 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                                     QueryField idField = new QueryField(qc1, "id");
                                     cs.addConstraint(new SimpleConstraint(idField,
                                                 ConstraintOp.GREATER_THAN_EQUALS,
-                                                new QueryValue(new Integer(lowestId))));
+                                                new QueryValue(new InterMineId(lowestId))));
                                     cs.addConstraint(new SimpleConstraint(idField,
                                                 ConstraintOp.LESS_THAN_EQUALS,
-                                                new QueryValue(new Integer(highestId))));
+                                                new QueryValue(new InterMineId(highestId))));
                                     if (coll.relationType() == FieldDescriptor.ONE_N_RELATION) {
                                         QueryForeignKey reverseIdField = new QueryForeignKey(qc2,
                                                 coll.getReverseReferenceFieldName());
                                         cs.addConstraint(new SimpleConstraint(reverseIdField,
                                                     ConstraintOp.GREATER_THAN_EQUALS,
-                                                    new QueryValue(new Integer(lowestId))));
+                                                    new QueryValue(new InterMineId(lowestId))));
                                         cs.addConstraint(new SimpleConstraint(reverseIdField,
                                                     ConstraintOp.LESS_THAN_EQUALS,
-                                                    new QueryValue(new Integer(highestId))));
+                                                    new QueryValue(new InterMineId(highestId))));
                                     }
                                 }
                                 Results l = new Results(subQ, os, sequence);
@@ -314,7 +315,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                                 time2 = System.currentTimeMillis();
                                 timeSpentSubExecute += time2 - time1;
                             } else {
-                                List<Integer> bagList = new ArrayList<Integer>(bag);
+                                List<InterMineId> bagList = new ArrayList<InterMineId>(bag);
                                 for (int i = 0; i < bagList.size(); i += 1000) {
                                     Query subQ = new Query();
                                     subQ.setDistinct(false);
@@ -353,7 +354,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                             }
                             for (Map.Entry<Integer, Collection<Object>> entry : collections
                                     .entrySet()) {
-                                Integer id = entry.getKey();
+                                InterMineId id = entry.getKey();
                                 Collection<Object> materialisedCollection = entry.getValue();
                                 InterMineObject fromObj = bagMap.get(id);
                                 @SuppressWarnings("unchecked") ProxyCollection<Object> pc

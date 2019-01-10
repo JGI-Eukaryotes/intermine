@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.util.NameUtil;
 import org.intermine.pathquery.PathQuery;
@@ -84,7 +85,7 @@ public class ImportQueriesAction extends InterMineAction
                 SessionMethods.saveQuery(session, queryName, query);
                 imported++;
             }
-            recordMessage(new ActionMessage("query.imported", new Integer(imported)), request);
+            recordMessage(new ActionMessage("query.imported", new InterMineId(imported)), request);
             if (!validNameQuery) {
                 recordError(new ActionMessage("query.imported.invalidname"), request);
             }

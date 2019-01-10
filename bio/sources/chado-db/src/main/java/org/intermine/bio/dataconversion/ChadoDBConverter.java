@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismData;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.dataconversion.ItemWriter;
@@ -133,10 +134,10 @@ public class ChadoDBConverter extends BioDBConverter
             throw new IllegalArgumentException("processors not set in ChadoDBConverter");
         }
 
-        Map<OrganismData, Integer> tempChadoOrgMap = getChadoOrganismIds(getConnection());
+        Map<OrganismData, InterMineId> tempChadoOrgMap = getChadoOrganismIds(getConnection());
 
         for (OrganismData od: organismsToProcess) {
-            Integer chadoId = tempChadoOrgMap.get(od);
+            InterMineId chadoId = tempChadoOrgMap.get(od);
             if (chadoId == null) {
                 throw new RuntimeException("Organism " + od
                                            + " not found in the chado organism table");
@@ -168,14 +169,14 @@ public class ChadoDBConverter extends BioDBConverter
      * @return a Map from abbreviation to chado organism_id
      * @throws SQLException if the is a database problem
      */
-    protected Map<OrganismData, Integer> getChadoOrganismIds(Connection conn)
+    protected Map<OrganismData, InterMineId> getChadoOrganismIds(Connection conn)
         throws SQLException {
         String query = "select organism_id, abbreviation, genus, species from organism";
         LOG.info("executing: " + query);
         Statement stmt = conn.createStatement();
         ResultSet res = stmt.executeQuery(query);
 
-        Map<OrganismData, Integer> retMap = new HashMap<OrganismData, Integer>();
+        Map<OrganismData, InterMineId> retMap = new HashMap<OrganismData, InterMineId>();
 
         OrganismRepository or = OrganismRepository.getOrganismRepository();
 
@@ -202,7 +203,7 @@ public class ChadoDBConverter extends BioDBConverter
                          + " genus: " + genus + " abbreviation: " + abbreviation);
             }
 
-            retMap.put(od, new Integer(organismId));
+            retMap.put(od, new InterMineId(organismId));
         }
 
         return retMap;

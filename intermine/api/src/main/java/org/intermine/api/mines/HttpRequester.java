@@ -10,6 +10,7 @@ package org.intermine.api.mines;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -81,7 +82,7 @@ public class HttpRequester implements MineRequester
     @Override
     public void configure(Properties requesterConfig) {
         if (requesterConfig.containsKey("timeout")) {
-            this.timeout = Integer.parseInt(requesterConfig.getProperty("timeout"), 10);
+            this.timeout = InterMineId.parseInt(requesterConfig.getProperty("timeout"), 10);
         }
     }
 

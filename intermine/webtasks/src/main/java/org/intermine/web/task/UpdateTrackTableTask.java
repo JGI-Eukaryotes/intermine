@@ -78,10 +78,10 @@ public class UpdateTrackTableTask extends Task
                 ResultSet rs = stm.executeQuery(sql5);
                 List<Long> timestampList = new ArrayList<Long>();
                 while (rs.next()) {
-                    timestampList.add(rs.getLong(1));
+                    timestampList.add(Long.valueOf(rs.getLong(1)));
                 }
                 for (Long timestamplong : timestampList) {
-                    Timestamp timestamp = new Timestamp(timestamplong);
+                    Timestamp timestamp = new Timestamp(timestamplong.longValue());
                     String sql6 = "UPDATE templatetrack SET timestamp='" + timestamp.toString()
                         + "' WHERE timestamp_backup=" + timestamplong;
                     stm.executeUpdate(sql6);

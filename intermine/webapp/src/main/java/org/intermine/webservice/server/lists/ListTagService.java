@@ -51,7 +51,7 @@ public class ListTagService extends AbstractListService
         Map<String, Object> attributes = super.getHeaderAttributes();
         attributes.put(JSONFormatter.KEY_INTRO, "\"tags\":[");
         attributes.put(JSONFormatter.KEY_OUTRO, "]");
-        attributes.put(JSONFormatter.KEY_QUOTE, true);
+        attributes.put(JSONFormatter.KEY_QUOTE, Boolean.TRUE);
         return attributes;
     }
 

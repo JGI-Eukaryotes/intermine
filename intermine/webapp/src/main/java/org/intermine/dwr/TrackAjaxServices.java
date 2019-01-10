@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.tracker.util.ListTrackerEvent;
 import org.intermine.objectstore.ObjectStore;
@@ -67,7 +68,7 @@ public class TrackAjaxServices
                 dayOfYear = rs.getInt(1);
                 calendar.set(Calendar.DAY_OF_YEAR, dayOfYear);
                 track[0] = calendar.getTime();
-                track[1] = rs.getInt(2);
+                track[1] = InterMineId.valueOf(rs.getInt(2));
                 tracksTrend.add(track);
             }
             ((ObjectStoreInterMineImpl) uos).releaseConnection(connection);
@@ -116,7 +117,7 @@ public class TrackAjaxServices
                 dayOfYear = rs.getInt(1);
                 calendar.set(Calendar.DAY_OF_YEAR, dayOfYear);
                 track[0] = calendar.getTime();
-                track[1] = rs.getInt(2);
+                track[1] = InterMineId.valueOf(rs.getInt(2));
                 listTracksTrend.add(track);
             }
             ((ObjectStoreInterMineImpl) uos).releaseConnection(connection);
@@ -147,8 +148,8 @@ public class TrackAjaxServices
             while (rs.next()) {
                 track = new Object[3];
                 track[0] = rs.getString(1);
-                track[1] = rs.getInt(2);
-                track[2] = rs.getInt(3) + rs.getInt(4);
+                track[1] = InterMineId.valueOf(rs.getInt(2));
+                track[2] = InterMineId.valueOf(rs.getInt(3) + rs.getInt(4));
                 trackTable.add(track);
             }
             ((ObjectStoreInterMineImpl) uos).releaseConnection(connection);

@@ -29,6 +29,7 @@ import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.chado.config.ConfigAction;
 import org.intermine.bio.chado.config.CreateSynonymAction;
 import org.intermine.bio.chado.config.DoNothingAction;
@@ -67,8 +68,8 @@ public class SequenceProcessor extends ChadoProcessor
     private static final MultiKeyMap DEFAULT_CONFIG = new MultiKeyMap();
 
     // A map from chromosome uniqueName to chado feature_ids, populated by processFeatureTable()
-    private Map<Integer, Map<String, Integer>> chromosomeMaps =
-            new HashMap<Integer, Map<String, Integer>>();
+    private Map<Integer, Map<String, InterMineId>> chromosomeMaps =
+            new HashMap<Integer, Map<String, InterMineId>>();
 
     // a map from chado pubmed id to item identifier for the publication
     private Map<Integer, String> publications = new HashMap<Integer, String>();
@@ -201,13 +202,13 @@ public class SequenceProcessor extends ChadoProcessor
         ResultSet res = getFeatureTableResultSet(connection);
         int count = 0;
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String name = res.getString("name");
             String uniqueName = res.getString("uniquename");
             String type = res.getString("type");
             String residues = res.getString("residues");
             String checksum = res.getString("md5checksum");
-            Integer organismId = new Integer(res.getInt("organism_id"));
+            InterMineId organismId = new InterMineId(res.getInt("organism_id"));
             if (chromosomeFeatureTypesSet.contains(type)) {
                 addToChromosomeMaps(organismId, uniqueName, featureId);
             }
@@ -228,12 +229,12 @@ public class SequenceProcessor extends ChadoProcessor
     /**
      * Add the given chromosome feature_id, uniqueName and organismId to chromosomeMaps.
      */
-    private void addToChromosomeMaps(Integer organismId, String chrUniqueName, Integer chrId) {
-        Map<String, Integer> chromosomeMap;
+    private void addToChromosomeMaps(Integer organismId, String chrUniqueName, InterMineId chrId) {
+        Map<String, InterMineId> chromosomeMap;
         if (chromosomeMaps.containsKey(organismId)) {
             chromosomeMap = chromosomeMaps.get(organismId);
         } else {
-            chromosomeMap = new HashMap<String, Integer>();
+            chromosomeMap = new HashMap<String, InterMineId>();
             chromosomeMaps.put(organismId, chromosomeMap);
         }
         chromosomeMap.put(chrUniqueName, chrId);
@@ -255,7 +256,7 @@ public class SequenceProcessor extends ChadoProcessor
     private boolean processAndStoreFeature(Integer featureId, String uniqueName,
             String name, int seqlen, String residues,
             String md5checksum, String chadoType,
-            Integer organismId)
+            InterMineId organismId)
         throws ObjectStoreException {
 
         if (featureMap.containsKey(featureId)) {
@@ -410,7 +411,7 @@ public class SequenceProcessor extends ChadoProcessor
         // for gene in modENCODE
         ClassDescriptor cd = getModel().getClassDescriptorByName("Gene");
         if (cd.getFieldDescriptorByName("source") != null) {
-            Integer imObjectId = fdat.getIntermineObjectId();
+            InterMineId imObjectId = fdat.getIntermineObjectId();
             // if it is there (e.g. modmine) let's set it
             setAttribute(imObjectId, "source", dataSourceName);
         }
@@ -456,9 +457,9 @@ public class SequenceProcessor extends ChadoProcessor
             int organismId) throws ObjectStoreException {
         String interMineType = TypeUtil.javaiseClassName(fixFeatureType(chadoType));
         OrganismData organismData =
-                getChadoDBConverter().getChadoIdToOrgDataMap().get(new Integer(organismId));
+                getChadoDBConverter().getChadoIdToOrgDataMap().get(new InterMineId(organismId));
 
-        Item feature = makeFeature(new Integer(featureId), chadoType, interMineType, name,
+        Item feature = makeFeature(new InterMineId(featureId), chadoType, interMineType, name,
                 uniqueName, seqlen, organismData.getTaxonId());
         if (feature == null) {
             return null;
@@ -491,7 +492,7 @@ public class SequenceProcessor extends ChadoProcessor
      * @return the database id of the new Item
      * @throws ObjectStoreException if an error occurs while storing
      */
-    protected Integer store(Item feature, String taxonId) throws ObjectStoreException {
+    protected InterMineId store(Item feature, String taxonId) throws ObjectStoreException {
         return getChadoDBConverter().store(feature);
     }
 
@@ -615,9 +616,9 @@ public class SequenceProcessor extends ChadoProcessor
         int count = 0;
         int featureWarnings = 0;
         while (res.next()) {
-            Integer featureLocId = new Integer(res.getInt("featureloc_id"));
-            Integer featureId = new Integer(res.getInt("feature_id"));
-            Integer srcFeatureId = new Integer(res.getInt("srcfeature_id"));
+            InterMineId featureLocId = new InterMineId(res.getInt("featureloc_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
+            InterMineId srcFeatureId = new InterMineId(res.getInt("srcfeature_id"));
             int start = res.getInt("fmin") + 1;
             int end = res.getInt("fmax");
             if (start < 1 || end < 1) {
@@ -647,7 +648,7 @@ public class SequenceProcessor extends ChadoProcessor
                                 + "a chromosome reference", e);
                     }
                     if (SequenceFeature.class.isAssignableFrom(featureClass)) {
-                        Integer featureIntermineObjectId = featureData.getIntermineObjectId();
+                        InterMineId featureIntermineObjectId = featureData.getIntermineObjectId();
                         if ("Chromosome".equals(srcFeatureData.getInterMineType())) {
                             Reference chrReference = new Reference();
                             chrReference.setName("chromosome");
@@ -723,7 +724,7 @@ public class SequenceProcessor extends ChadoProcessor
     private void processRelationTable(Connection connection, boolean subjectFirst)
         throws SQLException, ObjectStoreException {
         ResultSet res = getFeatureRelationshipResultSet(connection, subjectFirst);
-        Integer lastSubjectId = null;
+        InterMineId lastSubjectId = null;
 
         // Map from relation type to Map from object type to FeatureData - used to collect up all
         // the collection/reference information for one subject feature
@@ -734,9 +735,9 @@ public class SequenceProcessor extends ChadoProcessor
         int count = 0;
         int collectionTotal = 0;
         while (res.next()) {
-            Integer featRelationshipId = new Integer(res.getInt("feature_relationship_id"));
-            Integer firstFeature1Id = new Integer(res.getInt("feature1_id"));
-            Integer secondFeatureId = new Integer(res.getInt("feature2_id"));
+            InterMineId featRelationshipId = new InterMineId(res.getInt("feature_relationship_id"));
+            InterMineId firstFeature1Id = new InterMineId(res.getInt("feature1_id"));
+            InterMineId secondFeatureId = new InterMineId(res.getInt("feature2_id"));
             String relationTypeName = res.getString("type_name");
 
             if (lastSubjectId != null && !firstFeature1Id.equals(lastSubjectId)) {
@@ -836,7 +837,7 @@ public class SequenceProcessor extends ChadoProcessor
 
         String subjectInterMineType = subjectData.getInterMineType();
         ClassDescriptor cd = getModel().getClassDescriptorByName(subjectInterMineType);
-        Integer intermineObjectId = subjectData.getIntermineObjectId();
+        InterMineId intermineObjectId = subjectData.getIntermineObjectId();
         for (Map.Entry<String, Map<String, List<FeatureData>>> entry: relTypeMap.entrySet()) {
             String relationType = entry.getKey();
             Map<String, List<FeatureData>> objectClassFeatureDataMap = entry.getValue();
@@ -933,7 +934,7 @@ public class SequenceProcessor extends ChadoProcessor
                                 Reference revReference = new Reference();
                                 revReference.setName(reverseRD.getName());
                                 revReference.setRefId(subjectData.getItemIdentifier());
-                                Integer refObjectId = referencedFeatureData.getIntermineObjectId();
+                                InterMineId refObjectId = referencedFeatureData.getIntermineObjectId();
                                 getChadoDBConverter().store(revReference, refObjectId);
                             }
                         }
@@ -1018,11 +1019,11 @@ public class SequenceProcessor extends ChadoProcessor
 
         ResultSet res = getDbxrefResultSet(connection);
         Set<String> existingAttributes = new HashSet<String>();
-        Integer currentFeatureId = null;
+        InterMineId currentFeatureId = null;
         int count = 0;
 
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String accession = res.getString("accession");
             String dbName = res.getString("db_name");
             Boolean isCurrent = res.getBoolean("is_current");
@@ -1106,7 +1107,7 @@ public class SequenceProcessor extends ChadoProcessor
         ResultSet res = getFeaturePropResultSet(connection);
         int count = 0;
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String identifier = res.getString("value");
 
             if (identifier == null) {
@@ -1178,7 +1179,7 @@ public class SequenceProcessor extends ChadoProcessor
         ResultSet res = getLibraryFeatureResultSet(connection);
         while (res.next()) {
 
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String identifier = res.getString("value");
 
             if (identifier == null) {
@@ -1239,7 +1240,7 @@ public class SequenceProcessor extends ChadoProcessor
 
         while (res.next()) {
 
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String identifier = res.getString("term_identifier");
 
             if (identifier == null) {
@@ -1285,14 +1286,14 @@ public class SequenceProcessor extends ChadoProcessor
         throws SQLException, ObjectStoreException {
         ResultSet res = getFeatureCVTermResultSet(connection);
         int count = 0;
-        Integer previousFeatureId = null;
+        InterMineId previousFeatureId = null;
 
         // map from reference/collection name to list of Items to store in the reference or
         // collection
         Map<String, List<Item>> dataMap = new HashMap<String, List<Item>>();
 
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String cvtermName = res.getString("cvterm_name");
             String cvName = res.getString("cv_name");
 
@@ -1415,7 +1416,7 @@ public class SequenceProcessor extends ChadoProcessor
                         + interMineType);
             }
             List<Item> itemList = dataMap.get(referenceName);
-            Integer intermineObjectId = fdat.getIntermineObjectId();
+            InterMineId intermineObjectId = fdat.getIntermineObjectId();
             if (fd.isReference()) {
                 if (itemList.size() > 1) {
                     throw new RuntimeException("found more than one object for reference "
@@ -1448,10 +1449,10 @@ public class SequenceProcessor extends ChadoProcessor
         throws SQLException, ObjectStoreException {
         ResultSet res = getSynonymResultSet(connection);
         Set<String> existingAttributes = new HashSet<String>();
-        Integer currentFeatureId = null;
+        InterMineId currentFeatureId = null;
         int count = 0;
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             String identifier = res.getString("synonym_name");
             String synonymTypeName = res.getString("type_name");
 
@@ -1564,12 +1565,12 @@ public class SequenceProcessor extends ChadoProcessor
         ResultSet res = getPubResultSet(connection);
 
         List<String> currentPublicationIds = new ArrayList<String>();
-        Integer lastPubFeatureId = null;
+        InterMineId lastPubFeatureId = null;
         int featureWarnings = 0;
         int count = 0;
 
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             if (!featureMap.containsKey(featureId)) {
                 if (featureWarnings <= 20) {
                     if (featureWarnings < 20) {
@@ -1582,7 +1583,7 @@ public class SequenceProcessor extends ChadoProcessor
                 }
                 continue;
             }
-            Integer pubMedId = fixPubMedId(res.getString("pub_db_identifier"));
+            InterMineId pubMedId = fixPubMedId(res.getString("pub_db_identifier"));
             if (lastPubFeatureId != null && !featureId.equals(lastPubFeatureId)) {
                 makeFeaturePublications(lastPubFeatureId, currentPublicationIds);
                 currentPublicationIds = new ArrayList<String>();
@@ -1607,8 +1608,8 @@ public class SequenceProcessor extends ChadoProcessor
      * @return the pubmed id
      */
     @SuppressWarnings("boxing")
-    protected Integer fixPubMedId(String pubmedStr) {
-        return Integer.parseInt(pubmedStr);
+    protected InterMineId fixPubMedId(String pubmedStr) {
+        return InterMineId.parseInt(pubmedStr);
     }
 
     /**
@@ -2130,7 +2131,7 @@ public class SequenceProcessor extends ChadoProcessor
      * @param organismId the chado organism_id
      * @return map of chromosome details
      */
-    protected Map<String, Integer> getChromosomeFeatureMap(Integer organismId) {
+    protected Map<String, InterMineId> getChromosomeFeatureMap(Integer organismId) {
         return chromosomeMaps.get(organismId);
     }
 

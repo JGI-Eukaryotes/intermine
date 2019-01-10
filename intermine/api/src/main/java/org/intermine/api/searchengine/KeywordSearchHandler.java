@@ -10,6 +10,7 @@ package org.intermine.api.searchengine;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 
 import java.util.Collection;
@@ -36,7 +37,7 @@ public interface KeywordSearchHandler
      * @return results containing both facet and result rows in the KeywordSearchResuls container
      */
     KeywordSearchResults doKeywordSearch(InterMineAPI im, String queryString, Map<String,
-            String> facetValues, List<Integer> ids, int offSet);
+            String> facetValues, List<InterMineId> ids, int offSet);
 
     /**
      * A method specifically designed to be used in SaveFromIdsToBagAction class
@@ -49,9 +50,9 @@ public interface KeywordSearchHandler
      *
      * @return results containing both facet and result rows in the KeywordSearchResuls container
      */
-    Set<Integer> getObjectIdsFromSearch(InterMineAPI im, String searchString, int offSet,
+    Set<InterMineId> getObjectIdsFromSearch(InterMineAPI im, String searchString, int offSet,
                                         Map<String, String> facetValues,
-                                        List<Integer> ids, int listSize);
+                                        List<InterMineId> ids, int listSize);
 
 
     /**

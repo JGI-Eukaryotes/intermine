@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.BagQueryConfig;
 import org.intermine.api.bag.BagQueryHelper;
 import org.intermine.api.bag.BagQueryRunner;
@@ -95,7 +96,7 @@ public final class PerformanceTester
         templates.remove("ESTclone_LocationOverlappingGeneStructure");
         templates.remove("Organism_interologues");
 
-        int i = Integer.parseInt(args[0]);
+        int i = InterMineId.parseInt(args[0]);
         System .out.println("Running with " + i + " threads:");
         doRun(productionOs, classKeys, bagQueryConfig, templates, i);
     }
@@ -107,13 +108,13 @@ public final class PerformanceTester
         Iterator<Map.Entry<String, ApiTemplate>> iter
             = new SynchronisedIterator<Map.Entry<String, ApiTemplate>>(templates.entrySet()
                     .iterator());
-        Set<Integer> threads = new HashSet<Integer>();
+        Set<InterMineId> threads = new HashSet<InterMineId>();
 
         synchronized (threads) {
             for (int i = 1; i < threadCount; i++) {
                 Thread worker = new Thread(new Worker(productionOs, classKeys, bagQueryConfig,
                             threads, iter, i));
-                threads.add(new Integer(i));
+                threads.add(new InterMineId(i));
                 worker.start();
             }
         }
@@ -155,7 +156,7 @@ public final class PerformanceTester
                     templateManager);
             Query q = MainHelper.makeQuery(templateQuery, new HashMap<String, InterMineBag>(),
                     new HashMap<String, QuerySelectable>(), bqr, null);
-            String sqlString = SqlGenerator.generate(q, 0, Integer.MAX_VALUE,
+            String sqlString = SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE,
                     ((ObjectStoreInterMineImpl) productionOs).getSchema(),
                     ((ObjectStoreInterMineImpl) productionOs).getDatabase(),
                     (Map<Object, String>) null);
@@ -195,7 +196,7 @@ public final class PerformanceTester
         private ObjectStore productionOs;
         private Map<String, List<FieldDescriptor>> classKeys;
         private BagQueryConfig bagQueryConfig;
-        private Set<Integer> threads;
+        private Set<InterMineId> threads;
         private Iterator<Map.Entry<String, ApiTemplate>> iter;
         private int threadNo;
 
@@ -209,7 +210,7 @@ public final class PerformanceTester
          * @param threadNo
          */
         public Worker(ObjectStore productionOs, Map<String, List<FieldDescriptor>> classKeys,
-                BagQueryConfig bagQueryConfig, Set<Integer> threads,
+                BagQueryConfig bagQueryConfig, Set<InterMineId> threads,
                 Iterator<Map.Entry<String, ApiTemplate>> iter, int threadNo) {
             this.productionOs = productionOs;
             this.classKeys = classKeys;
@@ -231,7 +232,7 @@ public final class PerformanceTester
             } finally {
                 //System .out.println("Thread " + threadNo + " finished");
                 synchronized (threads) {
-                    threads.remove(new Integer(threadNo));
+                    threads.remove(new InterMineId(threadNo));
                     threads.notify();
                 }
             }

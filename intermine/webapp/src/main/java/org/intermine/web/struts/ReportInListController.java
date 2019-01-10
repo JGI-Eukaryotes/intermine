@@ -24,6 +24,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.profile.InterMineBag;
@@ -52,7 +53,7 @@ public class ReportInListController extends TilesAction
         BagManager bagManager = im.getBagManager();
 
         Collection<InterMineBag> bagsWithId =
-            bagManager.getCurrentBagsContainingId(profile, object.getId());
+            bagManager.getCurrentBagsContainingId(profile, InterMineId.valueOf(object.getId()));
         // wrap around
         ReportInList odil = new ReportInList(bagsWithId);
 

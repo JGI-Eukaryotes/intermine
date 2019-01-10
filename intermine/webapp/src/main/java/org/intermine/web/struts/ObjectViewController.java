@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStore;
@@ -62,7 +63,7 @@ public class ObjectViewController extends TilesAction
         String fieldName = (String) context.getAttribute("fieldName");
         fieldName = fieldName.trim();
 
-        Integer id = new Integer(Integer.parseInt(idString));
+        InterMineId id = new InterMineId(Integer.parseInt(idString));
         InterMineObject object = os.getObjectById(id);
         if (object == null) {
             return null;

@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.bag.BagQueryResult;
@@ -202,7 +203,7 @@ public class QueryToListService extends AbstractQueryService
      * @param name The name of the list.
      * @param id intermine id for list
      */
-    protected void setHeaderAttributes(String name, Integer id) {
+    protected void setHeaderAttributes(String name, InterMineId id) {
         Map<String, Object> attributes = new HashMap<String, Object>();
         if (formatIsJSONP()) {
             attributes.put(JSONFormatter.KEY_CALLBACK, getCallback());

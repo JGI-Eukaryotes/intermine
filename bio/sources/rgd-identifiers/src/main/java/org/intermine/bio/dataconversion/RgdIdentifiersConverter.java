@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
 import org.intermine.util.FormattedTextParser;
@@ -59,7 +60,7 @@ public class RgdIdentifiersConverter extends BioFileConverter
 
 
         Set<String> duplicateEnsembls = new HashSet<String>();
-        Map<String, Integer> storedGeneIds = new HashMap<String, Integer>();
+        Map<String, InterMineId> storedGeneIds = new HashMap<String, InterMineId>();
         Map<String, String> geneEnsemblIds = new HashMap<String, String>();
 
         // Read all lines into id pairs, track any ensembl ids or symbols that appear twice
@@ -101,7 +102,7 @@ public class RgdIdentifiersConverter extends BioFileConverter
                 createCrossReference(gene.getIdentifier(), entrez, "NCBI", true);
             }
 
-            Integer storedGeneId = store(gene);
+            InterMineId storedGeneId = store(gene);
             storedGeneIds.put(gene.getIdentifier(), storedGeneId);
         }
 

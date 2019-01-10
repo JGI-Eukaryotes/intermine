@@ -19,6 +19,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.util.PropertiesUtil;
 import org.intermine.metadata.StringUtil;
 import org.intermine.web.context.InterMineContext;
@@ -41,12 +42,12 @@ public class WebServiceRequestParser
     /** Name of size parameter that determines number of returned results. */
     public static final String LIMIT_PARAMETER = "size";
 
-    private static final Integer DEFAULT_START = new Integer(0);
+    private static final InterMineId DEFAULT_START = new InterMineId(0);
 
     /** 10 000 000 default size actually means that web service will return all results */
-    public static final Integer DEFAULT_LIMIT = new Integer(10000000);
+    public static final InterMineId DEFAULT_LIMIT = new InterMineId(10000000);
 
-    private static final Integer MAX_LIMIT = new Integer(10000000);
+    private static final InterMineId MAX_LIMIT = new InterMineId(10000000);
 
     /** Value of parameter when user wants xml output to be returned. **/
     public static final String FORMAT_PARAMETER_XML = "xml";
@@ -163,24 +164,24 @@ public class WebServiceRequestParser
         input.setLimit(DEFAULT_LIMIT);
         input.setStart(DEFAULT_START);
 
-        Integer start = parseInteger(request.getParameter(START_PARAMETER), START_PARAMETER, 0,
-                Integer.MAX_VALUE);
+        InterMineId start = parseInteger(request.getParameter(START_PARAMETER), START_PARAMETER, 0,
+                InterMineId.MAX_VALUE);
         if (start != null) {
             input.setStart(start);
         }
 
-        Integer limit = parseInteger(request.getParameter(LIMIT_PARAMETER),
+        InterMineId limit = parseInteger(request.getParameter(LIMIT_PARAMETER),
                 LIMIT_PARAMETER, MIN_LIMIT, MAX_LIMIT.intValue());
         if (limit != null) {
             input.setLimit(limit);
         }
     }
 
-    private Integer parseInteger(String stringValue, String name, int minValue, int maxValue) {
-        Integer ret = null;
+    private InterMineId parseInteger(String stringValue, String name, int minValue, int maxValue) {
+        InterMineId ret = null;
         if (stringValue != null && !"".equals(stringValue)) {
             try {
-                ret = new Integer(stringValue);
+                ret = new InterMineId(stringValue);
                 if (ret.intValue() < minValue || ret.intValue() > maxValue) {
                     throw new BadRequestException("Invalid value of " + name + " parameter: " + ret
                             + " Parameter should have value from " + minValue + " to "

@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.SharedBagManager;
 import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.api.profile.BagValue;
@@ -214,7 +215,7 @@ class ProfileManagerHandler extends DefaultHandler
             if (value == null) {
                 version = 0;
             } else {
-                version = Integer.parseInt(value);
+                version = InterMineId.parseInt(value);
             }
             ObjectStoreWriter userprofileOsw = profileManager.getProfileObjectStoreWriter();
             Connection con = null;

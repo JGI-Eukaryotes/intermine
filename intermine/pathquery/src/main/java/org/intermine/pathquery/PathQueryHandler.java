@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.Model;
 import org.xml.sax.Attributes;
@@ -324,7 +325,7 @@ public class PathQueryHandler extends DefaultHandler
                 return new PathConstraintBag(path, constraintOp, bag);
             } else if (ids != null) {
                 String[] idArray = ids.split(",");
-                Collection<Integer> idsCollection = new LinkedHashSet<Integer>();
+                Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                 for (String id : idArray) {
                     try {
                         idsCollection.add(Integer.valueOf(id.trim()));

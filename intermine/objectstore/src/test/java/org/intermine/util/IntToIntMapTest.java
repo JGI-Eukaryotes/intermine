@@ -10,6 +10,7 @@ package org.intermine.util;
  *
  */
 
+import org.intermine.model.InterMineId;
 import junit.framework.*;
 
 public class IntToIntMapTest extends TestCase
@@ -29,7 +30,7 @@ public class IntToIntMapTest extends TestCase
         assertEquals(2, map.size());
         assertEquals("{4 -> 6, 30000 -> 7643}", map.toString());
 
-        map.put(new Integer(4), null);
+        map.put(new InterMineId(4), null);
         map.put(30000, -1);
 
         assertEquals(-1, map.get(4));

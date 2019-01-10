@@ -13,6 +13,7 @@ package org.intermine.bio.dataconversion;
 import java.util.Iterator;
 import java.util.List;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.objectstore.query.ContainsConstraint;
 import org.intermine.objectstore.query.Query;
@@ -170,7 +171,7 @@ public class FastaLoaderTaskTest {
                      + "PVASSKENYPDNHMHSKHISKLPIASPIPRGLDRSGELSYKDNNHWSDRSSTGSPRWENG"
                      + "SMNLSVEEMEKVVQPKVKRMATICQM", protein.getSequence().getResidues().toString());
         // TODO FIXME XXX - uncomment when Protein has a length field
-        //        assertEquals(new Integer(146), protein.getLength());
+        //        assertEquals(new InterMineId(146), protein.getLength());
     }
 
     @After

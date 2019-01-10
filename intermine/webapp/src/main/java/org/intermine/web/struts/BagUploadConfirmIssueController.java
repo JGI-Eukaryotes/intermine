@@ -26,6 +26,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.ConvertedObjectPair;
 import org.intermine.metadata.Model;
@@ -91,7 +92,7 @@ public class BagUploadConfirmIssueController extends TilesAction
                 }
                 List objectListForIdentifierList =
                     (List) identifierResultElementMap.get(identifier);
-                objectListForIdentifierList.add(new Integer(objectListIndex));
+                objectListForIdentifierList.add(new InterMineId(objectListIndex));
                 objectListIndex++;
             }
         }
@@ -132,21 +133,21 @@ public class BagUploadConfirmIssueController extends TilesAction
         for (Object identifierKey : resultElementMap.keySet()) {
             // fetch the list of row numbers that correspond to the identifier
             List value = (List) resultElementMap.get(identifierKey);
-            Boolean first = true;
+            Boolean first = Boolean.TRUE;
             for (Object rowNumber : value) {
                 // fetch the actual row in the table
                 BagUploadConfirmInlineResultsTableRow tableRow =
-                    (BagUploadConfirmInlineResultsTableRow) tableRows.get((Integer) rowNumber);
+                    (BagUploadConfirmInlineResultsTableRow) tableRows.get(((Integer) rowNumber).intValue());
                 // set the new values
-                if (first) {
-                    tableRow.setRowSpan(value.size());
-                    tableRow.setShowIdentifier(true);
+                if (first.booleanValue()) {
+                    tableRow.setRowSpan(Integer.valueOf(value.size()));
+                    tableRow.setShowIdentifier(Boolean.TRUE);
                 }
                 tableRow.setIdentifier((String) identifierKey);
                 // save the row back
-                tableRows.set((Integer) rowNumber, tableRow);
+                tableRows.set(((Integer) rowNumber).intValue(), tableRow);
                 // switch
-                first = false;
+                first = Boolean.FALSE;
             }
         }
 

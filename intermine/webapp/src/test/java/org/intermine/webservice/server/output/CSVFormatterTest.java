@@ -11,6 +11,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.query.MainHelper;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.metadata.Model;
@@ -58,27 +59,27 @@ public class CSVFormatterTest extends TestCase {
         attributes.put(CSVFormatter.COLUMN_HEADERS, view);
 
         tim = new Employee();
-        tim.setId(new Integer(5));
+        tim.setId(new InterMineId(5));
         tim.setName("Tim Canterbury");
         tim.setAge(30);
 
         gareth = new Employee();
-        gareth.setId(new Integer(6));
+        gareth.setId(new InterMineId(6));
         gareth.setName("Gareth Keenan");
         gareth.setAge(32);
 
         dawn = new Employee();
-        dawn.setId(new Integer(7));
+        dawn.setId(new InterMineId(7));
         dawn.setName("Dawn Tinsley");
         dawn.setAge(26);
 
         keith = new Employee();
-        keith.setId(new Integer(8));
+        keith.setId(new InterMineId(8));
         keith.setName("Keith Bishop");
         keith.setAge(41);
 
         lee = new Employee();
-        lee.setId(new Integer(9));
+        lee.setId(new InterMineId(9));
         lee.setName("Lee");
         lee.setAge(28);
 

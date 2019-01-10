@@ -10,6 +10,7 @@ package org.intermine.util;
  *
  */
 
+import org.intermine.model.InterMineId;
 import junit.framework.TestCase;
 
 public class UtilTest extends TestCase
@@ -20,15 +21,15 @@ public class UtilTest extends TestCase
 
     public void testEquals() {
         assertTrue(org.intermine.metadata.Util.equals(null, null));
-        assertTrue(org.intermine.metadata.Util.equals(new Integer(10), new Integer(10)));
-        assertTrue(org.intermine.metadata.Util.equals(new Integer(20), new Integer(10)) == false);
-        assertTrue(org.intermine.metadata.Util.equals(null, new Integer(10)) == false);
-        assertTrue(org.intermine.metadata.Util.equals(new Integer(10), null) == false);
+        assertTrue(org.intermine.metadata.Util.equals(new InterMineId(10), new InterMineId(10)));
+        assertTrue(org.intermine.metadata.Util.equals(new InterMineId(20), new InterMineId(10)) == false);
+        assertTrue(org.intermine.metadata.Util.equals(null, new InterMineId(10)) == false);
+        assertTrue(org.intermine.metadata.Util.equals(new InterMineId(10), null) == false);
     }
 
     public void testHashCode() {
         assertTrue(org.intermine.metadata.Util.hashCode(null) == 0);
-        assertTrue(org.intermine.metadata.Util.hashCode(new Integer(10)) != 0);
+        assertTrue(org.intermine.metadata.Util.hashCode(new InterMineId(10)) != 0);
     }
 
     public void testMD5checksum() {

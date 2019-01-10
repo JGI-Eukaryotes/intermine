@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.search.OriginatingEvent;
 import org.intermine.api.search.PropertyChangeEvent;
@@ -192,7 +193,7 @@ public class ApiTemplate extends TemplateQuery implements WebSearchable
     private String getRank() {
         if (im != null) {
             templateTracker = im.getTrackerDelegate();
-            Integer templateRank = templateTracker.getRank(im.getTemplateManager(), name);
+            InterMineId templateRank = templateTracker.getRank(im.getTemplateManager(), name);
             if (templateRank == null) {
                 // null value for new templates. PathQuery.formatKVPair() doesn't accept anything
                 // but strings. Yo and Josh say to do this.

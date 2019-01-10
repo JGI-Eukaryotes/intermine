@@ -65,7 +65,7 @@ public class MemoryQueryStore implements QueryStore
             throw new BadQueryException(message, e);
         }
 
-        id = System.currentTimeMillis();
+        id = Long.valueOf(System.currentTimeMillis());
 
         idToXML.put(id, xml);
         xmlToId.put(xml, id);
@@ -88,14 +88,14 @@ public class MemoryQueryStore implements QueryStore
         } catch (NumberFormatException e) {
             throw new KeyFormatException("The key for this query store must be a 64bit number", e);
         }
-        if (id < startTime) {
+        if (id.longValue() < startTime) {
             String message = "Key not in query store. "
                     + "This key may have come from an expired session";
             throw new NotPresentException(message);
         }
         if (!idToXML.containsKey(id)) {
             String message = "Key not in query store.";
-            if (idToXML.size() == maxSize && id < System.currentTimeMillis()) {
+            if (idToXML.size() == maxSize && id.longValue() < System.currentTimeMillis()) {
                 // Operating at capacity, probably dropped it.
                 message += " The query store only has capacity for " + maxSize + " queries. Yours"
                         + " may have been dropped.";

@@ -32,6 +32,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -68,7 +69,7 @@ public class GenomicRegionSearchAjaxAction extends Action
     private String spanUUIDString;
     private GenomicRegionSearchService grsService;
     private Map<String, Map<GenomicRegion, List<List<String>>>> spanOverlapFullResultMap;
-    private Map<String, Map<GenomicRegion, Map<String, Integer>>> spanOverlapFullStatMap;
+    private Map<String, Map<GenomicRegion, Map<String, InterMineId>>> spanOverlapFullStatMap;
     private Map<GenomicRegionSearchConstraint, String> spanConstraintMap;
     private HttpSession session;
     private WebConfig webConfig;
@@ -84,7 +85,7 @@ public class GenomicRegionSearchAjaxAction extends Action
         // key - UUID
         this.spanOverlapFullResultMap = (Map<String, Map<GenomicRegion, List<List<String>>>>)
             session.getAttribute("spanOverlapFullResultMap");
-        this.spanOverlapFullStatMap = (Map<String, Map<GenomicRegion, Map<String, Integer>>>)
+        this.spanOverlapFullStatMap = (Map<String, Map<GenomicRegion, Map<String, InterMineId>>>)
             session.getAttribute("spanOverlapFullStatMap");
         this.spanConstraintMap = (HashMap<GenomicRegionSearchConstraint, String>) session
                 .getAttribute("spanConstraintMap");
@@ -113,9 +114,9 @@ public class GenomicRegionSearchAjaxAction extends Action
                 && request.getParameter("fromIdx") != null
                 && request.getParameter("toIdx") != null) {
 
-            int fromIdx = Integer.parseInt(request
+            int fromIdx = InterMineId.parseInt(request
                     .getParameter("fromIdx"));
-            int toIdx = Integer
+            int toIdx = InterMineId
                     .parseInt(request.getParameter("toIdx"));
 
             getData(fromIdx, toIdx, response);
@@ -369,7 +370,7 @@ public class GenomicRegionSearchAjaxAction extends Action
                 grse.export(grList);
             } else {
                 boolean doGzip = false;
-                Set<Integer> featureIdSet = new LinkedHashSet<Integer>();
+                Set<InterMineId> featureIdSet = new LinkedHashSet<InterMineId>();
 
                 if ("all".equals(criteria)) {
                     for (List<List<String>> l : featureMap.values()) {
@@ -475,7 +476,7 @@ public class GenomicRegionSearchAjaxAction extends Action
 
     private void getFeatureCountOfGenomicRegion(String criteria, String facet,
             HttpServletResponse response) throws Exception {
-        Set<Integer> featureIdSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> featureIdSet = new LinkedHashSet<InterMineId>();
         Map<GenomicRegion, List<List<String>>> featureMap = spanOverlapFullResultMap
                 .get(spanUUIDString);
 
@@ -497,7 +498,7 @@ public class GenomicRegionSearchAjaxAction extends Action
     private void createListByFeatureType(String criteria, String facet,
             HttpServletResponse response) throws Exception {
         String newCriteria = criteria;
-        Set<Integer> featureIdSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> featureIdSet = new LinkedHashSet<InterMineId>();
         Map<GenomicRegion, List<List<String>>> featureMap = spanOverlapFullResultMap
                 .get(spanUUIDString);
 

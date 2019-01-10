@@ -10,6 +10,7 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,7 +80,7 @@ public class UnknownTypeValue
             } else if (cls.equals(Short.class)) {
                 return Short.valueOf(value);
             } else if (cls.equals(Integer.class)) {
-                return Integer.valueOf(value);
+                return InterMineId.valueOf(value);
             } else if (cls.equals(Long.class)) {
                 return Long.valueOf(value);
             } else if (cls.equals(Float.class)) {

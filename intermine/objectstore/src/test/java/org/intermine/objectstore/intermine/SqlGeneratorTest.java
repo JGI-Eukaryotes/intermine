@@ -25,6 +25,7 @@ import java.util.Set;
 
 import junit.framework.Test;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Department;
@@ -78,13 +79,13 @@ public class SqlGeneratorTest extends SetupDataTestCase
         db = DatabaseFactory.getDatabase("db.unittest");
     }
 
-    public static Integer companyAId;
-    public static Integer companyBId;
-    public static Integer departmentA1Id;
-    public static Integer departmentB1Id;
-    public static Integer employeeA1Id;
-    public static Integer employeeA2Id;
-    public static Integer employeeB1Id;
+    public static InterMineId companyAId;
+    public static InterMineId companyBId;
+    public static InterMineId departmentA1Id;
+    public static InterMineId departmentB1Id;
+    public static InterMineId employeeA1Id;
+    public static InterMineId employeeA2Id;
+    public static InterMineId employeeB1Id;
 
     public static void setUpResults() throws Exception {
         companyAId = ((Company) data.get("CompanyA")).getId();
@@ -476,7 +477,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
 
         if (expected instanceof Failure) {
             try {
-                SqlGenerator.generate(q, 0, Integer.MAX_VALUE, getSchema(), db, new HashMap());
+                SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, getSchema(), db, new HashMap());
                 fail(type + " was expected to fail");
             } catch (Exception e) {
                 assertEquals(type + " was expected to produce a particular exception", expected, new Failure(e));
@@ -492,7 +493,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
                 bagTableNames.put(largeBagConstraint, "large_string_bag_table");
             }
 
-            String generated = SqlGenerator.generate(q, 0, Integer.MAX_VALUE, getSchema(), db,
+            String generated = SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, getSchema(), db,
                                                      bagTableNames);
             if (expected instanceof String) {
                 assertEquals("", results.get(type), generated);
@@ -554,7 +555,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
     }
 
     public void testSelectQueryValue() throws Exception {
-        QueryValue v1 = new QueryValue(new Integer(5));
+        QueryValue v1 = new QueryValue(new InterMineId(5));
         QueryValue v2 = new QueryValue("Hello");
         QueryValue v3 = new QueryValue(new Date(1046275720000l));
         QueryValue v4 = new QueryValue(Boolean.TRUE);
@@ -609,8 +610,8 @@ public class SqlGeneratorTest extends SetupDataTestCase
     }
 
     public void testSelectQueryExpression() throws Exception {
-        QueryValue v1 = new QueryValue(new Integer(5));
-        QueryValue v2 = new QueryValue(new Integer(7));
+        QueryValue v1 = new QueryValue(new InterMineId(5));
+        QueryValue v2 = new QueryValue(new InterMineId(7));
         QueryExpression e1 = new QueryExpression(v1, QueryExpression.ADD, v2);
         QueryExpression e2 = new QueryExpression(v1, QueryExpression.SUBTRACT, v2);
         QueryExpression e3 = new QueryExpression(v1, QueryExpression.MULTIPLY, v2);
@@ -627,8 +628,8 @@ public class SqlGeneratorTest extends SetupDataTestCase
 
     public void testSelectQuerySubstringExpression() throws Exception {
         QueryValue v1 = new QueryValue("Hello");
-        QueryValue v2 = new QueryValue(new Integer(3));
-        QueryValue v3 = new QueryValue(new Integer(5));
+        QueryValue v2 = new QueryValue(new InterMineId(3));
+        QueryValue v3 = new QueryValue(new InterMineId(5));
         QueryExpression e1 = new QueryExpression(v1, v2, v3);
         StringBuffer buffer = new StringBuffer();
 
@@ -638,8 +639,8 @@ public class SqlGeneratorTest extends SetupDataTestCase
     }
 
     public void testSelectQueryExpressionGreatestLeast() throws Exception {
-        QueryValue v1 = new QueryValue(new Integer(5));
-        QueryValue v2 = new QueryValue(new Integer(7));
+        QueryValue v1 = new QueryValue(new InterMineId(5));
+        QueryValue v2 = new QueryValue(new InterMineId(7));
         QueryExpression e1 = new QueryExpression(v1, QueryExpression.GREATEST, v2);
         QueryExpression e2 = new QueryExpression(v1, QueryExpression.LEAST, v2);
         StringBuffer buffer = new StringBuffer();
@@ -689,7 +690,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
         q.addToSelect(c1);
         DatabaseSchema s = new DatabaseSchema(new Model("nothing", "", new HashSet()), Collections.EMPTY_LIST, false, Collections.EMPTY_SET, 1);
         try {
-            SqlGenerator.generate(q, 0, Integer.MAX_VALUE, s, db, new HashMap());
+            SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, s, db, new HashMap());
             fail("Expected: ObjectStoreException");
         } catch (ObjectStoreException e) {
             assertEquals("interface org.intermine.model.testmodel.Company is not in the model", e.getMessage());
@@ -710,7 +711,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
         q.addFrom(qc);
         q.addToSelect(qc);
         try {
-            SqlGenerator.generate(q, 0, Integer.MAX_VALUE, getSchema(), db, new HashMap());
+            SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, getSchema(), db, new HashMap());
             fail("Expected: ObjectStoreException");
         } catch (ObjectStoreException e) {
             assertTrue(e.getMessage().startsWith("Unknown FromElement: "));
@@ -730,7 +731,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
         q.addToSelect(qc);
         q.setConstraint(new Constraint() {});
         try {
-            SqlGenerator.generate(q, 0, Integer.MAX_VALUE, getSchema(), db, new HashMap());
+            SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, getSchema(), db, new HashMap());
             fail("Expected: ObjectStoreException");
         } catch (ObjectStoreException e) {
             assertTrue(e.getMessage(), e.getMessage().startsWith("Unrecognised object "));
@@ -751,7 +752,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
         Company c = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
         q.setConstraint(new ClassConstraint(qc, ConstraintOp.EQUALS, c));
         try {
-            SqlGenerator.generate(q, 0, Integer.MAX_VALUE, getSchema(), db, new HashMap());
+            SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, getSchema(), db, new HashMap());
             fail("Expected: ObjectStoreException");
         } catch (ObjectStoreException e) {
             assertEquals("ClassConstraint cannot contain an InterMineObject without an ID set", e.getMessage());
@@ -777,7 +778,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
         q.addToSelect(qc);
         q.setConstraint(new ContainsConstraint(new QueryCollectionReference(emp, "extras"), ConstraintOp.CONTAINS, qc));
         try {
-            SqlGenerator.generate(q, 0, Integer.MAX_VALUE, getSchema(), db, new HashMap());
+            SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, getSchema(), db, new HashMap());
             fail("Expected: ObjectStoreException");
         } catch (ObjectStoreException e) {
             assertEquals("Reference ?.extras is not in the model - fields available in class org.intermine.objectstore.intermine.SqlGeneratorTest$3 are [fullTime, age, end, department, departmentThatRejectedMe, employmentPeriod, simpleObjects, address, id, name]", e.getMessage());
@@ -791,35 +792,35 @@ public class SqlGeneratorTest extends SetupDataTestCase
         QueryClass c1 = new QueryClass(Company.class);
         q.addFrom(c1);
         q.addToSelect(c1);
-        assertEquals("SQL incorrect.", getRegisterOffset1(), SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap()));
-        SqlGenerator.registerOffset(q, 5, schema, db, new Integer(10), new HashMap());
-        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, new HashMap()));
-        SqlGenerator.registerOffset(q, 11000, schema, db, new Integer(20), new HashMap());
-        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 20 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 11005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        SqlGenerator.registerOffset(q, 21000, schema, db, new Integer(30), new HashMap());
-        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 30 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 21005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        SqlGenerator.registerOffset(q, 21005, schema, db, new Integer(31), new HashMap());
-        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 30 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 21005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        SqlGenerator.registerOffset(q, 11002, schema, db, new Integer(29), new HashMap());
-        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 30 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 21005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        SqlGenerator.registerOffset(q, 101000, schema, db, new Integer(40), new HashMap());
-        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 21000", SqlGenerator.generate(q, 21005, Integer.MAX_VALUE, schema, db, new HashMap()));
-        assertEquals(getRegisterOffset2() + "a1_.id > 40 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 101005, Integer.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals("SQL incorrect.", getRegisterOffset1(), SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        SqlGenerator.registerOffset(q, 5, schema, db, new InterMineId(10), new HashMap());
+        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        SqlGenerator.registerOffset(q, 11000, schema, db, new InterMineId(20), new HashMap());
+        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 20 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 11005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        SqlGenerator.registerOffset(q, 21000, schema, db, new InterMineId(30), new HashMap());
+        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 30 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 21005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        SqlGenerator.registerOffset(q, 21005, schema, db, new InterMineId(31), new HashMap());
+        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 30 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 21005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        SqlGenerator.registerOffset(q, 11002, schema, db, new InterMineId(29), new HashMap());
+        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 30 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 21005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        SqlGenerator.registerOffset(q, 101000, schema, db, new InterMineId(40), new HashMap());
+        assertEquals(getRegisterOffset1(), SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 11000", SqlGenerator.generate(q, 11005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 10 ORDER BY a1_.id OFFSET 21000", SqlGenerator.generate(q, 21005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
+        assertEquals(getRegisterOffset2() + "a1_.id > 40 ORDER BY a1_.id OFFSET 5", SqlGenerator.generate(q, 101005, InterMineId.MAX_VALUE, schema, db, new HashMap()));
     }
 
     public void testRegisterOffset2() throws Exception {
@@ -829,22 +830,22 @@ public class SqlGeneratorTest extends SetupDataTestCase
         q.addFrom(qc);
         QueryField f = new QueryField(qc, "name");
         q.addToSelect(f);
-        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " ORDER BY a1_.name", SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " ORDER BY a1_.name", SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
         SqlGenerator.registerOffset(q, 5, schema, db, "flibble", Collections.EMPTY_MAP);
         String expected = "SELECT DISTINCT a1_.name AS a2_ FROM "
             + getRegisterOffset3() + " " + getRegisterOffset4()
             + " (a1_.name > 'flibble' OR a1_.name IS NULL) ORDER BY a1_.name OFFSET 5";
         assertEquals(expected,
-                     SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+                     SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
 
         q = new Query();
         qc = new QueryClass(Employee.class);
         q.addFrom(qc);
         f = new QueryField(qc, "age");
         q.addToSelect(f);
-        assertEquals("SELECT DISTINCT a1_.age AS a2_ FROM " + getRegisterOffset3() + " ORDER BY a1_.age", SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
-        SqlGenerator.registerOffset(q, 5, schema, db, new Integer(34), Collections.EMPTY_MAP);
-        assertEquals("SELECT DISTINCT a1_.age AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.age > 34 ORDER BY a1_.age OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+        assertEquals("SELECT DISTINCT a1_.age AS a2_ FROM " + getRegisterOffset3() + " ORDER BY a1_.age", SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+        SqlGenerator.registerOffset(q, 5, schema, db, new InterMineId(34), Collections.EMPTY_MAP);
+        assertEquals("SELECT DISTINCT a1_.age AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.age > 34 ORDER BY a1_.age OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
     }
 
     // Large offset code adds constraint that value > x and is not null to deal with ordering in postgres
@@ -859,9 +860,9 @@ public class SqlGeneratorTest extends SetupDataTestCase
         q.addToSelect(f);
         SimpleConstraint sc = new SimpleConstraint(f, ConstraintOp.IS_NOT_NULL);
         q.setConstraint(sc);
-        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.name IS NOT NULL ORDER BY a1_.name", SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.name IS NOT NULL ORDER BY a1_.name", SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
         SqlGenerator.registerOffset(q, 5, schema, db, "flibble", Collections.EMPTY_MAP);
-        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.name IS NOT NULL AND a1_.name > 'flibble' ORDER BY a1_.name OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.name IS NOT NULL AND a1_.name > 'flibble' ORDER BY a1_.name OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
     }
 
     public void testRegisterOffset4() throws Exception {
@@ -872,9 +873,9 @@ public class SqlGeneratorTest extends SetupDataTestCase
         QueryField f = new QueryField(qc, "name");
         q.addToSelect(f);
         q.addToOrderBy(new OrderDescending(f));
-        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " ORDER BY a1_.name DESC", SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " ORDER BY a1_.name DESC", SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
         SqlGenerator.registerOffset(q, 5, schema, db, "flibble", Collections.EMPTY_MAP);
-        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.name < 'flibble' ORDER BY a1_.name DESC OFFSET 5", SqlGenerator.generate(q, 10, Integer.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
+        assertEquals("SELECT DISTINCT a1_.name AS a2_ FROM " + getRegisterOffset3() + " " + getRegisterOffset4() + " a1_.name < 'flibble' ORDER BY a1_.name DESC OFFSET 5", SqlGenerator.generate(q, 10, InterMineId.MAX_VALUE, schema, db, Collections.EMPTY_MAP));
     }
 
     public void testForPrecomp() throws Exception {
@@ -927,7 +928,7 @@ public class SqlGeneratorTest extends SetupDataTestCase
         QueryClass qc = new QueryClass(Employee.class);
         QueryField qf = new QueryField(qc, "name");
         Set bag = new HashSet();
-        bag.add(new Integer(3));
+        bag.add(new InterMineId(3));
         BagConstraint bc = new BagConstraint(qf, ConstraintOp.IN, bag);
         try {
             SqlGenerator.completelyFalse(bc);
@@ -941,21 +942,21 @@ public class SqlGeneratorTest extends SetupDataTestCase
     public void testOverlapQueries() throws Exception {
         DatabaseSchema schema = getSchema();
         Query q1 = rangeDoesNotOverlap();
-        String generated1 = SqlGenerator.generate(q1, 0, Integer.MAX_VALUE, getSchema(), db, new HashMap());
+        String generated1 = SqlGenerator.generate(q1, 0, InterMineId.MAX_VALUE, getSchema(), db, new HashMap());
 
         // 1. We can use Postgres built in range types
         Query q = rangeOverlaps();
-        String generated = SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap());
+        String generated = SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap());
         String expected = getOverlapQuery("int4range", "RangeOverlaps");
         assertEquals(expected, generated);
 
         q = rangeDoesNotOverlap();
-        generated = SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap());
+        generated = SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap());
         expected = getOverlapQuery("int4range", "RangeDoesNotOverlap");
         assertEquals(expected, generated);
 
         q = rangeOverlapsValues();
-        generated = SqlGenerator.generate(q, 0, Integer.MAX_VALUE, schema, db, new HashMap());
+        generated = SqlGenerator.generate(q, 0, InterMineId.MAX_VALUE, schema, db, new HashMap());
         expected = getOverlapQuery("int4range", "RangeOverlapsValues");
         assertEquals(expected, generated);
     }

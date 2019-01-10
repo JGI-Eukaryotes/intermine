@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPITestCase;
 import org.intermine.api.bag.UnknownBagTypeException;
 import org.intermine.objectstore.ObjectStoreException;
@@ -20,7 +21,7 @@ public class InvalidBagTest extends InterMineAPITestCase {
     private static final String NAME = "deadBag";
     private static final String API_KEY = "abcdef012345";
     private static final String PASSWORD = "12345";
-    private static final Integer USER_ID = null;
+    private static final InterMineId USER_ID = null;
     private static final String DESCRIPTION = "Places were stuff is actually made";
     private static final String TYPE = "ManufacturingPlant";
     private static final Date CREATED_AT = new Date(123456789l);
@@ -41,7 +42,7 @@ public class InvalidBagTest extends InterMineAPITestCase {
 
         ProfileManager pm = im.getProfileManager();
 
-        Integer userId = null;
+        InterMineId userId = null;
         underTest = new Profile(pm, "UNDER_TEST", userId, PASSWORD,
                                new HashMap(), new BagSet(validBags, invalidBags),
                                new HashMap(), API_KEY, true, false);

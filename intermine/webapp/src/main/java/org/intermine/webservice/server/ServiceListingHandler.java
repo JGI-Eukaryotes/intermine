@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.web.context.InterMineContext;
 import org.json.JSONObject;
 import org.xml.sax.Attributes;
@@ -156,14 +157,14 @@ public class ServiceListingHandler extends DefaultHandler
         } else if ("param".equals(qName)) {
             currentParam = new HashMap<String, Object>();
             currentParam.put("Required",
-                    Boolean.valueOf(attrs.getValue("required")) ? "Y" : "N");
+                    Boolean.valueOf(attrs.getValue("required")).booleanValue() ? "Y" : "N");
             currentParam.put("Type", attrs.getValue("type"));
             currentParam.put("Description", attrs.getValue("description"));
             currentParam.put("Repeat", attrs.getValue("repeat"));
             currentParam.put("Depends", attrs.getValue("depends"));
             currentParam.put("Schema", attrs.getValue("schema"));
             currentParam.put("Options", attrs.getValue("options"));
-            currentParam.put("Recommended", "true".equals(attrs.getValue("recommended")));
+            currentParam.put("Recommended", Boolean.valueOf("true".equals(attrs.getValue("recommended"))));
             String defaultValue = attrs.getValue("default");
             defaultValue = interpolateDefaultValues(defaultValue);
             if (defaultValue != null) {
@@ -266,7 +267,7 @@ public class ServiceListingHandler extends DefaultHandler
         } else if ("description".equals(qName)) {
             currentMethod.put("Description", deIndent(sb.toString()));
         } else if ("minVersion".equals(qName)) {
-            Integer minVersion = Integer.valueOf(content);
+            InterMineId minVersion = InterMineId.valueOf(content);
             currentEndPoint.put("minVersion", minVersion);
         } else if ("returns".equals(qName)) {
             if (returns.size() > 1) {

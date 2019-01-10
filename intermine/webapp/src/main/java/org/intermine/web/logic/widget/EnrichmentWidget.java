@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.Model;
@@ -158,7 +159,7 @@ public class EnrichmentWidget extends Widget
                   (EnrichmentWidgetConfig) config, filter, extraCorrectionCoefficient,
                   correctionCoefficient, ids, populationIds);
             EnrichmentInput input = new EnrichmentInputWidgetLdr(os, ldr);
-            results = EnrichmentCalculation.calculate(input, max, errorCorrection,
+            results = EnrichmentCalculation.calculate(input, Double.valueOf(max), errorCorrection,
                                            extraCorrectionCoefficient, correctionCoefficient);
             int size = 0;
             if (bag != null) {
@@ -249,7 +250,7 @@ public class EnrichmentWidget extends Widget
         List<List<Object>> exportResults = new LinkedList<List<Object>>();
         if (results != null) {
             Map<String, BigDecimal> pValues = results.getPValues();
-            Map<String, Integer> counts = results.getCounts();
+            Map<String, InterMineId> counts = results.getCounts();
             Map<String, String> labels = results.getLabels();
             Map<String, PopulationInfo> annotatedPopulationInfo
                 = results.getPopulationAnnotations();
@@ -257,9 +258,9 @@ public class EnrichmentWidget extends Widget
                 List<Object> row = new LinkedList<Object>();
                 row.add(id);
                 row.add(labels.get(id));
-                row.add(pValues.get(id).doubleValue());
+                row.add(Double.valueOf(pValues.get(id).doubleValue()));
                 row.add(counts.get(id));
-                row.add(annotatedPopulationInfo.get(id).getSize());
+                row.add(Integer.valueOf(annotatedPopulationInfo.get(id).getSize()));
                 exportResults.add(row);
             }
         }
@@ -287,10 +288,10 @@ public class EnrichmentWidget extends Widget
         } else if (ids != null) {
             // use list of IDs instead of bag
             String[] idStrings = ids.split(",");
-            List<Integer> intermineIds = new ArrayList<Integer>();
+            List<InterMineId> intermineIds = new ArrayList<InterMineId>();
             for (int i = 0; i < idStrings.length; i++) {
                 try {
-                    intermineIds.add(Integer.parseInt(idStrings[i]));
+                    intermineIds.add(Integer.valueOf(Integer.parseInt(idStrings[i])));
                 } catch (NumberFormatException e) {
                     LOG.error("bad IDs for list in enrichment.", e);
                     return null;
@@ -377,10 +378,10 @@ public class EnrichmentWidget extends Widget
         } else if (ids != null) {
             // use list of IDs instead of bag
             String[] idStrings = ids.split(",");
-            List<Integer> intermineIds = new ArrayList<Integer>();
+            List<InterMineId> intermineIds = new ArrayList<InterMineId>();
             for (int i = 0; i < idStrings.length; i++) {
                 try {
-                    intermineIds.add(Integer.parseInt(idStrings[i]));
+                    intermineIds.add(Integer.valueOf(Integer.parseInt(idStrings[i])));
                 } catch (NumberFormatException e) {
                     LOG.error("bad IDs for list in enrichment.", e);
                     return null;

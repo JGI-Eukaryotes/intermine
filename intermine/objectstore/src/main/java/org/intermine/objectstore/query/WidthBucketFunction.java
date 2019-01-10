@@ -10,6 +10,8 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Representation of a call to the Postgresql WIDTH_BUCKET function.
  * @author Alex Kalderimis
@@ -51,7 +53,7 @@ public class WidthBucketFunction extends QueryFunction
         }
         if (!(Integer.class.isAssignableFrom(bins.getType())
                 || bins.getType().equals(UnknownTypeValue.class))) {
-            throw new IllegalArgumentException("Invalid type for bins: Integer expected");
+            throw new IllegalArgumentException("Invalid type for bins: InterMineId expected");
         }
         obj = qe;
         op = QueryFunction.WIDTH_BUCKET;
@@ -65,7 +67,7 @@ public class WidthBucketFunction extends QueryFunction
      */
     @Override
     public Class<?> getType() {
-        return Integer.class;
+        return InterMineId.class;
     }
 
     /**

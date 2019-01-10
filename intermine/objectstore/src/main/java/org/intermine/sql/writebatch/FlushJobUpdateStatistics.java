@@ -10,6 +10,7 @@ package org.intermine.sql.writebatch;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 public class FlushJobUpdateStatistics implements FlushJob
 {
-    Map<String, Integer> activity;
+    Map<String, InterMineId> activity;
     BatchWriter batchWriter;
     Connection con;
 
@@ -32,7 +33,7 @@ public class FlushJobUpdateStatistics implements FlushJob
      * @param batchWriter a BatchWriter to use to update the statistics
      * @param con a Connection with which to perform the updates
      */
-    public FlushJobUpdateStatistics(Map<String, Integer> activity, BatchWriter batchWriter,
+    public FlushJobUpdateStatistics(Map<String, InterMineId> activity, BatchWriter batchWriter,
             Connection con) {
         this.activity = activity;
         this.batchWriter = batchWriter;

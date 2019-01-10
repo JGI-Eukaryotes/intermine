@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.ProfileManager;
 import org.intermine.api.query.PathQueryExecutor;
@@ -54,7 +55,7 @@ public class DiseaseDisplayer extends ReportDisplayer
 
     @Override
     public void display(HttpServletRequest request, ReportObject reportObject) {
-        Integer geneId = reportObject.getObject().getId();
+        InterMineId geneId = reportObject.getObject().getId();
         Set<String> orthologues = getLocalHomologues(geneId);
         if (orthologues != null && !orthologues.isEmpty()) {
             request.setAttribute("ratGenes", StringUtil.join(orthologues, ","));

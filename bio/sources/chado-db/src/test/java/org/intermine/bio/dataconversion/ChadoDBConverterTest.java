@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismData;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.dataconversion.ItemWriter;
@@ -106,9 +107,9 @@ public class ChadoDBConverterTest extends ItemsTestCase
         }
 
         @Override
-        protected Map<OrganismData, Integer> getChadoOrganismIds(@SuppressWarnings("unused")
+        protected Map<OrganismData, InterMineId> getChadoOrganismIds(@SuppressWarnings("unused")
                                                                     Connection connection) {
-            Map<OrganismData, Integer> retMap = new HashMap<OrganismData, Integer>();
+            Map<OrganismData, InterMineId> retMap = new HashMap<OrganismData, InterMineId>();
             retMap.put(OrganismRepository.getOrganismRepository().getOrganismDataByTaxon("7227"), 1);
             return retMap;
         }

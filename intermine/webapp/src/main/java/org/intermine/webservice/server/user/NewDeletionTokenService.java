@@ -13,6 +13,7 @@ package org.intermine.webservice.server.user;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.webservice.server.core.ISO8601DateFormat;
@@ -44,7 +45,7 @@ public class NewDeletionTokenService extends ReadWriteJSONService
 
     @Override
     protected void execute() throws Exception {
-        int lifeSpan = getIntParameter("validity", 60);
+        int lifeSpan = getIntParameter("validity", InterMineId.valueOf(60)).intValue();
         Profile profile = getPermission().getProfile();
         DeletionToken token = tokenFactory.createToken(profile, lifeSpan);
         serveToken(token);
@@ -60,7 +61,7 @@ public class NewDeletionTokenService extends ReadWriteJSONService
         info.put("uuid", token.getUUID().toString());
         info.put("expiry", ISO8601DateFormat.getFormatter().format(token.getExpiry()));
         info.put("secondsRemaining",
-                (token.getExpiry().getTime() - System.currentTimeMillis()) / 1000);
+                Long.valueOf((token.getExpiry().getTime() - System.currentTimeMillis()) / 1000));
 
         this.addResultItem(info, false);
     }

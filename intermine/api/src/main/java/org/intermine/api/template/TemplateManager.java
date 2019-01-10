@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.ProfileManager;
 import org.intermine.api.profile.TagManager;
@@ -255,7 +256,7 @@ public class TemplateManager
      * @param aspectTag name of aspect tag
      * @return a list of template queries
      */
-    public List<ApiTemplate> getAspectTemplates(String aspectTag, Integer size) {
+    public List<ApiTemplate> getAspectTemplates(String aspectTag, InterMineId size) {
 
         int i = 0;
         String aspect = aspectTag;
@@ -443,7 +444,7 @@ public class TemplateManager
      * @return List of template names
      */
     public List<String> getMostPopularTemplateOrder(String userName, String sessionId,
-            Integer size) {
+            InterMineId size) {
         List<String> mostPopularTemplateOrder = new ArrayList<String>();
         Map<String, Double> templateLnRank = templateTracker.getLogarithmMap(userName, sessionId,
                                                                              this);

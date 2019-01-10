@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.ConstraintOp;
@@ -55,7 +56,7 @@ public class GeneLengthCorrectionCoefficient implements CorrectionCoefficient
     private ObjectStore os;
     private InterMineBag bag;
     private String ids;
-    private Integer countItemsWithLengthNotNull = null;
+    private InterMineId countItemsWithLengthNotNull = null;
     private static final String GENE_LENGTH = "gene_length";
     private static final String GENE_LENGTH_CORRECTION = "gene_length_correction";
     private static final String PERCENTAGE_GENE_LENGTH_NOT_NULL = "percentage_gene_length_not_null";
@@ -285,7 +286,7 @@ public class GeneLengthCorrectionCoefficient implements CorrectionCoefficient
         // bag constraint
         if (bag == null) {
             // use list of IDs instead of bag
-            List<Integer> intermineIds = getIds();
+            List<InterMineId> intermineIds = getIds();
             q.addConstraint(Constraints.inIds(config.getStartClass(), intermineIds));
         } else {
             q.addConstraint(Constraints.in(config.getStartClass(), bag.getName()));
@@ -296,9 +297,9 @@ public class GeneLengthCorrectionCoefficient implements CorrectionCoefficient
         return q;
     }
 
-    private List<Integer> getIds() {
+    private List<InterMineId> getIds() {
         String[] idArray = ids.split(",");
-        List<Integer> idsCollection = new ArrayList<Integer>();
+        List<InterMineId> idsCollection = new ArrayList<InterMineId>();
         for (String intermineId : idArray) {
             try {
                 idsCollection.add(Integer.valueOf(intermineId.trim()));

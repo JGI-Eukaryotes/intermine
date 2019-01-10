@@ -14,6 +14,7 @@ import java.util.Collections;
 
 import junit.framework.Test;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.testmodel.Address;
@@ -183,7 +184,7 @@ public class EquivalentObjectFetcherTest extends QueryTestCase
         subQ.addFrom(subQc);
         subQ.addToSelect(subQc);
         ConstraintSet subCs = new ConstraintSet(ConstraintOp.AND);
-        subCs.addConstraint(new SimpleConstraint(new QueryField(subQc, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new Integer(1234))));
+        subCs.addConstraint(new SimpleConstraint(new QueryField(subQc, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new InterMineId(1234))));
         subQ.setConstraint(subCs);
         subQ.setDistinct(false);
         cs.addConstraint(new ContainsConstraint(new QueryObjectReference(qc, "company"), ConstraintOp.CONTAINS, qc1));
@@ -290,7 +291,7 @@ public class EquivalentObjectFetcherTest extends QueryTestCase
         qD.addFrom(qcD);
         qD.addToSelect(qcD);
         ConstraintSet csD = new ConstraintSet(ConstraintOp.AND);
-        csD.addConstraint(new SimpleConstraint(new QueryField(qcD, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new Integer(765213))));
+        csD.addConstraint(new SimpleConstraint(new QueryField(qcD, "vatNumber"), ConstraintOp.EQUALS, new QueryValue(new InterMineId(765213))));
         qD.setConstraint(csD);
         qD.setDistinct(false);
         cs.addConstraint(new SubqueryConstraint(qc, ConstraintOp.IN, qD));

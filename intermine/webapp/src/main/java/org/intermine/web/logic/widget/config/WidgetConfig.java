@@ -20,6 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStore;
@@ -164,7 +165,7 @@ public abstract class WidgetConfig
             if (bag == null) {
                 // use list of IDs instead of bag
                 String[] idArray = ids.split(",");
-                Collection<Integer> idsCollection = new LinkedHashSet<Integer>();
+                Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                 for (String intermineId : idArray) {
                     try {
                         idsCollection.add(Integer.valueOf(intermineId.trim()));

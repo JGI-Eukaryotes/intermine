@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 
 
@@ -304,7 +305,7 @@ public class ItemTest extends TestCase
         List idsToAdd = new ArrayList();
 
         idsToAdd.add("contractor_id_1");
-        idsToAdd.add(new Integer(10));
+        idsToAdd.add(new InterMineId(10));
 
         try {
             item1.setCollection("contractors", idsToAdd);

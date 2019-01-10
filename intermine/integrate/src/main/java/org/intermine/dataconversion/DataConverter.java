@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.xml.full.Attribute;
@@ -35,7 +36,7 @@ public abstract class DataConverter
     private ItemWriter writer;
     private Map<String, String> aliases = new HashMap<String, String>();
     private int nextClsId = 0;
-    private Map<String, Integer> ids = new HashMap<String, Integer>();
+    private Map<String, InterMineId> ids = new HashMap<String, InterMineId>();
     private Model model;
     private ItemFactory itemFactory;
     private DataConverterStoreHook storeHook = null;
@@ -112,12 +113,12 @@ public abstract class DataConverter
      * @return a new identifier with the next sequential id for the given class
      */
     protected String newId(String className) {
-        Integer id = ids.get(className);
+        InterMineId id = ids.get(className);
         if (id == null) {
-            id = new Integer(0);
+            id = new InterMineId(0);
             ids.put(className, id);
         }
-        id = new Integer(id.intValue() + 1);
+        id = new InterMineId(id.intValue() + 1);
         ids.put(className, id);
         return id.toString();
     }
@@ -128,7 +129,7 @@ public abstract class DataConverter
      * @return the database id of the new Item
      * @throws ObjectStoreException if an error occurs in storing
      */
-    public Integer store(Item item) throws ObjectStoreException {
+    public InterMineId store(Item item) throws ObjectStoreException {
         if (item == null) {
             throw new IllegalArgumentException("Store called with null item");
         }
@@ -144,7 +145,7 @@ public abstract class DataConverter
      * @param itemId the InterMine ID of the Item that holds this ReferenceList
      * @throws ObjectStoreException if an error occurs in storing
      */
-    public void store(ReferenceList referenceList, Integer itemId)
+    public void store(ReferenceList referenceList, InterMineId itemId)
         throws ObjectStoreException {
         getItemWriter().store(ItemHelper.convert(referenceList), itemId);
     }
@@ -155,7 +156,7 @@ public abstract class DataConverter
      * @param itemId the InterMine ID of the Item that holds this att
      * @throws ObjectStoreException if an error occurs in storing
      */
-    public void store(Attribute att, Integer itemId)
+    public void store(Attribute att, InterMineId itemId)
         throws ObjectStoreException {
         getItemWriter().store(ItemHelper.convert(att), itemId);
     }
@@ -166,7 +167,7 @@ public abstract class DataConverter
      * @param itemId the InterMine ID of the Item that holds this Reference
      * @throws ObjectStoreException if an error occurs in storing
      */
-    public void store(Reference reference, Integer itemId) throws ObjectStoreException {
+    public void store(Reference reference, InterMineId itemId) throws ObjectStoreException {
         getItemWriter().store(ItemHelper.convert(reference), itemId);
     }
 

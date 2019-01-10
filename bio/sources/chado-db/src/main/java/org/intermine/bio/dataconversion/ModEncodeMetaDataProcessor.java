@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.sql.writebatch.Batch;
@@ -86,9 +87,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     // applied_protocol/data/attribute maps
     // -------------------
     // chado submission id to chado data_id
-    private Map<Integer, List<Integer>> submissionDataMap = new HashMap<Integer, List<Integer>>();
+    private Map<Integer, List<InterMineId>> submissionDataMap = new HashMap<Integer, List<InterMineId>>();
     // chado data id to chado submission id
-    private Map<Integer, Integer> dataSubmissionMap = new HashMap<Integer, Integer>();
+    private Map<Integer, InterMineId> dataSubmissionMap = new HashMap<Integer, InterMineId>();
 
     // to store protocol data until we create applied protocols
     private Map<Integer, Protocol> protocolMap =
@@ -104,15 +105,15 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     // --------------------------------------
 
     // for projects, the maps link the project name with the identifiers...
-    private Map<String, Integer> projectIdMap = new HashMap<String, Integer>();
+    private Map<String, InterMineId> projectIdMap = new HashMap<String, InterMineId>();
     private Map<String, String> projectIdRefMap = new HashMap<String, String>();
     // for labs, the maps link the lab name with the identifiers...
-    private Map<String, Integer> labIdMap = new HashMap<String, Integer>();
+    private Map<String, InterMineId> labIdMap = new HashMap<String, InterMineId>();
     private Map<String, String> labIdRefMap = new HashMap<String, String>();
     // for experiment, the maps link the exp name (description!) with the identifiers...
-    private Map<String, Integer> experimentIdMap = new HashMap<String, Integer>();
+    private Map<String, InterMineId> experimentIdMap = new HashMap<String, InterMineId>();
     private Map<String, String> experimentIdRefMap = new HashMap<String, String>();
-    private Map<String, List<Integer>> expSubMap = new HashMap<String, List<Integer>>();
+    private Map<String, List<InterMineId>> expSubMap = new HashMap<String, List<InterMineId>>();
 
 
     // ...we need a further map to link to submission
@@ -122,24 +123,24 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     // to store the category in experiment
     private Map<Integer, String> submissionExpCatMap = new HashMap<Integer, String>();
     // to check if experiment type is set
-    private Set<Integer> submissionWithExpTypeSet = new HashSet<Integer>();
+    private Set<InterMineId> submissionWithExpTypeSet = new HashSet<InterMineId>();
 
     // submission/applied_protocol/protocol maps
     // -----------------------------------------
 
     private Map<String, String> protocolsMap = new HashMap<String, String>();
     private Map<Integer, String> protocolItemIds = new HashMap<Integer, String>();
-    private Map<String, Integer> protocolItemToObjectId = new HashMap<String, Integer>();
+    private Map<String, InterMineId> protocolItemToObjectId = new HashMap<String, InterMineId>();
     // submission chado id to item identifier of Protocol used to generate GFF
     private Map<Integer, String> scoreProtocols = new HashMap<Integer, String>();
     private Map<Integer, String> protocolTypesMap = new HashMap<Integer, String>();
-    private Map<Integer, Integer> appliedProtocolIdMap = new HashMap<Integer, Integer>();
+    private Map<Integer, InterMineId> appliedProtocolIdMap = new HashMap<Integer, InterMineId>();
     private Map<Integer, String> appliedProtocolIdRefMap = new HashMap<Integer, String>();
     // list of firstAppliedProtocols, first level of the DAG linking
     // the applied protocols through the data (and giving the flow of data)
-    private List<Integer> firstAppliedProtocols = new ArrayList<Integer>();
+    private List<InterMineId> firstAppliedProtocols = new ArrayList<InterMineId>();
 
-    private Map<Integer, Integer> publicationIdMap = new HashMap<Integer, Integer>();
+    private Map<Integer, InterMineId> publicationIdMap = new HashMap<Integer, InterMineId>();
     private Map<Integer, String> publicationIdRefMap = new HashMap<Integer, String>();
 
     // experimental factor maps
@@ -150,7 +151,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     private Map<Integer, List<String[]>> submissionEFactorMap2 =
             new HashMap<Integer, List<String[]>>();
 
-    private Map<String, Integer> eFactorIdMap = new HashMap<String, Integer>();
+    private Map<String, InterMineId> eFactorIdMap = new HashMap<String, InterMineId>();
     private Map<String, String> eFactorIdRefMap = new HashMap<String, String>();
     private Map<Integer, List<String>> submissionEFactorMap = new HashMap<Integer, List<String>>();
 
@@ -170,9 +171,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     protected IdResolver rslv;
     private Map<String, String> geneToItemIdentifier = new HashMap<String, String>();
 
-    // DbRecords Integer=objectId String=submission.itemId
+    // DbRecords InterMineId=objectId String=submission.itemId
     // the second map is used directly to build the references
-    private Map<DatabaseRecordKey, Integer> dbRecords = new HashMap<DatabaseRecordKey, Integer>();
+    private Map<DatabaseRecordKey, InterMineId> dbRecords = new HashMap<DatabaseRecordKey, InterMineId>();
     private Map<Integer, List<String>> dbRecordIdSubItems = new HashMap<Integer, List<String>>();
 
 
@@ -181,7 +182,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         // the identifier assigned to Item eg. "0_23"
         private String itemIdentifier;
         // the object id of the stored Item
-        private Integer interMineObjectId;
+        private InterMineId interMineObjectId;
         // the identifier assigned to lab Item for this object
         private String labItemIdentifier;
         private String title;
@@ -196,13 +197,13 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      */
     private static final class AppliedProtocol
     {
-        private Integer submissionId;      // chado
-        private Integer protocolId;
-        private Integer step;              // the level in the dag for the AP
+        private InterMineId submissionId;      // chado
+        private InterMineId protocolId;
+        private InterMineId step;              // the level in the dag for the AP
 
         // the output data associated to this applied protocol
-        private List<Integer> outputs = new ArrayList<Integer>();
-        private List<Integer> inputs = new ArrayList<Integer>();
+        private List<InterMineId> outputs = new ArrayList<InterMineId>();
+        private List<InterMineId> inputs = new ArrayList<InterMineId>();
 
         private AppliedProtocol() {
             // don't instantiate
@@ -214,11 +215,11 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      */
     private static final class Protocol
     {
-        private Integer protocolId;      // possibly we don't need this (map)
+        private InterMineId protocolId;      // possibly we don't need this (map)
         private String name;
         private String description;
         private String wikiLink;
-        private Integer version;       // the level in the dag for the AP
+        private InterMineId version;       // the level in the dag for the AP
 
         private Protocol() {
             // don't instantiate
@@ -233,8 +234,8 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     private static final class AppliedData
     {
         private String itemIdentifier;
-        private Integer intermineObjectId;
-        private Integer dataId;
+        private InterMineId intermineObjectId;
+        private InterMineId dataId;
         private String value;
         private String actualValue;
         private String type;
@@ -242,9 +243,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         private String url;    // in particular, it stores the dccid of the related sub needed for
                                // linking to a result file
         // the list of applied protocols for which this data item is an input
-        private List<Integer> nextAppliedProtocols = new ArrayList<Integer>();
+        private List<InterMineId> nextAppliedProtocols = new ArrayList<InterMineId>();
         // the list of applied protocols for which this data item is an output
-        private List<Integer> previousAppliedProtocols = new ArrayList<Integer>();
+        private List<InterMineId> previousAppliedProtocols = new ArrayList<InterMineId>();
 
         private AppliedData() {
             // don't instantiate
@@ -343,7 +344,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         ResultSet res = getDeleted(connection);
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             String value = res.getString("value");
             deletedSubMap.put(submissionId, value);
         }
@@ -397,7 +398,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         for (Map.Entry<Integer, SubmissionDetails> entry: submissionMap.entrySet()) {
 
-            Integer chadoExperimentId = entry.getKey();
+            InterMineId chadoExperimentId = entry.getKey();
             if (deletedSubMap.containsKey(chadoExperimentId)) {
                 continue;
             }
@@ -407,7 +408,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             String labItemIdentifier = submissionDetails.labItemIdentifier;
             String submissionTitle = submissionDetails.title;
 
-            List<Integer> thisSubmissionDataIds = submissionDataMap.get(chadoExperimentId);
+            List<InterMineId> thisSubmissionDataIds = submissionDataMap.get(chadoExperimentId);
             LOG.info("DATA IDS for " + dccIdMap.get(chadoExperimentId) + ": "
                     + thisSubmissionDataIds.size());
 
@@ -459,7 +460,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     private void storeSubmissionsCollections(Map<Integer, List<String>> subCollections)
         throws ObjectStoreException {
         for (Map.Entry<Integer, List<String>> entry : subCollections.entrySet()) {
-            Integer featureObjectId = entry.getKey();
+            InterMineId featureObjectId = entry.getKey();
             ReferenceList collection = new ReferenceList("submissions", entry.getValue());
             getChadoDBConverter().store(collection, featureObjectId);
         }
@@ -477,7 +478,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             // 2- fill the 'ChromatinState' state with the secondaryId
             if ("ChromatinState".equals(fData.getInterMineType())) {
                 String state = fData.getChadoFeatureName();
-                Integer imObjectId = fData.getIntermineObjectId();
+                InterMineId imObjectId = fData.getIntermineObjectId();
                 setAttribute(imObjectId, "state", state);
             }
         }
@@ -485,7 +486,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
 
     private void processDataFeatureTable(Connection connection, Map<Integer, List<String>> subCols,
-            Map<Integer, FeatureData> featureMap, Integer chadoExperimentId, String dataIdTable)
+            Map<Integer, FeatureData> featureMap, InterMineId chadoExperimentId, String dataIdTable)
         throws SQLException {
         long bT = System.currentTimeMillis();     // to monitor time spent in the process
 
@@ -494,8 +495,8 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         bT = System.currentTimeMillis();     // to monitor time spent in the process
         ResultSet res = getDataFeature(connection, dataIdTable);
         while (res.next()) {
-            Integer dataId = new Integer(res.getInt("data_id"));
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId dataId = new InterMineId(res.getInt("data_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
 
             FeatureData featureData = featureMap.get(featureId);
             if (featureData == null) {
@@ -504,7 +505,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
                 continue;
             }
 
-            Integer featureObjectId = featureData.getIntermineObjectId();
+            InterMineId featureObjectId = featureData.getIntermineObjectId();
             List<String> subs = subCols.get(featureObjectId);
             if (subs == null) {
                 subs = new ArrayList<String>();
@@ -515,8 +516,8 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         LOG.info("DATA IDS PROCESS TIME data_feature table: " + (System.currentTimeMillis() - bT));
     }
 
-    private String createDataIdsTempTable(Connection connection, Integer chadoExperimentId,
-            List<Integer> dataIds) throws SQLException {
+    private String createDataIdsTempTable(Connection connection, InterMineId chadoExperimentId,
+            List<InterMineId> dataIds) throws SQLException {
 
         // the batch writer system doesn't like to have duplicate named tables
         String tableName = DATA_IDS_TABLE_NAME + "_" + chadoExperimentId + "_"
@@ -533,7 +534,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             BatchWriterPostgresCopyImpl batchWriter = new BatchWriterPostgresCopyImpl();
             Batch batch = new Batch(batchWriter);
 
-            HashSet<Integer> uniqueDataIds = new HashSet<Integer>(dataIds);
+            HashSet<InterMineId> uniqueDataIds = new HashSet<InterMineId>(dataIds);
 
             String[] colNames = new String[] {"data_id"};
             for (Integer dataId : uniqueDataIds) {
@@ -611,16 +612,16 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getDAG(connection);
         AppliedProtocol node = new AppliedProtocol();
         AppliedData branch = null;
-        Integer count = new Integer(0);
-        Integer actualSubmissionId = new Integer(0);  // to store the experiment id (see below)
-        Integer previousAppliedProtocolId = new Integer(0);
+        InterMineId count = new InterMineId(0);
+        InterMineId actualSubmissionId = new InterMineId(0);  // to store the experiment id (see below)
+        InterMineId previousAppliedProtocolId = new InterMineId(0);
         boolean isADeletedSub = false;
 
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
-            Integer protocolId = new Integer(res.getInt("protocol_id"));
-            Integer appliedProtocolId = new Integer(res.getInt("applied_protocol_id"));
-            Integer dataId = new Integer(res.getInt("data_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
+            InterMineId protocolId = new InterMineId(res.getInt("protocol_id"));
+            InterMineId appliedProtocolId = new InterMineId(res.getInt("applied_protocol_id"));
+            InterMineId dataId = new InterMineId(res.getInt("data_id"));
             String direction = res.getString("direction");
 
             LOG.debug("DAG: " + submissionId + " p:" + protocolId + " ap:" + appliedProtocolId
@@ -753,7 +754,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @param newAD
      * @param dataId
      */
-    private void updateAppliedDataMap(AppliedData newAD, Integer dataId) {
+    private void updateAppliedDataMap(AppliedData newAD, InterMineId dataId) {
         if (appliedDataMap.containsKey(dataId)) {
             appliedDataMap.remove(dataId);
         }
@@ -765,7 +766,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @param dataId  the data id
      * @param intermineObjectId  just a flag to do an update of attributes instead of a replecament
      */
-    private void updateADMap(AppliedData newAD, Integer dataId, Integer intermineObjectId) {
+    private void updateADMap(AppliedData newAD, InterMineId dataId, InterMineId intermineObjectId) {
         if (appliedDataMap.containsKey(dataId)) {
             AppliedData datum = appliedDataMap.get(dataId);
             datum.intermineObjectId = newAD.intermineObjectId;
@@ -786,7 +787,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     private void setAppliedProtocolSteps(Connection connection)
         throws ObjectStoreException {
         for (Integer appliedProtocolId : appliedProtocolMap.keySet()) {
-            Integer step = appliedProtocolMap.get(appliedProtocolId).step;
+            InterMineId step = appliedProtocolMap.get(appliedProtocolId).step;
             if (step != null) {
                 Attribute attr = new Attribute("step", step.toString());
                 getChadoDBConverter().store(attr, appliedProtocolIdMap.get(appliedProtocolId));
@@ -804,7 +805,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     // NOTE this could equally be done with data, data_feature and applied_protocol_data
     private void findScoreProtocols() {
         for (Map.Entry<Integer, AppliedData> entry : appliedDataMap.entrySet()) {
-            Integer dataId = entry.getKey();
+            InterMineId dataId = entry.getKey();
             AppliedData aData = entry.getValue();
             if ("Result File".equals(aData.type)
                     && (aData.value.endsWith(".gff") || aData.value.endsWith("gff3"))) {
@@ -848,9 +849,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      */
     private void traverseDag()
         throws ObjectStoreException {
-        List<Integer> currentIterationAP = firstAppliedProtocols;
-        List<Integer> nextIterationAP = new ArrayList<Integer>();
-        Integer step = 1;     // DAG level
+        List<InterMineId> currentIterationAP = firstAppliedProtocols;
+        List<InterMineId> nextIterationAP = new ArrayList<InterMineId>();
+        InterMineId step = 1;     // DAG level
 
         while (currentIterationAP.size() > 0) {
             nextIterationAP = buildADagLevel (currentIterationAP, step);
@@ -871,25 +872,25 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @throws SQLException
      * @throws ObjectStoreException
      */
-    private List<Integer> buildADagLevel(List<Integer> previousAppliedProtocols, Integer step)
+    private List<InterMineId> buildADagLevel(List<InterMineId> previousAppliedProtocols, InterMineId step)
         throws ObjectStoreException {
-        List<Integer> nextIterationProtocols = new ArrayList<Integer>();
-        Iterator<Integer> pap = previousAppliedProtocols.iterator();
+        List<InterMineId> nextIterationProtocols = new ArrayList<InterMineId>();
+        Iterator<InterMineId> pap = previousAppliedProtocols.iterator();
         while (pap.hasNext()) {
-            List<Integer> outputs = new ArrayList<Integer>();
-            List<Integer> inputs = new ArrayList<Integer>();
-            Integer currentId = pap.next();
+            List<InterMineId> outputs = new ArrayList<InterMineId>();
+            List<InterMineId> inputs = new ArrayList<InterMineId>();
+            InterMineId currentId = pap.next();
             // add the DAG level here only if these are the first AP
             if (step == 1) {
                 AppliedProtocol ap = appliedProtocolMap.get(currentId);
                 ap.step = step;
             }
             outputs.addAll(appliedProtocolMap.get(currentId).outputs);
-            Integer submissionId = appliedProtocolMap.get(currentId).submissionId;
-            Iterator<Integer> od = outputs.iterator();
+            InterMineId submissionId = appliedProtocolMap.get(currentId).submissionId;
+            Iterator<InterMineId> od = outputs.iterator();
             while (od.hasNext()) {
-                Integer currentOD = od.next();
-                List<Integer> nextProtocols = new ArrayList<Integer>();
+                InterMineId currentOD = od.next();
+                List<InterMineId> nextProtocols = new ArrayList<InterMineId>();
                 // build map submission-data
                 mapSubmissionAndData(submissionId, currentOD);
                 if (appliedDataMap.containsKey(currentOD)) {
@@ -905,19 +906,19 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
                 // this is needed, otherwise inputs to AP that are not outputs
                 // of a previous protocol are not considered
                 inputs.addAll(appliedProtocolMap.get(currentId).inputs);
-                Iterator<Integer> in = inputs.iterator();
+                Iterator<InterMineId> in = inputs.iterator();
                 while (in.hasNext()) {
-                    Integer currentIn = in.next();
+                    InterMineId currentIn = in.next();
                     // build map submission-data
                     mapSubmissionAndData(submissionId, currentIn);
                 }
 
                 // build the list of children applied protocols chado identifiers
                 // as input for the next iteration
-                Iterator<Integer> nap = nextProtocols.iterator();
+                Iterator<InterMineId> nap = nextProtocols.iterator();
                 while (nap.hasNext()) {
                     // and fill the map with the chado experiment_id and the DAG level
-                    Integer currentAPId = nap.next();
+                    InterMineId currentAPId = nap.next();
                     nextIterationProtocols.add(currentAPId);
                     // and set the reference from applied protocol to the submission
                     Reference reference = new Reference();
@@ -949,7 +950,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         ResultSet res = getSubmissionOrganism(connection);
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
@@ -1003,7 +1004,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         ResultSet res = getProjects(connection);
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             String value = res.getString("value");
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
@@ -1012,10 +1013,10 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         }
         res.close();
 
-        Set<Integer> exp = submissionProjectMap.keySet();
-        Iterator<Integer> i  = exp.iterator();
+        Set<InterMineId> exp = submissionProjectMap.keySet();
+        Iterator<InterMineId> i  = exp.iterator();
         while (i.hasNext()) {
-            Integer thisExp = i.next();
+            InterMineId thisExp = i.next();
             String project = submissionProjectMap.get(thisExp);
 
             if (projectIdMap.containsKey(project)) {
@@ -1024,7 +1025,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             LOG.debug("PROJECT: " + project);
             Item pro = getChadoDBConverter().createItem("Project");
             pro.setAttribute("surnamePI", project);
-            Integer intermineObjectId = getChadoDBConverter().store(pro);
+            InterMineId intermineObjectId = getChadoDBConverter().store(pro);
             storeInProjectMaps(pro, project, intermineObjectId);
         }
         LOG.info("created " + projectIdMap.size() + " project");
@@ -1069,7 +1070,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         ResultSet res = getLabs(connection);
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             String value = res.getString("value");
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
@@ -1078,10 +1079,10 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         }
         res.close();
 
-        Set<Integer> exp = submissionLabMap.keySet();
-        Iterator<Integer> i  = exp.iterator();
+        Set<InterMineId> exp = submissionLabMap.keySet();
+        Iterator<InterMineId> i  = exp.iterator();
         while (i.hasNext()) {
-            Integer thisExp = i.next();
+            InterMineId thisExp = i.next();
             String prov = submissionLabMap.get(thisExp);
             String project = submissionProjectMap.get(thisExp);
 
@@ -1093,7 +1094,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             lab.setAttribute("surname", prov);
             lab.setReference("project", projectIdRefMap.get(project));
 
-            Integer intermineObjectId = getChadoDBConverter().store(lab);
+            InterMineId intermineObjectId = getChadoDBConverter().store(lab);
             storeInLabMaps(lab, prov, intermineObjectId);
         }
         LOG.info("created " + labIdMap.size() + " labs");
@@ -1136,7 +1137,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getExperimentTitles(connection);
         Map<String, String> expProMap = new HashMap<String, String>();
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
@@ -1174,7 +1175,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             String project = expProMap.get(name);
             exp.setReference("project", projectIdRefMap.get(project));
             // note: the reference to submission collection is in a separate method
-            Integer intermineObjectId = getChadoDBConverter().store(exp);
+            InterMineId intermineObjectId = getChadoDBConverter().store(exp);
 
             experimentIdMap .put(name, intermineObjectId);
             experimentIdRefMap .put(name, exp.getIdentifier());
@@ -1257,7 +1258,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getSubmissions(connection);
         int count = 0;
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
@@ -1281,14 +1282,14 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
             OrganismRepository or = OrganismRepository.getOrganismRepository();
 
-            Integer taxId = Integer.valueOf(
+            InterMineId taxId = InterMineId.valueOf(
                     or.getOrganismDataByGenusSpecies(genus, species).getTaxonId());
             LOG.debug("SPECIES: " + organismName + "|" + taxId);
             String organismItemIdentifier = getChadoDBConverter().getOrganismItem(
                     or.getOrganismDataByGenusSpecies(genus, species).getTaxonId()).getIdentifier();
             submission.setReference("organism", organismItemIdentifier);
             // ..store all
-            Integer intermineObjectId = getChadoDBConverter().store(submission);
+            InterMineId intermineObjectId = getChadoDBConverter().store(submission);
             // ..and fill the SubmissionDetails object
             SubmissionDetails details = new SubmissionDetails();
             details.interMineObjectId = intermineObjectId;
@@ -1334,7 +1335,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getExperimentProperties(connection);
         int count = 0;
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
@@ -1392,7 +1393,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
                 Item pub = getChadoDBConverter().createItem("Publication");
                 pub.setAttribute(fieldName, value);
-                Integer intermineObjectId = getChadoDBConverter().store(pub);
+                InterMineId intermineObjectId = getChadoDBConverter().store(pub);
 
                 publicationIdMap.put(submissionId, intermineObjectId);
                 publicationIdRefMap.put(submissionId, pub.getIdentifier());
@@ -1441,12 +1442,12 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         String name = null;
 
         while (res.next()) {
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
 
-            Integer rank = new Integer(res.getInt("rank"));
+            InterMineId rank = new InterMineId(res.getInt("rank"));
             String  value = res.getString("value");
 
             // the data is alternating between EF types and names, in order.
@@ -1516,11 +1517,11 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getProtocols(connection);
         int count = 0;
         while (res.next()) {
-            Integer protocolChadoId = new Integer(res.getInt("protocol_id"));
+            InterMineId protocolChadoId = new InterMineId(res.getInt("protocol_id"));
             String name = res.getString("name");
             String description = res.getString("description");
             String wikiLink = res.getString("accession");
-            Integer version = res.getInt("version");
+            InterMineId version = res.getInt("version");
             // needed: it breaks otherwise
             if (description.length() == 0) {
                 description = "N/A";
@@ -1542,7 +1543,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     }
 
 
-    private Integer getProtocolInterMineId(Integer chadoId) {
+    private InterMineId getProtocolInterMineId(Integer chadoId) {
         return protocolItemToObjectId.get(protocolItemIds.get(chadoId));
     }
 
@@ -1572,7 +1573,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getProtocolAttributes(connection);
         int count = 0;
         while (res.next()) {
-            Integer protocolId = new Integer(res.getInt("protocol_id"));
+            InterMineId protocolId = new InterMineId(res.getInt("protocol_id"));
             String heading = res.getString("heading");
             String value = res.getString("value");
             String fieldName = FIELD_NAME_MAP.get(heading);
@@ -1624,9 +1625,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         int count = 0;
         boolean isADeletedSub = false;
         while (res.next()) {
-            Integer appliedProtocolId = new Integer(res.getInt("applied_protocol_id"));
-            Integer protocolId = new Integer(res.getInt("protocol_id"));
-            Integer submissionId = new Integer(res.getInt("experiment_id"));
+            InterMineId appliedProtocolId = new InterMineId(res.getInt("applied_protocol_id"));
+            InterMineId protocolId = new InterMineId(res.getInt("protocol_id"));
+            InterMineId submissionId = new InterMineId(res.getInt("experiment_id"));
             // the results are ordered, first ap have a subId
             // if we find a deleted sub, we know that subsequent records with null
             // subId belongs to the deleted sub
@@ -1660,7 +1661,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
                         submissionMap.get(submissionId).itemIdentifier);
             }
             // store it and add to maps
-            Integer intermineObjectId = getChadoDBConverter().store(appliedProtocol);
+            InterMineId intermineObjectId = getChadoDBConverter().store(appliedProtocol);
             appliedProtocolIdMap .put(appliedProtocolId, intermineObjectId);
             appliedProtocolIdRefMap .put(appliedProtocolId, appliedProtocol.getIdentifier());
             count++;
@@ -1678,7 +1679,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             protocol.setAttribute("description", p.description);
             protocol.setAttribute("wikiLink", p.wikiLink);
             protocol.setAttribute("version", "" + p.version);
-            Integer intermineObjectId = getChadoDBConverter().store(protocol);
+            InterMineId intermineObjectId = getChadoDBConverter().store(protocol);
             protocolItemId = protocol.getIdentifier();
             protocolItemToObjectId.put(protocolItemId, intermineObjectId);
             protocolsMap.put(p.wikiLink, protocolItemId);
@@ -1717,9 +1718,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getAppliedData(connection);
         int count = 0;
         while (res.next()) {
-            Integer dataId = new Integer(res.getInt("data_id"));
+            InterMineId dataId = new InterMineId(res.getInt("data_id"));
             // check if not belonging to a deleted sub
-            Integer submissionId = dataSubmissionMap.get(dataId);
+            InterMineId submissionId = dataSubmissionMap.get(dataId);
             if (submissionId == null || deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
@@ -1759,7 +1760,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             submissionData.setAttribute("type", heading);
 
             // store it and add to object and maps
-            Integer intermineObjectId = getChadoDBConverter().store(submissionData);
+            InterMineId intermineObjectId = getChadoDBConverter().store(submissionData);
 
             AppliedData aData = new AppliedData();
             aData.intermineObjectId = intermineObjectId;
@@ -1818,7 +1819,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @return the SQL result set
      * @throws SQLException if a database problem occurs
      */
-    protected ResultSet getOfficialName(Connection connection, Integer dataId)
+    protected ResultSet getOfficialName(Connection connection, InterMineId dataId)
         throws SQLException {
         String query =
                 "SELECT a.value "
@@ -1868,15 +1869,15 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         ResultSet res = getAppliedDataAttributes(connection);
         int count = 0;
-        Integer previousDataId = 0;
+        InterMineId previousDataId = 0;
         String previousName = null;
         String value = null;
         String type = null;
         while (res.next()) {
-            Integer dataId = new Integer(res.getInt("data_id"));
+            InterMineId dataId = new InterMineId(res.getInt("data_id"));
             // check if not belonging to a deleted sub
             // better way?
-            Integer submissionId = dataSubmissionMap.get(dataId);
+            InterMineId submissionId = dataSubmissionMap.get(dataId);
             if (submissionId == null || deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
@@ -1931,7 +1932,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @return
      * @throws ObjectStoreException
      */
-    private Item storeDataAttribute(String value, String type, Integer dataId,
+    private Item storeDataAttribute(String value, String type, InterMineId dataId,
             String name) throws ObjectStoreException {
         Item dataAttribute = getChadoDBConverter().createItem("SubmissionDataAttribute");
         if (name != null && !"".equals(name)) {
@@ -1956,11 +1957,11 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         ResultSet res = getAppliedDataAttributes(connection);
         int count = 0;
         while (res.next()) {
-            Integer dataId = new Integer(res.getInt("data_id"));
+            InterMineId dataId = new InterMineId(res.getInt("data_id"));
 
             // check if not belonging to a deleted sub
             // better way?
-            Integer submissionId = dataSubmissionMap.get(dataId);
+            InterMineId submissionId = dataSubmissionMap.get(dataId);
             if (submissionId == null || deletedSubMap.containsKey(submissionId)) {
                 continue;
             }
@@ -2013,7 +2014,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
     private class SubmissionReference
     {
-        protected Integer referencedSubmissionId;
+        protected InterMineId referencedSubmissionId;
         protected String dataValue;
 
         protected SubmissionReference(Integer referencedSubmissionId, String dataValue) {
@@ -2040,7 +2041,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         writeHeader(comma, writer);
 
         SubmissionProperty buildSubProperty = null;
-        Integer lastDataId = new Integer(-1);
+        InterMineId lastDataId = new InterMineId(-1);
         Map<String, SubmissionProperty> props = new HashMap<String, SubmissionProperty>();
 
         Map<Integer, Map<String, List<SubmissionProperty>>> subToTypes =
@@ -2049,7 +2050,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         submissionRefs = new HashMap<Integer, List<SubmissionReference>>();
 
         while (res.next()) {
-            Integer dataId = new Integer(res.getInt("data_id"));
+            InterMineId dataId = new InterMineId(res.getInt("data_id"));
             String dataHeading  = res.getString("data_heading");
             String dataName = res.getString("data_name");
             String wikiPageUrl  = res.getString("data_value");
@@ -2060,7 +2061,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             String attDbxref = res.getString("att_dbxref");
             int attRank = res.getInt("att_rank");
 
-            Integer submissionId = dataSubmissionMap.get(dataId);
+            InterMineId submissionId = dataSubmissionMap.get(dataId);
             String dccId = dccIdMap.get(submissionId);
 
             writer.write(dccId + comma + dataHeading + comma + dataName + comma
@@ -2123,7 +2124,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     private void storeSubProperties(Map<Integer, Map<String, List<SubmissionProperty>>> subToTypes)
         throws ObjectStoreException {
         for (Integer submissionId : subToTypes.keySet()) {
-            Integer storedSubmissionId = submissionMap.get(submissionId).interMineObjectId;
+            InterMineId storedSubmissionId = submissionMap.get(submissionId).interMineObjectId;
 
             if (deletedSubMap.containsKey(submissionId)) {
                 continue;
@@ -2304,12 +2305,12 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @return
      */
     private String checkRefSub(String wikiPageUrl, String attValue,
-            Integer submissionId, String dccId) {
+            InterMineId submissionId, String dccId) {
         if (attValue.indexOf(":") > 0) {
             attValue = attValue.substring(0, attValue.indexOf(":"));
         }
         attValue = DCC_PREFIX + attValue;
-        Integer referencedSubId = getSubmissionIdFromDccId(attValue);
+        InterMineId referencedSubId = getSubmissionIdFromDccId(attValue);
         if (referencedSubId != null) {
             SubmissionReference subRef =
                     new SubmissionReference(referencedSubId, wikiPageUrl);
@@ -2348,7 +2349,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     //     * @param propName
     //     * @throws ObjectStoreException
     //     */
-    //    private void finishProp(Integer submissionId, Integer storedSubmissionId,
+    //    private void finishProp(Integer submissionId, InterMineId storedSubmissionId,
     //            Set<String> exFactorNames,
     //            List<Item> devStageItems, String clsName, String propName)
     //            throws ObjectStoreException {
@@ -2431,7 +2432,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             LOG.info("ExFactor created for sub " + dccIdMap.get(current) + ":" + efName
                     + "|" + type);
 
-            Integer intermineObjectId = getChadoDBConverter().store(ef);
+            InterMineId intermineObjectId = getChadoDBConverter().store(ef);
             eFactorIdMap.put(key, intermineObjectId);
             eFactorIdRefMap.put(key, ef.getIdentifier());
         }
@@ -2456,7 +2457,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             }
             LOG.info("ExFactor created for sub " + current + ":" + efName + "|" + type);
 
-            Integer intermineObjectId = getChadoDBConverter().store(ef);
+            InterMineId intermineObjectId = getChadoDBConverter().store(ef);
             eFactorIdMap.put(efName, intermineObjectId);
             eFactorIdRefMap.put(efName, ef.getIdentifier());
         }
@@ -2466,7 +2467,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
 
     private void addToSubToTypes(Map<Integer, Map<String, List<SubmissionProperty>>> subToTypes,
-            Integer submissionId, SubmissionProperty prop) {
+            InterMineId submissionId, SubmissionProperty prop) {
         // submissionId -> [type -> SubmissionProperty]
         if (submissionId == null) {
             LOG.error("MISSING SUB: " + prop);
@@ -2495,21 +2496,21 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         ResultSet res = getAppliedDataCharacteristics(connection);
 
-        Integer lastAttDbXref = new Integer(-1);
-        Integer lastDataId = new Integer(-1);
+        InterMineId lastAttDbXref = new InterMineId(-1);
+        InterMineId lastDataId = new InterMineId(-1);
 
         Map<Integer, SubmissionProperty> createdProps = new HashMap<Integer, SubmissionProperty>();
         SubmissionProperty buildSubProperty = null;
         boolean isValidCharacteristic = false;
-        Integer currentSubId = null;    // we need those to attach the property to the correct sub
-        Integer previousSubId = null;
+        InterMineId currentSubId = null;    // we need those to attach the property to the correct sub
+        InterMineId previousSubId = null;
 
         while (res.next()) {
-            Integer dataId = new Integer(res.getInt("data_id"));
+            InterMineId dataId = new InterMineId(res.getInt("data_id"));
             String attHeading = res.getString("att_heading");
             String attName = res.getString("att_name");
             String attValue = res.getString("att_value");
-            Integer attDbxref = new Integer(res.getInt("att_dbxref"));
+            InterMineId attDbxref = new InterMineId(res.getInt("att_dbxref"));
             int attRank = res.getInt("att_rank");
 
             currentSubId = dataSubmissionMap.get(dataId);
@@ -2584,7 +2585,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         }
     }
 
-    private String checkWikiType (String type, String wikiLink, Integer subId) {
+    private String checkWikiType (String type, String wikiLink, InterMineId subId) {
         // for devstages and strain check the type on the wikilink and use it if different
         // from the declared one.
         LOG.info("WIKILINK: " + wikiLink + " -- type: " + type);
@@ -2633,7 +2634,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
 
         for (Map.Entry<Integer, List<SubmissionReference>> entry : submissionRefs.entrySet()) {
-            Integer submissionId = entry.getKey();
+            InterMineId submissionId = entry.getKey();
             List<SubmissionReference> lref = entry.getValue();
 
             Iterator<SubmissionReference> i = lref.iterator();
@@ -2674,18 +2675,18 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
             List<AppliedData> foundAppliedData,
             List<AppliedProtocol> foundAppliedProtocols) {
         String refDataValue = subRef.dataValue;
-        Integer refSubId = subRef.referencedSubmissionId;
+        InterMineId refSubId = subRef.referencedSubmissionId;
 
         for (AppliedData aData : appliedDataMap.values()) {
             String currentDataValue = aData.value;
-            Integer currentDataSubId = dataSubmissionMap.get(aData.dataId);
+            InterMineId currentDataSubId = dataSubmissionMap.get(aData.dataId);
             // added check that referenced and referring are not the same.
             if (refDataValue.equals(currentDataValue)
                     && refSubId.equals(currentDataSubId)) {
                 LOG.info("Found a matching data value: " + currentDataValue + " in referenced sub "
                         + dccIdMap.get(currentDataSubId) + " for value "
                         + aData.actualValue);
-                Integer foundDataId = aData.dataId;
+                InterMineId foundDataId = aData.dataId;
                 findAppliedProtocolsAndDataFromEarlierInDag(foundDataId, foundAppliedData,
                         foundAppliedProtocols);
             }
@@ -3148,7 +3149,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     }
 
     private String getTaxonIdForSubmission(String dccId) {
-        Integer subChadoId = getSubmissionIdFromDccId(dccId);
+        InterMineId subChadoId = getSubmissionIdFromDccId(dccId);
         String organism = submissionOrganismMap.get(subChadoId);
         OrganismRepository or = OrganismRepository.getOrganismRepository();
         return "" + or.getOrganismDataByFullName(organism).getTaxonId();
@@ -3178,7 +3179,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         return ontologyId;
     }
 
-    private Integer getSubmissionIdFromDccId(String dccId) {
+    private InterMineId getSubmissionIdFromDccId(String dccId) {
         for (Map.Entry<Integer, String> entry : dccIdMap.entrySet()) {
             if (entry.getValue().equals(dccId)) {
                 return entry.getKey();
@@ -3387,7 +3388,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
         for (Integer submissionId : submissionDataMap.keySet()) {
             LOG.info("DB RECORD for sub " + dccIdMap.get(submissionId) + "...");
-            List<Integer> submissionDbRecords = new ArrayList<Integer>();
+            List<InterMineId> submissionDbRecords = new ArrayList<InterMineId>();
             for (Integer dataId : submissionDataMap.get(submissionId)) {
                 AppliedData ad = appliedDataMap.get(dataId);
                 if (ad.type.equalsIgnoreCase("Result Value")) {
@@ -3425,9 +3426,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
                 + (System.currentTimeMillis() - bT) + " ms");
     }
 
-    private List<Integer> createDatabaseRecords(String accession, DatabaseRecordConfig config)
+    private List<InterMineId> createDatabaseRecords(String accession, DatabaseRecordConfig config)
         throws ObjectStoreException {
-        List<Integer> dbRecordIds = new ArrayList<Integer>();
+        List<InterMineId> dbRecordIds = new ArrayList<InterMineId>();
 
         String defaultURL = config.dbURL;
 
@@ -3461,10 +3462,10 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         return dbRecordIds;
     }
 
-    private Integer createDatabaseRecord(String accession, DatabaseRecordConfig config)
+    private InterMineId createDatabaseRecord(String accession, DatabaseRecordConfig config)
         throws ObjectStoreException {
         DatabaseRecordKey key = new DatabaseRecordKey(config.dbName, accession);
-        Integer dbRecordId = dbRecords.get(key);
+        InterMineId dbRecordId = dbRecords.get(key);
         if (dbRecordId == null) {
             Item dbRecord = getChadoDBConverter().createItem("DatabaseRecord");
             dbRecord.setAttribute("database", config.dbName);
@@ -3556,7 +3557,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     }
 
     private void createResultFile(String fileName, String type, String relDccId, String direction,
-            Integer submissionId)
+            InterMineId submissionId)
         throws ObjectStoreException {
         Item resultFile = getChadoDBConverter().createItem("ResultFile");
         resultFile.setAttribute("name", unversionName(fileName));
@@ -3595,7 +3596,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         Map<Integer, Set<String>> relatedSubs = new HashMap<Integer, Set<String>>();
 
         for (Map.Entry<Integer, List<SubmissionReference>> entry : submissionRefs.entrySet()) {
-            Integer submissionId = entry.getKey();
+            InterMineId submissionId = entry.getKey();
 
             List<SubmissionReference> lref = entry.getValue();
             Iterator<SubmissionReference> i = lref.iterator();
@@ -3614,9 +3615,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         }
     }
 
-    private void addRelatedSubmissions(Map<Integer, Set<String>> relatedSubs, Integer subId,
-            Integer relatedId) {
-        Integer subIdObjectId = submissionMap.get(subId).interMineObjectId;
+    private void addRelatedSubmissions(Map<Integer, Set<String>> relatedSubs, InterMineId subId,
+            InterMineId relatedId) {
+        InterMineId subIdObjectId = submissionMap.get(subId).interMineObjectId;
         Set<String> itemIds = relatedSubs.get(subIdObjectId);
         if (itemIds == null) {
             itemIds = new HashSet<String>();
@@ -3631,25 +3632,25 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         throws ObjectStoreException {
         long bT = System.currentTimeMillis();     // to monitor time spent in the process
 
-        Map<Integer, List<Integer>> submissionProtocolMap = new HashMap<Integer, List<Integer>>();
-        Iterator<Integer> apId = appliedProtocolMap.keySet().iterator();
+        Map<Integer, List<InterMineId>> submissionProtocolMap = new HashMap<Integer, List<InterMineId>>();
+        Iterator<InterMineId> apId = appliedProtocolMap.keySet().iterator();
         while (apId.hasNext()) {
-            Integer thisAP = apId.next();
+            InterMineId thisAP = apId.next();
             AppliedProtocol ap = appliedProtocolMap.get(thisAP);
             Util.addToListMap(submissionProtocolMap, ap.submissionId, ap.protocolId);
         }
 
-        Iterator<Integer> subs = submissionProtocolMap.keySet().iterator();
+        Iterator<InterMineId> subs = submissionProtocolMap.keySet().iterator();
         while (subs.hasNext()) {
-            Integer thisSubmissionId = subs.next();
-            List<Integer> protocolChadoIds = submissionProtocolMap.get(thisSubmissionId);
+            InterMineId thisSubmissionId = subs.next();
+            List<InterMineId> protocolChadoIds = submissionProtocolMap.get(thisSubmissionId);
 
             ReferenceList collection = new ReferenceList();
             collection.setName("protocols");
             for (Integer protocolChadoId : protocolChadoIds) {
                 collection.addRefId(protocolItemIds.get(protocolChadoId));
             }
-            Integer storedSubmissionId = submissionMap.get(thisSubmissionId).interMineObjectId;
+            InterMineId storedSubmissionId = submissionMap.get(thisSubmissionId).interMineObjectId;
             getChadoDBConverter().store(collection, storedSubmissionId);
 
             // TODO use Item?
@@ -3658,7 +3659,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
                 LOG.warn("EXPERIMENT TYPE NOT SET in chado for submission: "
                         + dccIdMap.get(thisSubmissionId));
                 // may need protocols from referenced submissions to work out experiment type
-                List<Integer> relatedSubsProtocolIds = new ArrayList<Integer>(
+                List<InterMineId> relatedSubsProtocolIds = new ArrayList<InterMineId>(
                         findProtocolIdsFromReferencedSubmissions(thisSubmissionId));
                 if (relatedSubsProtocolIds != null) {
                     protocolChadoIds.addAll(relatedSubsProtocolIds);
@@ -3672,7 +3673,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     }
 
     // store Submission.experimentType if it can be inferred from protocols
-    private void setSubmissionExperimentType(Integer storedSubId, List<Integer> protocolIds,
+    private void setSubmissionExperimentType(Integer storedSubId, List<InterMineId> protocolIds,
             String piName) throws ObjectStoreException {
         Set<String> protocolTypes = new HashSet<String>();
         for (Integer protocolId : protocolIds) {
@@ -3688,8 +3689,8 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
 
     // Fetch protocols used to create reagents that are inputs to this submission, these are
     // found in referenced submissions
-    private List<Integer> findProtocolIdsFromReferencedSubmissions(Integer submissionId) {
-        List<Integer> protocolIds = new ArrayList<Integer>();
+    private List<InterMineId> findProtocolIdsFromReferencedSubmissions(Integer submissionId) {
+        List<InterMineId> protocolIds = new ArrayList<InterMineId>();
 
         if (submissionRefs == null) {
             throw new RuntimeException("Attempting to access submissionRefs before it has been"
@@ -3802,10 +3803,10 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         Iterator<String> exp = expSubMap.keySet().iterator();
         while (exp.hasNext()) {
             String thisExp = exp.next();
-            List<Integer> subs = expSubMap.get(thisExp);
-            Iterator<Integer> s = subs.iterator();
+            List<InterMineId> subs = expSubMap.get(thisExp);
+            Iterator<InterMineId> s = subs.iterator();
             while (s.hasNext()) {
-                Integer thisSubId = s.next();
+                InterMineId thisSubId = s.next();
                 Reference reference = new Reference();
                 reference.setName("experiment");
                 reference.setRefId(experimentIdRefMap.get(thisExp));
@@ -3823,9 +3824,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     private void setSubmissionEFactorsRefsNEW(Connection connection)
         throws ObjectStoreException {
         long bT = System.currentTimeMillis();     // to monitor time spent in the process
-        Iterator<Integer> subs = submissionEFactorMap2.keySet().iterator();
+        Iterator<InterMineId> subs = submissionEFactorMap2.keySet().iterator();
         while (subs.hasNext()) {
-            Integer thisSubmissionId = subs.next();
+            InterMineId thisSubmissionId = subs.next();
             List<String[]> eFactors = submissionEFactorMap2.get(thisSubmissionId);
 
             LOG.info("EF REFS: " + thisSubmissionId + " (" + eFactors.get(0) + ")");
@@ -3855,9 +3856,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
     private void setSubmissionEFactorsRefs(Connection connection)
         throws ObjectStoreException {
         long bT = System.currentTimeMillis();     // to monitor time spent in the process
-        Iterator<Integer> subs = submissionEFactorMap.keySet().iterator();
+        Iterator<InterMineId> subs = submissionEFactorMap.keySet().iterator();
         while (subs.hasNext()) {
-            Integer thisSubmissionId = subs.next();
+            InterMineId thisSubmissionId = subs.next();
             List<String> eFactors = submissionEFactorMap.get(thisSubmissionId);
 
             LOG.info("EF REFS: " + thisSubmissionId + " (" + eFactors + ")");
@@ -3886,9 +3887,9 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         throws ObjectStoreException {
         long bT = System.currentTimeMillis();     // to monitor time spent in the process
 
-        Iterator<Integer> subs = publicationIdMap.keySet().iterator();
+        Iterator<InterMineId> subs = publicationIdMap.keySet().iterator();
         while (subs.hasNext()) {
-            Integer thisSubmissionId = subs.next();
+            InterMineId thisSubmissionId = subs.next();
             Reference reference = new Reference();
             reference.setName("publication");
             reference.setRefId(publicationIdRefMap.get(thisSubmissionId));
@@ -4021,7 +4022,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @param intermineObjectId
      * @throws ObjectStoreException
      */
-    private void storeInProjectMaps(Item i, String surnamePI, Integer intermineObjectId)
+    private void storeInProjectMaps(Item i, String surnamePI, InterMineId intermineObjectId)
         throws ObjectStoreException {
         if ("Project".equals(i.getClassName())) {
             projectIdMap .put(surnamePI, intermineObjectId);
@@ -4042,7 +4043,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @param intermineObjectId
      * @throws ObjectStoreException
      */
-    private void storeInLabMaps(Item i, String labName, Integer intermineObjectId)
+    private void storeInLabMaps(Item i, String labName, InterMineId intermineObjectId)
         throws ObjectStoreException {
         if ("Lab".equals(i.getClassName())) {
             labIdMap .put(labName, intermineObjectId);
@@ -4056,7 +4057,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
         debugMap .put(i.getIdentifier(), i.getClassName());
     }
 
-    private void mapSubmissionAndData(Integer submissionId, Integer dataId) {
+    private void mapSubmissionAndData(Integer submissionId, InterMineId dataId) {
         Util.addToListMap(submissionDataMap, submissionId, dataId);
         dataSubmissionMap.put(dataId, submissionId);
     }
@@ -4107,7 +4108,7 @@ public class ModEncodeMetaDataProcessor extends ChadoProcessor
      * @param key     the key for the map
      * @param value   the list
      */
-    private static void addToMap(Map<Integer, List<String>> m, Integer key, String value) {
+    private static void addToMap(Map<Integer, List<String>> m, InterMineId key, String value) {
 
         List<String> ids = new ArrayList<String>();
 

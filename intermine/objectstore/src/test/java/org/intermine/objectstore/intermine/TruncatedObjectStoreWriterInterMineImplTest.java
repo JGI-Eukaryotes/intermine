@@ -10,6 +10,7 @@ package org.intermine.objectstore.intermine;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreWriterFactory;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -32,6 +33,6 @@ public class TruncatedObjectStoreWriterInterMineImplTest extends ObjectStoreWrit
 
         Assert.assertFalse(writer.isInTransaction());
         // Now try and do something normal.
-        writer.getObjectById(new Integer(2));
+        writer.getObjectById(new InterMineId(2));
     }
 }

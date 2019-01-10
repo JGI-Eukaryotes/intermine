@@ -23,6 +23,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.SharingInvite;
 import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.api.profile.InterMineBag;
@@ -180,7 +181,7 @@ public final class ProfileBinding
 
                 /* EACH INVITE */
                 writer.writeStartElement("bag");
-                writer.writeCharacters(getBagName(bagNameCache, bags, invite.getBagId()));
+                writer.writeCharacters(getBagName(bagNameCache, bags, InterMineId.valueOf(invite.getBagId())));
                 writer.writeEndElement();
                 writer.writeStartElement("invitee");
                 writer.writeCharacters(invite.getInvitee());
@@ -214,7 +215,7 @@ public final class ProfileBinding
     }
 
     private static String getBagName(
-            Map<Integer, String> cache, Map<String, InterMineBag> bags, Integer id) {
+            Map<Integer, String> cache, Map<String, InterMineBag> bags, InterMineId id) {
         if (id != null && !cache.containsKey(id)) {
             for (String name: bags.keySet()) {
                 if (id.equals(bags.get(name).getSavedBagId())) {

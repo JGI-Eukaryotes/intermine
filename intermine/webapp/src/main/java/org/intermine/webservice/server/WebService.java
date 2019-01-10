@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.ProfileManager;
@@ -233,10 +234,10 @@ public abstract class WebService
      * @return An integer
      * @throws BadRequestException if The value is absent or mal-formed.
      */
-    protected Integer getIntParameter(String name) {
+    protected InterMineId getIntParameter(String name) {
         String value = getRequiredParameter(name);
         try {
-            return Integer.valueOf(value);
+            return InterMineId.valueOf(value);
         } catch (NumberFormatException e) {
             String msg = String.format("%s should be a valid number. Got %s", name, value);
             throw new BadRequestException(msg, e);
@@ -251,7 +252,7 @@ public abstract class WebService
      * @return An integer
      * @throw BadRequestException if the user provided a mal-formed value.
      */
-    protected Integer getIntParameter(String name, Integer defaultValue) {
+    protected InterMineId getIntParameter(String name, InterMineId defaultValue) {
         try {
             return getIntParameter(name);
         } catch (MissingParameterException e) {
@@ -688,9 +689,9 @@ public abstract class WebService
      */
     protected final boolean formatIsJSONP() {
         if (isJsonP == null) {
-            isJsonP = WebServiceRequestParser.isJsonP(request);
+            isJsonP = Boolean.valueOf(WebServiceRequestParser.isJsonP(request));
         }
-        return isJsonP;
+        return isJsonP.booleanValue();
     }
 
     /**

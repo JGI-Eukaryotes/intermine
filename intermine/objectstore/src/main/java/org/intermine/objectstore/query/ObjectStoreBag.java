@@ -10,6 +10,8 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Object representing a collection of objects which have been stored in the database. This bag
  * can be used in BagConstraints and QueryClassBag objects in queries.
@@ -45,7 +47,7 @@ public class ObjectStoreBag implements QuerySelectable
      * {@inheritDoc}
      */
     public Class<?> getType() {
-        return Integer.class;
+        return InterMineId.class;
     }
 
     /**

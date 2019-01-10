@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.web.model.ChromosomeInfo;
 import org.intermine.bio.web.model.GenomicRegion;
 import org.intermine.metadata.ConstraintOp;
@@ -140,8 +141,8 @@ public final class GenomicRegionSearchUtil
 
         GenomicRegion region = new GenomicRegion();
         region.setChr(parts[0].trim());
-        int start = Integer.valueOf(parts[1].trim()),
-            end = Integer.valueOf(parts[2].trim());
+        int start = InterMineId.valueOf(parts[1].trim()),
+            end = InterMineId.valueOf(parts[2].trim());
         if (isInterbase) {
             region.setStart(start + 1);
         } else {
@@ -272,8 +273,8 @@ public final class GenomicRegionSearchUtil
 
         for (GenomicRegion aSpan : genomicRegions) {
 
-            Integer start;
-            Integer end;
+            InterMineId start;
+            InterMineId end;
 
             if (extension > 0) {
                 aSpan = extendGenomicRegion(aSpan, extension);
@@ -512,7 +513,7 @@ public final class GenomicRegionSearchUtil
      * @return a list of GenomicRegion objects
      */
     public static List<GenomicRegion> createGenomicRegionsFromString(
-            Collection<String> regionStringList, String organism, Integer extendedRegionSize,
+            Collection<String> regionStringList, String organism, InterMineId extendedRegionSize,
             Boolean isInterBaseCoordinate) {
         List<GenomicRegion> grList = new ArrayList<GenomicRegion>();
         for (String grStr : regionStringList) {
@@ -584,8 +585,8 @@ public final class GenomicRegionSearchUtil
         Matcher m = DOT_DOT.matcher(interval);
         if (m.find()) {
             String chr = interval.split(":")[0];
-            int start = Integer.valueOf(interval.split(":")[1].split("\\.{2}")[0]);
-            int end = Integer.valueOf(interval.split(":")[1].split("\\.{2}")[1]);
+            int start = InterMineId.valueOf(interval.split(":")[1].split("\\.{2}")[0]);
+            int end = InterMineId.valueOf(interval.split(":")[1].split("\\.{2}")[1]);
 
             List<GenomicRegion> filteredList = new ArrayList<GenomicRegion>();
 

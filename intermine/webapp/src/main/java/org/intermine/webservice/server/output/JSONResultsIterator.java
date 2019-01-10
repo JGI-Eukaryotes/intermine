@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
 import org.intermine.metadata.ClassDescriptor;
@@ -78,7 +79,7 @@ public class JSONResultsIterator implements Iterator<JSONObject>
      */
     public JSONObject next() {
         Map<String, Object> nextJsonMap = new HashMap<String, Object>();
-        Integer lastId = null;
+        InterMineId lastId = null;
 
         if (holdOver != null) {
             lastId = holdOver.get(0).getId();
@@ -87,7 +88,7 @@ public class JSONResultsIterator implements Iterator<JSONObject>
         }
         while (subIter.hasNext()) {
             List<ResultElement> result = subIter.next();
-            Integer currentId = result.get(0).getId(); // id is guarantor of
+            InterMineId currentId = result.get(0).getId(); // id is guarantor of
                                                        // object identity
             if (lastId != null && !lastId.equals(currentId)) {
                 holdOver = result;
@@ -222,7 +223,7 @@ public class JSONResultsIterator implements Iterator<JSONObject>
      * @param jsonMap The map to set it onto,
      */
     protected void setOrCheckId(ResultElement cell, Map<String, Object> jsonMap) {
-        Integer cellId = cell.getId();
+        InterMineId cellId = cell.getId();
         if (jsonMap.containsKey(ID_KEY)) {
             Object mapId = jsonMap.get(ID_KEY);
             if (cellId != null && mapId != null && !jsonMap.get(ID_KEY).equals(cell.getId())) {

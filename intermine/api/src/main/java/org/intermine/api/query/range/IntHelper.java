@@ -10,6 +10,7 @@ package org.intermine.api.query.range;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.query.RangeHelper;
 import org.intermine.objectstore.query.Constraint;
 import org.intermine.metadata.ConstraintOp;
@@ -66,8 +67,8 @@ public class IntHelper implements RangeHelper
 
     private class IntRange
     {
-        final Integer start;
-        final Integer end;
+        final InterMineId start;
+        final InterMineId end;
 
         IntRange(String range) {
             if (range == null) {
@@ -78,8 +79,8 @@ public class IntHelper implements RangeHelper
                 throw new IllegalArgumentException("Illegal range (" + range
                         + "). Must be in the format 'x .. y'");
             }
-            this.start = Integer.valueOf(parts[0].trim());
-            this.end = Integer.valueOf(parts[1].trim());
+            this.start = InterMineId.valueOf(parts[0].trim());
+            this.end = InterMineId.valueOf(parts[1].trim());
         }
     }
 

@@ -10,6 +10,8 @@ package org.intermine.bio.web.model;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * This Java bean represents one record of Chromosome coordinates from user input
  * The record should be in BED format: "chr\tstart\tend".
@@ -20,16 +22,16 @@ public class GenomicRegion implements Comparable<GenomicRegion>
 {
     private String organism;
     private String chr;
-    private Integer start;
-    private Integer end;
-    private Integer extendedRegionSize = new Integer(0); // user add region flanking
-    private Integer extendedStart;
-    private Integer extendedEnd;
+    private InterMineId start;
+    private InterMineId end;
+    private InterMineId extendedRegionSize = new InterMineId(0); // user add region flanking
+    private InterMineId extendedStart;
+    private InterMineId extendedEnd;
 
     private Boolean minusStrand;    // for strand-specific matching
 
     //user identifier to tag the order of input e.g. X:7880589..7880644:5 is the 5th input
-    private Integer tag = null;
+    private InterMineId tag = null;
 
     /**
      * Default constructor
@@ -71,7 +73,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @return start
      */
-    public Integer getStart() {
+    public InterMineId getStart() {
         return start;
     }
 
@@ -85,7 +87,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @return end
      */
-    public Integer getEnd() {
+    public InterMineId getEnd() {
         return end;
     }
 
@@ -99,7 +101,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @return the extendedStart
      */
-    public Integer getExtendedStart() {
+    public InterMineId getExtendedStart() {
         return extendedStart;
     }
 
@@ -113,7 +115,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @return the extendedEnd
      */
-    public Integer getExtendedEnd() {
+    public InterMineId getExtendedEnd() {
         return extendedEnd;
     }
 
@@ -148,7 +150,7 @@ public class GenomicRegion implements Comparable<GenomicRegion>
     /**
      * @return tag value
      */
-    public Integer getTag() {
+    public InterMineId getTag() {
         return tag;
     }
 

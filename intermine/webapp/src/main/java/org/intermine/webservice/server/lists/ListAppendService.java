@@ -52,7 +52,7 @@ public class ListAppendService extends ListUploadService
 
         processIdentifiers(bag.getType(), input, ids, unmatchedIds, bag);
 
-        setListSize(bag.size());
+        setListSize(Integer.valueOf(bag.size()));
         setListId(bag.getSavedBagId());
 
         for (Iterator<String> i = unmatchedIds.iterator(); i.hasNext();) {

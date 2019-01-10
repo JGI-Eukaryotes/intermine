@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.query.Clob;
@@ -36,7 +37,7 @@ public interface ObjectStore
     /**
      * Object representing no fail-fast concurrency checks required.
      */
-    Map<Object, Integer> SEQUENCE_IGNORE = Collections.emptyMap();
+    Map<Object, InterMineId> SEQUENCE_IGNORE = Collections.emptyMap();
 
     /**
      * Create an ObjectStoreWriter that writes into this ObjectStore. Note that the given object
@@ -108,7 +109,7 @@ public interface ObjectStore
      * @throws ObjectStoreException if an error occurs during the running of the Query
      */
     List<ResultsRow<Object>> execute(Query q, int start, int limit, boolean optimise,
-            boolean explain, Map<Object, Integer> sequence) throws ObjectStoreException;
+            boolean explain, Map<Object, InterMineId> sequence) throws ObjectStoreException;
 
     /**
      * Get an object from the ObjectStore by giving an ID.
@@ -140,7 +141,7 @@ public interface ObjectStore
      * @return the objects from the ObjectStore or cache
      * @throws ObjectStoreException if an error occurs during retrieval of the object
      */
-    List<InterMineObject> getObjectsByIds(Collection<Integer> ids)
+    List<InterMineObject> getObjectsByIds(Collection<InterMineId> ids)
         throws ObjectStoreException;
 
     /**
@@ -218,7 +219,7 @@ public interface ObjectStore
      * @return the number of rows that will be produced by query
      * @throws ObjectStoreException if an error occurs counting the query
      */
-    int count(Query q, Map<Object, Integer> sequence) throws ObjectStoreException;
+    int count(Query q, Map<Object, InterMineId> sequence) throws ObjectStoreException;
 
     /**
      * Return the metadata associated with this ObjectStore
@@ -282,7 +283,7 @@ public interface ObjectStore
      * @param tables a Set of independent database components to get data for
      * @return an object representing the current database state
      */
-    Map<Object, Integer> getSequence(Set<Object> tables);
+    Map<Object, InterMineId> getSequence(Set<Object> tables);
 
     /**
      * Get the maximum LIMIT that can be used in an SQL query without throwing an
@@ -307,10 +308,10 @@ public interface ObjectStore
     /**
      * Gets an ID number which is unique in the database.
      *
-     * @return an Integer
+     * @return an InterMineId
      * @throws ObjectStoreException if a problem occurs
      */
-    Integer getSerial() throws ObjectStoreException;
+    InterMineId getSerial() throws ObjectStoreException;
 
     /**
      * Returns a new empty ObjectStoreBag object that is valid for this ObjectStore.

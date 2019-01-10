@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.bio.query.range.ChromosomeLocationHelper.GenomicInterval;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.model.bio.Location;
@@ -152,21 +153,21 @@ public class ChromosomeLocationHelperTest extends TestCase
         GenomicInterval g = new GenomicInterval("2L:123");
         assertTrue(g.getStart() == 123);
         assertEquals(g.getChr(), "2L");
-        assertEquals(g.getEnd(), Integer.valueOf(123));
+        assertEquals(g.getEnd(), InterMineId.valueOf(123));
     }
 
     public void testGenomicIntervalWithTaxon() {
         GenomicInterval g = new GenomicInterval("7227:1:123..456");
-        assertEquals(g.getStart(), Integer.valueOf(123));
-        assertEquals(g.getEnd(), Integer.valueOf(456));
+        assertEquals(g.getStart(), InterMineId.valueOf(123));
+        assertEquals(g.getEnd(), InterMineId.valueOf(456));
         assertEquals(g.getChr(), "1");
         assertEquals(g.getTaxonId(), "7227");
     }
 
     public void testGenomicIntervalWithTaxonDash() {
         GenomicInterval g = new GenomicInterval("7227:1:123-456");
-        assertEquals(g.getStart(), Integer.valueOf(123));
-        assertEquals(g.getEnd(), Integer.valueOf(456));
+        assertEquals(g.getStart(), InterMineId.valueOf(123));
+        assertEquals(g.getEnd(), InterMineId.valueOf(456));
         assertEquals(g.getChr(), "1");
         assertEquals(g.getTaxonId(), "7227");
     }

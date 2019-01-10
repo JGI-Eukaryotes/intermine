@@ -27,6 +27,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.functors.ConstantTransformer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.search.OriginatingEvent;
 import org.intermine.api.search.DeletionEvent;
 import org.intermine.api.search.WebSearchWatcher;
@@ -69,8 +70,8 @@ public abstract class StorableBag implements WebSearchable
         }
     }
 
-    protected Integer profileId;
-    protected Integer savedBagId;
+    protected InterMineId profileId;
+    protected InterMineId savedBagId;
 
     /**
      * Returns the size of the bag.
@@ -108,12 +109,12 @@ public abstract class StorableBag implements WebSearchable
     public abstract String getType();
 
     /** @return the id of the profile belonging to the user this list belongs to */
-    public Integer getProfileId() {
+    public InterMineId getProfileId() {
         return profileId;
     }
 
     /** @return the id of the saved bag this list represents */
-    public Integer getSavedBagId() {
+    public InterMineId getSavedBagId() {
         return savedBagId;
     }
 
@@ -226,7 +227,7 @@ public abstract class StorableBag implements WebSearchable
             String sql = "DELETE FROM " + InterMineBag.BAG_VALUES
                 + " WHERE " + StringUtils.join(clauses, " AND ");
             stm = conn.prepareStatement(sql);
-            stm.setInt(1, savedBagId);
+            stm.setInt(1, savedBagId.intValue());
             for (int i = 0; values != null && i < values.size(); i++) {
                 stm.setString(i + 2, values.get(i));
             }
@@ -316,10 +317,10 @@ public abstract class StorableBag implements WebSearchable
         Batch batch = null;
         Boolean oldAuto = null;
         ObjectStoreWriter uosw = getUserProfileWriter();
-        Integer sbid = getSavedBagId();
+        InterMineId sbid = getSavedBagId();
         try {
             conn = ((ObjectStoreWriterInterMineImpl) uosw).getConnection();
-            oldAuto = conn.getAutoCommit();
+            oldAuto = Boolean.valueOf(conn.getAutoCommit());
             conn.setAutoCommit(false);
             batch = new Batch(new BatchWriterPostgresCopyImpl());
             String[] colNames = new String[] {"savedbagid", "value", "extra"};
@@ -329,13 +330,13 @@ public abstract class StorableBag implements WebSearchable
             }
             batch.flush(conn);
             conn.commit();
-            conn.setAutoCommit(oldAuto);
+            conn.setAutoCommit(oldAuto.booleanValue());
         } catch (SQLException sqle) {
             LOG.error("Exception committing bagValues for bag: " + sbid, sqle);
             try {
                 conn.rollback();
                 if (oldAuto != null) {
-                    conn.setAutoCommit(oldAuto);
+                    conn.setAutoCommit(oldAuto.booleanValue());
                 }
             } catch (SQLException sqlex) {
                 throw new RuntimeException("Error aborting transaction", sqlex);

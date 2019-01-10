@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.bio.web.export.GFF3Exporter;
 import org.intermine.bio.web.logic.SequenceFeatureExportUtil;
@@ -43,7 +44,7 @@ public class GenomicRegionGFF3Service extends AbstractRegionExportService
     protected GFF3Exporter getExporter(PathQuery pq) {
         String sourceName = webProperties.getProperty("project.title");
         Set<String> organisms = null;
-        List<Integer> indexes = new ArrayList<Integer>();
+        List<InterMineId> indexes = new ArrayList<InterMineId>();
         List<String> viewColumns = new ArrayList<String>(pq.getView());
         for (int i = 0; i < viewColumns.size(); i++) {
             indexes.add(Integer.valueOf(i));

@@ -52,7 +52,7 @@ public class SummaryService extends JSONService
      */
     @Override
     protected void execute() throws Exception {
-        Boolean refsAllowed = !Boolean.valueOf(getOptionalParameter("norefs", "false"));
+        Boolean refsAllowed = Boolean.valueOf(!(Boolean.valueOf(getOptionalParameter("norefs", "false")).booleanValue()));
         WebConfig webConfig = InterMineContext.getWebConfig();
 
         Map<String, Object> summaryFieldsForCd = getMapping(refsAllowed, webConfig);
@@ -69,7 +69,7 @@ public class SummaryService extends JSONService
                 for (FieldConfig fc : FieldConfigHelper.getClassFieldConfigs(webConfig, cd)) {
                     try {
                         Path p = new Path(m, cd.getUnqualifiedName() + "." + fc.getFieldExpr());
-                        if (p.endIsAttribute() && (!p.containsReferences() || refsAllowed)
+                        if (p.endIsAttribute() && (!p.containsReferences() || refsAllowed.booleanValue())
                                 && fc.getShowInSummary()) {
                             summaryFields.add(p.getNoConstraintsString());
                         }

@@ -13,6 +13,7 @@ package org.intermine.web.logic.results;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.model.InterMineObject;
 import org.intermine.web.logic.config.InlineListObject;
@@ -26,9 +27,9 @@ public class InlineList
 
     private Set<InlineListObject> listOfObjects = null;
     private FieldDescriptor fieldDescriptor = null;
-    private Boolean showLinksToObjects = false;
+    private Boolean showLinksToObjects = Boolean.FALSE;
     private String path = null;
-    private Integer lineLength = null;
+    private InterMineId lineLength = null;
 
     /**
      * Set a set ;) of Objects by turning them into InterMineObjects and then InlineListObjects
@@ -43,7 +44,7 @@ public class InlineList
             String columnToDisplayBy,
             Boolean showLinksToObjects,
             String path,
-            Integer lineLength) {
+            InterMineId lineLength) {
         this.showLinksToObjects = showLinksToObjects;
         this.path = path;
         this.lineLength = lineLength;
@@ -88,16 +89,16 @@ public class InlineList
    *
    * @return the length of the strings in this list combined, delimiters included!
    */
-    public Integer getLength() {
-        Integer length = 0;
+    public InterMineId getLength() {
+        InterMineId length = InterMineId.valueOf(0);
         Set<InlineListObject> items = getItems();
         if (items != null) {
             for (InlineListObject ilObj : getItems()) {
                 Object value = ilObj.getValue();
                 String valueString = value.toString();
-                length += valueString.length() + 2;
+                length = InterMineId.valueOf(length.intValue() + valueString.length() + 2);
             }
-            length -= 2;
+            length = InterMineId.valueOf(length.intValue() - 2);
         }
         return length;
     }
@@ -124,8 +125,8 @@ public class InlineList
      * @see our JavaScript (jQuery) expects non set values to be "0"
      * @return total character length (spaces, commas included) to show
      */
-    public Integer getLineLength() {
-        return (lineLength != null) ? lineLength : 0;
+    public InterMineId getLineLength() {
+        return InterMineId.valueOf((lineLength != null) ? lineLength.intValue() : 0);
     }
 
     /**

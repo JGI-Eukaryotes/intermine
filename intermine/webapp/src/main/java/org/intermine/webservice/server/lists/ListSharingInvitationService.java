@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.SharedBagManager;
 import org.intermine.api.bag.SharingInvite;
@@ -95,7 +96,7 @@ public class ListSharingInvitationService extends JSONService
                 emailer.email(
                     invite.getInvitee(), EMAIL_PROPERTY,
                     input.owner.getName(),
-                    bag.getType(), bag.getName(), bag.getSize(),
+                    bag.getType(), bag.getName(), InterMineId.valueOf(bag.getSize()),
                     webProperties.getProperty("webapp.baseurl"),
                     webProperties.getProperty("webapp.path"),
                     invite.getToken(),

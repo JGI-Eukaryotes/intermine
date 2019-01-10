@@ -33,6 +33,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrMatcher;
 import org.apache.commons.lang.text.StrTokenizer;
+import org.intermine.model.InterMineId;
 import org.intermine.InterMineException;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagQueryResult;
@@ -104,7 +105,7 @@ public class ListUploadService extends ListMakerService
      * Sets the size of the list on the header attributes.
      * @param size The size of the newly created list.
      */
-    protected void setListSize(final Integer size) {
+    protected void setListSize(final InterMineId size) {
         addOutputInfo(LIST_SIZE_KEY, size + "");
     }
 
@@ -112,7 +113,7 @@ public class ListUploadService extends ListMakerService
      * Sets the id of the list on the header attributes.
      * @param id The id of the newly created list.
      */
-    protected void setListId(final Integer id) {
+    protected void setListId(final InterMineId id) {
         addOutputInfo(LIST_ID_KEY, id + "");
     }
 
@@ -169,7 +170,7 @@ public class ListUploadService extends ListMakerService
 
         processIdentifiers(type, input, ids, unmatchedIds, tempBag);
 
-        setListSize(tempBag.size());
+        setListSize(Integer.valueOf(tempBag.size()));
         setListId(tempBag.getSavedBagId());
 
         for (final Iterator<String> i = unmatchedIds.iterator(); i.hasNext();) {

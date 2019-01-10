@@ -47,7 +47,7 @@ public class RateLimitHistory implements Predicate<String>
                 for (Iterator<Long> it = requestHistory.iterator(); it.hasNext();) {
                     Long timestamp = it.next();
                     if (timestamp == null
-                            || System.currentTimeMillis() - timestamp > (periodLength * 1000)) {
+                            || System.currentTimeMillis() - timestamp.longValue() > (periodLength * 1000)) {
                         it.remove();
                     }
                 }
@@ -70,7 +70,7 @@ public class RateLimitHistory implements Predicate<String>
 
     @Override
     public Boolean call(String id) {
-        return isWithinLimit(id);
+        return Boolean.valueOf(isWithinLimit(id));
     }
 
     /**

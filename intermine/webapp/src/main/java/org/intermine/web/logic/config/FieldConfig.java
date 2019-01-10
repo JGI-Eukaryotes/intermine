@@ -36,7 +36,7 @@ public class FieldConfig
     private String displayer;
     private String label = null;
     private Type parent = null;
-    private Boolean showInListAnalysisPreviewTable = false;
+    private Boolean showInListAnalysisPreviewTable = Boolean.FALSE;
     private boolean showInQB = true;
 
     /**

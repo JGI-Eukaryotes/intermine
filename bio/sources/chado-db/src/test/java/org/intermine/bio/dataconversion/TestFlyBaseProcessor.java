@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.intermine.model.InterMineId;
 import org.intermine.bio.chado.ChadoCV;
 import org.intermine.bio.chado.ChadoCVTerm;
 
@@ -267,8 +268,8 @@ public class TestFlyBaseProcessor extends FlyBaseProcessor
         // results must be sorted by the feature1_id
         Arrays.sort(returnVal, new Comparator() {
             public int compare(Object o1, Object o2) {
-                final Integer i1 = (Integer) ((Object[]) o1)[1];
-                final Integer i2 = (Integer) ((Object[]) o2)[1];
+                final InterMineId i1 = (Integer) ((Object[]) o1)[1];
+                final InterMineId i2 = (Integer) ((Object[]) o2)[1];
                 if (i1 < i2) {
                     return -1;
                 } else {

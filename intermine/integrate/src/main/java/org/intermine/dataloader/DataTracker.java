@@ -26,13 +26,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.Database;
 
 /**
  * Interface providing access to data tracking.
  *
- * This class is almost a generic map. However, it particularly maps from an Integer and a String
- * to a String and a boolean, where entries are grouped by the Integer.
+ * This class is almost a generic map. However, it particularly maps from an InterMineId and a String
+ * to a String and a boolean, where entries are grouped by the InterMineId.
  *
  * @author Matthew Wakeling
  */
@@ -130,16 +131,16 @@ public class DataTracker
     /**
      * Prefetches data for a specified set of object ids.
      *
-     * @param ids a Set of Integers
+     * @param ids a Set of InterMineIds
      */
-    public void prefetchIds(Set<Integer> ids) {
+    public void prefetchIds(Set<InterMineId> ids) {
         Connection prefetchConn = null;
         try {
             prefetchConn = db.getConnection();
             prefetchConn.setAutoCommit(true);
             prefetchConn.createStatement().execute("SET enable_seqscan = off;");
             long startTime = System.currentTimeMillis();
-            Set<Integer> toFetch = new HashSet<Integer>();
+            Set<InterMineId> toFetch = new HashSet<InterMineId>();
             synchronized (this) {
                 if (broken != null) {
                     IllegalArgumentException e = new IllegalArgumentException();
@@ -158,15 +159,15 @@ public class DataTracker
                 }
             }
             Map<Integer, ObjectDescription> idsFetched = new HashMap<Integer, ObjectDescription>();
-            int highestVersionSeen = Integer.MIN_VALUE;
+            int highestVersionSeen = InterMineId.MIN_VALUE;
             if (!toFetch.isEmpty()) {
                 int count = 0;
                 StringBuffer sql = new StringBuffer();
                 boolean needComma = false;
-                Iterator<Integer> idIter = toFetch.iterator();
+                Iterator<InterMineId> idIter = toFetch.iterator();
                 while (idIter.hasNext()) {
                     count++;
-                    Integer id = idIter.next();
+                    InterMineId id = idIter.next();
                     if (needComma) {
                         sql.append(", ");
                     } else {
@@ -187,7 +188,7 @@ public class DataTracker
                             //            - beforeExecute) + " ms");
                             while (r.next()) {
                                 ObjectDescription objectDescription =
-                                    idsFetched.get(new Integer(r.getInt(1)));
+                                    idsFetched.get(new InterMineId(r.getInt(1)));
                                 highestVersionSeen = Math.max(highestVersionSeen, r.getInt(4));
                                 objectDescription.putClean(r.getString(2).intern(),
                                                            stringToSource(r.getString(3)));
@@ -446,7 +447,7 @@ public class DataTracker
      * that uses this method should not rely on this fact, because such a method may be passed the
      * cache instead in the instance of a flush().
      *
-     * @return a Map from Integer to ObjectDescription
+     * @return a Map from InterMineId to ObjectDescription
      */
     private synchronized Map<Integer, ObjectDescription> getWriteBatch() {
         if (cache.size() > maxSize) {
@@ -455,7 +456,7 @@ public class DataTracker
             Iterator<Map.Entry<Integer, ObjectDescription>> iter = cache.entrySet().iterator();
             while ((count < commitSize) && iter.hasNext()) {
                 Map.Entry<Integer, ObjectDescription> iterEntry = iter.next();
-                Integer id = iterEntry.getKey();
+                InterMineId id = iterEntry.getKey();
                 ObjectDescription desc = iterEntry.getValue();
                 if (desc.isDirty()) {
                     retval.put(id, desc);
@@ -484,7 +485,7 @@ public class DataTracker
      * Writes the contents of the given Map to the backing database. Attempts to make use of all the
      * SQL tricks to speed this operation up.
      *
-     * @param map a Map from Integer to ObjectDesciption
+     * @param map a Map from InterMineId to ObjectDesciption
      * @param clean true if this method should call clean() on all the entries in the given Map, or
      * false if the given Map is going to be thrown away.
      * @throws SQLException on any error with the backing database
@@ -512,7 +513,7 @@ public class DataTracker
                 LOG.warn("Using slow portable writing method");
             }
             for (Map.Entry<Integer, ObjectDescription> entry : map.entrySet()) {
-                Integer id = entry.getKey();
+                InterMineId id = entry.getKey();
                 ObjectDescription desc = entry.getValue();
                 if (desc.isDirty()) {
                     Map<String, Source> orig = desc.getOrig();

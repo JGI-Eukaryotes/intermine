@@ -194,7 +194,7 @@ public final class ModelBrowserHelper
                     newStructure,
                     query,
                     classKeys, bagManager, profile,
-                    (nullAttrs.contains(fieldName) || nullRefsCols.contains(fieldName)));
+                    Boolean.valueOf(nullAttrs.contains(fieldName) || nullRefsCols.contains(fieldName)));
             node.setModel(cld.getModel());
 
             String subclass = subclasses.get(node.getPathString());

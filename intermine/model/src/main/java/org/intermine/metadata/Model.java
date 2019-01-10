@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineFastPathObject;
 
 /**
@@ -341,7 +342,7 @@ public class Model
         Map<String, Map<String, Object>> classes = new HashMap<String, Map<String, Object>>();
         data.put("name", modelName);
         data.put("package", packageName);
-        data.put("version", version);
+        data.put("version", InterMineId.valueOf(version));
         data.setClasses(classes);
 
         for (ClassDescriptor cld: getClassDescriptors()) {
@@ -358,7 +359,7 @@ public class Model
                 for (String parent: cld.getSuperclassNames()) {
                     parents.add(parent.substring(parent.lastIndexOf(".") + 1));
                 }
-                classData.put("isInterface", cld.isInterface());
+                classData.put("isInterface", Boolean.valueOf(cld.isInterface()));
                 classData.put("attributes", attrs);
                 classData.put("references", refs);
                 classData.put("collections", colls);

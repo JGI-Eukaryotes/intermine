@@ -36,7 +36,7 @@ public class InlineTableResultElement extends ResultElement
      */
     public InlineTableResultElement(FastPathObject imObj, Path path, FieldConfig fc,
             Boolean isKeyField) {
-        super(imObj, path, isKeyField);
+        super(imObj, path, isKeyField.booleanValue());
         this.fc = fc;
     }
 
@@ -45,7 +45,7 @@ public class InlineTableResultElement extends ResultElement
      * @return if a Displayer is configured
      */
     public Boolean getHasDisplayer() {
-        return (fc.getDisplayer() != null && fc.getDisplayer().length() > 0);
+        return Boolean.valueOf(fc.getDisplayer() != null && fc.getDisplayer().length() > 0);
     }
 
     /**
@@ -61,7 +61,7 @@ public class InlineTableResultElement extends ResultElement
      * @return true if this is a key field
      */
     public Boolean getIsKeyField() {
-        return keyField;
+        return Boolean.valueOf(keyField);
     }
 
     /**

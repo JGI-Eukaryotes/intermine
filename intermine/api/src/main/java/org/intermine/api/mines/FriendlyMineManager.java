@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.beans.PartnerLink;
 import org.intermine.metadata.TypeUtil;
@@ -171,7 +172,7 @@ public class FriendlyMineManager
 
     private int getIntProperty(String propName, int defaultValue) {
         if (webProperties.containsKey(propName)) {
-            return Integer.parseInt(getProperty(propName), 10);
+            return InterMineId.parseInt(getProperty(propName), 10);
         } else {
             return defaultValue;
         }

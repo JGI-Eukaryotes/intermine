@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagQueryResult;
 import org.intermine.api.bag.BagQueryRunner;
@@ -83,8 +84,8 @@ public class SequenceService extends JSONService
 
     @Override
     protected void execute() {
-        Integer start = getIntParameter("start", 0);
-        Integer end = getIntParameter("end", null);
+        InterMineId start = getIntParameter("start", InterMineId.valueOf(0));
+        InterMineId end = getIntParameter("end", null);
         PathQuery pq = getQuery();
 
         Iterator<CharSequence> sequences = getSequences(pq);
@@ -158,20 +159,20 @@ public class SequenceService extends JSONService
         }
     }
 
-    private Map<String, Object> makeFeature(CharSequence chars, Integer start, Integer end) {
+    private Map<String, Object> makeFeature(CharSequence chars, InterMineId start, InterMineId end) {
         CharSequence subSequence;
         try {
             if (end == null) {
-                subSequence = chars.subSequence(start, chars.length());
+                subSequence = chars.subSequence(start.intValue(), chars.length());
             } else {
-                subSequence = chars.subSequence(start, end);
+                subSequence = chars.subSequence(start.intValue(), end.intValue());
             }
         } catch (IndexOutOfBoundsException e) {
             throw new BadRequestException("Illegal start/end values: " + e.getMessage());
         }
         Map<String, Object> feat = new HashMap<String, Object>();
         feat.put("start", start);
-        feat.put("end", subSequence.length() + start);
+        feat.put("end", InterMineId.valueOf(subSequence.length() + start.intValue()));
         // Have to do this, otherwise json.org goes insane.
         feat.put("seq", String.valueOf(subSequence));
 

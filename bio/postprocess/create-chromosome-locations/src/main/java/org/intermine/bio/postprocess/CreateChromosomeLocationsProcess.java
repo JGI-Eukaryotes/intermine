@@ -11,6 +11,7 @@ package org.intermine.bio.postprocess;
  */
 
 import java.util.Iterator;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.BioQueries;
 import org.intermine.bio.util.PostProcessUtil;
 import org.intermine.model.bio.Chromosome;
@@ -60,7 +61,7 @@ public class CreateChromosomeLocationsProcess extends PostProcessor
         // we need to check that there is only one location before setting chromosome[Location]
         // references.  If there are duplicates do nothing - this has happened for some affy
         // probes in FlyMine.
-        Integer lastChrId = null;
+        InterMineId lastChrId = null;
         SequenceFeature lastFeature = null;
         boolean storeLastFeature = true;  // will get set to false if duplicate locations seen
         Location lastLoc = null;
@@ -68,7 +69,7 @@ public class CreateChromosomeLocationsProcess extends PostProcessor
         while (resIter.hasNext()) {
             ResultsRow<?> rr = (ResultsRow<?>) resIter.next();
 
-            Integer chrId = (Integer) rr.get(0);
+            InterMineId chrId = (Integer) rr.get(0);
             SequenceFeature lsf = (SequenceFeature) rr.get(1);
             Location locOnChr = (Location) rr.get(2);
 
@@ -104,7 +105,7 @@ public class CreateChromosomeLocationsProcess extends PostProcessor
     }
 
     private void setChromosomeReferencesAndStore(SequenceFeature lsf, Location loc,
-            Integer chrId) throws ObjectStoreException, IllegalAccessException  {
+            InterMineId chrId) throws ObjectStoreException, IllegalAccessException  {
         SequenceFeature lsfClone = PostProcessUtil.cloneInterMineObject(lsf);
 
         lsfClone.setChromosomeLocation(loc);
@@ -115,7 +116,7 @@ public class CreateChromosomeLocationsProcess extends PostProcessor
             // an alternative is to set according to type of feature.
             if (lsfClone.getLength() == null) {
                 int length = Math.abs(end - start) + 1;
-                lsfClone.setLength(new Integer(length));
+                lsfClone.setLength(new InterMineId(length));
             }
         }
         lsfClone.proxyChromosome(new ProxyReference(osw, chrId, Chromosome.class));

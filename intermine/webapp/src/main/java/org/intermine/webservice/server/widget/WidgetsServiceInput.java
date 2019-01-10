@@ -109,8 +109,8 @@ public class WidgetsServiceInput implements EnrichmentOptions
                 + " pop = %s, savePop = %s, filter = %s,"
                 + " extra = %s)",
                 widgetId, bagName,
-                maxP, correction,
-                populationBagName, savePopulation, filter,
+                Double.valueOf(maxP), correction,
+                populationBagName, Boolean.valueOf(savePopulation), filter,
                 extraAttribute, ids, populationIds);
     }
 

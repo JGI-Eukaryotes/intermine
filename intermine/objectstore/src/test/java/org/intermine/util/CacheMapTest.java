@@ -10,6 +10,7 @@ package org.intermine.util;
  *
  */
 
+import org.intermine.model.InterMineId;
 import junit.framework.TestCase;
 
 public class CacheMapTest extends TestCase
@@ -24,59 +25,59 @@ public class CacheMapTest extends TestCase
 //    public void test() throws Exception {
 //        CacheMap cm = new CacheMap();
 //        for (int i = 0; i < 300; i++) {
-//            Integer iI = new Integer(i);
+//            InterMineId iI = new InterMineId(i);
 //            cm.put(iI, new byte[1048576]);
 //        }
 //
 //        assertTrue(cm.size() < 1500);
-//        assertTrue("Expected first two to be missing",!(cm.containsKey(new Integer(2)) && cm.containsKey(new Integer(1))));
-//        assertTrue("Expected last two to be present", cm.containsKey(new Integer(298)) || cm.containsKey(new Integer(299)));
+//        assertTrue("Expected first two to be missing",!(cm.containsKey(new InterMineId(2)) && cm.containsKey(new InterMineId(1))));
+//        assertTrue("Expected last two to be present", cm.containsKey(new InterMineId(298)) || cm.containsKey(new InterMineId(299)));
 //    }
 
     public void test2() throws Exception {
         CacheMap cm = new CacheMap();
 
-        cm.put(new Integer(5), new Integer(40));
-        cm.put(new Integer(763), new Integer(67));
-        cm.put(new Integer(2), null);
+        cm.put(new InterMineId(5), new InterMineId(40));
+        cm.put(new InterMineId(763), new InterMineId(67));
+        cm.put(new InterMineId(2), null);
 
-        assertEquals(new Integer(40), cm.get(new Integer(5)));
-        assertEquals(new Integer(67), cm.get(new Integer(763)));
-        assertNull(cm.get(new Integer(2)));
-        assertTrue(cm.containsKey(new Integer(5)));
-        assertTrue(cm.containsKey(new Integer(763)));
-        assertTrue(cm.containsKey(new Integer(2)));
+        assertEquals(new InterMineId(40), cm.get(new InterMineId(5)));
+        assertEquals(new InterMineId(67), cm.get(new InterMineId(763)));
+        assertNull(cm.get(new InterMineId(2)));
+        assertTrue(cm.containsKey(new InterMineId(5)));
+        assertTrue(cm.containsKey(new InterMineId(763)));
+        assertTrue(cm.containsKey(new InterMineId(2)));
 
-        assertNull(cm.remove(new Integer(3)));
-        assertEquals(new Integer(40), cm.get(new Integer(5)));
-        assertEquals(new Integer(67), cm.get(new Integer(763)));
-        assertNull(cm.get(new Integer(2)));
-        assertTrue(cm.containsKey(new Integer(5)));
-        assertTrue(cm.containsKey(new Integer(763)));
-        assertTrue(cm.containsKey(new Integer(2)));
+        assertNull(cm.remove(new InterMineId(3)));
+        assertEquals(new InterMineId(40), cm.get(new InterMineId(5)));
+        assertEquals(new InterMineId(67), cm.get(new InterMineId(763)));
+        assertNull(cm.get(new InterMineId(2)));
+        assertTrue(cm.containsKey(new InterMineId(5)));
+        assertTrue(cm.containsKey(new InterMineId(763)));
+        assertTrue(cm.containsKey(new InterMineId(2)));
 
-        assertEquals(new Integer(40), cm.remove(new Integer(5)));
-        assertNull(cm.get(new Integer(5)));
-        assertEquals(new Integer(67), cm.get(new Integer(763)));
-        assertNull(cm.get(new Integer(2)));
-        assertFalse(cm.containsKey(new Integer(5)));
-        assertTrue(cm.containsKey(new Integer(763)));
-        assertTrue(cm.containsKey(new Integer(2)));
+        assertEquals(new InterMineId(40), cm.remove(new InterMineId(5)));
+        assertNull(cm.get(new InterMineId(5)));
+        assertEquals(new InterMineId(67), cm.get(new InterMineId(763)));
+        assertNull(cm.get(new InterMineId(2)));
+        assertFalse(cm.containsKey(new InterMineId(5)));
+        assertTrue(cm.containsKey(new InterMineId(763)));
+        assertTrue(cm.containsKey(new InterMineId(2)));
 
-        assertEquals(new Integer(67), cm.remove(new Integer(763)));
-        assertNull(cm.get(new Integer(5)));
-        assertNull(cm.get(new Integer(763)));
-        assertNull(cm.get(new Integer(2)));
-        assertFalse(cm.containsKey(new Integer(5)));
-        assertFalse(cm.containsKey(new Integer(763)));
-        assertTrue(cm.containsKey(new Integer(2)));
+        assertEquals(new InterMineId(67), cm.remove(new InterMineId(763)));
+        assertNull(cm.get(new InterMineId(5)));
+        assertNull(cm.get(new InterMineId(763)));
+        assertNull(cm.get(new InterMineId(2)));
+        assertFalse(cm.containsKey(new InterMineId(5)));
+        assertFalse(cm.containsKey(new InterMineId(763)));
+        assertTrue(cm.containsKey(new InterMineId(2)));
 
-        assertNull(cm.remove(new Integer(2)));
-        assertNull(cm.get(new Integer(5)));
-        assertNull(cm.get(new Integer(763)));
-        assertNull(cm.get(new Integer(2)));
-        assertFalse(cm.containsKey(new Integer(5)));
-        assertFalse(cm.containsKey(new Integer(763)));
-        assertFalse(cm.containsKey(new Integer(2)));
+        assertNull(cm.remove(new InterMineId(2)));
+        assertNull(cm.get(new InterMineId(5)));
+        assertNull(cm.get(new InterMineId(763)));
+        assertNull(cm.get(new InterMineId(2)));
+        assertFalse(cm.containsKey(new InterMineId(5)));
+        assertFalse(cm.containsKey(new InterMineId(763)));
+        assertFalse(cm.containsKey(new InterMineId(2)));
     }
 }

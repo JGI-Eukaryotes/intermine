@@ -1,5 +1,6 @@
 package org.intermine;
 
+import org.intermine.model.InterMineId;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.security.Principal;
@@ -100,7 +101,7 @@ public class MockHttpRequest implements HttpServletRequest
 
     @Override
     public int getIntHeader(String name) {
-        return Integer.valueOf(getHeader(name));
+        return InterMineId.valueOf(getHeader(name));
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.metadata.Model;
 import org.intermine.pathquery.Constraints;
@@ -96,7 +97,7 @@ public class EnrichmentWidgetTest extends WidgetConfigTestCase
     }
 
     public void testProcessWithIDs() throws Exception {
-        List<Integer> ids = bag.getContentsAsIds();
+        List<InterMineId> ids = bag.getContentsAsIds();
         StringBuilder idsAsString = new StringBuilder();
         for (Integer id: ids) {
             idsAsString.append(id).append(",");
@@ -151,7 +152,7 @@ public class EnrichmentWidgetTest extends WidgetConfigTestCase
         List<List<Object>> exportResults = new LinkedList<List<Object>>();
         if (results != null) {
             Map<String, BigDecimal> pValues = results.getPValues();
-            Map<String, Integer> counts = results.getCounts();
+            Map<String, InterMineId> counts = results.getCounts();
             Map<String, String> labels = results.getLabels();
             for (String id : pValues.keySet()) {
                 List<Object> row = new LinkedList<Object>();

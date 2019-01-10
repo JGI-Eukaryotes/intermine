@@ -51,7 +51,7 @@ public class VersionService extends JSONService
         } else if (versionType.startsWith("intermine")) {
             addResultValue(Constants.INTERMINE_VERSION, false);
         } else {
-            addResultValue(Constants.WEB_SERVICE_VERSION, false);
+            addResultValue(Integer.valueOf(Constants.WEB_SERVICE_VERSION), false);
         }
     }
 

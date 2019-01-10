@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.directwebremoting.util.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.ProfileManager;
@@ -57,7 +58,7 @@ public class NewUserService extends JSONService
             String rateLimit = webProperties.getProperty("webservice.newuser.ratelimit");
             if (rateLimit != null) {
                 try {
-                    maxNewUsersPerAddressPerHour = Integer.valueOf(rateLimit.trim()).intValue();
+                    maxNewUsersPerAddressPerHour = InterMineId.valueOf(rateLimit.trim()).intValue();
                 } catch (NumberFormatException e) {
                     LOG.error(DEFAULTING_TO_1000PH, e);
                     maxNewUsersPerAddressPerHour = 1000;

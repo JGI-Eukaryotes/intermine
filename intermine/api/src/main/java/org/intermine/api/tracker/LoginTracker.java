@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.tracker.track.LoginTrack;
 import org.intermine.api.tracker.track.Track;
 import org.intermine.api.tracker.util.TrackerUtil;
@@ -97,10 +98,10 @@ public class LoginTracker extends AbstractTracker
      * @param con the connection
      * @return map with key the user name and access number
      */
-    protected Map<String, Integer> getUserLogin(Connection con) {
+    protected Map<String, InterMineId> getUserLogin(Connection con) {
         ResultSet rs = null;
         Statement stm = null;
-        Map<String, Integer> userLogin = new HashMap<String, Integer>();
+        Map<String, InterMineId> userLogin = new HashMap<String, InterMineId>();
         try {
             stm = con.createStatement();
             String sql = "SELECT username, COUNT(username) as accessnumbers "
@@ -108,7 +109,7 @@ public class LoginTracker extends AbstractTracker
                         + "GROUP BY username";
             rs = stm.executeQuery(sql);
             while (rs.next()) {
-                userLogin.put(rs.getString(1), rs.getInt(2));
+                userLogin.put(rs.getString(1), InterMineId.valueOf(rs.getInt(2)));
             }
             return userLogin;
         } catch (SQLException sqle) {

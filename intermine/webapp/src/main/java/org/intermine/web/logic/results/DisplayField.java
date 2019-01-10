@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.LazyCollection;
@@ -100,13 +101,13 @@ public class DisplayField
     public InlineResultsTable getTable() {
         if (table == null && collection.size() > 0) {
             // on References we will have 1 row
-            Integer tableSize = 1;
+            InterMineId tableSize = InterMineId.valueOf(1);
             if (webProperties != null) {
                 // resolve max table size to show from properties
                 String maxInlineTableSizeString =
                     (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
                 try {
-                    tableSize = Integer.parseInt(maxInlineTableSizeString);
+                    tableSize = InterMineId.valueOf(Integer.parseInt(maxInlineTableSizeString));
                 } catch (NumberFormatException e) {
                     LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                              + maxInlineTableSizeString);
@@ -116,21 +117,21 @@ public class DisplayField
             try {
                 // don't call size unless we have to - it's slow
                 if (collection instanceof Results) {
-                    ((Results) collection).get(tableSize);
+                    ((Results) collection).get(tableSize.intValue());
                 } else {
-                    if (collection.size() < tableSize) {
-                        tableSize = collection.size();
+                    if (collection.size() < tableSize.intValue()) {
+                        tableSize = InterMineId.valueOf(collection.size());
                     }
                 }
             } catch (IndexOutOfBoundsException e) {
-                tableSize = collection.size();
+                tableSize = InterMineId.valueOf(collection.size());
             }
 
             table = new InlineResultsTable(collection,
                     fd.getClassDescriptor().getModel(),
                     webConfig,
                     classKeys,
-                    tableSize,
+                    tableSize.intValue(),
                     false,
                     listOfTypes,
                     parentClass,

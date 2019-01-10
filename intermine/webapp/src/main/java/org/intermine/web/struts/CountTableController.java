@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
 import org.apache.struts.util.MessageResources;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.Constants;
 import org.intermine.web.logic.query.PageTableQueryMonitor;
 import org.intermine.web.logic.results.PagedTable;
@@ -51,7 +52,7 @@ public class CountTableController extends TilesAction
             = new PageTableQueryMonitor(Constants.QUERY_TIMEOUT_SECONDS * 1000, pt);
         String qid = SessionMethods.startPagedTableCount(clientState, session, messages);
         request.setAttribute("qid", qid);
-        request.setAttribute("POLL_REFRESH_SECONDS", new Integer(Constants.POLL_REFRESH_SECONDS));
+        request.setAttribute("POLL_REFRESH_SECONDS", new InterMineId(Constants.POLL_REFRESH_SECONDS));
         return null;
     }
 }

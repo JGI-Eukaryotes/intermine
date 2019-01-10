@@ -10,6 +10,7 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
 import junit.framework.TestCase;
 
 public class QueryValueTest extends TestCase
@@ -35,11 +36,11 @@ public class QueryValueTest extends TestCase
     }
 
     public void testDifferentNumbersEqual() throws Exception {
-        assertEquals(new QueryValue(new Integer(5)), new QueryValue(new Long(5)));
-        assertEquals(new QueryValue(new Integer(5)), new QueryValue(new Double(5.0)));
+        assertEquals(new QueryValue(new InterMineId(5)), new QueryValue(new Long(5)));
+        assertEquals(new QueryValue(new InterMineId(5)), new QueryValue(new Double(5.0)));
     }
 
     public void testDifferentNumbersNotEqual() throws Exception {
-        assertTrue("Expected 5 to not equal 5.00001", !(new QueryValue(new Integer(5))).equals(new QueryValue(new Double(5.00001))));
+        assertTrue("Expected 5 to not equal 5.00001", !(new QueryValue(new InterMineId(5))).equals(new QueryValue(new Double(5.00001))));
     }
 }

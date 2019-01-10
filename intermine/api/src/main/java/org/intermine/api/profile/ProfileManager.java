@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.SharedBagManager;
 import org.intermine.api.bag.UnknownBagTypeException;
 import org.intermine.api.config.ClassKeyHelper;
@@ -138,7 +139,7 @@ public class ProfileManager
             LOG.info("Database has userprofile version \"" + versionString + "\"");
             if (versionString != null) {
                 try {
-                    v = Integer.parseInt(versionString);
+                    v = InterMineId.parseInt(versionString);
                 } catch (NumberFormatException e) {
                     throw new IllegalStateException(message);
                 }
@@ -336,7 +337,7 @@ public class ProfileManager
         Map<String, List<FieldDescriptor>> classKeys = getClassKeys(os.getModel());
         UserProfile up;
         try {
-            up = (UserProfile) uosw.getObjectById(id, UserProfile.class);
+            up = (UserProfile) uosw.getObjectById(Integer.valueOf(id), UserProfile.class);
         } catch (ObjectStoreException e) {
             throw new RuntimeException("Error retrieving profile", e);
         }
@@ -369,7 +370,7 @@ public class ProfileManager
      * @throws ObjectStoreException If it cannot be removed.
      */
     public void deleteProfile(Profile profile) throws ObjectStoreException {
-        Integer userId = profile.getUserId();
+        InterMineId userId = profile.getUserId();
         removeTokensForProfile(profile);
         evictFromCache(profile);
         try {
@@ -437,13 +438,13 @@ public class ProfileManager
 
         if (userProfile == null) {
             // See if we can resolve the user by an alias.
-            Integer trueId;
+            InterMineId trueId;
             try {
                 // See if this is one of the unique mappings.
                 for (String pref: UserPreferences.UNIQUE_KEYS) {
                     trueId = getPreferencesManager().getUserWithUniqueMapping(pref, username);
                     if (trueId != null) {
-                        return getProfile(trueId);
+                        return getProfile(trueId.intValue());
                     }
                 }
             } catch (DuplicateMappingException e) {
@@ -482,7 +483,7 @@ public class ProfileManager
                     Results bags = uosw.execute(q, 1000, false, false, true);
                     for (Iterator<?> i = bags.iterator(); i.hasNext();) {
                         ResultsRow<?> row = (ResultsRow<?>) i.next();
-                        Integer bagId = (Integer) row.get(0);
+                        InterMineId bagId = (Integer) row.get(0);
                         SavedBag savedBag = (SavedBag) row.get(1);
                         String bagName = savedBag.getName();
                         if (StringUtils.isBlank(bagName)) {
@@ -593,7 +594,7 @@ public class ProfileManager
      * @param profile the Profile
      */
     public synchronized void saveProfile(Profile profile) {
-        Integer userId = profile.getUserId();
+        InterMineId userId = profile.getUserId();
         try {
             UserProfile userProfile = getUserProfile(userId);
 
@@ -677,7 +678,7 @@ public class ProfileManager
      */
     public Profile createAnonymousProfile() {
         String username = null;
-        Integer id = null;
+        InterMineId id = null;
         String password = null;
         String token = null;
         boolean isLocal = true;
@@ -965,7 +966,7 @@ public class ProfileManager
      */
     public synchronized String getProfileUserName(int profileId) {
         try {
-            UserProfile profile = (UserProfile) uosw.getObjectById(profileId, UserProfile.class);
+            UserProfile profile = (UserProfile) uosw.getObjectById(Integer.valueOf(profileId), UserProfile.class);
             return profile.getUsername();
         } catch (ObjectStoreException e) {
             return null; // Not in DB.

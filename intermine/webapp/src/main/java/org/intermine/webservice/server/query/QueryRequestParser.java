@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.query.QueryStore;
 import org.intermine.api.query.QueryStoreException;
 import org.intermine.webservice.server.WebServiceRequestParser;
@@ -126,20 +127,20 @@ public class QueryRequestParser extends WebServiceRequestParser
      * @param compressed A query compressed to a list of bytes.
      * @return The decompressed query.
      **/
-    public static String decompressLZW(List<Integer> compressed) {
+    public static String decompressLZW(List<InterMineId> compressed) {
         // Build the dictionary.
         int dictSize = 256;
         Map<Integer, String> dictionary = new HashMap<Integer, String>();
         for (int i = 0; i < 256; i++) {
-            dictionary.put(i, "" + (char) i);
+            dictionary.put(Integer.valueOf(i), "" + (char) i);
         }
 
-        String w = "" + (char) (int) compressed.remove(0);
+        String w = "" + (char) compressed.remove(0).intValue();
         String result = w;
         for (int k : compressed) {
             String entry;
-            if (dictionary.containsKey(k)) {
-                entry = dictionary.get(k);
+            if (dictionary.containsKey(Integer.valueOf(k))) {
+                entry = dictionary.get(Integer.valueOf(k));
             } else if (k == dictSize) {
                 entry = w + w.charAt(0);
             } else {
@@ -149,7 +150,7 @@ public class QueryRequestParser extends WebServiceRequestParser
             result += entry;
 
             // Add w+entry[0] to the dictionary.
-            dictionary.put(dictSize++, w + entry.charAt(0));
+            dictionary.put(Integer.valueOf(dictSize++), w + entry.charAt(0));
 
             w = entry;
         }
@@ -162,11 +163,11 @@ public class QueryRequestParser extends WebServiceRequestParser
      * @param encoded The compressed and encoded representation of the query.
      */
     public static String decodeLZWString(String encoded) {
-        List<Integer> codes = new ArrayList<Integer>();
+        List<InterMineId> codes = new ArrayList<InterMineId>();
         encoded = fixEncoding(encoded);
         int length = encoded.length();
         for (int i = 0; i < length; i++) {
-            Integer cp = Integer.valueOf(encoded.codePointAt(i));
+            InterMineId cp = InterMineId.valueOf(encoded.codePointAt(i));
             codes.add(cp);
         }
         return decompressLZW(codes);

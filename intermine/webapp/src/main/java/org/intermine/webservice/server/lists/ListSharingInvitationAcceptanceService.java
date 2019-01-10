@@ -150,7 +150,7 @@ public class ListSharingInvitationAcceptanceService extends JSONService
     private void notifyOwner(final SharingInvite invite) {
         final ProfileManager pm = im.getProfileManager();
         final Profile receiver = getPermission().getProfile();
-        final Profile owner = pm.getProfile(invite.getBag().getProfileId());
+        final Profile owner = pm.getProfile(invite.getBag().getProfileId().intValue());
 
         boolean queued = InterMineContext.queueMessage(new MailAction() {
             @Override

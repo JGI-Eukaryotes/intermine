@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.metadata.TypeUtil;
@@ -145,7 +146,7 @@ public class EnrichmentWidgetImplLdr extends WidgetLdr
             } else if (ids != null) {
                 // use list of IDs instead of bag
                 String[] idArray = ids.split(",");
-                Collection<Integer> idsCollection = new LinkedHashSet<Integer>();
+                Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                 for (String id : idArray) {
                     try {
                         idsCollection.add(Integer.valueOf(id.trim()));
@@ -268,7 +269,7 @@ public class EnrichmentWidgetImplLdr extends WidgetLdr
                         } else if (ids != null) {
                             // use list of IDs instead of bag
                             String[] idArray = ids.split(",");
-                            Collection<Integer> idsCollection = new LinkedHashSet<Integer>();
+                            Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                             for (String intermineId : idArray) {
                                 try {
                                     idsCollection.add(Integer.valueOf(intermineId.trim()));

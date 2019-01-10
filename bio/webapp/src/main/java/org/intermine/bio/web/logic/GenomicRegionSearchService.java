@@ -37,6 +37,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.upload.FormFile;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.bio.web.model.ChromosomeInfo;
@@ -452,7 +453,7 @@ public class GenomicRegionSearchService
 
         if (initBatchSizeStr != null && !"".equals(initBatchSizeStr)) {
             try {
-                return Integer.parseInt(initBatchSizeStr);
+                return InterMineId.parseInt(initBatchSizeStr);
             } catch (NumberFormatException e) {
                 LOG.warn("Couldn't read integer value from 'genomicsRegionSearch.initBatchSize'"
                         + " property:" + initBatchSizeStr);
@@ -721,7 +722,7 @@ public class GenomicRegionSearchService
 
         if (Integer.parseInt(extendedRegionSize) > 0) {
             if (Integer.parseInt(extendedRegionSize) >= 1000
-                    && Integer.parseInt(extendedRegionSize) < 1000000) {
+                    && InterMineId.parseInt(extendedRegionSize) < 1000000) {
                 selectionInfo.add("<b>Extend Regions: </b>"
                         + new DecimalFormat("#.##").format(Integer
                                 .parseInt(extendedRegionSize) / 1000f) + " kbp");
@@ -865,8 +866,8 @@ public class GenomicRegionSearchService
             if (gr.getStart() > gr.getEnd()) {
                 gr.setChr(ci.getChrPID()); // converted to the right case
                 // swap start, end and flag as minus strand
-                Integer grStart = gr.getStart();
-                Integer grEnd = gr.getEnd();
+                InterMineId grStart = gr.getStart();
+                InterMineId grEnd = gr.getEnd();
                 gr.setStart(grEnd);
                 gr.setEnd(grStart);
                 gr.setMinusStrand(Boolean.TRUE);
@@ -961,10 +962,10 @@ public class GenomicRegionSearchService
      * @return String feature ids joined by comma
      * @throws Exception with error message
      */
-    public Set<Integer> getGenomicRegionOverlapFeaturesAsSet(String grInfo,
+    public Set<InterMineId> getGenomicRegionOverlapFeaturesAsSet(String grInfo,
             Map<GenomicRegion, List<List<String>>> resultMap) throws Exception {
 
-        Set<Integer> featureIdSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> featureIdSet = new LinkedHashSet<InterMineId>();
 
         GenomicRegion grToExport = GenomicRegionSearchUtil
             .generateGenomicRegions(Arrays.asList(new String[] {grInfo}))
@@ -988,10 +989,10 @@ public class GenomicRegionSearchService
      * @return String feature ids joined by comma
      * @throws Exception with error message
      */
-    public Set<Integer> getGenomicRegionOverlapFeaturesByType(String grInfo,
+    public Set<InterMineId> getGenomicRegionOverlapFeaturesByType(String grInfo,
             Map<GenomicRegion, List<List<String>>> resultMap, String featureType) throws Exception {
 
-        Set<Integer> featureIdSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> featureIdSet = new LinkedHashSet<InterMineId>();
 
         GenomicRegion grToExport = GenomicRegionSearchUtil
                 .generateGenomicRegions(Arrays.asList(new String[] {grInfo}))
@@ -1015,10 +1016,10 @@ public class GenomicRegionSearchService
      * @param featureType e.g. Gene
      * @return String feature ids joined by comma
      */
-    public Set<Integer> getAllGenomicRegionOverlapFeaturesByType(
+    public Set<InterMineId> getAllGenomicRegionOverlapFeaturesByType(
             Map<GenomicRegion, List<List<String>>> resultMap, String featureType) {
 
-        Set<Integer> featureIdSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> featureIdSet = new LinkedHashSet<InterMineId>();
 
         for (Entry<GenomicRegion, List<List<String>>> e : resultMap.entrySet()) {
 
@@ -1046,7 +1047,7 @@ public class GenomicRegionSearchService
     public String getGenomicRegionOverlapFeaturesAsString(String grInfo,
             Map<GenomicRegion, List<List<String>>> resultMap) throws Exception {
 
-        Set<Integer> featureSet = getGenomicRegionOverlapFeaturesAsSet(grInfo, resultMap);
+        Set<InterMineId> featureSet = getGenomicRegionOverlapFeaturesAsSet(grInfo, resultMap);
 
         return StringUtil.join(featureSet, ",");
     }
@@ -1114,14 +1115,14 @@ public class GenomicRegionSearchService
      */
     public String convertResultMapToHTML(
             Map<GenomicRegion, List<List<String>>> resultMap,
-            Map<GenomicRegion, Map<String, Integer>> resultStat,
+            Map<GenomicRegion, Map<String, InterMineId>> resultStat,
             List<GenomicRegion> genomicRegionList, int fromIdx, int toIdx,
             HttpSession session) {
 
         // TODO hard coded count limit
         int maxRecordCutOff = 1000;
         if (webProperties.getProperty("genomicRegionSearch.maxRecordCutOff") != null) {
-            maxRecordCutOff = Integer.valueOf(webProperties
+            maxRecordCutOff = InterMineId.valueOf(webProperties
                     .getProperty("genomicRegionSearch.maxRecordCutOff"));
         }
 
@@ -1148,19 +1149,19 @@ public class GenomicRegionSearchService
         for (GenomicRegion s : subGenomicRegionList) {
 
             List<List<String>> features = resultMap.get(s);
-            Map<String, Integer> stat = resultStat.get(s);
+            Map<String, InterMineId> stat = resultStat.get(s);
 
             String ftHtml = "";
             Set<String> ftSet = null;
-            Map<String, Integer> aboveCutOffFeatureTypeMap = null;
+            Map<String, InterMineId> aboveCutOffFeatureTypeMap = null;
             if (stat != null) {
                 // get list of featureTypes
                 ftHtml = categorizeFeatureTypes(stat.keySet(), s);
                 ftSet = getFeatureTypeSetInAlphabeticalOrder(stat.keySet());
-                aboveCutOffFeatureTypeMap = new LinkedHashMap<String, Integer>();
+                aboveCutOffFeatureTypeMap = new LinkedHashMap<String, InterMineId>();
                 int topCount = stat.values().iterator().next();
                 if (topCount >= maxRecordCutOff) {
-                    for (Entry<String, Integer> e : stat.entrySet()) {
+                    for (Entry<String, InterMineId> e : stat.entrySet()) {
                         if (e.getValue() > maxRecordCutOff) {
                             aboveCutOffFeatureTypeMap.put(e.getKey(), e.getValue());
                         } else {
@@ -1354,7 +1355,7 @@ public class GenomicRegionSearchService
     private int addFeaturesAboveCutoff(String galaxyDisplay,
             String exportChromosomeSegment, StringBuffer sb, GenomicRegion s,
             List<List<String>> features, String ftHtml, Set<String> ftSet,
-            Map<String, Integer> aboveCutOffFeatureTypeMap, String span) {
+            Map<String, InterMineId> aboveCutOffFeatureTypeMap, String span) {
         int length = features.size();
 
         String firstFeatureType = aboveCutOffFeatureTypeMap.keySet().iterator().next();
@@ -1539,7 +1540,7 @@ public class GenomicRegionSearchService
 
     private void parseFeaturesBelowCutoff(String baseURL, String path,
             StringBuffer sb, List<List<String>> features,
-            Map<String, Integer> aboveCutOffFeatureTypeMap, int length) {
+            Map<String, InterMineId> aboveCutOffFeatureTypeMap, int length) {
         for (int i = 0; i < length; i++) {
 
             String id = features.get(i).get(0);
@@ -1597,7 +1598,7 @@ public class GenomicRegionSearchService
     }
 
     private void parseFeaturesAboveCutoff(StringBuffer sb, GenomicRegion s,
-            Map<String, Integer> aboveCutOffFeatureTypeMap) {
+            Map<String, InterMineId> aboveCutOffFeatureTypeMap) {
         if (aboveCutOffFeatureTypeMap.size() > 1) {
             List<String> aboveCutOffFeatureTypeList = new ArrayList<String>(
                     aboveCutOffFeatureTypeMap.keySet());
@@ -1686,8 +1687,8 @@ public class GenomicRegionSearchService
 
         int spanStart = gr.getStart();
         int spanEnd = gr.getEnd();
-        int featureStart = Integer.valueOf(r.get(3));
-        int featureEnd = Integer.valueOf(r.get(4));
+        int featureStart = InterMineId.valueOf(r.get(3));
+        int featureEnd = InterMineId.valueOf(r.get(4));
 
         int matchedBaseCount = 0;
 
@@ -1721,7 +1722,7 @@ public class GenomicRegionSearchService
      * @param sortOrder user defined sortOrder in web.properties
      * @return a pathquery
      */
-    public PathQuery getExportFeaturesQuery(Set<Integer> featureIds,
+    public PathQuery getExportFeaturesQuery(Set<InterMineId> featureIds,
             String featureType, Set<String> views, List<String> sortOrder) {
 
         PathQuery q = new PathQuery(model);

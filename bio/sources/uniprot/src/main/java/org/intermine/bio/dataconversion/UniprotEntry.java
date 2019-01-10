@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Util;
 import org.intermine.xml.full.Item;
 
@@ -145,7 +146,7 @@ public class UniprotEntry
      * @param refId id representing comment intermine object
      * @param objectId id representing the object in the database.  used later to add pub collection
      */
-    public void addCommentRefId(String refId, Integer objectId) {
+    public void addCommentRefId(String refId, InterMineId objectId) {
         commentEvidence.put(objectId, new ArrayList(comment.evidence));
         addRefId("comments", refId);
     }

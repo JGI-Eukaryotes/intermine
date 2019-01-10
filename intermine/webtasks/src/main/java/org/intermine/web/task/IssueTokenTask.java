@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.InvalidBag;
 import org.intermine.api.profile.Profile;
@@ -63,7 +64,7 @@ public class IssueTokenTask extends KeyStoreTask
      * @param expiry The number of seconds the token will be valid for.
      */
     public void setExpiry(String expiry) {
-        this.expiry = Integer.parseInt(expiry, 10);
+        this.expiry = InterMineId.parseInt(expiry, 10);
     }
 
     /**

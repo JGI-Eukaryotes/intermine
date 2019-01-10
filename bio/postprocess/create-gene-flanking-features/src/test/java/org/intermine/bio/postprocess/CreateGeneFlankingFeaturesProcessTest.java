@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.Chromosome;
 import org.intermine.model.bio.Gene;
@@ -91,8 +92,8 @@ public class CreateGeneFlankingFeaturesProcessTest extends TestCase {
         Chromosome chr =
                 (Chromosome) DynamicUtil.createObject(Collections.singleton(Chromosome.class));
         chr.setPrimaryIdentifier("X");
-        chr.setLength(new Integer(200000));
-        chr.setId(new Integer(101));
+        chr.setLength(new InterMineId(200000));
+        chr.setId(new InterMineId(101));
         chr.setOrganism(organism);
 
         toStore.add(chr);
@@ -106,8 +107,8 @@ public class CreateGeneFlankingFeaturesProcessTest extends TestCase {
         toStore.add(gene);
 
         Location loc =  (Location) DynamicUtil.createObject(Collections.singleton(Location.class));
-        loc.setStart(new Integer(100000));
-        loc.setEnd(new Integer(101000));
+        loc.setStart(new InterMineId(100000));
+        loc.setEnd(new InterMineId(101000));
         loc.setStrand("-1");
         loc.setLocatedOn(chr);
         loc.setFeature(gene);

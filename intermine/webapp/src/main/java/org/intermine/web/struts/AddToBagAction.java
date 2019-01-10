@@ -18,6 +18,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.IncompatibleTypesException;
 import org.intermine.api.profile.InterMineBag;
@@ -48,7 +49,7 @@ public class AddToBagAction extends InterMineAction
     public ActionForward execute(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("object"));
+        int id = InterMineId.parseInt(request.getParameter("object"));
         HttpSession session = request.getSession();
 
         final InterMineAPI im = SessionMethods.getInterMineAPI(request.getSession());
@@ -60,8 +61,8 @@ public class AddToBagAction extends InterMineAction
         if (existingBag != null) {
             // TODO add a warning when object already in bag ??
             try {
-                InterMineObject o = im.getObjectStore().getObjectById(id);
-                existingBag.addIdToBag(id, Util.getFriendlyName(o.getClass()));
+                InterMineObject o = im.getObjectStore().getObjectById(Integer.valueOf(id));
+                existingBag.addIdToBag(Integer.valueOf(id), Util.getFriendlyName(o.getClass()));
                 recordMessage(new ActionMessage("bag.addedToBag", existingBag.getName()),
                         request);
             } catch (IncompatibleTypesException e) {

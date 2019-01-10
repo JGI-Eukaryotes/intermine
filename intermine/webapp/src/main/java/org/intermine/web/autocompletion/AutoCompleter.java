@@ -234,10 +234,10 @@ public class AutoCompleter
             Map<String, Object> fieldAttributes = new HashMap();
             fieldAttributes.put("name", fieldName);
             fieldAttributes.put("type", "text_general");
-            fieldAttributes.put("stored", true);
-            fieldAttributes.put("indexed", true);
-            fieldAttributes.put("multiValued", true);
-            fieldAttributes.put("required", false);
+            fieldAttributes.put("stored", Boolean.TRUE);
+            fieldAttributes.put("indexed", Boolean.TRUE);
+            fieldAttributes.put("multiValued", Boolean.TRUE);
+            fieldAttributes.put("required", Boolean.FALSE);
 
             try {
                 SchemaRequest.AddField schemaRequest = new SchemaRequest.AddField(fieldAttributes);

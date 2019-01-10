@@ -13,6 +13,7 @@ package org.intermine.objectstore.query;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.model.InterMineObject;
 
@@ -69,7 +70,7 @@ public class QueryForeignKey implements QueryEvaluable
      * @return the class name
      */
     public Class<?> getType() {
-        return Integer.class;
+        return InterMineId.class;
     }
 
     /**

@@ -150,8 +150,8 @@ public final class JWTBuilder
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("sub", subject);
         claims.put("iss", issuer);
-        claims.put("exp", (absoluteExpiry / 1000));
-        claims.put("iat", (System.currentTimeMillis() / 1000));
+        claims.put("exp", Long.valueOf(absoluteExpiry / 1000));
+        claims.put("iat", Long.valueOf(System.currentTimeMillis() / 1000));
         claims.put("http://wso2.org/claims/emailaddress", email);
 
         String toSign = encodeContent(header, claims);

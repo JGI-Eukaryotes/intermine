@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.query.MainHelper;
@@ -63,8 +64,8 @@ public class DataService extends JSONService
         int start = -1, end = -1;
         if (StringUtils.isNotBlank(rangeHeader)) {
             String[] parts = rangeHeader.replace("records=", "").split("-");
-            start = (StringUtils.isBlank(parts[0]) ? 0 : Integer.parseInt(parts[0], 10));
-            end = (StringUtils.isBlank(parts[1]) ? -1 : Integer.parseInt(parts[1], 10));
+            start = (StringUtils.isBlank(parts[0]) ? 0 : InterMineId.parseInt(parts[0], 10));
+            end = (StringUtils.isBlank(parts[1]) ? -1 : InterMineId.parseInt(parts[1], 10));
         }
         if (StringUtils.isBlank(pathInfo)) {
             throw new ResourceNotFoundException(pathInfo + " not found.");

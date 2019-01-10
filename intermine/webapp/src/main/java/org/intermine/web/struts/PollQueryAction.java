@@ -20,6 +20,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultElement;
 import org.intermine.api.results.WebTable;
 import org.intermine.pathquery.PathQuery;
@@ -94,7 +95,7 @@ public class PollQueryAction extends InterMineAction
 
                 // Query can have more than one column, forward from the first
                 Object cell = null;
-                Integer forwardId = null;
+                InterMineId forwardId = null;
                 if (webResults.size() == 1) {
                     cell = webResults.getResultElements(0).get(0).get(0).getValue();
                     if (cell instanceof ResultElement) {
@@ -151,16 +152,16 @@ public class PollQueryAction extends InterMineAction
             request.setAttribute("qid", qid);
             request.setAttribute("trail", trail);
             if (controller.getTickleCount() < 4) {
-                request.setAttribute("POLL_REFRESH_SECONDS", new Integer(1));
+                request.setAttribute("POLL_REFRESH_SECONDS", new InterMineId(1));
             } else {
                 request.setAttribute("POLL_REFRESH_SECONDS",
-                                            new Integer(Constants.POLL_REFRESH_SECONDS));
+                                            new InterMineId(Constants.POLL_REFRESH_SECONDS));
             }
             int imgnum = ((controller.getTickleCount() + 1) % 4) + 1;
             if (controller.getTickleCount() < 4) {
-                request.setAttribute("imgnum", new Integer(1));
+                request.setAttribute("imgnum", new InterMineId(1));
             } else {
-                request.setAttribute("imgnum", new Integer(imgnum));
+                request.setAttribute("imgnum", new InterMineId(imgnum));
             }
 
             // there are different action mappings for different kinds of

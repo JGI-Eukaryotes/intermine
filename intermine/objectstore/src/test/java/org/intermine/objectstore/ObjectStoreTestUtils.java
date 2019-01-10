@@ -10,6 +10,7 @@ package org.intermine.objectstore;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.intermine.ObjectStoreInterMineImpl;
@@ -53,7 +54,7 @@ public class ObjectStoreTestUtils {
         Iterator iter = c.iterator();
         while (iter.hasNext()) {
             try {
-                DynamicUtil.setFieldValue(iter.next(), "id", new Integer(i++));
+                DynamicUtil.setFieldValue(iter.next(), "id", new InterMineId(i++));
             } catch (IllegalArgumentException e) {
             }
         }
@@ -101,7 +102,7 @@ public class ObjectStoreTestUtils {
         if (name != null) {
             return name.invoke(o, new Object[] {});
         } else if (o instanceof InterMineObject) {
-            return new Integer(o.hashCode());
+            return new InterMineId(o.hashCode());
         } else {
             return o;
         }

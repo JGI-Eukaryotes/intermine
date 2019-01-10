@@ -26,6 +26,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.bio.web.model.ChromosomeInfo;
@@ -134,20 +135,20 @@ public class GenomicRegionSearchQueryRunner implements Runnable
         }
 
         // map of sequence feature statistics: key - class name. value - count of feature
-        Map<String, Map<GenomicRegion, Map<String, Integer>>> spanOverlapFullStatMap =
-             (Map<String, Map<GenomicRegion, Map<String, Integer>>>) request
+        Map<String, Map<GenomicRegion, Map<String, InterMineId>>> spanOverlapFullStatMap =
+             (Map<String, Map<GenomicRegion, Map<String, InterMineId>>>) request
                             .getSession().getAttribute("spanOverlapFullStatMap");
 
         if (spanOverlapFullStatMap == null) {
             spanOverlapFullStatMap =
-                new HashMap<String, Map<GenomicRegion, Map<String, Integer>>>();
+                new HashMap<String, Map<GenomicRegion, Map<String, InterMineId>>>();
         }
 
         Map<GenomicRegion, List<List<String>>> spanOverlapResultDisplayMap = Collections
                 .synchronizedMap(new LinkedHashMap<GenomicRegion, List<List<String>>>());
 
-        Map<GenomicRegion, Map<String, Integer>> spanOverlapResultStatMap = Collections
-                .synchronizedMap(new LinkedHashMap<GenomicRegion, Map<String, Integer>>());
+        Map<GenomicRegion, Map<String, InterMineId>> spanOverlapResultStatMap = Collections
+                .synchronizedMap(new LinkedHashMap<GenomicRegion, Map<String, InterMineId>>());
 
         if (!spanOverlapFullResultMap.containsKey(spanUUIDString)
                 && !spanOverlapFullStatMap.containsKey(spanUUIDString)) {
@@ -167,9 +168,9 @@ public class GenomicRegionSearchQueryRunner implements Runnable
 
                     List<List<String>> spanResults = new ArrayList<List<String>>();
 
-                    Map<String, Integer> spanStatMap = new HashMap<String, Integer>();
+                    Map<String, InterMineId> spanStatMap = new HashMap<String, InterMineId>();
                     ValueComparator bvc =  new ValueComparator(spanStatMap);
-                    TreeMap<String, Integer> sortedStatMap = new TreeMap<String, Integer>(bvc);
+                    TreeMap<String, InterMineId> sortedStatMap = new TreeMap<String, InterMineId>(bvc);
 
                     if (results == null || results.isEmpty()) {
                         spanOverlapResultDisplayMap.put(e.getKey(), null);
@@ -279,7 +280,7 @@ public class GenomicRegionSearchQueryRunner implements Runnable
 
                 String orgName = (String) row.get(0);
                 String chrIdentifier = (String) row.get(1);
-                Integer chrLength = (Integer) row.get(2);
+                InterMineId chrLength = (Integer) row.get(2);
 
                 // Add orgName to HashSet to filter out duplication
                 orgSet.add(orgName);
@@ -451,12 +452,12 @@ public class GenomicRegionSearchQueryRunner implements Runnable
  */
 class ValueComparator implements Comparator<Object>
 {
-    Map<String, Integer> base;
+    Map<String, InterMineId> base;
 
     /**
      * @param base the map itself
      */
-    ValueComparator(Map<String, Integer> base) {
+    ValueComparator(Map<String, InterMineId> base) {
         this.base = base;
     }
 

@@ -158,7 +158,7 @@ public class JSONFormatter extends Formatter
             }
         }
         if (attributes.containsKey(KEY_QUOTE)) {
-            shouldQuote = (Boolean) attributes.get(KEY_QUOTE);
+            shouldQuote = ((Boolean) attributes.get(KEY_QUOTE)).booleanValue();
         }
     }
 

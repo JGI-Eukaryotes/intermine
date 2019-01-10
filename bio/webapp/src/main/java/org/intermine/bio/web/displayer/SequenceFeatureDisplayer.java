@@ -17,6 +17,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.model.InterMineObject;
 import org.intermine.util.DynamicUtil;
@@ -32,7 +33,7 @@ import org.intermine.web.logic.results.ReportObject;
 public class SequenceFeatureDisplayer extends ReportDisplayer
 {
     /** @var sets the max number of locations to show in a table, TODO: match with DisplayObj*/
-    private Integer maximumNumberOfLocations = 27;
+    private InterMineId maximumNumberOfLocations = 27;
 
     /**
      * Construct with config and the InterMineAPI.
@@ -63,7 +64,7 @@ public class SequenceFeatureDisplayer extends ReportDisplayer
             if (loc == null) {
                 Collection col = (Collection) imObj.getFieldValue("locations");
                 List results = new ArrayList();
-                Integer i = 0;
+                InterMineId i = 0;
                 for (Object item : col) {
                     // early exit
                     if (i == maximumNumberOfLocations) {

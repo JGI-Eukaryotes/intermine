@@ -10,6 +10,7 @@ package org.intermine.task;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
@@ -75,7 +76,7 @@ public class DelimitedFileConfiguration
                 String columnNumberString = key.substring(7);
 
                 try {
-                    int keyColumnNumber = Integer.valueOf(columnNumberString).intValue();
+                    int keyColumnNumber = InterMineId.valueOf(columnNumberString).intValue();
 
                     String fieldName = properties.getProperty(key);
 
@@ -94,7 +95,7 @@ public class DelimitedFileConfiguration
                         throw new IllegalArgumentException(message);
                     }
 
-                    columnFieldDescriptorMap.put(new Integer(keyColumnNumber), columnFD);
+                    columnFieldDescriptorMap.put(new InterMineId(keyColumnNumber), columnFD);
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("column number (" + key + ") not parsable "
                                                        + "in property file for "
@@ -109,7 +110,7 @@ public class DelimitedFileConfiguration
 
         for (int columnNumber = 0; columnNumber < mapMax + 1; columnNumber++) {
             FieldDescriptor columnFD =
-                (FieldDescriptor) columnFieldDescriptorMap.get(new Integer(columnNumber));
+                (FieldDescriptor) columnFieldDescriptorMap.get(new InterMineId(columnNumber));
 
             columnFieldDescriptors.add(columnFD);
         }
@@ -120,12 +121,12 @@ public class DelimitedFileConfiguration
             throw new IllegalArgumentException("Map empty in findMapMaxKey()");
         }
 
-        int maxSoFar = Integer.MIN_VALUE;
+        int maxSoFar = InterMineId.MIN_VALUE;
 
         Iterator mapKeyIter = map.keySet().iterator();
 
         while (mapKeyIter.hasNext()) {
-            Integer key = (Integer) mapKeyIter.next();
+            InterMineId key = (Integer) mapKeyIter.next();
 
             if (key.intValue() > maxSoFar) {
                 maxSoFar = key.intValue();

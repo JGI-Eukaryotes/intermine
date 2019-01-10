@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Collection;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
 
@@ -36,7 +37,7 @@ public class SingletonResults extends Results implements Set<Object>, Collection
      * back to the ObjectStore when requests are made
      * @throws IllegalArgumentException if q does not return a single column
      */
-    public SingletonResults(Query q, ObjectStore os, Map<Object, Integer> sequence) {
+    public SingletonResults(Query q, ObjectStore os, Map<Object, InterMineId> sequence) {
         super(q, os, sequence);
 
         // Test that this Query returns a single column of type QueryClass

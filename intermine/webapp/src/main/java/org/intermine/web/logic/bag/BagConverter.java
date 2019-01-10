@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -64,8 +65,8 @@ public abstract class BagConverter
     * @return list of intermine IDs
     * @throws ObjectStoreException if we have issues querying the db.
     */
-    public abstract List<Integer> getConvertedObjectIds(Profile profile, String bagType,
-            List<Integer> bagList, String constraintValue) throws ObjectStoreException;
+    public abstract List<InterMineId> getConvertedObjectIds(Profile profile, String bagType,
+            List<InterMineId> bagList, String constraintValue) throws ObjectStoreException;
 
     /**
     * Method to return list of values and the counts of converted objects for that object

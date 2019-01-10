@@ -94,7 +94,7 @@ public class ListSharingInvitationDetailsService extends JSONService
 
     private Map<String, Object> inviteToMap(SharingInvite invite) {
         InterMineBag bag = invite.getBag();
-        Profile inviter = im.getProfileManager().getProfile(bag.getProfileId());
+        Profile inviter = im.getProfileManager().getProfile(bag.getProfileId().intValue());
 
         Map<String, Object> toSerialise = new HashMap<String, Object>();
         toSerialise.put("uid", invite.getToken());

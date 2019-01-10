@@ -84,7 +84,7 @@ public class TableExportForm extends ActionForm
      * @param includeHeaders the new value.
      */
     public void setIncludeHeaders(boolean includeHeaders) {
-        getExtraParams().put(INCLUDE_HEADERS, includeHeaders);
+        getExtraParams().put(INCLUDE_HEADERS, Boolean.valueOf(includeHeaders));
     }
 
     /**

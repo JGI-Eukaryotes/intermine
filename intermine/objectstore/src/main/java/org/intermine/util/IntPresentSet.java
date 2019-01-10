@@ -10,6 +10,7 @@ package org.intermine.util;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class IntPresentSet
         int bitNo = i & WORD_MASK;
         i /= WORD_SIZE;
         int wordNo = i & PAGE_MASK;
-        Integer pageNo = new Integer(i / PAGE_SIZE);
+        InterMineId pageNo = new InterMineId(i / PAGE_SIZE);
         int[] page = pages.get(pageNo);
         if (page == null) {
             page = new int[PAGE_SIZE + 1];
@@ -88,7 +89,7 @@ public class IntPresentSet
         int bitNo = i & WORD_MASK;
         i /= WORD_SIZE;
         int wordNo = i & PAGE_MASK;
-        Integer pageNo = new Integer(i / PAGE_SIZE);
+        InterMineId pageNo = new InterMineId(i / PAGE_SIZE);
         int[] page = pages.get(pageNo);
         if (page == null) {
             return false;
@@ -101,7 +102,7 @@ public class IntPresentSet
     /**
      * Adds an int to the set.
      *
-     * @param i an Integer
+     * @param i an InterMineId
      */
     public void add(Integer i) {
         if (i == null) {
@@ -112,9 +113,9 @@ public class IntPresentSet
     }
 
     /**
-     * Returns whether the given Integer is present in this set.
+     * Returns whether the given InterMineId is present in this set.
      *
-     * @param i any Integer
+     * @param i any InterMineId
      * @return true or false
      */
     public boolean contains(Integer i) {
@@ -149,10 +150,10 @@ public class IntPresentSet
     public String toString() {
         StringBuffer retval = new StringBuffer("[");
         boolean needComma = false;
-        TreeSet<Integer> sortedKeys = new TreeSet<Integer>(pages.keySet());
-        Iterator<Integer> keyIter = sortedKeys.iterator();
+        TreeSet<InterMineId> sortedKeys = new TreeSet<InterMineId>(pages.keySet());
+        Iterator<InterMineId> keyIter = sortedKeys.iterator();
         while (keyIter.hasNext()) {
-            Integer pageNo = keyIter.next();
+            InterMineId pageNo = keyIter.next();
             int pageNoInt = pageNo.intValue();
             int[] page = pages.get(pageNo);
             for (int wordNo = 0; wordNo < PAGE_SIZE; wordNo++) {

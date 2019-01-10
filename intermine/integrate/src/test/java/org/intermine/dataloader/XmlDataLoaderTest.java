@@ -25,6 +25,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.testmodel.Address;
 import org.intermine.model.testmodel.Manager;
@@ -186,7 +187,7 @@ public class XmlDataLoaderTest extends TestCase
              fakeId++;
              Object obj = iter.next();
              Method setter = TypeUtil.getSetter(obj.getClass(), "id");
-             setter.invoke(obj, new Object[] {new Integer(fakeId)});
+             setter.invoke(obj, new Object[] {new InterMineId(fakeId)});
          }
      }
 
@@ -194,7 +195,7 @@ public class XmlDataLoaderTest extends TestCase
 //              Field f = getIdField(cls);
 //              if (f != null) {
 //                  f.setAccessible(true);
-//                  f.set(obj, new Integer(fakeId));
+//                  f.set(obj, new InterMineId(fakeId));
 //              }
 //          }
 //      }

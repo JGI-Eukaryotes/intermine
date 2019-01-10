@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.AdditionalConverter;
 import org.intermine.api.bag.BagManager;
@@ -118,7 +119,7 @@ public class ModifyBagDetailsAction extends InterMineAction
                     BagConverter bagConverter = PortalHelper.getBagConverter(im,
                             SessionMethods.getWebConfig(request),
                             additionalConverter.getClassName());
-                    List<Integer> converted = bagConverter.getConvertedObjectIds(profile,
+                    List<InterMineId> converted = bagConverter.getConvertedObjectIds(profile,
                             imBag.getType(), imBag.getContentsAsIds(), mbdf.getExtraFieldValue());
 
                     if (converted.size() == 1) {
@@ -170,7 +171,7 @@ public class ModifyBagDetailsAction extends InterMineAction
     }
 
     private ActionForward createBagAndGoToBagDetails(ActionMapping mapping, InterMineBag imBag,
-            List<Integer> bagList) throws ObjectStoreException {
+            List<InterMineId> bagList) throws ObjectStoreException {
         imBag.addIdsToBag(bagList, imBag.getType());
         return new ForwardParameters(mapping.findForward("bagDetails"))
             .addParameter("bagName", imBag.getName()).forward();

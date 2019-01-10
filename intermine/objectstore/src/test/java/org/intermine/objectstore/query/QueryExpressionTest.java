@@ -12,6 +12,7 @@ package org.intermine.objectstore.query;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.CEO;
 import org.intermine.model.testmodel.Company;
 
@@ -27,7 +28,7 @@ public class QueryExpressionTest extends TestCase
     }
 
     public void testAddString() {
-        QueryValue arg1 = new QueryValue(new Integer(3));
+        QueryValue arg1 = new QueryValue(new InterMineId(3));
         QueryValue arg2 = new QueryValue("string");
         try {
             expression = new QueryExpression(arg1, QueryExpression.ADD, arg2);
@@ -37,8 +38,8 @@ public class QueryExpressionTest extends TestCase
     }
 
     public void testInvalidOp() {
-        QueryValue arg1 = new QueryValue(new Integer(3));
-        QueryValue arg2 = new QueryValue(new Integer(4));
+        QueryValue arg1 = new QueryValue(new InterMineId(3));
+        QueryValue arg2 = new QueryValue(new InterMineId(4));
         try {
             expression = new QueryExpression(arg1, QueryExpression.SUBSTRING, arg2);
             fail("A ClassCastException should have been thrown");
@@ -49,8 +50,8 @@ public class QueryExpressionTest extends TestCase
     public void testNumberSubstring() {
         try {
             QueryField field = new QueryField(new QueryClass(Company.class), "vatNumber");
-            QueryValue v1 = new QueryValue(new Integer(1));
-            QueryValue v2 = new QueryValue(new Integer(4));
+            QueryValue v1 = new QueryValue(new InterMineId(1));
+            QueryValue v2 = new QueryValue(new InterMineId(4));
             new QueryExpression(field, v1, v2);
             fail("A ClassCastException should have been thrown");
         } catch (ClassCastException e) {
@@ -60,8 +61,8 @@ public class QueryExpressionTest extends TestCase
     public void testSubstringIndex() {
         try {
             QueryField field = new QueryField(new QueryClass(Company.class), "name");
-            QueryValue v1 = new QueryValue(new Integer(0));
-            QueryValue v2 = new QueryValue(new Integer(4));
+            QueryValue v1 = new QueryValue(new InterMineId(0));
+            QueryValue v2 = new QueryValue(new InterMineId(4));
             new QueryExpression(field, v1, v2);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
@@ -70,7 +71,7 @@ public class QueryExpressionTest extends TestCase
     
     public void testNumericModulo() {
         QueryField field = new QueryField(new QueryClass(CEO.class), "age");
-        QueryValue two = new QueryValue(new Integer(2));
+        QueryValue two = new QueryValue(new InterMineId(2));
         expression = new QueryExpression(field, QueryExpression.MODULO, two);
         assertTrue(Number.class.isAssignableFrom(expression.getType()));
     }
@@ -78,7 +79,7 @@ public class QueryExpressionTest extends TestCase
     public void testStringModulo() {
         try {
             QueryField field = new QueryField(new QueryClass(Company.class), "name");
-            QueryValue two = new QueryValue(new Integer(2));
+            QueryValue two = new QueryValue(new InterMineId(2));
             new QueryExpression(field, QueryExpression.MODULO, two);
         } catch (ClassCastException e) {
             // Expected behaviour.
@@ -86,8 +87,8 @@ public class QueryExpressionTest extends TestCase
     }
 
     public void testValidOp() {
-        QueryValue arg1 = new QueryValue(new Integer(3));
-        QueryValue arg2 = new QueryValue(new Integer(4));
+        QueryValue arg1 = new QueryValue(new InterMineId(3));
+        QueryValue arg2 = new QueryValue(new InterMineId(4));
         expression = new QueryExpression(arg1, QueryExpression.ADD, arg2);
         assertTrue(Number.class.isAssignableFrom(expression.getType()));
     }

@@ -10,6 +10,7 @@ package org.intermine.web.logic.results;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class InlineResultsTableRow
     @SuppressWarnings("rawtypes")
     List columnList = new ArrayList<Object>();
     String className = null;
-    Integer imObjId;
+    InterMineId imObjId;
 
     /**
      * Add an InlineTableResultElement or an empty String

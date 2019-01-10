@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.CollectionDescriptor;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.Model;
@@ -118,8 +119,8 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
 
         ObjectStoreWriter writer = ObjectStoreWriterFactory.getObjectStoreWriter(writerAlias);
         try {
-            int maxSize = Integer.parseInt(trackerMaxSizeString);
-            int commitSize = Integer.parseInt(trackerCommitSizeString);
+            int maxSize = InterMineId.parseInt(trackerMaxSizeString);
+            int commitSize = InterMineId.parseInt(trackerCommitSizeString);
             Database db = ((ObjectStoreWriterInterMineImpl) writer).getDatabase();
             Set<Class<?>> trackerMissingClasses = new HashSet<Class<?>>();
             if (trackerMissingClassesString != null) {
@@ -132,9 +133,9 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
                 }
             }
             Constructor<? extends DataTracker> con = trackerClass.getConstructor(
-                    new Class[] {Database.class, Integer.TYPE, Integer.TYPE});
+                    new Class[] {Database.class, InterMineId.TYPE, InterMineId.TYPE});
             DataTracker newDataTracker = con.newInstance(new Object[] {db,
-                new Integer(maxSize), new Integer(commitSize)});
+                new InterMineId(maxSize), new InterMineId(commitSize)});
 
             Constructor<? extends IntegrationWriterDataTrackingImpl> con2 =
                 iwClass.getConstructor(new Class[] {ObjectStoreWriter.class, DataTracker.class,
@@ -290,7 +291,7 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
             }
 
             InterMineObject newObj = (InterMineObject) DynamicUtil.createObject(classes);
-            Integer newId = null;
+            InterMineId newId = null;
             // if multiple equivalent objects in database just use id of first one
             Iterator<InterMineObject> equivalentIter = equivObjects.iterator();
 
@@ -502,7 +503,7 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
         return false;
     }
 
-    private void writeTrackerData(InterMineObject newObj, Integer newId,
+    private void writeTrackerData(InterMineObject newObj, InterMineId newId,
             Map<String, Source> trackingMap) {
         if (doTrackerFor(newObj.getClass())) {
             // We have called store() on an object, and we are about to write all of its data
@@ -583,7 +584,7 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
             IllegalAccessException {
         // Take a shortcut!
         InterMineObject newObj = DynamicUtil.createObject(o.getClass());
-        Integer newId;
+        InterMineId newId;
 
         if (equivObjects.size() == 0) {
             newId = getSerial();

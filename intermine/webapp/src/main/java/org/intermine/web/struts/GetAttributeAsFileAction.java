@@ -22,6 +22,7 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.metadata.Util;
 import org.intermine.model.InterMineObject;
@@ -52,7 +53,7 @@ public class GetAttributeAsFileAction extends Action
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         ObjectStore os = im.getObjectStore();
         WebConfig webConfig = SessionMethods.getWebConfig(request);
-        Integer objectId = new Integer(request.getParameter("object"));
+        InterMineId objectId = new InterMineId(request.getParameter("object"));
         String fieldName = request.getParameter("field");
         String fileType = request.getParameter("type");
         InterMineObject object = os.getObjectById(objectId);

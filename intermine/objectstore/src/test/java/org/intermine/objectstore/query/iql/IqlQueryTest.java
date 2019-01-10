@@ -18,6 +18,7 @@ import java.util.List;
 
 import junit.framework.Test;
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.Query;
 import org.intermine.testing.OneTimeTestCase;
 
@@ -90,7 +91,7 @@ public class IqlQueryTest extends IqlQueryTestCase
     public void testToStringTruncatedParameters() throws Exception {
         String iql = "SELECT a1_ FROM org.intermine.model.InterMineObject AS a1_ WHERE a1_.id IN ?";
         List<Object> bags = new ArrayList<Object>();
-        bags.add(Arrays.asList(new Integer[] {new Integer(1), new Integer(2), new Integer(3)}));
+        bags.add(Arrays.asList(new InterMineId[] {new InterMineId(1), new InterMineId(2), new InterMineId(3)}));
         IqlQuery q = new IqlQuery(iql, null, bags);
         String expected = "SELECT a1_ FROM org.intermine.model.InterMineObject AS a1_ WHERE a1_.id IN ? 1: [1, 2] (showing 2 of 3)";
         assertEquals(expected, q.toStringTruncateParameters(2));

@@ -10,6 +10,7 @@ package org.intermine.util;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -92,7 +93,7 @@ public final class MappingUtil
             Comparator<? super T> comparator, MappingUtilChecker<T> checker) {
         List<T> firstList = new ArrayList<T>(firstSet);
         List<T> secondList = new ArrayList<T>(secondSet);
-        Set<Integer> takenSeconds = Collections.emptySet();
+        Set<InterMineId> takenSeconds = Collections.emptySet();
         Map<T, T> soFar = Collections.emptyMap();
         Set<Map<T, T>> retval = new LinkedHashSet<Map<T, T>>();
         findCombinations(retval, firstList, secondList, comparator, checker, soFar, 0,
@@ -102,18 +103,18 @@ public final class MappingUtil
 
     private static <T> void findCombinations(Set<Map<T, T>> retval, List<T> firstList,
             List<T> secondList, Comparator<? super T> comparator, MappingUtilChecker<T> checker,
-            Map<T, T> soFar, int firstIndex, Set<Integer> takenSeconds) {
+            Map<T, T> soFar, int firstIndex, Set<InterMineId> takenSeconds) {
         if (firstIndex >= firstList.size()) {
             retval.add(soFar);
         } else {
             T firstElement = firstList.get(firstIndex);
             for (int i = 0; i < secondList.size(); i++) {
-                if (!takenSeconds.contains(new Integer(i))) {
+                if (!takenSeconds.contains(new InterMineId(i))) {
                     T secondElement = secondList.get(i);
                     if (comparator.compare(firstElement, secondElement) == 0) {
-                        Set<Integer> newTakenSeconds = new HashSet<Integer>(takenSeconds);
+                        Set<InterMineId> newTakenSeconds = new HashSet<InterMineId>(takenSeconds);
                         Map<T, T> newSoFar = new LinkedHashMap<T, T>(soFar);
-                        newTakenSeconds.add(new Integer(i));
+                        newTakenSeconds.add(new InterMineId(i));
                         newSoFar.put(firstElement, secondElement);
                         if (checker.check(newSoFar)) {
                             findCombinations(retval, firstList, secondList, comparator, checker,

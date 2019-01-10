@@ -233,7 +233,7 @@ public final class QueryOptimiser
                 // to say optimisation is not worth it, before parsing.
                 bestQuery.add(query);
                 if (originalQuery == null) {
-                    originalQuery = new Query(query, context.getMaxQueryParseTime());
+                    originalQuery = new Query(query, Long.valueOf(context.getMaxQueryParseTime()));
                 }
                 parseTime = new Date().getTime();
                 recursiveOptimiseCheckSubquery(precomputedTables, originalQuery, bestQuery);

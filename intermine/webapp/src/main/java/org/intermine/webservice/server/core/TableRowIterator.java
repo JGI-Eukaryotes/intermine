@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.results.ResultCell;
 import org.intermine.metadata.FieldDescriptor;
@@ -193,7 +194,7 @@ public class TableRowIterator implements
 
         reorderer = new Comparator<Either<ResultCell, SubTable>>() {
 
-            private Integer pathToViewIndex(Path path) {
+            private InterMineId pathToViewIndex(Path path) {
                 String pString = path.toStringNoConstraints(), view = pString;
 
                 if (!path.endIsAttribute()) {
@@ -204,7 +205,7 @@ public class TableRowIterator implements
                         }
                     }
                 }
-                return Integer.valueOf(pathQuery.getView().indexOf(view));
+                return InterMineId.valueOf(pathQuery.getView().indexOf(view));
             }
 
             @Override
@@ -215,15 +216,15 @@ public class TableRowIterator implements
             }
         };
         pathReorderer = new Comparator<Either<Path, DisjointRecursiveList<Path>>>() {
-            private EitherVisitor<Path, DisjointRecursiveList<Path>, Integer> toViewIndex =
-                    new EitherVisitor<Path, DisjointRecursiveList<Path>, Integer>() {
+            private EitherVisitor<Path, DisjointRecursiveList<Path>, InterMineId> toViewIndex =
+                    new EitherVisitor<Path, DisjointRecursiveList<Path>, InterMineId>() {
                         @Override
-                        public Integer visitLeft(Path a) {
-                            return pathQuery.getView().indexOf(a.toStringNoConstraints());
+                        public InterMineId visitLeft(Path a) {
+                            return InterMineId.valueOf(pathQuery.getView().indexOf(a.toStringNoConstraints()));
                         }
                         @Override
-                        public Integer visitRight(DisjointRecursiveList<Path> b) {
-                            return Integer.valueOf(
+                        public InterMineId visitRight(DisjointRecursiveList<Path> b) {
+                            return InterMineId.valueOf(
                                     pathQuery.getView().indexOf(
                                             b.flatten().get(0).toStringNoConstraints()));
                         }

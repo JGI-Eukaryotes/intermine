@@ -18,6 +18,7 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.*;
 import org.intermine.objectstore.intermine.ObjectStoreInterMineImpl;
 import org.intermine.sql.Database;
@@ -93,7 +94,7 @@ public class AcceptanceTestTaskTest
 
         Assert.assertEquals(expSql, test.getSql());
         Assert.assertEquals(expNote, test.getNote());
-        Assert.assertEquals(new Integer(10), test.getMaxResults());
+        Assert.assertEquals(new InterMineId(10), test.getMaxResults());
     }
 
     @Test

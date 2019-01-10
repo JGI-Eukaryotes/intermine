@@ -13,6 +13,7 @@ package org.intermine.api.profile;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.UnknownBagTypeException;
 import org.intermine.api.search.DeletionEvent;
 import org.intermine.api.userprofile.SavedBag;
@@ -64,7 +65,7 @@ public class InvalidBag extends StorableBag
      *                              doing so.
      */
     public InvalidBag(String name, String type, String desc, Date createdAt, ObjectStore os,
-            Integer savedBagId, Integer profileId,
+            InterMineId savedBagId, InterMineId profileId,
             ObjectStoreBag osb, ObjectStoreWriter userprofileObjectStore)
         throws ObjectStoreException {
 
@@ -118,7 +119,7 @@ public class InvalidBag extends StorableBag
      * @param userprofileObjectStore The userprofile object store.
      * @throws ObjectStoreException If there is a problem creating an ObjectStoreBag.
      */
-    protected InvalidBag(SavedBag savedBag, Integer profileId,
+    protected InvalidBag(SavedBag savedBag, InterMineId profileId,
             ObjectStore os, ObjectStoreWriter userprofileObjectStore)
         throws ObjectStoreException {
 

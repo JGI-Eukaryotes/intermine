@@ -10,6 +10,7 @@ package org.intermine.metadata;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -285,7 +286,7 @@ public final class Util
         if ("short".equals(type) || "java.lang.Short".equals(type)) {
             return Short.class;
         } else if ("int".equals(type) || "java.lang.Integer".equals(type)) {
-            return Integer.class;
+            return InterMineId.class;
         } else if ("long".equals(type) || "java.lang.Long".equals(type)) {
             return Long.class;
         } else if ("java.lang.String".equals(type)) {
@@ -450,7 +451,7 @@ public final class Util
      */
     protected static Class<?> instantiate(String type) {
         if (type.equals(Integer.TYPE.toString())) {
-            return Integer.class;
+            return InterMineId.class;
         }
         if (type.equals(Boolean.TYPE.toString())) {
             return Boolean.class;

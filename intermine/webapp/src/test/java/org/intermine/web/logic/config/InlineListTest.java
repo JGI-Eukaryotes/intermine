@@ -10,6 +10,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Company;
 import org.intermine.util.DynamicUtil;
 import org.intermine.web.logic.results.InlineList;
@@ -31,15 +32,15 @@ public class InlineListTest extends TestCase
 
         // InterMine Objects
         company1 = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
-        company1.setId(new Integer(1));
+        company1.setId(new InterMineId(1));
         company1.setName("Weyland Yutani");
 
         company2 = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
-        company2.setId(new Integer(2));
+        company2.setId(new InterMineId(2));
         company2.setName("Initech");
 
         company3 = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
-        company3.setId(new Integer(3));
+        company3.setId(new InterMineId(3));
         company3.setName("Umbrella Corp.");
     }
 

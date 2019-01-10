@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.InterMineException;
 import org.intermine.api.template.ApiTemplate;
 import org.intermine.api.template.TemplateManager;
@@ -184,14 +185,14 @@ public class BagQueryRunner
             // run the next query on identifiers not yet resolved
             // OR all identifiers if matchOnFirst = FALSE
             if (!unresolved.isEmpty() || !matchOnFirst) {
-                Map<String, Set<Integer>> resMap = new HashMap<String, Set<Integer>>();
+                Map<String, Set<InterMineId>> resMap = new HashMap<String, Set<InterMineId>>();
                 try {
                     Set<String> toProcess = (matchOnFirst) ? unresolved : unresolvedOriginal;
                     Query q = bq.getQuery(toProcess, extraFieldValue);
                     Results res = os.execute(q, 10000, true, true, false);
                     for (Object rowObj : res) {
                         ResultsRow<?> row = (ResultsRow<?>) rowObj;
-                        Integer id = (Integer) row.get(0);
+                        InterMineId id = (Integer) row.get(0);
                         for (int i = 1; i < row.size(); i++) {
                             final Object fieldObject = row.get(i);
                             if (fieldObject != null) {
@@ -218,14 +219,14 @@ public class BagQueryRunner
                             matchOnFirst, bq.matchesAreIssues());
             }
             if (!wildcardInput.isEmpty()) {
-                Map<String, Set<Integer>> resMap = new HashMap<String, Set<Integer>>();
+                Map<String, Set<InterMineId>> resMap = new HashMap<String, Set<InterMineId>>();
 
                 Query q = bq.getQueryForWildcards(wildcardInput, extraFieldValue);
                 Results res = os.execute(q, ResultsBatches.DEFAULT_BATCH_SIZE, true, true,
                         false);
                 for (Object rowObj : res) {
                     ResultsRow<?> row = (ResultsRow<?>) rowObj;
-                    Integer id = (Integer) row.get(0);
+                    InterMineId id = (Integer) row.get(0);
                     for (int i = 1; i < row.size(); i++) {
                         String field = "" + row.get(i);
                         String lowerField = field.toLowerCase();
@@ -237,7 +238,7 @@ public class BagQueryRunner
                         }
                     }
                 }
-                for (Map.Entry<String, Set<Integer>> entry : resMap.entrySet()) {
+                for (Map.Entry<String, Set<InterMineId>> entry : resMap.entrySet()) {
                     // This is a dummy issue just to give a message when running queries
                     bqr.addIssue(BagQueryResult.WILDCARD, bq.getMessage(),
                             entry.getKey(), new ArrayList<Object>(entry.getValue()));
@@ -260,11 +261,11 @@ public class BagQueryRunner
         return bqr;
     }
 
-    private static void processMatch(Map<String, Set<Integer>> resMap, Set<String> unresolved,
-        Integer id, String field) {
-        Set<Integer> ids = resMap.get(field);
+    private static void processMatch(Map<String, Set<InterMineId>> resMap, Set<String> unresolved,
+        InterMineId id, String field) {
+        Set<InterMineId> ids = resMap.get(field);
         if (ids == null) {
-            ids = new LinkedHashSet<Integer>();
+            ids = new LinkedHashSet<InterMineId>();
             resMap.put(field, ids);
         }
         ids.add(id);
@@ -276,16 +277,16 @@ public class BagQueryRunner
      *
      * @throws InterMineException
      */
-    private void addResults(Map<String, Set<Integer>> resMap, Set<String> unresolved,
+    private void addResults(Map<String, Set<InterMineId>> resMap, Set<String> unresolved,
             BagQueryResult bqr, String msg, Class<?> type, boolean areWildcards,
             boolean matchOnFirst, boolean matchesAreIssues) throws InterMineException {
         Map<String, Set<Object>> objsOfWrongType = new HashMap<String, Set<Object>>();
 
         // Gather together all the id lookups and perform them in one.
         Map<Integer, InterMineObject> fetchedObjects = new HashMap<Integer, InterMineObject>();
-        Set<Integer> idsToFetch = new HashSet<Integer>();
+        Set<InterMineId> idsToFetch = new HashSet<InterMineId>();
         try {
-            for (Map.Entry<String, Set<Integer>> resEntry : resMap.entrySet()) {
+            for (Map.Entry<String, Set<InterMineId>> resEntry : resMap.entrySet()) {
                 if (matchesAreIssues || (resEntry.getValue().size() > 1)) {
                     idsToFetch.addAll(resEntry.getValue());
                 }
@@ -298,9 +299,9 @@ public class BagQueryRunner
             throw new InterMineException("can't fetch: " + idsToFetch, e);
         }
 
-        for (Map.Entry<String, Set<Integer>> entry : resMap.entrySet()) {
+        for (Map.Entry<String, Set<InterMineId>> entry : resMap.entrySet()) {
             String input = entry.getKey();
-            Set<Integer> ids = entry.getValue();
+            Set<InterMineId> ids = entry.getValue();
             boolean resolved = true;
 
             if (!matchesAreIssues) {
@@ -405,7 +406,7 @@ public class BagQueryRunner
                 List<InterMineObject> candidateObjs = objTypes.get(fromClass);
 
                 // we may have already converted some of these types, remove any that have been.
-                List<Integer> idsToConvert = new ArrayList<Integer>();
+                List<InterMineId> idsToConvert = new ArrayList<InterMineId>();
                 for (InterMineObject candidate : candidateObjs) {
                     if (objectToInput.containsKey(candidate)) {
                         idsToConvert.add(candidate.getId());

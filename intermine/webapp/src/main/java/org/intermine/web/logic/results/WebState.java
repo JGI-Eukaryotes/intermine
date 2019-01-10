@@ -10,6 +10,7 @@ package org.intermine.web.logic.results;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class WebState
     private Map<String, Boolean> toggledElements = new HashMap<String, Boolean>();
     protected Map<String, String> subtabs = new HashMap<String, String>();
     private Map<String, Object> statesMap = new HashMap<String, Object>();
-    private Map<String, Integer> hintCounts = new HashMap<String, Integer>();
+    private Map<String, InterMineId> hintCounts = new HashMap<String, InterMineId>();
 
     /**
      * Gets map of ids of elements that were in the past (during session) toggled
@@ -101,7 +102,7 @@ public class WebState
         if (hintCounts.containsKey(hint)) {
             count = hintCounts.get(hint).intValue();
         }
-        hintCounts.put(hint, new Integer(count + 1));
+        hintCounts.put(hint, new InterMineId(count + 1));
     }
 
     /**

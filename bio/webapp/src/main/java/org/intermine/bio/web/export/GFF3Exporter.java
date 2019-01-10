@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultElement;
 import org.intermine.bio.io.gff3.GFF3Record;
 import org.intermine.bio.ontology.SequenceOntology;
@@ -66,7 +67,7 @@ public class GFF3Exporter implements Exporter
         "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=7227";
 
     PrintWriter out;
-    private List<Integer> featureIndexes;
+    private List<InterMineId> featureIndexes;
     private Map<String, String> soClassNames;
     private int writtenResultsCount = 0;
     private boolean headerPrinted = false;
@@ -92,7 +93,7 @@ public class GFF3Exporter implements Exporter
      * @param organisms taxon id of the organisms
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      */
-    public GFF3Exporter(PrintWriter out, List<Integer> indexes, Map<String, String> soClassNames,
+    public GFF3Exporter(PrintWriter out, List<InterMineId> indexes, Map<String, String> soClassNames,
             List<String> attributesNames, String sourceName, Set<String> organisms,
             boolean makeUcscCompatible) {
         this.out = out;
@@ -121,7 +122,7 @@ public class GFF3Exporter implements Exporter
      * @param makeUcscCompatible true if chromosome ids should be prefixed by 'chr'
      * @param paths paths
      */
-    public GFF3Exporter(PrintWriter out, List<Integer> indexes, Map<String, String> soClassNames,
+    public GFF3Exporter(PrintWriter out, List<InterMineId> indexes, Map<String, String> soClassNames,
             List<String> attributesNames, String sourceName, Set<String> organisms,
             boolean makeUcscCompatible, List<Path> paths) {
         this.out = out;
@@ -215,11 +216,11 @@ public class GFF3Exporter implements Exporter
     }
 
     /* State for the exportRow method, to allow several rows to be merged. */
-    private Map<String, Integer> attributeVersions = new HashMap<String, Integer>();
-    private Integer lastLsfId = null;
+    private Map<String, InterMineId> attributeVersions = new HashMap<String, InterMineId>();
+    private InterMineId lastLsfId = null;
     private SequenceFeature lastLsf = null;
     private Map<String, List<String>> attributes = null;
-    private Map<String, Set<Integer>> seenAttributes = new HashMap<String, Set<Integer>>();
+    private Map<String, Set<InterMineId>> seenAttributes = new HashMap<String, Set<InterMineId>>();
 
     private void exportRow(List<ResultElement> row,
             Collection<Path> unionPathCollection, Collection<Path> newPathCollection) {
@@ -234,7 +235,7 @@ public class GFF3Exporter implements Exporter
         // feature's parents have unique path, e.g. transcript's parents paths
         // are interactingGene.exons and interactingGene, but exon is not a
         // parent of transcript, correct this by using SO.
-        Map<String, Integer> pathToIdMap = new HashMap<String, Integer>();
+        Map<String, InterMineId> pathToIdMap = new HashMap<String, InterMineId>();
         Map<Integer, List<String>> idToParentPathMap = new HashMap<Integer, List<String>>();
         Map<Integer, ResultElement> idToResultElementMap = new HashMap<Integer, ResultElement>();
         for (ResultElement el : elWithObject) {
@@ -247,7 +248,7 @@ public class GFF3Exporter implements Exporter
             pathList.remove(pathList.size() - 1);
             String lastClassPath = pathList.get(pathList.size() - 1).toStringNoConstraints();
 
-            Integer id = null;
+            InterMineId id = null;
             try {
                 id = ((SequenceFeature) el.getObject()).getId();
             } catch (Exception e) {
@@ -377,7 +378,7 @@ public class GFF3Exporter implements Exporter
         }
     }
 
-    private void processParent(Map<String, Integer> pathToIdMap,
+    private void processParent(Map<String, InterMineId> pathToIdMap,
             Map<Integer, List<String>> idToParentPathMap,
             Map<Integer, ResultElement> idToResultElementMap, SequenceOntology so) {
 
@@ -385,7 +386,7 @@ public class GFF3Exporter implements Exporter
         List<String> parentPaths = idToParentPathMap.get(lastLsfId);
         if (!parentPaths.isEmpty()) {
             for (String parentPath : parentPaths) {
-                Integer parentId = pathToIdMap.get(parentPath);
+                InterMineId parentId = pathToIdMap.get(parentPath);
                 // parents not in view, e.g. Gene.transcripts.exons, gene or/and
                 // transcripts not display, thus Gene or/and Gene.transcripts
                 // will not be in pathToIdMap
@@ -462,21 +463,21 @@ public class GFF3Exporter implements Exporter
      */
     private void checkAttribute(ResultElement el, String attributeName) {
         if (!GFF_FIELDS.contains(attributeName)) {
-            Set<Integer> seenAttributeValues = seenAttributes.get(attributeName);
+            Set<InterMineId> seenAttributeValues = seenAttributes.get(attributeName);
             if (seenAttributeValues == null) {
-                seenAttributeValues = new HashSet<Integer>();
+                seenAttributeValues = new HashSet<InterMineId>();
                 seenAttributes.put(attributeName, seenAttributeValues);
             }
             if (!seenAttributeValues.contains(el.getId())) {
                 seenAttributeValues.add(el.getId());
-                Integer version = attributeVersions.get(attributeName);
+                InterMineId version = attributeVersions.get(attributeName);
                 if (version == null) {
-                    version = new Integer(1);
+                    version = new InterMineId(1);
                     attributes.put(attributeName, formatElementValue(el));
                 } else {
                     attributes.put(attributeName + version, formatElementValue(el));
                 }
-                attributeVersions.put(attributeName, new Integer(version.intValue() + 1));
+                attributeVersions.put(attributeName, new InterMineId(version.intValue() + 1));
             }
         }
     }

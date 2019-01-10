@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.metadata.Model;
 import org.intermine.objectstore.ObjectStore;
@@ -254,7 +255,7 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
                 ResultsRow<?> row = (ResultsRow<?>) it.next();
                 String category = (String) row.get(0);
                 Object series = row.get(1);
-                long count = (Long) row.get(2);
+                long count = ((Long) row.get(2)).longValue();
                 if (series != null) {
                     if (categorySeriesMap.get(category) != null) {
                         for (int indexSeries = 0; indexSeries < seriesValue.length; indexSeries++) {
@@ -282,9 +283,9 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
                 try {
                     category = (String) row.get(0);
                 } catch (ClassCastException cce) {
-                    category = Integer.toString((Integer) row.get(0));
+                    category = InterMineId.toString(((Integer) row.get(0)).intValue());
                 }
-                long count = (Long) row.get(1);
+                long count = ((Long) row.get(1)).longValue();
                 long[] counts = {count};
                 categorySeriesMap.put(category, counts);
             }
@@ -293,7 +294,7 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
 
     private boolean isSeriesValue(String seriesValue, Object series) {
         if ("true".equalsIgnoreCase(seriesValue) || "false".equalsIgnoreCase(seriesValue)) {
-            return (Boolean.parseBoolean(seriesValue) == (Boolean) series);
+            return (Boolean.parseBoolean(seriesValue) == ((Boolean) series).booleanValue());
         } else {
             return seriesValue.equals(series);
         }
@@ -317,7 +318,7 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
             dataRow.add(category);
             long[] seriesCounts = categorySeriesMap.get(category);
             for (long seriesCount : seriesCounts) {
-                dataRow.add(seriesCount);
+                dataRow.add(Long.valueOf(seriesCount));
             }
             resultTable.add(dataRow);
         }
@@ -365,8 +366,8 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
             ResultsRow resRow = (ResultsRow) iter.next();
 
             String chromosome = (String) resRow.get(0);         // chromosome
-            long geneCount = (java.lang.Long) resRow.get(1);    // genecount
-            resultsTable.put(chromosome, geneCount);
+            long geneCount = ((Long) resRow.get(1)).longValue();    // genecount
+            resultsTable.put(chromosome, Long.valueOf(geneCount));
 
             // increase total amount of genes with chromosomes
             grandTotal += geneCount;
@@ -417,7 +418,7 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
         for (String category : categoryMapInDB.keySet()) {
             double expectedValue = 0;
             double proportion = 0.0000000000;
-            double totalInDBWithChromosome = (categoryMapInDB.get(category));
+            double totalInDBWithChromosome = (categoryMapInDB.get(category)).doubleValue();
 
             if (totalInDBWithChromosome > 0) {
                 proportion = totalInDBWithChromosome / totalInDBWithLocation;

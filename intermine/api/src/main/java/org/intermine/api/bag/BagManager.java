@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.BagDoesNotExistException;
 import org.intermine.api.profile.BagState;
 import org.intermine.api.profile.InterMineBag;
@@ -560,7 +561,7 @@ public class BagManager
      * @param profile the user to fetch bags from
      * @return bags containing the given id
      */
-    public Collection<InterMineBag> getUserBagsContainingId(Profile profile, Integer id) {
+    public Collection<InterMineBag> getUserBagsContainingId(Profile profile, InterMineId id) {
         return getBagsContainingId(getUserBags(profile), id);
     }
 
@@ -570,7 +571,7 @@ public class BagManager
      * @param profile the user to fetch bags from
      * @return bags containing the given id
      */
-    public Collection<InterMineBag> getSharedBagsContainingId(Profile profile, Integer id) {
+    public Collection<InterMineBag> getSharedBagsContainingId(Profile profile, InterMineId id) {
         return getBagsContainingId(getSharedBags(profile), id);
     }
 
@@ -583,7 +584,7 @@ public class BagManager
      * @return bags containing the given id
      */
     public Collection<InterMineBag> getCurrentBagsContainingId(Profile profile,
-                                                                           Integer id) {
+                                                                           InterMineId id) {
         HashSet<InterMineBag> bagsContainingId = new HashSet<InterMineBag>();
         for (InterMineBag bag: getGlobalBagsContainingId(id)) {
             if (bag.isCurrent()) {
@@ -604,7 +605,7 @@ public class BagManager
     }
 
     private Collection<InterMineBag> getBagsContainingId(Map<String, InterMineBag> imBags,
-            Integer id) {
+            InterMineId id) {
         Collection<ObjectStoreBag> objectStoreBags = getObjectStoreBags(imBags.values());
         Map<Integer, InterMineBag> osBagIdToInterMineBag =
             getOsBagIdToInterMineBag(imBags.values());
@@ -622,7 +623,7 @@ public class BagManager
         Results res = osProduction.executeSingleton(q);
         Iterator<Object> resIter = res.iterator();
         while (resIter.hasNext()) {
-            Integer osBagId = (Integer) resIter.next();
+            InterMineId osBagId = (Integer) resIter.next();
             if (osBagIdToInterMineBag.containsKey(osBagId)) {
                 bagsContainingId.add(osBagIdToInterMineBag.get(osBagId));
             }
@@ -636,7 +637,7 @@ public class BagManager
         Map<Integer, InterMineBag> osBagIdToInterMineBag = new HashMap<Integer, InterMineBag>();
 
         for (InterMineBag imBag : imBags) {
-            osBagIdToInterMineBag.put(new Integer(imBag.getOsb().getBagId()), imBag);
+            osBagIdToInterMineBag.put(new InterMineId(imBag.getOsb().getBagId()), imBag);
         }
         return osBagIdToInterMineBag;
     }
@@ -662,26 +663,26 @@ public class BagManager
          * @param tags
          * @return
          */
-        private Integer resolveOrderFromTagsList(List<Tag> tags) {
+        private InterMineId resolveOrderFromTagsList(List<Tag> tags) {
             for (Tag t : tags) {
                 String name = t.getTagName();
                 if (name.startsWith("im:order:")) {
-                    return Integer.parseInt(name.replaceAll("[^0-9]", ""));
+                    return InterMineId.valueOf(Integer.parseInt(name.replaceAll("[^0-9]", "")));
                 }
             }
-            return Integer.MAX_VALUE;
+            return InterMineId.valueOf(Integer.MAX_VALUE);
         }
 
         @Override
         public int compare(String aK, String bK) {
             // get the order from the tags for the bags for the superduper profile
-            Integer aO = resolveOrderFromTagsList(tagManager.getTags(null, aK, TagTypes.BAG, null));
-            Integer bO = resolveOrderFromTagsList(tagManager.getTags(null, bK, TagTypes.BAG, null));
+            InterMineId aO = resolveOrderFromTagsList(tagManager.getTags(null, aK, TagTypes.BAG, null));
+            InterMineId bO = resolveOrderFromTagsList(tagManager.getTags(null, bK, TagTypes.BAG, null));
 
-            if (aO < bO) {
+            if (aO.intValue() < bO.intValue()) {
                 return -1;
             } else {
-                if (aO > bO) {
+                if (aO.intValue() > bO.intValue()) {
                     return 1;
                 } else {
                     CaseInsensitiveComparator cic = new CaseInsensitiveComparator();

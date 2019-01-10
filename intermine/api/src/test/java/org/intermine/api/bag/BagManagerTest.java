@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPITestCase;
 import org.intermine.api.profile.BagState;
 import org.intermine.api.profile.InterMineBag;
@@ -34,8 +35,8 @@ public class BagManagerTest extends InterMineAPITestCase
     private BagManager bagManager;
     private TagManager tagManager;
     private InterMineBag globalCompanyBag, globalAddressBag, superPrivateBag, userCompanyBag, userAddressBag;
-    private Integer ADDRESS_ID = 1;
-    private Integer DUMMY_ID = 2;
+    private InterMineId ADDRESS_ID = 1;
+    private InterMineId DUMMY_ID = 2;
     private ClassKeys classKeys;
     private Profile bobProfile;
     private Map<String, InterMineBag>  noBags = new HashMap<String, InterMineBag>();

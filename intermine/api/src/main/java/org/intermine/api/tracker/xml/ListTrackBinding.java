@@ -21,6 +21,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.api.tracker.ListTracker;
 import org.intermine.api.tracker.track.Track;
 import org.intermine.api.tracker.util.TrackerUtil;
@@ -71,7 +72,7 @@ public final class ListTrackBinding
                 writer.writeCharacters("\n");
                 writer.writeStartElement(LISTTRACK);
                 writer.writeAttribute("type", rs.getString(1));
-                writer.writeAttribute("count", Integer.toString(rs.getInt(2)));
+                writer.writeAttribute("count", InterMineId.toString(rs.getInt(2)));
                 writer.writeAttribute("buildmode", rs.getString(3));
                 writer.writeAttribute("event", rs.getString(4));
                 writer.writeAttribute("username", rs.getString(5));
@@ -142,7 +143,7 @@ class ListTrackHandler extends TrackHandler
         if (ListTrackBinding.LISTTRACK.equals(qName)) {
             try {
                 stm.setString(1, attrs.getValue("type"));
-                stm.setInt(2, Integer.parseInt(attrs.getValue("count")));
+                stm.setInt(2, InterMineId.parseInt(attrs.getValue("count")));
                 stm.setString(3, attrs.getValue("buildmode"));
                 stm.setString(4, attrs.getValue("event"));
                 stm.setString(5, attrs.getValue("username"));

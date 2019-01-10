@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
@@ -605,18 +606,18 @@ public class Path
      * @param field the field
      * @return list of indexes
      */
-    public List<Integer> getElementsContainingField(String cls, String field) {
-        List<Integer> indexElementsContainingField = new ArrayList<Integer>();
+    public List<InterMineId> getElementsContainingField(String cls, String field) {
+        List<InterMineId> indexElementsContainingField = new ArrayList<InterMineId>();
         ClassDescriptor cd;
         for (int index = 0; index < elements.size(); index++) {
             if (elements.get(index).equals(field)) {
                 cd = getElementClassDescriptors().get(index);
                 if (cd.getSimpleName().equals(cls)) {
-                    indexElementsContainingField.add(index);
+                    indexElementsContainingField.add(Integer.valueOf(index));
                 } else {
                     for (String superClass : cd.getAllSuperclassNames()) {
                         if (superClass.equals(cls)) {
-                            indexElementsContainingField.add(index);
+                            indexElementsContainingField.add(Integer.valueOf(index));
                             break;
                         }
                     }

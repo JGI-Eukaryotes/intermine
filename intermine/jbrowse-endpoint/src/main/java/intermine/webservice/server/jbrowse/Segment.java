@@ -10,6 +10,7 @@ package org.intermine.webservice.server.jbrowse;
  *
  */
 
+import org.intermine.model.InterMineId;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -22,9 +23,9 @@ public final class Segment
 {
 
     private final String section;
-    private final Integer start, end;
+    private final InterMineId start, end;
 
-    private Segment(String section, Integer start, Integer end) {
+    private Segment(String section, InterMineId start, InterMineId end) {
         this.section = section;
         this.start = start;
         this.end = end;
@@ -45,7 +46,7 @@ public final class Segment
      * @param e end
      * @return segment
      */
-    public static Segment makeSegment(String ref, Integer s, Integer e) {
+    public static Segment makeSegment(String ref, InterMineId s, InterMineId e) {
         if (("global").equals(ref)) {
             return GLOBAL_SEGMENT;
         }
@@ -65,21 +66,21 @@ public final class Segment
     /**
      * @return start
      */
-    public Integer getStart() {
+    public InterMineId getStart() {
         return this.start;
     }
 
     /**
      * @return end
      */
-    public Integer getEnd() {
+    public InterMineId getEnd() {
         return this.end;
     }
 
     /**
      * @return width
      */
-    public Integer getWidth() {
+    public InterMineId getWidth() {
         if (this.end == null || this.start == null) {
             return null;
         }

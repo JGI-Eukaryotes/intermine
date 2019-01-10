@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.results.Column;
 import org.intermine.api.results.ResultElement;
@@ -368,7 +369,7 @@ public class PagedTable
      * @param objectId the id to select
      * @param columnIndex the column of the selected id
      */
-    public void selectId(final Integer objectId, final int columnIndex) {
+    public void selectId(final InterMineId objectId, final int columnIndex) {
         if (allSelected == -1) {
             final ResultElement resultElement = findIdInVisible(objectId);
             if (resultElement != null) {
@@ -391,7 +392,7 @@ public class PagedTable
      * Remove the object with the given object id from the list of selected objects.
      * @param objectId the object store id
      */
-    public void deSelectId(final Integer objectId) {
+    public void deSelectId(final InterMineId objectId) {
         if (allSelected == -1) {
             selectionIds.remove(objectId);
             if (selectionIds.size() <= 0) {
@@ -417,7 +418,7 @@ public class PagedTable
     /**
      * Search the visible rows and return the first ResultElement with the given ID./
      */
-    private ResultElement findIdInVisible(final Integer id) {
+    private ResultElement findIdInVisible(final InterMineId id) {
         for (final MultiRow<ResultsRow<MultiRowValue<ResultElement>>> mr : getRows()) {
             for (final ResultsRow<MultiRowValue<ResultElement>> rv : mr) {
                 for (final MultiRowValue<ResultElement> mrv : rv) {
@@ -460,7 +461,7 @@ public class PagedTable
                     // find a value
                     InterMineObject object;
                     try {
-                        final Integer id = entry.id;
+                        final InterMineId id = entry.id;
                         object = os.getObjectById(id);
                         if (object == null) {
                             throw new RuntimeException("internal error - unknown object id: "
@@ -575,7 +576,7 @@ public class PagedTable
 
     private class SelectionEntry
     {
-        Integer id;
+        InterMineId id;
         String fieldValue;
     }
 
@@ -629,7 +630,7 @@ public class PagedTable
                             if (value instanceof MultiRowFirstValue<?>) {
                                 final ResultElement element = value.getValue();
                                 if (element != null) {
-                                    final Integer elementId = element.getId();
+                                    final InterMineId elementId = element.getId();
                                     if (!selectionIds.containsKey(elementId)) {
                                         nextEntry = new SelectionEntry();
                                         nextEntry.id = elementId;
@@ -674,15 +675,15 @@ public class PagedTable
      * Return an Iterator over the selected Ids
      * @return the Iterator
      */
-    public Iterator<Integer> selectedIdsIterator() {
-        return new Iterator<Integer>() {
+    public Iterator<InterMineId> selectedIdsIterator() {
+        return new Iterator<InterMineId>() {
             Iterator<SelectionEntry> selectedEntryIter = selectedEntryIterator();
             @Override
             public boolean hasNext() {
                 return selectedEntryIter.hasNext();
             }
             @Override
-            public Integer next() {
+            public InterMineId next() {
                 return selectedEntryIter.next().id;
             }
             @Override
@@ -833,11 +834,11 @@ public class PagedTable
      * Returns indexes of columns, that should be displayed.
      * @return indexes
      */
-    public List<Integer> getVisibleIndexes() {
-        final List<Integer> ret = new ArrayList<Integer>();
+    public List<InterMineId> getVisibleIndexes() {
+        final List<InterMineId> ret = new ArrayList<InterMineId>();
         for (int i = 0; i < getColumns().size(); i++) {
             if (getColumns().get(i) != null && getColumns().get(i).isVisible()) {
-                ret.add(new Integer(getColumns().get(i).getIndex()));
+                ret.add(new InterMineId(getColumns().get(i).getIndex()));
             }
         }
 
@@ -862,7 +863,7 @@ public class PagedTable
                 if (value instanceof MultiRowFirstValue<?>) {
                     final ResultElement element = value.getValue();
                     if (element != null) {
-                        final Integer elementId = element.getId();
+                        final InterMineId elementId = element.getId();
                         if (!selectionIds.containsKey(elementId)) {
                             return false;
                         }
@@ -1108,7 +1109,7 @@ public class PagedTable
         if (bag.size() == selectionIds.size()) {
             return removedCount;
         }
-        final Set<Integer> idsToRemove = getIdsToRemove(bag);
+        final Set<InterMineId> idsToRemove = getIdsToRemove(bag);
         bag.removeIdsFromBag(idsToRemove, true);
         removedCount = idsToRemove.size();
 
@@ -1121,14 +1122,14 @@ public class PagedTable
      * @param bag An intermine bag.
      * @return A set of integers.
      */
-    public Set<Integer> getIdsToRemove(final InterMineBag bag) {
-        Set<Integer> idsToRemove = new HashSet<Integer>();
+    public Set<InterMineId> getIdsToRemove(final InterMineBag bag) {
+        Set<InterMineId> idsToRemove = new HashSet<InterMineId>();
         if (allSelected == -1) {
             idsToRemove = selectionIds.keySet();
         } else {
             // selection is reversed, so selectionIds.keySet() are the ids to keep
-            idsToRemove = new HashSet<Integer>();
-            for (final Integer id : bag.getContentsAsIds()) {
+            idsToRemove = new HashSet<InterMineId>();
+            for (final InterMineId id : bag.getContentsAsIds()) {
                 if (!selectionIds.keySet().contains(id)) {
                     idsToRemove.add(id);
                 }

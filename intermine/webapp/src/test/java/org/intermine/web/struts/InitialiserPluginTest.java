@@ -17,6 +17,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.ProfileManager;
 import org.intermine.api.profile.TagChecker;
@@ -50,7 +51,7 @@ public class InitialiserPluginTest extends TestCase
     private ProfileManager pm;
     private ObjectStore os, userProfileOS;
     private ObjectStoreWriter userProfileOSW;
-    private Integer bobId = new Integer(101);
+    private InterMineId bobId = new InterMineId(101);
     private String bobPass = "bob_pass";
 
     public InitialiserPluginTest(String arg) {

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.lucene.queryParser.ParseException;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPITestCase;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.bag.ClassKeysNotFoundException;
@@ -44,8 +45,8 @@ public class SearchResultsTest extends InterMineAPITestCase {
 
     private Profile bobProfile, sallyProfile;
     private ProfileManager pm;
-    private final Integer bobId = new Integer(101);
-    private final Integer sallyId = new Integer(102);
+    private final InterMineId bobId = new InterMineId(101);
+    private final InterMineId sallyId = new InterMineId(102);
     private final String bobPass = "bob_pass";
     private final String sallyPass = "sally_pass";
     private Map<String, List<FieldDescriptor>>  classKeys;

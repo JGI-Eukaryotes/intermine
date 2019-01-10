@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
 import org.intermine.model.testmodel.Department;
@@ -44,7 +45,7 @@ public class WidgetConfigTest extends WidgetConfigTestCase
         osw.store(e1);
         osw.store(e2);
         InterMineBag list = superUser.createBag("employeeList", "Employee", "", im.getClassKeys());
-        Collection<Integer> ids = new ArrayList<Integer>();
+        Collection<InterMineId> ids = new ArrayList<InterMineId>();
         ids.add(e1.getId()); ids.add(e2.getId());
         list.addIdsToBag(ids, "Employee");
 

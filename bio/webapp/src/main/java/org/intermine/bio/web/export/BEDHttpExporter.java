@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.bio.web.struts.BEDExportForm;
 import org.intermine.metadata.StringUtil;
@@ -87,7 +88,7 @@ public class BEDHttpExporter extends HttpExporterBase implements TableHttpExport
             setBEDHeader(response);
         }
 
-        List<Integer> indexes = ExportHelper.getClassIndexes(ExportHelper.getColumnClasses(pt),
+        List<InterMineId> indexes = ExportHelper.getClassIndexes(ExportHelper.getColumnClasses(pt),
                 SequenceFeature.class);
 
         // get the project title to be written in BED records

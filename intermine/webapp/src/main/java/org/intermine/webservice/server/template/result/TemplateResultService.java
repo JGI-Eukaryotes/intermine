@@ -92,7 +92,7 @@ public class TemplateResultService extends QueryResultService
         }
         setHeaderAttributes(populatedTemplate, input.getStart(), input.getLimit());
         if (populatedTemplate.isValid()) {
-            runPathQuery(populatedTemplate, input.getStart(), input.getLimit());
+            runPathQuery(populatedTemplate, input.getStart().intValue(), input.getLimit().intValue());
         } else {
             String msg = "Required data source (template) is outdated and is in conflict "
                 + "with model: " + populatedTemplate.verifyQuery();

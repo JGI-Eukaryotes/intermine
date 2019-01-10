@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.bag.BagQueryRunner;
 import org.intermine.api.profile.InterMineBag;
@@ -206,7 +207,7 @@ public abstract class QueryExecutor
         return os.count(q, ObjectStore.SEQUENCE_IGNORE);
     }
 
-    private static final Map<String, Integer> COUNT_CACHE = new CacheMap<String, Integer>();
+    private static final Map<String, InterMineId> COUNT_CACHE = new CacheMap<String, InterMineId>();
     /**
      * Get the the total number of unique column values for a given path in the
      * context of a given query.
@@ -226,12 +227,12 @@ public abstract class QueryExecutor
         String cacheKey = q.toString() + "summary-path: " + path;
         if (COUNT_CACHE.containsKey(cacheKey)) {
             LOG.debug("Count cache hit");
-            return COUNT_CACHE.get(cacheKey);
+            return COUNT_CACHE.get(cacheKey).intValue();
         } else {
             LOG.debug("Count cache miss");
             Results res = os.execute(q, summaryBatchSize, true, true, true);
             int c = res.size();
-            COUNT_CACHE.put(cacheKey, c);
+            COUNT_CACHE.put(cacheKey, InterMineId.valueOf(c));
             return c;
         }
     }

@@ -16,6 +16,7 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.DataChangedException;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
@@ -34,11 +35,11 @@ public class ResultsBatches
 
     protected Query query;
     protected ObjectStore os;
-    protected Map<Object, Integer> sequence;
+    protected Map<Object, InterMineId> sequence;
 
     protected int minSize = 0;
     // TODO: update this to use ObjectStore.getMaxRows().
-    protected int maxSize = Integer.MAX_VALUE;
+    protected int maxSize = InterMineId.MAX_VALUE;
     protected int batchSize = DEFAULT_BATCH_SIZE;
     protected boolean initialised = false;
 
@@ -55,7 +56,7 @@ public class ResultsBatches
      * @param os an ObjectStore
      * @param sequence the ObjectStore-specific sequence data
      */
-    public ResultsBatches(Query query, ObjectStore os, Map<Object, Integer> sequence) {
+    public ResultsBatches(Query query, ObjectStore os, Map<Object, InterMineId> sequence) {
         this.query = query;
         this.os = os;
         this.sequence = sequence;
@@ -77,7 +78,7 @@ public class ResultsBatches
      *
      * @return the ObjectStore-specific object
      */
-    public Map<Object, Integer> getSequence() {
+    public Map<Object, InterMineId> getSequence() {
         return sequence;
     }
 
@@ -117,7 +118,7 @@ public class ResultsBatches
      * @param explain true if this method should explain each query first
      */
     public void prefetch(int batchNo, boolean optimise, boolean explain) {
-        if (!batches.containsKey(new Integer(batchNo))) {
+        if (!batches.containsKey(new InterMineId(batchNo))) {
             PrefetchManager.addRequest(this, batchNo, optimise, explain);
         }
     }
@@ -159,7 +160,7 @@ public class ResultsBatches
      */
     protected List<Object> getBatch(int batchNo, boolean optimise, boolean explain)
         throws ObjectStoreException {
-        List<Object> retval = batches.get(new Integer(batchNo));
+        List<Object> retval = batches.get(new InterMineId(batchNo));
         if (retval == null) {
             retval = PrefetchManager.doRequest(this, batchNo, optimise, explain);
         }
@@ -205,7 +206,7 @@ public class ResultsBatches
                     minSize = (minSize > size ? minSize : size);
                 }
 
-                Integer key = new Integer(batchNo);
+                InterMineId key = new InterMineId(batchNo);
                 batches.put(key, rows);
             }
         } catch (IndexOutOfBoundsException e) {
@@ -228,7 +229,7 @@ public class ResultsBatches
      * @return the number of rows in this Results object
      */
     public int size(boolean optimise, boolean explain) {
-        if ((minSize == 0) && (maxSize == Integer.MAX_VALUE)) {
+        if ((minSize == 0) && (maxSize == InterMineId.MAX_VALUE)) {
             // Fetch the first batch, as it is reasonably likely that it will cover it.
             try {
                 getBatch(0, optimise, explain);
@@ -347,7 +348,7 @@ public class ResultsBatches
     public ResultsBatches makeWithDifferentBatchSize(int newBatchSize) {
         ResultsBatches retval = new ResultsBatches(query, os, sequence);
         retval.setBatchSize(newBatchSize);
-        List<Object> firstBatch = batches.get(new Integer(0));
+        List<Object> firstBatch = batches.get(new InterMineId(0));
         if ((firstBatch != null) && (isSingleBatch() || (firstBatch.size() >= newBatchSize))) {
             if (firstBatch.size() > newBatchSize) {
                 // Trim batch to size
@@ -357,7 +358,7 @@ public class ResultsBatches
                 }
                 firstBatch = newFirstBatch;
             }
-            retval.batches.put(new Integer(0), firstBatch);
+            retval.batches.put(new InterMineId(0), firstBatch);
             retval.minSize = minSize;
             retval.maxSize = maxSize;
             retval.initialised = true;
@@ -372,7 +373,7 @@ public class ResultsBatches
      * @return a batch of rows
      */
     public List<Object> getBatchFromCache(int batchNo) {
-        List<Object> retval = batches.get(batchNo);
+        List<Object> retval = batches.get(Integer.valueOf(batchNo));
         if (retval != null) {
             return Collections.unmodifiableList(retval);
         } else {

@@ -18,6 +18,7 @@ import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultElement;
 import org.intermine.objectstore.query.Results;
 
@@ -33,7 +34,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
 
     private int counter = 0;
     private int start = 0;
-    private Integer end = null;
+    private InterMineId end = null;
     private String filterTerm = null;
     private List<ResultElement> nextRow = null;
 
@@ -58,7 +59,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
     public FilteringResultIterator(Results res, int start, int size, String filterTerm) {
         this(res);
         this.start = start;
-        this.end = start + size;
+        this.end = InterMineId.valueOf(start + size);
         this.filterTerm = ObjectUtils.toString(filterTerm).toLowerCase();
         logger.debug(
                 "START: " + start
@@ -72,7 +73,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
         if (nextRow != null) {
             return true;
         }
-        if (counter >= start && (end == null || counter < end)) {
+        if (counter >= start && (end == null || counter < end.intValue())) {
             if (StringUtils.isBlank(filterTerm)) {
                 return subIter.hasNext();
             } else {
@@ -95,7 +96,7 @@ public class FilteringResultIterator implements Iterator<List<ResultElement>>
             return ret;
         }
         scrollToStart();
-        if (end != null && counter > end) {
+        if (end != null && counter > end.intValue()) {
             throw new NoSuchElementException();
         }
 

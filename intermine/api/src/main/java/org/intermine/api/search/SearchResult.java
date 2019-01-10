@@ -42,7 +42,7 @@ public final class SearchResult
         // different versions of Lucene return non-normalized results, see:
         //  http://stackoverflow.com/questions/4642160/
         //  cap the top hits
-        if (score != null && score > 1) {
+        if (score != null && score.floatValue() > 1) {
             this.score = Float.valueOf(1);
         } else {
             this.score = score;

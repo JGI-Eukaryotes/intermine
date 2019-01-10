@@ -41,7 +41,7 @@ public class MetadataNode extends Node
     Map<String, List<FieldDescriptor>> classKeys;
     BagManager bagManager;
     Profile profile;
-    private Boolean isNullNode = false;
+    private Boolean isNullNode = Boolean.FALSE;
 
     /**
      * Constructor for a root node
@@ -260,7 +260,7 @@ public class MetadataNode extends Node
      * @return a boolean is this Node is null or empty as determined by OSS
      */
     public boolean getIsNull() {
-        return isNullNode;
+        return isNullNode.booleanValue();
     }
 
     /**

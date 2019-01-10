@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Address;
 import org.intermine.model.testmodel.Company;
 import org.intermine.objectstore.ObjectStore;
@@ -58,8 +59,8 @@ public class InterMineBagHandlerTest
         Company oldCompany = createCompanyWithId("Old company");
 
         // no new object so expect an empt set
-        Set<Integer> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
-        Assert.assertEquals(new HashSet<Integer>(), newIds);
+        Set<InterMineId> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
+        Assert.assertEquals(new HashSet<InterMineId>(), newIds);
     }
 
     @Test
@@ -67,7 +68,7 @@ public class InterMineBagHandlerTest
         Company oldCompany = createCompanyWithId("Old company");
         oldCompany.setVatNumber(5678);
 
-        Set<Integer> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
+        Set<InterMineId> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
         Assert.assertEquals(1, newIds.size());
     }
 
@@ -77,7 +78,7 @@ public class InterMineBagHandlerTest
         Company oldCompany = createCompanyWithId("CompanyB");
         oldCompany.setAddress(oldAddress);
 
-        Set<Integer> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
+        Set<InterMineId> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
 
         Assert.assertEquals(1, newIds.size());
     }
@@ -86,8 +87,8 @@ public class InterMineBagHandlerTest
     public void testFindCompanyByNameNoAddress() throws Exception {
         Company oldCompany = createCompanyWithId("CompanyB");
         // can't find a new object so expect empty set
-        Set<Integer> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
-        Assert.assertEquals(new HashSet<Integer>(), newIds);
+        Set<InterMineId> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
+        Assert.assertEquals(new HashSet<InterMineId>(), newIds);
     }
 
     @Test
@@ -97,7 +98,7 @@ public class InterMineBagHandlerTest
         oldCompany.setAddress(oldAddress);
         oldCompany.setVatNumber(5678);
 
-        Set<Integer> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
+        Set<InterMineId> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
         Assert.assertEquals(1, newIds.size());
     }
 
@@ -112,21 +113,21 @@ public class InterMineBagHandlerTest
         oldCompany.setAddress(oldAddress);
         oldCompany.setVatNumber(1234);
 
-        Set<Integer> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
+        Set<InterMineId> newIds = new PkQueryIdUpgrader(os).getNewIds(oldCompany, os);
         Assert.assertEquals(2, newIds.size());
     }
 
     private Company createCompanyWithId(String companyName) {
         Company company =
             (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
-        company.setId(new Integer(idCounter++));
+        company.setId(new InterMineId(idCounter++));
         company.setName(companyName);
         return company;
     }
 
     private Address createAddressWithId(String streetAddress) {
         Address address =  (Address) DynamicUtil.createObject(Collections.singleton(Address.class));
-        address.setId(new Integer(idCounter++));
+        address.setId(new InterMineId(idCounter++));
         address.setAddress(streetAddress);
         return address;
     }

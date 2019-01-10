@@ -81,7 +81,7 @@ public class ListShareCreationService extends JSONService
             }
 
             String notifyStr = getOptionalParameter("notify", "false");
-            notify = Boolean.parseBoolean(notifyStr);
+            notify = Boolean.valueOf(Boolean.parseBoolean(notifyStr));
         }
     }
 
@@ -109,7 +109,7 @@ public class ListShareCreationService extends JSONService
         Map<String, Object> data = new HashMap<String, Object>();
         data.put(input.bag.getName(), sbm.getUsersWithAccessToBag(input.bag));
 
-        if (input.notify && !input.recipient.prefers(Constants.NO_SPAM)) {
+        if (input.notify.booleanValue() && !input.recipient.prefers(Constants.NO_SPAM)) {
             MailAction action = new InformUserOfNewShare(
                     input.recipient.getEmailAddress(), input.owner, input.bag);
             if (!InterMineContext.queueMessage(action)) {

@@ -12,6 +12,7 @@ package org.intermine.api.results;
 
 import java.io.Serializable;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.InterMineObject;
 import org.intermine.pathquery.Path;
@@ -108,7 +109,7 @@ public class ResultElement implements Serializable, ResultCell
      *
      * @return the id
      */
-    public Integer getId() {
+    public InterMineId getId() {
         if (imObj instanceof InterMineObject) {
             return ((InterMineObject) imObj).getId();
         }

@@ -10,6 +10,7 @@ package org.intermine.api.tracker.track;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -46,8 +47,8 @@ public abstract class TrackAbstract implements Track
             Object value = null;
             for (int index = 0; index < valuesSize; ) {
                 value = values[index];
-                if (value instanceof Integer) {
-                    stm.setInt(++index, (Integer) value);
+                if (value instanceof InterMineId) {
+                    stm.setInt(++index, ((Integer) value).intValue());
                 } else if (value instanceof Timestamp) {
                     stm.setTimestamp(++index, (Timestamp) value);
                 } else {

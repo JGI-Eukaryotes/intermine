@@ -10,6 +10,7 @@ package org.intermine.webservice.server.jbrowse;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -66,8 +67,8 @@ public final class Commands
             return null;
         }
 
-        Integer start = getIntegerParam(parameters, "start");
-        Integer end = getIntegerParam(parameters, "end");
+        InterMineId start = getIntegerParam(parameters, "start");
+        InterMineId end = getIntegerParam(parameters, "end");
 
         String[] parts = StringUtils.split(pathInfo.substring(1), "/");
         if (parts.length < 3 || parts.length > 4) {
@@ -102,12 +103,12 @@ public final class Commands
         }
     }
 
-    private static Integer getIntegerParam(Map<String, String> params, String key) {
+    private static InterMineId getIntegerParam(Map<String, String> params, String key) {
         String numStr = params.get(key);
         if (numStr == null || "null".equalsIgnoreCase(numStr)) {
             return null;
         }
-        return Integer.valueOf(numStr);
+        return InterMineId.valueOf(numStr);
     }
 
 }

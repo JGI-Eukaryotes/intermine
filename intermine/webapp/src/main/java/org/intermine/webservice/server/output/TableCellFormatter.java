@@ -13,6 +13,7 @@ package org.intermine.webservice.server.output;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.LinkRedirectManager;
 import org.intermine.api.results.ResultCell;
@@ -37,12 +38,12 @@ public class TableCellFormatter
 
     private final LinkRedirectManager redirector;
     private final InterMineAPI im;
-    private Integer maxCellLength;
+    private InterMineId maxCellLength;
 
     /** @param im The InterMine state object **/
     public TableCellFormatter(InterMineAPI im) {
         this.im = im;
-        this.maxCellLength = Integer.valueOf(
+        this.maxCellLength = InterMineId.valueOf(
                 InterMineContext.getWebProperties().getProperty(
                         "webservice.tablecellformatter.cell.length.max", "200"));
         this.redirector = im.getLinkRedirector();
@@ -90,10 +91,10 @@ public class TableCellFormatter
             // Also, don't return too much data...
             if (raw != null && raw instanceof CharSequence) {
                 final CharSequence cs = (CharSequence) raw;
-                if (cs.length() <= maxCellLength) {
+                if (cs.length() <= maxCellLength.intValue()) {
                     cooked = cs.toString();
                 } else {
-                    cooked = cs.subSequence(0, maxCellLength) + "...";
+                    cooked = cs.subSequence(0, maxCellLength.intValue()) + "...";
                 }
             } else {
                 cooked = raw;

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.metadata.FieldDescriptor;
@@ -75,7 +76,7 @@ public class TableWidgetService extends WidgetService
             throw new ResourceNotFoundException("Could not find a table widget called \""
                     + input.getWidgetId() + "\"", e);
         }
-        addOutputInfo("notAnalysed", Integer.toString(widget.getNotAnalysed()));
+        addOutputInfo("notAnalysed", InterMineId.toString(widget.getNotAnalysed()));
         addOutputPathQuery(widget, widgetConfig);
         try {
             addOutputResult(widget);

@@ -10,6 +10,7 @@ package org.intermine.web.logic.config;
  *
  */
 
+import org.intermine.model.InterMineId;
 
 /**
  * Represents an inline list to be shown on a Report page
@@ -20,9 +21,9 @@ public class InlineListConfig
 {
 
     private String path = null;
-    private Boolean showLinksToObjects = false;
-    private Boolean showInHeader = false;
-    private Integer lineLength = null;
+    private Boolean showLinksToObjects = Boolean.FALSE;
+    private Boolean showInHeader = Boolean.FALSE;
+    private InterMineId lineLength = null;
 
     /**
      * Path set from WebConfig, ie "probeSets.primaryIdentifier"
@@ -62,8 +63,8 @@ public class InlineListConfig
      * @see our JavaScript (jQuery) expects non set values to be "0"
      * @return total character length (spaces, commas included) to show
      */
-    public Integer getLineLength() {
-        return (lineLength != null) ? lineLength : 0;
+    public InterMineId getLineLength() {
+        return InterMineId.valueOf((lineLength != null) ? lineLength.intValue() : 0);
     }
 
     /**

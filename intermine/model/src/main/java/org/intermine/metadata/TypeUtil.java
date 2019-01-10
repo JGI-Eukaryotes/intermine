@@ -34,6 +34,7 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.FastPathObject;
 
 
@@ -459,7 +460,7 @@ public final class TypeUtil
      */
     public static Class<?> getTypeByName(String name) {
         if (name.equals(Integer.TYPE.toString())) {
-            return Integer.class;
+            return InterMineId.class;
         }
         if (name.equals(Boolean.TYPE.toString())) {
             return Boolean.class;
@@ -750,7 +751,7 @@ public final class TypeUtil
      */
     public static Object stringToObject(Class<?> clazz, String value) {
         if (clazz.equals(Integer.class) || clazz.equals(Integer.TYPE)) {
-            return Integer.valueOf(value.replace(",", ""));
+            return InterMineId.valueOf(value.replace(",", ""));
         }
         if (clazz.equals(Boolean.class) || clazz.equals(Boolean.TYPE)) {
             if ("NULL".equals(value)) {

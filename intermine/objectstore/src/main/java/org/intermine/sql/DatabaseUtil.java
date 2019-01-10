@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
@@ -870,8 +871,8 @@ public final class DatabaseUtil
     /**
      * Create a new table the holds the contents of the given Collection (bag).  The "Class c"
      * parameter selects which objects from the bag are put in the new table.  eg. if the bag
-     * contains Integers and Strings and the parameter is Integer.class then the table will contain
-     * only the Integers from the bag.  A Class of InterMineObject is handled specially: the new
+     * contains InterMineIds and Strings and the parameter is InterMineId.class then the table will contain
+     * only the InterMineIds from the bag.  A Class of InterMineObject is handled specially: the new
      * table will contain the IDs of the objects, not the objects themselves.  The table will have
      * one column ("value").
      *

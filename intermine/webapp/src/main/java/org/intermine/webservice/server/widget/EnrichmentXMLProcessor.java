@@ -53,7 +53,7 @@ public final class EnrichmentXMLProcessor implements WidgetResultProcessor
         StringBuffer sb = new StringBuffer("<result>");
         int i = 0;
         for (Object cell: row) {
-            sb.append(formatCell(ELEMENTS.get(i), cell));
+            sb.append(formatCell(ELEMENTS.get(Integer.valueOf(i)), cell));
             i++;
         }
         sb.append("</result>");

@@ -19,6 +19,7 @@ import java.util.Set;
 
 import junit.framework.Test;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Company;
 import org.intermine.model.testmodel.Department;
 import org.intermine.model.testmodel.Employee;
@@ -293,7 +294,7 @@ public class WithNotXmlSqlGeneratorTest extends SqlGeneratorTest
 
     public void testInvalidClassForGetById() throws Exception {
         try {
-            SqlGenerator.generateQueryForId(new Integer(5), SqlGeneratorTest.class, getSchema());
+            SqlGenerator.generateQueryForId(new InterMineId(5), SqlGeneratorTest.class, getSchema());
             fail("Expected: ObjectStoreException");
         } catch (ObjectStoreException e) {
             assertEquals("class org.intermine.objectstore.intermine.SqlGeneratorTest is not in the model", e.getMessage());

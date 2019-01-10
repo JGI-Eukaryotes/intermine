@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.sql.DatabaseUtil;
 
 /**
@@ -66,7 +67,7 @@ public class BatchWriterSimpleImpl implements BatchWriter
         postDeleteBatch = null;
         addBatches = new ArrayList<FlushJob>();
         lastBatch = null;
-        Map<String, Integer> activityMap = new HashMap<String, Integer>();
+        Map<String, InterMineId> activityMap = new HashMap<String, InterMineId>();
         for (Map.Entry<String, ? extends Table> tableEntry : tables.entrySet()) {
             String name = tableEntry.getKey();
             if ((filter == null) || filter.contains(name)) {
@@ -82,7 +83,7 @@ public class BatchWriterSimpleImpl implements BatchWriter
                 }
                 table.clear();
                 if (activity > 0) {
-                    activityMap.put(name, new Integer(activity));
+                    activityMap.put(name, new InterMineId(activity));
                 }
             }
         }
@@ -392,9 +393,9 @@ public class BatchWriterSimpleImpl implements BatchWriter
     /**
      * {@inheritDoc}
      */
-    public void updateStatistics(Map<String, Integer> activity, Connection conn)
+    public void updateStatistics(Map<String, InterMineId> activity, Connection conn)
         throws SQLException {
-        for (Map.Entry<String, Integer> entry : activity.entrySet()) {
+        for (Map.Entry<String, InterMineId> entry : activity.entrySet()) {
             String name = entry.getKey();
             int amount = entry.getValue().intValue();
             Statistic stat = stats.get(name);

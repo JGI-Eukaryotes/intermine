@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.PrimaryKey;
 import org.intermine.model.InterMineObject;
@@ -138,7 +139,7 @@ public class ParallelBatchingFetcher extends BatchingFetcher
 
         public void fetch() {
             try {
-                Set<Integer> fetchedObjectIds = new HashSet<Integer>();
+                Set<InterMineId> fetchedObjectIds = new HashSet<InterMineId>();
                 doPk(pk, cld, results, objectsForCld, fetchedObjectIds);
                 dataTracker.prefetchIds(fetchedObjectIds);
             } catch (Exception e) {

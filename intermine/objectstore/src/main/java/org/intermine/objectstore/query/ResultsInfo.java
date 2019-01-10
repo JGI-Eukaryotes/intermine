@@ -10,6 +10,8 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Represents a result from the estimate() method of an ObjectStore.
  *
@@ -50,7 +52,7 @@ public class ResultsInfo
      * neglecting information available about the minimum possible and maximum possible number
      */
     public ResultsInfo(long start, long complete, int rows) {
-        this(start, complete, rows, 0, Integer.MAX_VALUE);
+        this(start, complete, rows, 0, InterMineId.MAX_VALUE);
     }
 
     /**

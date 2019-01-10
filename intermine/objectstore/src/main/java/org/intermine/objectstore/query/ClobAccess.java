@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.proxy.Lazy;
 
@@ -300,8 +301,8 @@ public class ClobAccess implements CharSequence, Lazy
         String[] parts = description.split(",");
         ClobAccess clob = new ClobAccess(os, new Clob(Integer.parseInt(parts[0])));
         if (parts.length >= 3) {
-            int offset = Integer.parseInt(parts[1]);
-            int length = Integer.parseInt(parts[2]);
+            int offset = InterMineId.parseInt(parts[1]);
+            int length = InterMineId.parseInt(parts[2]);
             clob = clob.subSequence(offset, offset + length);
         }
         String className = null;

@@ -31,6 +31,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.TagManager;
 import org.intermine.api.tag.AspectTagUtil;
@@ -247,7 +248,7 @@ public class ReportController extends InterMineAction
         if (!StringUtils.isNumeric(idString) || StringUtils.isBlank(idString)) {
             return null;
         }
-        Integer id = new Integer(Integer.parseInt(idString));
+        InterMineId id = new InterMineId(Integer.parseInt(idString));
         ObjectStore os = im.getObjectStore();
         InterMineObject requestedObject = null;
         try {

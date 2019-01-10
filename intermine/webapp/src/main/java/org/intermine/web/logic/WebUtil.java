@@ -34,6 +34,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
@@ -67,7 +68,7 @@ public abstract class WebUtil
     }
 
     /**
-     * Lookup an Integer property from the SessionContext and return it.
+     * Lookup an InterMineId property from the SessionContext and return it.
      *
      * @param session
      *            the current session
@@ -86,7 +87,7 @@ public abstract class WebUtil
         int intVal = defaultValue;
 
         try {
-            intVal = Integer.parseInt(n);
+            intVal = InterMineId.parseInt(n);
         } catch (final NumberFormatException e) {
             LOG.warn("Failed to parse " + propertyName + " property: " + n);
         }

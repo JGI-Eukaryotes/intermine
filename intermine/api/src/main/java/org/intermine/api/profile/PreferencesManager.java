@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStoreWriter;
 import org.intermine.objectstore.intermine.ObjectStoreWriterInterMineImpl;
 import org.intermine.objectstore.intermine.SQLOperation;
@@ -90,7 +91,7 @@ public class PreferencesManager
                 new SQLOperation<Map<String, String>>() {
                 @Override
                 public Map<String, String> run(PreparedStatement stm) throws SQLException {
-                    stm.setInt(1, profile.getUserId());
+                    stm.setInt(1, profile.getUserId().intValue());
                     ResultSet rs = stm.executeQuery();
                     Map<String, String> ret = new HashMap<String, String>();
                     while (rs.next()) {
@@ -115,29 +116,29 @@ public class PreferencesManager
      */
     protected synchronized void setPreference(final Profile profile, final String key,
             final String value) throws SQLException {
-        Integer updated = osw.performUnsafeOperation(UPDATE_PREFERENCE_SQL,
-                new SQLOperation<Integer>() {
+        InterMineId updated = osw.performUnsafeOperation(UPDATE_PREFERENCE_SQL,
+                new SQLOperation<InterMineId>() {
                 @Override
-                public Integer run(PreparedStatement stm) throws SQLException {
+                public InterMineId run(PreparedStatement stm) throws SQLException {
                     stm.setString(1, value);
-                    stm.setInt(2, profile.getUserId());
+                    stm.setInt(2, profile.getUserId().intValue());
                     stm.setString(3, key);
-                    return stm.executeUpdate();
+                    return InterMineId.valueOf(stm.executeUpdate());
                 }
             });
 
-        if (updated < 1) { // WHERE clause didn't match. Do insert.
-            Integer inserted = osw.performUnsafeOperation(INSERT_PREFERENCE_SQL,
-                    new SQLOperation<Integer>() {
+        if (updated.intValue() < 1) { // WHERE clause didn't match. Do insert.
+            InterMineId inserted = osw.performUnsafeOperation(INSERT_PREFERENCE_SQL,
+                    new SQLOperation<InterMineId>() {
                     @Override
-                    public Integer run(PreparedStatement stm) throws SQLException {
-                        stm.setInt(1, profile.getUserId());
+                    public InterMineId run(PreparedStatement stm) throws SQLException {
+                        stm.setInt(1, profile.getUserId().intValue());
                         stm.setString(2, key);
                         stm.setString(3, value);
-                        return stm.executeUpdate();
+                        return InterMineId.valueOf(stm.executeUpdate());
                     }
                 });
-            if (inserted != 1) {
+            if (inserted.intValue() != 1) {
                 throw new SQLException("Expected to insert one row, but actually inserted "
                         + inserted);
             }
@@ -157,7 +158,7 @@ public class PreferencesManager
         osw.performUnsafeOperation(DELETE_PREFERENCE_SQL, new SQLOperation<Void>() {
             @Override
             public Void run(PreparedStatement stm) throws SQLException {
-                stm.setInt(1, profile.getUserId());
+                stm.setInt(1, profile.getUserId().intValue());
                 stm.setString(2, key);
                 stm.executeUpdate();
                 return null;
@@ -176,7 +177,7 @@ public class PreferencesManager
         osw.performUnsafeOperation(DELETE_ALL_PREFERENCES_SQL, new SQLOperation<Void>() {
             @Override
             public Void run(PreparedStatement stm) throws SQLException {
-                stm.setInt(1, profile.getUserId());
+                stm.setInt(1, profile.getUserId().intValue());
                 stm.executeUpdate();
                 return null;
             }
@@ -202,11 +203,11 @@ public class PreferencesManager
                 stm.setString(2, value);
                 ResultSet rs = stm.executeQuery();
                 while (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    return Boolean.valueOf(rs.getInt(1) > 0);
                 }
                 return Boolean.FALSE;
             }
-        });
+        }).booleanValue();
     }
 
     private static final String FIND_USER_WITH_MAPPING =
@@ -219,17 +220,17 @@ public class PreferencesManager
      * @return user id
      * @throws SQLException something goes wrong
      */
-    public Integer getUserWithUniqueMapping(final String key, final String value)
+    public InterMineId getUserWithUniqueMapping(final String key, final String value)
         throws SQLException {
-        return osw.performUnsafeOperation(FIND_USER_WITH_MAPPING, new SQLOperation<Integer>() {
+        return osw.performUnsafeOperation(FIND_USER_WITH_MAPPING, new SQLOperation<InterMineId>() {
             @Override
-            public Integer run(PreparedStatement stm) throws SQLException {
+            public InterMineId run(PreparedStatement stm) throws SQLException {
                 stm.setString(1, key);
                 stm.setString(2, value);
                 ResultSet rs = stm.executeQuery();
-                Set<Integer> matches = new HashSet<Integer>();
+                Set<InterMineId> matches = new HashSet<InterMineId>();
                 while (rs.next()) {
-                    matches.add(rs.getInt(1));
+                    matches.add(Integer.valueOf(rs.getInt(1)));
                 }
                 if (matches.isEmpty()) {
                     return null;

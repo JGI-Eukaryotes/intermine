@@ -11,6 +11,7 @@ import org.apache.commons.collections.Factory;
 
 import org.apache.commons.collections.map.LazyMap;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.BagQueryResult;
 import org.intermine.api.profile.InterMineBag;
 
@@ -40,7 +41,7 @@ public class CompanyDistLdr implements DataSetLdr {
 
     private static final Factory defaultValueFactory = new Factory() {
         public Object create() {
-            return new Integer(0);
+            return new InterMineId(0);
         }
     };
 
@@ -52,8 +53,8 @@ public class CompanyDistLdr implements DataSetLdr {
         results = os.execute(q);
         Iterator<?> it = results.iterator();
         @SuppressWarnings("unchecked")
-        Map<String, Integer> pieMap = (Map<String, Integer>)
-            LazyMap.decorate(new HashMap<String, Integer>(), defaultValueFactory);
+        Map<String, InterMineId> pieMap = (Map<String, InterMineId>)
+            LazyMap.decorate(new HashMap<String, InterMineId>(), defaultValueFactory);
         while (it.hasNext()) {
             ResultsRow<?> row = (ResultsRow<?>) it.next();
             Employee emp = (Employee) row.get(0);

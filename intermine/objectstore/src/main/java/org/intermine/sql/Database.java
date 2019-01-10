@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.StringUtil;
 import org.intermine.util.PropertiesUtil;
 import org.intermine.util.ShutdownHook;
@@ -381,18 +382,18 @@ public class Database implements Shutdownable
      */
     public boolean isVersionAtLeast(String testVersionStr) {
 
-        List<Integer> dbVersion = versionStringToInts(getVersion());
-        List<Integer> testVersion = versionStringToInts(testVersionStr);
+        List<InterMineId> dbVersion = versionStringToInts(getVersion());
+        List<InterMineId> testVersion = versionStringToInts(testVersionStr);
         for (int i = 0; i < testVersion.size(); i++) {
             if (dbVersion.size() > i) {
-                if (dbVersion.get(i) < testVersion.get(i)) {
+                if (dbVersion.get(i).intValue() < testVersion.get(i).intValue()) {
                     return false;
                 }
             } else if (i > 0 && (testVersion.get(i - 1).equals(dbVersion.get(i - 1)))) {
                 // if previous numbers were equal and all remaining digits of the test version are
                 // zero the we're at least that version e.g. 9.3 is at least 9.3.0 but not 9.3.0.1
                 for (Integer remaining : testVersion.subList(i, testVersion.size())) {
-                    if (remaining > 0) {
+                    if (remaining.intValue() > 0) {
                         return false;
                     }
                 }
@@ -402,13 +403,13 @@ public class Database implements Shutdownable
     }
 
     // parse the postgres version, e.g. 9.2.1
-    private List<Integer> versionStringToInts(String versionStr) {
-        List<Integer> versionInts = new ArrayList<Integer>();
+    private List<InterMineId> versionStringToInts(String versionStr) {
+        List<InterMineId> versionInts = new ArrayList<InterMineId>();
         String[] parts = versionStr.split("\\.");
         for (int i = 0; i < parts.length; i++) {
             String partToParse = parts[i];
             if (StringUtils.isNumeric(partToParse)) {
-                versionInts.add(new Integer(partToParse));
+                versionInts.add(new InterMineId(partToParse));
             } else {
                 // beta version, e.g. 9.4beta3
                 if (partToParse.contains("beta")) {
@@ -417,7 +418,7 @@ public class Database implements Shutdownable
                         String betaDigit = betaBits[0];
                         if (StringUtils.isNumeric(betaDigit)
                                 && StringUtils.isNotEmpty(betaDigit)) {
-                            versionInts.add(new Integer(betaDigit));
+                            versionInts.add(new InterMineId(betaDigit));
                         }
                     }
                 }

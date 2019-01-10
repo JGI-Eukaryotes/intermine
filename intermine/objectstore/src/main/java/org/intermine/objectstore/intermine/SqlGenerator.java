@@ -42,6 +42,7 @@ import org.apache.torque.engine.database.model.Domain;
 import org.apache.torque.engine.database.model.SchemaType;
 import org.apache.torque.engine.platform.Platform;
 import org.apache.torque.engine.platform.PlatformFactory;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
@@ -251,8 +252,8 @@ public final class SqlGenerator
                         cacheEntry.setLast(start, sql);
                     }
                     SortedMap<Integer, String> headMap = cacheEntry.getCached()
-                        .headMap(new Integer(start + 1));
-                    Integer lastKey = null;
+                        .headMap(new InterMineId(start + 1));
+                    InterMineId lastKey = null;
                     try {
                         lastKey = headMap.lastKey();
                     } catch (NoSuchElementException e) {
@@ -273,7 +274,7 @@ public final class SqlGenerator
                     cacheEntry = new CacheEntry(start, sql);
                     schemaCache.put(q, cacheEntry);
                 }
-                cacheEntry.getCached().put(new Integer(start), sql);
+                cacheEntry.getCached().put(new InterMineId(start), sql);
                 //LOG.info("Created cache entry for offset " + start + " (cache contains "
                 //    + cacheEntry.getCached().keySet() + ") for query " + q + ", sql = " + sql);
             }
@@ -355,7 +356,7 @@ public final class SqlGenerator
 
     /**
      * Converts a Query object into an SQL String. To produce an SQL query that does not have
-     * OFFSET and LIMIT clauses, set start to 0, and limit to Integer.MAX_VALUE.
+     * OFFSET and LIMIT clauses, set start to 0, and limit to InterMineId.MAX_VALUE.
      *
      * @param q the Query to convert
      * @param start the number of the first row for the query to return, numbered from zero
@@ -382,8 +383,8 @@ public final class SqlGenerator
             CacheEntry cacheEntry = schemaCache.get(q);
             if (cacheEntry != null) {
                 SortedMap<Integer, String> headMap = cacheEntry.getCached()
-                    .headMap(new Integer(start + 1));
-                Integer lastKey = null;
+                    .headMap(new InterMineId(start + 1));
+                InterMineId lastKey = null;
                 try {
                     lastKey = headMap.lastKey();
                 } catch (NoSuchElementException e) {
@@ -394,11 +395,11 @@ public final class SqlGenerator
                     if ((offset > cacheEntry.getLastOffset())
                             || (cacheEntry.getLastOffset() > start)) {
                         return cacheEntry.getCached().get(lastKey)
-                            + (limit == Integer.MAX_VALUE ? "" : " LIMIT " + limit)
+                            + (limit == InterMineId.MAX_VALUE ? "" : " LIMIT " + limit)
                             + (start == offset ? "" : " OFFSET " + (start - offset));
                     } else {
                         return cacheEntry.getLastSQL()
-                            + (limit == Integer.MAX_VALUE ? "" : " LIMIT " + limit)
+                            + (limit == InterMineId.MAX_VALUE ? "" : " LIMIT " + limit)
                             + (start == cacheEntry.getLastOffset() ? ""
                                     : " OFFSET " + (start - cacheEntry.getLastOffset()));
                     }
@@ -409,9 +410,9 @@ public final class SqlGenerator
                 cached = new TreeMap();
                 schemaCache.put(q, cached);
             }
-            cached.put(new Integer(0), sql);
+            cached.put(new InterMineId(0), sql);
             */
-            return sql + ((limit == Integer.MAX_VALUE ? "" : " LIMIT " + limit)
+            return sql + ((limit == InterMineId.MAX_VALUE ? "" : " LIMIT " + limit)
                         + (start == 0 ? "" : " OFFSET " + start));
         }
     }
@@ -512,7 +513,7 @@ public final class SqlGenerator
             .append(buildGroupBy(q, schema, state))
             .append(state.getHaving())
             .append(orderBy);
-        if ((q.getLimit() != Integer.MAX_VALUE) && (kind == QUERY_SUBQUERY_FROM)) {
+        if ((q.getLimit() != InterMineId.MAX_VALUE) && (kind == QUERY_SUBQUERY_FROM)) {
             retval.append(" LIMIT " + q.getLimit());
         }
 
@@ -742,16 +743,16 @@ public final class SqlGenerator
                 }
             } else if (selectable instanceof QueryCollectionPathExpression) {
                 Collection<ProxyReference> empty = Collections.singleton(new ProxyReference(null,
-                            new Integer(1), InterMineObject.class));
+                            new InterMineId(1), InterMineObject.class));
                 findTableNames(tablenames, ((QueryCollectionPathExpression) selectable)
                         .getQuery(empty), schema, addInterMineObject, individualOsbs);
             } else if (selectable instanceof QueryObjectPathExpression) {
-                Collection<Integer> empty = Collections.singleton(new Integer(1));
+                Collection<InterMineId> empty = Collections.singleton(new InterMineId(1));
                 findTableNames(tablenames, ((QueryObjectPathExpression) selectable)
                         .getQuery(empty, schema.isMissingNotXml()), schema,
                         addInterMineObject, individualOsbs);
             } else if (selectable instanceof PathExpressionField) {
-                Collection<Integer> empty = Collections.singleton(new Integer(1));
+                Collection<InterMineId> empty = Collections.singleton(new InterMineId(1));
                 findTableNames(tablenames, ((PathExpressionField) selectable).getQope()
                         .getQuery(empty, schema.isMissingNotXml()), schema,
                         addInterMineObject, individualOsbs);
@@ -1804,7 +1805,7 @@ public final class SqlGenerator
                 } else if (ProxyReference.class.equals(bagItem.getClass())
                         || DynamicUtil.isInstance(bagItem, type)) {
                     if (bagItem instanceof InterMineObject) {
-                        Integer bagValue = ((InterMineObject) bagItem).getId();
+                        InterMineId bagValue = ((InterMineObject) bagItem).getId();
                         filteredBag.add(bagValue);
                     } else if (bagItem instanceof Class<?>) {
                         filteredBag.add(((Class<?>) bagItem).getName());
@@ -2091,7 +2092,7 @@ public final class SqlGenerator
         if (value instanceof UnknownTypeValue) {
             buffer.append(value.toString());
         } else if (value instanceof InterMineObject) {
-            Integer id = ((InterMineObject) value).getId();
+            InterMineId id = ((InterMineObject) value).getId();
             if (id == null) {
                 throw new ObjectStoreException("InterMineObject found"
                         + " without an ID set");

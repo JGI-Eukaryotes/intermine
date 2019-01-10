@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.Constants;
 import org.intermine.bio.util.PostProcessUtil;
 import org.intermine.metadata.MetaDataException;
@@ -63,7 +64,7 @@ public class CreateIntronFeaturesProcess extends PostProcessor
     private ObjectStore os;
     private DataSet dataSet;
     private DataSource dataSource;
-    private Set<Integer> taxonIds = new HashSet<Integer>();
+    private Set<InterMineId> taxonIds = new HashSet<InterMineId>();
     private Model model;
 
     protected Map<String, SequenceFeature> intronMap = new HashMap<String, SequenceFeature>();
@@ -98,7 +99,7 @@ public class CreateIntronFeaturesProcess extends PostProcessor
         if (!StringUtils.isEmpty(organisms)) {
             String[] array = organisms.split(",");
             for (int i = 0; i < array.length; i++) {
-                taxonIds.add(new Integer(array[i].trim()));
+                taxonIds.add(new InterMineId(array[i].trim()));
             }
         }
     }
@@ -323,7 +324,7 @@ public class CreateIntronFeaturesProcess extends PostProcessor
             int newLocEnd = intronEnd + tranStart;
 
             String identifier = "intron_chr" + chr.getPrimaryIdentifier()
-                    + "_" + Integer.toString(newLocStart) + ".." + Integer.toString(newLocEnd);
+                    + "_" + InterMineId.toString(newLocStart) + ".." + InterMineId.toString(newLocEnd);
 
             if (intronMap.get(identifier) == null) {
                 Class<?> intronCls = model.getClassDescriptorByName("Intron").getType();
@@ -338,8 +339,8 @@ public class CreateIntronFeaturesProcess extends PostProcessor
                 intron.setPrimaryIdentifier(identifier);
                 intron.setGenes(Collections.singleton(gene));
 
-                location.setStart(new Integer(newLocStart));
-                location.setEnd(new Integer(newLocEnd));
+                location.setStart(new InterMineId(newLocStart));
+                location.setEnd(new InterMineId(newLocEnd));
                 location.setStrand(tranLoc.getStrand());
                 location.setFeature(intron);
                 location.setLocatedOn(transcript);
@@ -349,7 +350,7 @@ public class CreateIntronFeaturesProcess extends PostProcessor
                 osw.store(location);
 
                 int length = location.getEnd().intValue() - location.getStart().intValue() + 1;
-                intron.setLength(new Integer(length));
+                intron.setLength(new InterMineId(length));
                 addToIntronTranscripts(intron, transcript);
                 intronMap.put(identifier, intron);
             } else {

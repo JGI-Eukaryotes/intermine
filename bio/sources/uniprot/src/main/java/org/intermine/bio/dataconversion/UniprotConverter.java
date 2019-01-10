@@ -12,6 +12,7 @@ package org.intermine.bio.dataconversion;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
@@ -518,7 +519,7 @@ public class UniprotConverter extends BioDirectoryConverter
 
                     String refId = item.getIdentifier();
                     try {
-                        Integer objectId = store(item);
+                        InterMineId objectId = store(item);
                         entry.addCommentRefId(refId, objectId);
                     } catch (ObjectStoreException e) {
                         throw new SAXException(e);
@@ -764,7 +765,7 @@ public class UniprotConverter extends BioDirectoryConverter
             throws ObjectStoreException {
             Map<Integer, List<String>> commentEvidence = uniprotEntry.getCommentEvidence();
             for (Map.Entry<Integer, List<String>> e : commentEvidence.entrySet()) {
-                Integer intermineObjectId = e.getKey();
+                InterMineId intermineObjectId = e.getKey();
                 List<String> evidenceCodes = e.getValue();
                 List<String> pubRefIds = new ArrayList<String>();
                 for (String code : evidenceCodes) {

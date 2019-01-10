@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPITestCase;
 import org.intermine.api.xml.ProfileManagerBinding;
 import org.intermine.model.testmodel.Employee;
@@ -68,7 +69,7 @@ public class XMLReadTest extends InterMineAPITestCase
         fieldNames.add("name");
 
         assertEquals("Wrong number of bags!", 3, stored2.getSavedBags().size());
-        List<Integer> expectedBagContents = new ArrayList<Integer>();
+        List<InterMineId> expectedBagContents = new ArrayList<InterMineId>();
         //when we read xml file, we load data into savedbag and bagvalues table but not in the
         //osbag_int loaded after user login
         assertEquals(expectedBagContents,

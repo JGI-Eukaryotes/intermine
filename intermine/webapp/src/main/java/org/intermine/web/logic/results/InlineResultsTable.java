@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.api.results.ResultElement;
 import org.intermine.api.util.PathUtil;
@@ -195,7 +196,7 @@ public class InlineResultsTable
      *  whole table, not just the "30" odd rows subset!
      */
     public Boolean getHasMoreThanOneType() {
-        return (getListOfTypes().size() > 1);
+        return Boolean.valueOf(getListOfTypes().size() > 1);
     }
 
     /**
@@ -245,7 +246,7 @@ public class InlineResultsTable
      * @return true if a Class has a FieldConfig defined
      */
     private Boolean isThisFieldConfigInThisObject(Class<?> clazz, FieldConfig fc) {
-        return (getClassFieldConfigs(model.getClassDescriptorByName(clazz.getName())).contains(fc));
+        return Boolean.valueOf(getClassFieldConfigs(model.getClassDescriptorByName(clazz.getName())).contains(fc));
     }
 
     /**
@@ -297,7 +298,7 @@ public class InlineResultsTable
     public List<Object> getResultElementRows() {
         if (listOfTableRows == null) {
             listOfTableRows = new LinkedList<Object>();
-            int columnsSize = getColumnsSize();
+            int columnsSize = getColumnsSize().intValue();
             // for a row object
             for (int i = 0; i < rowObjects.size(); i++) {
                 // fetch the object in the row
@@ -306,7 +307,7 @@ public class InlineResultsTable
                 Path path = null;
                 ResultElement re = null;
                 String className = null;
-                Boolean foundMainIdentifier = false;
+                Boolean foundMainIdentifier = Boolean.FALSE;
 
                 // create a row of elements
                 Object columnList = returnNewTableRow();
@@ -318,7 +319,7 @@ public class InlineResultsTable
                         // determine the class of the object
                         Class<?> clazz = DynamicUtil.getSimpleClass((FastPathObject) o);
                         // does THIS row object have THIS column?
-                        if (isThisFieldConfigInThisObject(clazz, fc)) {
+                        if (isThisFieldConfigInThisObject(clazz, fc).booleanValue()) {
                             // resolve class name
                             className =
                                 DynamicUtil.getSimpleClass((FastPathObject) o).getSimpleName();
@@ -329,8 +330,8 @@ public class InlineResultsTable
                             // key field?
                             String endTypeName = path.getLastClassDescriptor().getName();
                             String lastFieldName = path.getEndFieldDescriptor().getName();
-                            Boolean isKeyField = ClassKeyHelper.isKeyField(classKeys, endTypeName,
-                                    lastFieldName);
+                            Boolean isKeyField = Boolean.valueOf(ClassKeyHelper.isKeyField(classKeys, endTypeName,
+                                    lastFieldName));
 
                             // finalObject
                             FastPathObject imObj = null;
@@ -341,13 +342,13 @@ public class InlineResultsTable
                             }
 
                             // save the InterMine Object identifier
-                            if (!foundMainIdentifier) {
+                            if (!foundMainIdentifier.booleanValue()) {
                                 Class<?> objectType = DynamicUtil.getSimpleClass(imObj);
                                 if (InterMineObject.class.isAssignableFrom(objectType)) {
                                     saveObjectIdOnTableRow(((InterMineObject) imObj).getId(),
                                             columnList);
                                 }
-                                foundMainIdentifier = true;
+                                foundMainIdentifier = Boolean.TRUE;
                             }
 
                             // create new inline result element
@@ -382,7 +383,7 @@ public class InlineResultsTable
      *
      * @return the number of columns in each table, based on all FieldConfigs for all objects
      */
-    public Integer getColumnsSize() {
-        return getTableFieldConfigs().size();
+    public InterMineId getColumnsSize() {
+        return InterMineId.valueOf(getTableFieldConfigs().size());
     }
 }

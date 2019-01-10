@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.io.IOUtils;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPITestCase;
 import org.intermine.api.profile.ProfileManager.ApiPermission;
 import org.intermine.api.profile.ProfileManager.AuthenticationException;
@@ -87,7 +88,7 @@ public class ProfileManagerTest extends InterMineAPITestCase
 
     private void setUpBob() throws Exception {
         bobProfile = pm.createBasicLocalProfile(bobName, bobPass, bobKey);
-        Integer bobId = bobProfile.getUserId();
+        InterMineId bobId = bobProfile.getUserId();
 
         PathQuery query = new PathQuery(Model.getInstanceByName("testmodel"));
         SavedQuery sq = new SavedQuery("query1", new Date(), query);
@@ -122,7 +123,7 @@ public class ProfileManagerTest extends InterMineAPITestCase
     private void setUpSally() throws Exception {
 
         sallyProfile = pm.createBasicLocalProfile(sallyName, sallyPass, null);
-        Integer sallyId = sallyProfile.getUserId();
+        InterMineId sallyId = sallyProfile.getUserId();
 
         PathQuery query = new PathQuery(Model.getInstanceByName("testmodel"));
         SavedQuery sq = new SavedQuery("query1", new Date(), query);

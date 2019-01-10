@@ -86,17 +86,17 @@ public class WidgetLdr
         String value = PathConstraint.getValue(pc);
         QueryValue queryValue = null;
         if ("true".equalsIgnoreCase(value)) {
-            queryValue = new QueryValue(true);
+            queryValue = new QueryValue(Boolean.TRUE);
         } else if ("false".equalsIgnoreCase(value)) {
-            queryValue = new QueryValue(false);
+            queryValue = new QueryValue(Boolean.FALSE);
         } else {
             if (!NumberUtils.isNumber(value)) {
                 queryValue = new QueryValue(value);
             } else {
                 try {
-                    queryValue = new QueryValue(Integer.parseInt(value));
+                    queryValue = new QueryValue(Integer.valueOf(Integer.parseInt(value)));
                 } catch (NumberFormatException nfe) {
-                    queryValue = new QueryValue(Double.parseDouble(value));
+                    queryValue = new QueryValue(Double.valueOf(Double.parseDouble(value)));
                 }
             }
         }

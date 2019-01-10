@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.query.PathExpressionField;
 import org.intermine.objectstore.query.Query;
 import org.intermine.objectstore.query.QueryCollectionPathExpression;
@@ -229,7 +230,7 @@ public class ResultsFlatOuterJoinsImpl extends AbstractList<MultiRow<ResultsRow<
                     }
                 }
             } else {
-                retval.add(new Integer(columnCount++));
+                retval.add(new InterMineId(columnCount++));
             }
         }
         return retval;
@@ -287,7 +288,7 @@ public class ResultsFlatOuterJoinsImpl extends AbstractList<MultiRow<ResultsRow<
         }
         columnNo = 0;
         for (Object column : columns) {
-            if (column instanceof Integer) {
+            if (column instanceof InterMineId) {
                 int outColumnNo = ((Integer) column).intValue();
                 MultiRowFirstValue firstValue = new MultiRowFirstValue(row.get(columnNo),
                         maxRowNo - startRow);

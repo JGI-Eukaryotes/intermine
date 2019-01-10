@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.BadTemplateException;
 import org.intermine.api.profile.Profile;
@@ -87,7 +88,7 @@ public class TemplateUploadService extends WebService
         }
         Profile profile = getPermission().getProfile();
 
-        int version = getIntParameter(VERSION_PARAMETER, TemplateQuery.USERPROFILE_VERSION);
+        int version = getIntParameter(VERSION_PARAMETER, InterMineId.valueOf(TemplateQuery.USERPROFILE_VERSION)).intValue();
         Reader r = new StringReader(templatesXML);
 
         Map<String, TemplateQuery> templates;

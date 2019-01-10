@@ -31,6 +31,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.profile.InterMineBag;
@@ -197,9 +198,9 @@ public class BagDetailsController extends TilesAction
         int page = -1;
 
         String highlightIdStr = request.getParameter("highlightId");
-        Integer highlightId = null;
+        InterMineId highlightId = null;
         if (highlightIdStr != null) {
-            highlightId = new Integer(Integer.parseInt(highlightIdStr));
+            highlightId = new InterMineId(Integer.parseInt(highlightIdStr));
         }
         boolean gotoHighlighted = false;
         String gotoHighlightedStr = request.getParameter("gotoHighlighted");
@@ -220,7 +221,7 @@ public class BagDetailsController extends TilesAction
                         if (mrv instanceof MultiRowFirstValue) {
                             ResultElement resultElement = mrv.getValue();
                             if (resultElement != null) {
-                                Integer id = resultElement.getId();
+                                InterMineId id = resultElement.getId();
                                 if (id.equals(highlightId)) {
                                     page = i / PAGE_SIZE;
                                     break;
@@ -235,7 +236,7 @@ public class BagDetailsController extends TilesAction
         // which fields shall we show in preview?
         List<String> showInPreviewTable = new ArrayList<String>();
         for (Entry<String, FieldConfig> entry : type.getFieldConfigMap().entrySet()) {
-            if (entry.getValue().getShowInListAnalysisPreviewTable()) {
+            if (entry.getValue().getShowInListAnalysisPreviewTable().booleanValue()) {
                 showInPreviewTable.add(type.getDisplayName() + "." + entry.getKey());
             }
         }
@@ -245,19 +246,19 @@ public class BagDetailsController extends TilesAction
                              pagedResults.getFirstSelectedFields(os, classKeys));
         if (page == -1) {
             // use the page from the URL
-            page = (pageStr == null ? 0 : Integer.parseInt(pageStr));
+            page = (pageStr == null ? 0 : InterMineId.parseInt(pageStr));
         }
 
         pagedResults.setPageAndPageSize(page, PAGE_SIZE);
 
         // is this list public?
-        Boolean isPublic = bagManager.isPublic(imBag);
+        Boolean isPublic = Boolean.valueOf(bagManager.isPublic(imBag));
         request.setAttribute("isBagPublic", isPublic);
 
         request.setAttribute("addparameter", request.getParameter("addparameter"));
         request.setAttribute("myBag", myBag);
         request.setAttribute("bag", imBag);
-        request.setAttribute("bagSize", new Integer(imBag.size()));
+        request.setAttribute("bagSize", new InterMineId(imBag.size()));
         request.setAttribute("pagedResults", pagedResults);
         request.setAttribute("highlightId", highlightIdStr);
         // disable using pathquery saved in session in following jsp page

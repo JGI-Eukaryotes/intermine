@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.intermine.model.InterMineId;
 import org.intermine.web.search.KeywordSearchResult;
 
 /**
@@ -40,7 +41,7 @@ public class QuickSearchTextProcessor implements QuickSearchResultProcessor
         Map<String, Object> data = new HashMap<String, Object>(result.getFieldValues());
         StringBuffer sb = new StringBuffer();
         sb.append(String.format("# %s:%d (%.3f) - ",
-                result.getType(), result.getId(), result.getScore()));
+                result.getType(), InterMineId.valueOf(result.getId()), Float.valueOf(result.getScore())));
         sb.append(nl);
         for (Entry<String, Object> kv: data.entrySet()) {
             sb.append(TAB);

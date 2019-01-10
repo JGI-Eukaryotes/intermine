@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.api.config.ClassKeyHelper;
 import org.intermine.api.profile.BagState;
 import org.intermine.api.profile.BagValue;
@@ -49,7 +50,7 @@ public class InterMineBagHandler extends DefaultHandler
     private ObjectStoreWriter osw;
     private Map<String, InterMineBag> bags;
     private Map<String, InvalidBag> invalidBags;
-    private Integer userId;
+    private InterMineId userId;
     private Model model;
 
     private String bagName;
@@ -74,7 +75,7 @@ public class InterMineBagHandler extends DefaultHandler
      */
     public InterMineBagHandler(ObjectStoreWriter uosw, ObjectStoreWriter osw,
             Map<String, InterMineBag> bags, Map<String, InvalidBag> invalidBags,
-            Map<String, Set<BagValue>> bagsValues, Integer userId) {
+            Map<String, Set<BagValue>> bagsValues, InterMineId userId) {
         this.uosw = uosw;
         this.osw = osw;
         this.bags = bags;

@@ -12,6 +12,7 @@ package org.intermine.pathquery;
 
 import java.util.Collection;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 
 /**
@@ -168,7 +169,7 @@ public final class Constraints
      * @param ids the Collection of ids to constrain to
      * @return a new PathConstraint object
      */
-    public static PathConstraintIds inIds(String path, Collection<Integer> ids) {
+    public static PathConstraintIds inIds(String path, Collection<InterMineId> ids) {
         return new PathConstraintIds(path, ConstraintOp.IN, ids);
     }
 
@@ -179,7 +180,7 @@ public final class Constraints
      * @param ids the Collection of ids to constrain to
      * @return a new PathConstraint object
      */
-    public static PathConstraintIds notInIds(String path, Collection<Integer> ids) {
+    public static PathConstraintIds notInIds(String path, Collection<InterMineId> ids) {
         return new PathConstraintIds(path, ConstraintOp.NOT_IN, ids);
     }
 

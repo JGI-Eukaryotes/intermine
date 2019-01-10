@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.functors.InvokerTransformer;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagQueryResult;
 import org.intermine.api.profile.Profile;
@@ -67,12 +68,12 @@ public class TableRowService extends QueryResultService
     }
 
     @Override
-    protected void setHeaderAttributes(PathQuery pq, Integer start, Integer size) {
+    protected void setHeaderAttributes(PathQuery pq, InterMineId start, InterMineId size) {
         try {
             Profile p = getPermission().getProfile();
             PathQueryExecutor pqe = im.getPathQueryExecutor(p);
             int count = pqe.count(pq);
-            attributes.put("iTotalRecords", count);
+            attributes.put("iTotalRecords", InterMineId.valueOf(count));
         } catch (BagNotFound e) {
             throw new BadRequestException(e.getMessage());
         } catch (ObjectStoreException e) {
@@ -98,7 +99,7 @@ public class TableRowService extends QueryResultService
             throw new ServiceException("Could not run query", e);
         }
         final Results results = os.execute(q, QueryResultService.BATCH_SIZE, true, false, false);
-        final Page page = new Page(firstResult, (maxResults == 0) ? null : maxResults);
+        final Page page = new Page(firstResult, (maxResults == 0) ? null : InterMineId.valueOf(maxResults));
 
         Query realQ = results.getQuery();
         if (realQ == q) {

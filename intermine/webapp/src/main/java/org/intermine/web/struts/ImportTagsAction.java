@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.ProfileManager;
@@ -76,7 +77,7 @@ public class ImportTagsAction extends InterMineAction
                 return mapping.findForward("importTag");
             }
         }
-        recordMessage(new ActionMessage("history.importedTags", new Integer(count)), request);
+        recordMessage(new ActionMessage("history.importedTags", new InterMineId(count)), request);
 
         // We can't know what the tags were, or indeed what exactly what
         // was tagged, and thus be more fine grained about

@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.query.BagNotFound;
@@ -103,7 +104,7 @@ public class QueryResultService extends AbstractQueryService
         PathQueryBuilder builder = getQueryBuilder(input.getXml());
         PathQuery query = builder.getQuery();
         setHeaderAttributes(query, input.getStart(), input.getLimit());
-        runPathQuery(query, input.getStart(), input.getLimit());
+        runPathQuery(query, input.getStart().intValue(), input.getLimit().intValue());
     }
 
     @Override
@@ -143,7 +144,7 @@ public class QueryResultService extends AbstractQueryService
      * @param start The beginning of this set of results
      * @param size The size of this set of results
      */
-    protected void setHeaderAttributes(PathQuery pq, Integer start, Integer size) {
+    protected void setHeaderAttributes(PathQuery pq, InterMineId start, InterMineId size) {
 
         if (formatIsJSON()) {
             // These attributes are always needed
@@ -168,7 +169,7 @@ public class QueryResultService extends AbstractQueryService
                 } catch (ObjectStoreException e) {
                     throw new ServiceException("Problem getting unique column value count.", e);
                 }
-                attributes.put("uniqueValues", count);
+                attributes.put("uniqueValues", InterMineId.valueOf(count));
             }
             if (formatIsJSONP()) {
                 String callback = StringUtils.defaultString(getCallback(), "makeResultsTable");
@@ -308,8 +309,8 @@ public class QueryResultService extends AbstractQueryService
         final Iterator<List<ResultElement>> it;
         final String summaryPath = getOptionalParameter("summaryPath");
         if (isNotBlank(summaryPath)) {
-            Integer uniqs = (Integer) attributes.get("uniqueValues");
-            boolean occurancesOnly = (uniqs == null) || (uniqs < 2);
+            InterMineId uniqs = (Integer) attributes.get("uniqueValues");
+            boolean occurancesOnly = (uniqs == null) || (uniqs.intValue() < 2);
             try {
                 String filterTerm = getOptionalParameter("filterTerm");
                 Results r = executor.summariseQuery(pq, summaryPath, filterTerm, occurancesOnly);
@@ -320,7 +321,7 @@ public class QueryResultService extends AbstractQueryService
                     // Ignore, it just means it's empty.
                 }
                 if (filterTerm != null) {
-                    attributes.put("filteredCount", r.size());
+                    attributes.put("filteredCount", InterMineId.valueOf(r.size()));
                 }
                 it = new FilteringResultIterator(r, firstResult, maxResults, filterTerm);
                 canGoFaster = false;
@@ -401,7 +402,7 @@ public class QueryResultService extends AbstractQueryService
         // ObjectStore so results are in cache when Row processors need to fetch them. We need
         // to set a limit here to prevent runResults() from calling goFaster() and precomputing.
         if (getFormat() == Format.TABLE) {
-            qri.setLimit(WebServiceRequestParser.MIN_LIMIT);
+            qri.setLimit(Integer.valueOf(WebServiceRequestParser.MIN_LIMIT));
         }
         return qri;
     }

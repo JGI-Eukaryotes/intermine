@@ -98,7 +98,7 @@ public class DisclosureTag extends BaseDisclosureTag
             if (webState != null) {
                 Boolean ret = webState.getToggledElements().get(getId());
                 if (ret != null) {
-                    return ret;
+                    return ret.booleanValue();
                 }
             }
         }

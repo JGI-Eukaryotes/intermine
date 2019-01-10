@@ -19,6 +19,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.query.PathQueryExecutor;
 import org.intermine.api.results.ExportResultsIterator;
@@ -108,8 +109,8 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             throw new RuntimeException(e);
         }
 
-        Integer up = 0;
-        Integer down = 0;
+        InterMineId up = 0;
+        InterMineId down = 0;
         while (results.hasNext()) {
             List<ResultElement> item = results.next();
             String expression = item.get(0).getField().toString();
@@ -120,7 +121,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             }
         }
 
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        HashMap<String, InterMineId> map = new HashMap<String, InterMineId>();
         map.put("up", up);
         map.put("down", down);
 
@@ -148,8 +149,8 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             throw new RuntimeException(e);
         }
 
-        Integer up = 0;
-        Integer down = 0;
+        InterMineId up = 0;
+        InterMineId down = 0;
         while (results.hasNext()) {
             List<ResultElement> item = results.next();
             String expression = item.get(0).getField().toString();
@@ -160,7 +161,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
             }
         }
 
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        HashMap<String, InterMineId> map = new HashMap<String, InterMineId>();
         map.put("up", up);
         map.put("down", down);
 
@@ -317,7 +318,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
                     throw new RuntimeException(e);
                 }
 
-                HashMap<String, Integer> temp = new HashMap<String, Integer>();
+                HashMap<String, InterMineId> temp = new HashMap<String, InterMineId>();
                 while (results.hasNext()) {
                     List<ResultElement> item = results.next();
                     String value = item.get(0).getField().toString();
@@ -347,7 +348,7 @@ public class MetabolicGeneSummaryDisplayer extends ReportDisplayer
          *
          * @return InterMineObject ID
          */
-        public Integer getObjectId() {
+        public InterMineId getObjectId() {
             return imObj.getId();
         }
 

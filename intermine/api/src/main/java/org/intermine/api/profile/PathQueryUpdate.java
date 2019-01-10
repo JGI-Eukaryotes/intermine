@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.Model;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.pathquery.OrderElement;
@@ -208,7 +209,7 @@ public class PathQueryUpdate
             int dotIndex = key.indexOf(".");
             String cls = key.substring(0, dotIndex);
             String prevField = key.substring(dotIndex + 1);
-            List<Integer> elementContainingField = p.getElementsContainingField(cls, prevField);
+            List<InterMineId> elementContainingField = p.getElementsContainingField(cls, prevField);
             if (!elementContainingField.isEmpty()) {
                 for (int index : elementContainingField) {
                     p.getElements().set(index, renamedFields.get(key));

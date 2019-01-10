@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPITestCase;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -89,7 +90,7 @@ public class WidgetConfigTestCase extends InterMineAPITestCase {
             osw.store(e1);
             osw.store(e2);
             InterMineBag list = superUser.createBag("employeeList", "Employee", "", im.getClassKeys());
-            Collection<Integer> ids = new ArrayList<Integer>();
+            Collection<InterMineId> ids = new ArrayList<InterMineId>();
             ids.add(e1.getId()); ids.add(e2.getId());
             list.addIdsToBag(ids, "Employee");
             return list;
@@ -145,7 +146,7 @@ public class WidgetConfigTestCase extends InterMineAPITestCase {
             osw.store(e4);
             osw.store(e5);
             InterMineBag list = superUser.createBag("employeeList", "Employee", "", im.getClassKeys());
-            Collection<Integer> ids = new ArrayList<Integer>();
+            Collection<InterMineId> ids = new ArrayList<InterMineId>();
             ids.add(e1.getId()); ids.add(e2.getId()); ids.add(e3.getId()); ids.add(e4.getId()); ids.add(e5.getId());
             list.addIdsToBag(ids, "Employee");
             return list;
@@ -166,7 +167,7 @@ public class WidgetConfigTestCase extends InterMineAPITestCase {
             osw.store(c1);
             osw.store(c2);
             InterMineBag list = superUser.createBag("companyList", "Company", "", im.getClassKeys());
-            Collection<Integer> ids = new ArrayList<Integer>();
+            Collection<InterMineId> ids = new ArrayList<InterMineId>();
             ids.add(c1.getId()); ids.add(c2.getId());
             list.addIdsToBag(ids, "Company");
             return list;

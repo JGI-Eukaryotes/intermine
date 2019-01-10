@@ -43,7 +43,7 @@ public abstract class Either<A, B>
         }
         @SuppressWarnings("unchecked") // Checked above in fact.
         final Either<A, B> rhs = (Either<A, B>) obj;
-        return accept(new EqualityVisitor(rhs));
+        return accept(new EqualityVisitor(rhs)).booleanValue();
     }
 
     /**
@@ -66,12 +66,12 @@ public abstract class Either<A, B>
 
             @Override
             public Boolean visitLeft(A a) {
-                return false;
+                return Boolean.FALSE;
             }
 
             @Override
             public Boolean visitRight(B b2) {
-                return (b1 == null && b2 == null) || b1.equals(b2);
+                return Boolean.valueOf((b1 == null && b2 == null) || b1.equals(b2));
             }
         }
 
@@ -85,12 +85,12 @@ public abstract class Either<A, B>
 
             @Override
             public Boolean visitLeft(A a2) {
-                return (a1 == null && a2 == null) || a1.equals(a2);
+                return Boolean.valueOf((a1 == null && a2 == null) || a1.equals(a2));
             }
 
             @Override
             public Boolean visitRight(B b) {
-                return false;
+                return Boolean.FALSE;
             }
         }
 

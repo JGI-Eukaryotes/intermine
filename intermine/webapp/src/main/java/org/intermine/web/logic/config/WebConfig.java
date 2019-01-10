@@ -721,7 +721,7 @@ public class WebConfig
                                 thisClassType.getHeaderConfigTitle();
                             if (subclassHc != null) {
                                 // type A behavior: inherit titles from the parent and append
-                                if (subclassHc.getAppendConfig()) {
+                                if (subclassHc.getAppendConfig().booleanValue()) {
                                     subclassHc.addTitleParts(hc.getTitles());
                                 }
                             } else {

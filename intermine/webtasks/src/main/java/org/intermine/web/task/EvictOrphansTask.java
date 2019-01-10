@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.api.userprofile.Tag;
 import org.intermine.objectstore.ObjectStoreException;
@@ -62,7 +63,7 @@ public class EvictOrphansTask extends Task
     public void execute() {
         int removed = 0;
         removed += removeOrphanTags();
-        System .out.printf("Success: removed %d orphaned objects.\n", removed);
+        System .out.printf("Success: removed %d orphaned objects.\n", InterMineId.valueOf(removed));
     }
 
     private int removeOrphanTags() {

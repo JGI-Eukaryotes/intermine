@@ -26,6 +26,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.actions.TilesAction;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
@@ -124,7 +125,7 @@ public class ObjectTrailController extends TilesAction
                      * sometimes you need to re-add "results." to the tablename in the trail
                      */
                     try {
-                        Integer.parseInt(resultsTableId);
+                        InterMineId.parseInt(resultsTableId);
                         prepend = "results.";
                     } catch (Exception e)  {
                         // nothing to do
@@ -148,7 +149,7 @@ public class ObjectTrailController extends TilesAction
             } else {
                 InterMineObject o = null;
                 try {
-                    o = os.getObjectById(new Integer(breadcrumbs[0]));
+                    o = os.getObjectById(new InterMineId(breadcrumbs[0]));
                 } catch (NumberFormatException err) {
                     LOG.warn("bad object id " + breadcrumbs[0]);
                     continue;

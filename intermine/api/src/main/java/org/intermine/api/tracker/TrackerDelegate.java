@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.template.TemplateManager;
 import org.intermine.api.tracker.factory.TrackerFactory;
@@ -129,7 +130,7 @@ public class TrackerDelegate implements Shutdownable
      * Return the rank associated to the templates
      * @return map with key the template name and value the rank associated
      */
-    public Map<String, Integer> getAccessCounter() {
+    public Map<String, InterMineId> getAccessCounter() {
         TemplateTracker tt = getTemplateTracker();
         if (tt != null) {
             Connection conn = null;
@@ -150,7 +151,7 @@ public class TrackerDelegate implements Shutdownable
      * @param templateManager the template manager
      * @return map with key the template name and value the rank associated
      */
-    public Map<String, Integer> getRank(TemplateManager templateManager) {
+    public Map<String, InterMineId> getRank(TemplateManager templateManager) {
         TemplateTracker tt = getTemplateTracker();
         if (tt != null) {
             return tt.getRank(templateManager);
@@ -164,7 +165,7 @@ public class TrackerDelegate implements Shutdownable
      * @param templateName the template to get the rank for
      * @return rank of specified template
      */
-    public Integer getRank(TemplateManager templateManager, String templateName) {
+    public InterMineId getRank(TemplateManager templateManager, String templateName) {
         TemplateTracker tt = getTemplateTracker();
         if (tt != null) {
             return tt.getRank(templateManager, templateName);
@@ -261,7 +262,7 @@ public class TrackerDelegate implements Shutdownable
      * Return the number of access for each user
      * @return map with key the user name and access number
      */
-    public Map<String, Integer> getUserLogin() {
+    public Map<String, InterMineId> getUserLogin() {
         Tracker lt = getTracker(TrackerUtil.LOGIN_TRACKER);
         if (lt != null) {
             Connection c = null;
@@ -295,7 +296,7 @@ public class TrackerDelegate implements Shutdownable
      * Return the number of search for each keyword
      * @return map with key the keyword and the number of searches for that keyword
      */
-    public Map<String, Integer> getKeywordSearches() {
+    public Map<String, InterMineId> getKeywordSearches() {
         Tracker st = getTracker(TrackerUtil.SEARCH_TRACKER);
         if (st != null) {
             Connection c = null;

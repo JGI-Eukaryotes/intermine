@@ -25,6 +25,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -57,7 +58,7 @@ public class SaveFromIdsToBagAction extends InterMineAction
 
         // where the request comes from, e.g. /experiment.do?...
         String source = (String) request.getParameter("source");
-        Set<Integer> idSet = new LinkedHashSet<Integer>();
+        Set<InterMineId> idSet = new LinkedHashSet<InterMineId>();
         try {
             String type = (String) request.getParameter("type");
             String allChecked = (String) request.getParameter("allChecked");
@@ -67,7 +68,7 @@ public class SaveFromIdsToBagAction extends InterMineAction
             if ("true".equals(allChecked)) {
                 // TODO do something more clever than running the search again
                 String totalHits = (String) request.getParameter("totalHits");
-                int listSize = Integer.parseInt(totalHits);
+                int listSize = InterMineId.parseInt(totalHits);
                 String searchTerm = (String) request.getParameter("searchTerm");
                 JSONObject jsonRequest = new JSONObject(request.getParameter("jsonFacets"));
                 Map<String, String> facetMap = jsonToJava(jsonRequest);
@@ -77,7 +78,7 @@ public class SaveFromIdsToBagAction extends InterMineAction
 
                 idSet = keywordSearchHandler.
                         getObjectIdsFromSearch(im, searchTerm, offset, facetMap,
-                                new ArrayList<Integer>(), listSize);
+                                new ArrayList<InterMineId>(), listSize);
 
             } else {
                 // ids are comma delimited

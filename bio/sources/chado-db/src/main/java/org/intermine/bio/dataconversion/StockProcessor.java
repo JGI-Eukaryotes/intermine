@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismData;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.xml.full.Item;
@@ -63,10 +64,10 @@ public class StockProcessor extends ChadoProcessor
 
         ResultSet res = getStocksResultSet(connection);
         int count = 0;
-        Integer lastFeatureId = null;
+        InterMineId lastFeatureId = null;
         List<Item> stocks = new ArrayList<Item>();
         while (res.next()) {
-            Integer featureId = new Integer(res.getInt("feature_id"));
+            InterMineId featureId = new InterMineId(res.getInt("feature_id"));
             if (lastFeatureId != null && !featureId.equals(lastFeatureId)) {
                 storeStocks(features, lastFeatureId, stocks);
                 stocks = new ArrayList<Item>();
@@ -80,7 +81,7 @@ public class StockProcessor extends ChadoProcessor
             String stockDescription = res.getString("stock_description");
             String stockCenterUniquename = res.getString("stock_center_uniquename");
             String stockType = res.getString("stock_type_name");
-            Integer organismId = new Integer(res.getInt("stock_organism_id"));
+            InterMineId organismId = new InterMineId(res.getInt("stock_organism_id"));
             OrganismData organismData =
                 getChadoDBConverter().getChadoIdToOrgDataMap().get(organismId);
             if (organismData == null) {
@@ -124,13 +125,13 @@ public class StockProcessor extends ChadoProcessor
         return stock;
     }
 
-    private void storeStocks(Map<Integer, FeatureData> features, Integer lastFeatureId,
+    private void storeStocks(Map<Integer, FeatureData> features, InterMineId lastFeatureId,
             List<Item> stocks) throws ObjectStoreException {
         FeatureData featureData = features.get(lastFeatureId);
         if (featureData == null) {
             throw new RuntimeException("can't find feature data for: " + lastFeatureId);
         }
-        Integer intermineObjectId = featureData.getIntermineObjectId();
+        InterMineId intermineObjectId = featureData.getIntermineObjectId();
         ReferenceList referenceList = new ReferenceList();
         referenceList.setName("stocks");
         for (Item stock: stocks) {

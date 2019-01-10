@@ -10,6 +10,7 @@ package org.intermine.sql.writebatch;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -40,9 +41,9 @@ public interface BatchWriter
      * Updates the per-table statistics held in this object, and may tell the SQL database to
      * update its statistics using the supplied Connection.
      *
-     * @param activity a Map from table name to the amount of activity (in rows) as an Integer
+     * @param activity a Map from table name to the amount of activity (in rows) as an InterMineId
      * @param con a Connection, over which to talk to the database
      * @throws SQLException if there is an underlying DB problem
      */
-    void updateStatistics(Map<String, Integer> activity, Connection con) throws SQLException;
+    void updateStatistics(Map<String, InterMineId> activity, Connection con) throws SQLException;
 }

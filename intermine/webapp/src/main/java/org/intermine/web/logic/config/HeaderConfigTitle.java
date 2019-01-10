@@ -10,6 +10,7 @@ package org.intermine.web.logic.config;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,9 +32,9 @@ public class HeaderConfigTitle
     private HashMap<String, List<TitlePart>> titleParts = new HashMap<String, List<TitlePart>>();
 
     /** @var decides whether to append or only inherit config from parent, used by WebConfig only */
-    private Boolean appendConfig = false;
+    private Boolean appendConfig = Boolean.FALSE;
 
-    private Integer numberOfMainTitlesToShow = Integer.MAX_VALUE;
+    private InterMineId numberOfMainTitlesToShow = InterMineId.valueOf(Integer.MAX_VALUE);
 
     /**
      * The first part of a page title.
@@ -77,7 +78,7 @@ public class HeaderConfigTitle
      * @return number of main titles to show at the maximum
      * @see one might not want to show primaryId if we have a symbol etc.
      */
-    public Integer getNumberOfMainTitlesToShow() {
+    public InterMineId getNumberOfMainTitlesToShow() {
         return this.numberOfMainTitlesToShow;
     }
 

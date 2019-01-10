@@ -683,10 +683,10 @@ public class SolrObjectHandler extends Thread
             Map<String, Object> fieldAttributes = new HashMap();
             fieldAttributes.put("name", fieldName);
             fieldAttributes.put("type", fieldType);
-            fieldAttributes.put("stored", stored);
-            fieldAttributes.put("indexed", indexed);
-            fieldAttributes.put("multiValued", true);
-            fieldAttributes.put("required", false);
+            fieldAttributes.put("stored", Boolean.valueOf(stored));
+            fieldAttributes.put("indexed", Boolean.valueOf(indexed));
+            fieldAttributes.put("multiValued", Boolean.TRUE);
+            fieldAttributes.put("required", Boolean.FALSE);
 
             try {
                 SchemaRequest.AddField schemaRequest = new SchemaRequest.AddField(fieldAttributes);

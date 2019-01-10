@@ -1,5 +1,6 @@
 package org.intermine.webservice.server.core;
 
+import org.intermine.model.InterMineId;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -9,9 +10,9 @@ import org.junit.Test;
 
 public class ListFunctionsTest {
 
-    private final class GetLengths implements Function<String, Integer> {
+    private final class GetLengths implements Function<String, InterMineId> {
         @Override
-        public Integer call(String a) {
+        public InterMineId call(String a) {
             return a.length();
         }
     }
@@ -19,7 +20,7 @@ public class ListFunctionsTest {
     @Test
     public void testMap() {
         List<String> names = Arrays.asList("joe", "carol", "anne-marie");
-        List<Integer> lengths = ListFunctions.map(names, new GetLengths());
+        List<InterMineId> lengths = ListFunctions.map(names, new GetLengths());
         assertEquals(lengths, Arrays.asList(3, 5, 10));
     }
 

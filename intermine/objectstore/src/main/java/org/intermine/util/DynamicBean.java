@@ -25,6 +25,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import net.sf.cglib.proxy.NoOp;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.StringUtil;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.metadata.Util;
@@ -108,8 +109,8 @@ public class DynamicBean implements MethodInterceptor
         // java.lang.Object methods
         if ("equals".equals(method.getName())) {
             if (args[0] instanceof InterMineObject) {
-                Integer otherId = ((InterMineObject) args[0]).getId();
-                Integer thisId = (Integer) map.get("id");
+                InterMineId otherId = ((InterMineObject) args[0]).getId();
+                InterMineId thisId = (Integer) map.get("id");
                 return Boolean.valueOf(thisId != null ? thisId.equals(otherId) : obj == args[0]);
             }
             return Boolean.FALSE;
@@ -234,7 +235,7 @@ public class DynamicBean implements MethodInterceptor
                 } else if (Short.TYPE.equals(fieldType)) {
                     retval = new Short((short) 0);
                 } else if (Integer.TYPE.equals(fieldType)) {
-                    retval = new Integer(0);
+                    retval = new InterMineId(0);
                 } else if (Long.TYPE.equals(fieldType)) {
                     retval = new Long(0);
                 } else if (Float.TYPE.equals(fieldType)) {
@@ -271,7 +272,7 @@ public class DynamicBean implements MethodInterceptor
                 } else if (Short.TYPE.equals(fieldType)) {
                     retval = new Short((short) 0);
                 } else if (Integer.TYPE.equals(fieldType)) {
-                    retval = new Integer(0);
+                    retval = new InterMineId(0);
                 } else if (Long.TYPE.equals(fieldType)) {
                     retval = new Long(0);
                 } else if (Float.TYPE.equals(fieldType)) {

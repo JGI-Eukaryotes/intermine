@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.FieldDescriptor;
 import org.intermine.metadata.PrimaryKey;
@@ -242,7 +243,7 @@ public class DirectDataLoader extends DataLoader
      */
     public <C extends InterMineObject> C createObject(Class<C> c) {
         C o = DynamicUtil.simpleCreateObject(c);
-        o.setId(new Integer(idCounter));
+        o.setId(new InterMineId(idCounter));
         idCounter++;
         return o;
     }

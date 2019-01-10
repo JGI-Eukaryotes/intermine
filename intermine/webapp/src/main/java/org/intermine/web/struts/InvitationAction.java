@@ -87,7 +87,7 @@ public class InvitationAction extends InterMineAction
             @Override
             public void act(Emailer emailer) throws Exception {
                 emailer.email(
-                        pm.getProfileUserName(invite.getBag().getProfileId()),
+                        pm.getProfileUserName(invite.getBag().getProfileId().intValue()),
                         "was-accepted",
                         invite.getCreatedAt(),
                         invite.getInvitee(),

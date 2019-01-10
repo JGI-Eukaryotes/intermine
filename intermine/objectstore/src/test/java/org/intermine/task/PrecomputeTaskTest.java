@@ -22,6 +22,7 @@ import java.util.Set;
 
 import junit.framework.Test;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.testmodel.Department;
 import org.intermine.model.testmodel.Employee;
 import org.intermine.objectstore.ObjectStore;
@@ -72,7 +73,7 @@ public class PrecomputeTaskTest extends QueryTestCase
 
         task.setObjectStoreAlias("os.unittest");
         task.setPrecomputePropertiesPath("testmodel_precompute.properties");
-        task.setMinRows(new Integer(1));
+        task.setMinRows(new InterMineId(1));
 
         Properties summaryProperties;
 

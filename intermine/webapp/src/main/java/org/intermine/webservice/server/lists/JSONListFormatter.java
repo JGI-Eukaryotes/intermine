@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagManager;
 import org.intermine.api.profile.InterMineBag;
@@ -65,7 +66,7 @@ public class JSONListFormatter implements ListFormatter
         if (list.getDateCreated() != null) {
             Date createdOn = list.getDateCreated();
 
-            listMap.put("timestamp", createdOn.getTime());
+            listMap.put("timestamp", Long.valueOf(createdOn.getTime()));
             listMap.put("dateCreated", iso8601.format(createdOn));
         }
         BagManager bm = im.getBagManager();
@@ -77,12 +78,12 @@ public class JSONListFormatter implements ListFormatter
         listMap.put("tags", tagNames);
 
         try {
-            listMap.put("size", list.getSize());
+            listMap.put("size", InterMineId.valueOf(list.getSize()));
         } catch (ObjectStoreException e) {
             throw new ServiceException("Error getting list size:" + e);
         }
         boolean belongsToMe = list == profile.getSavedBags().get(list.getName());
-        listMap.put("authorized", belongsToMe);
+        listMap.put("authorized", Boolean.valueOf(belongsToMe));
         return listMap;
     }
 

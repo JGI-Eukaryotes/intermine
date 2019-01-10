@@ -13,6 +13,7 @@ package org.intermine.objectstore.intermine;
 import java.sql.Connection;
 import java.util.*;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.ConstraintOp;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.testmodel.*;
@@ -164,7 +165,7 @@ public class ObjectStoreWriterTestCase
 
         try {
             writer.store(address1);
-            Integer id = address1.getId();
+            InterMineId id = address1.getId();
             address2.setId(id);
 
             Assert.assertNull(os.pilferObjectById(id));

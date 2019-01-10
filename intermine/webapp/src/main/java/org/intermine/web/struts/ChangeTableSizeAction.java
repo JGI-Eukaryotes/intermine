@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.intermine.model.InterMineId;
 import org.intermine.web.logic.results.PagedTable;
 import org.intermine.web.logic.session.SessionMethods;
 
@@ -44,7 +45,7 @@ public class ChangeTableSizeAction extends InterMineAction
         HttpSession session = request.getSession();
         PagedTable pt = SessionMethods.getResultsTable(session, request.getParameter("table"));
 
-        int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+        int pageSize = InterMineId.parseInt(request.getParameter("pageSize"));
         pt.setPageSize(pageSize);
 
         return new ForwardParameters(mapping.findForward("results"))

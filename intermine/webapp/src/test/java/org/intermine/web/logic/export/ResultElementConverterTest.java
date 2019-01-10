@@ -6,6 +6,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.results.ResultElement;
 
 /*
@@ -25,7 +26,7 @@ public class ResultElementConverterTest extends TestCase
 {
 
     public void testConvert() {
-        Object o1 = new Integer(1);
+        Object o1 = new InterMineId(1);
         Object o2 = new Date();
         Object o3 = "test";
         ResultElement el1 = new ResultElement(o1);

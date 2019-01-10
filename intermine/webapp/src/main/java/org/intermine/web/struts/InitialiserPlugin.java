@@ -49,6 +49,7 @@ import org.apache.struts.action.ActionServlet;
 import org.apache.struts.action.PlugIn;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.LinkRedirectManager;
 import org.intermine.api.bag.BagQueryConfig;
@@ -780,14 +781,14 @@ public class InitialiserPlugin implements PlugIn
             final Model model) {
         String errorKey = "errors.init.objectstoresummary.classcount";
         Map<String, String> classes = new LinkedHashMap<String, String>();
-        Map<String, Integer> classCounts = new LinkedHashMap<String, Integer>();
+        Map<String, InterMineId> classCounts = new LinkedHashMap<String, InterMineId>();
 
         for (String className : new TreeSet<String>(model.getClassNames())) {
             if (!className.equals(InterMineObject.class.getName())) {
                 classes.put(className, TypeUtil.unqualifiedName(className));
             }
             try {
-                classCounts.put(className, oss.getClassCount(className));
+                classCounts.put(className, InterMineId.valueOf(oss.getClassCount(className)));
             } catch (Exception e) {
                 LOG.error("Unable to get class count for " + className, e);
                 blockingErrorKeys.put(errorKey, e.getMessage());
@@ -801,12 +802,12 @@ public class InitialiserPlugin implements PlugIn
         for (ClassDescriptor cld : model.getClassDescriptors()) {
             ArrayList<String> subclasses = new ArrayList<String>();
             for (String thisClassName : new TreeSet<String>(getChildren(cld))) {
-                Integer classCount = classCounts.get(thisClassName);
+                InterMineId classCount = classCounts.get(thisClassName);
                 if (classCount == null) {
                     blockingErrorKeys.put(errorKey, thisClassName);
                     return;
                 }
-                if (classCount > 0) {
+                if (classCount.intValue() > 0) {
                     subclasses.add(TypeUtil.unqualifiedName(thisClassName));
                 }
             }

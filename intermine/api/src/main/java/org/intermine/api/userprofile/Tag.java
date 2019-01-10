@@ -1,5 +1,6 @@
 package org.intermine.api.userprofile;
 
+import org.intermine.model.InterMineId;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.intermine.NotXmlParser;
 import org.intermine.objectstore.intermine.NotXmlRenderer;
@@ -229,12 +230,12 @@ public class Tag implements org.intermine.model.InterMineObject
             }
             if ((i < notXml.length) &&"ruserProfile".equals(notXml[i])) {
                 i++;
-                userProfile = new ProxyReference(os, Integer.valueOf(notXml[i]), org.intermine.api.userprofile.UserProfile.class);
+                userProfile = new ProxyReference(os, InterMineId.valueOf(notXml[i]), org.intermine.api.userprofile.UserProfile.class);
                 i++;
             };
             if ((i < notXml.length) && "aid".equals(notXml[i])) {
                 i++;
-                id = Integer.valueOf(notXml[i]);
+                id = InterMineId.valueOf(notXml[i]);
                 i++;
             }
             if (startI == i) {

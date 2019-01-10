@@ -23,6 +23,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.bag.BagQueryConfig;
 import org.intermine.api.bag.BagQueryHelper;
 import org.intermine.api.bag.SharedBagManager;
@@ -99,7 +100,7 @@ public abstract class InterMineAPITestCase extends TestCase {
         pmTmp.createSuperUser("superUser", "password", null);
 
         String apiKey = "abcdef012345";
-        Integer userId = null;
+        InterMineId userId = null;
         Map<String, InvalidBag> invalidBags = new HashMap<String, InvalidBag>();
         Map<String, InterMineBag> validBags = new HashMap<String, InterMineBag>();
 

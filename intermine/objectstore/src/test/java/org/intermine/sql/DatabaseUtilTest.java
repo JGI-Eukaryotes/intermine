@@ -25,6 +25,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.AttributeDescriptor;
 import org.intermine.metadata.ClassDescriptor;
 import org.intermine.metadata.CollectionDescriptor;
@@ -204,9 +205,9 @@ public class DatabaseUtilTest extends TestCase
         }
 
         Collection bag = new HashSet();
-        bag.add(new Integer(-10000));
-        bag.add(new Integer(0));
-        bag.add(new Integer(10000));
+        bag.add(new InterMineId(-10000));
+        bag.add(new InterMineId(0));
+        bag.add(new InterMineId(10000));
         bag.add(new Long(-10000));
         bag.add(new Long(0));
         bag.add(new Long(10000));
@@ -231,19 +232,19 @@ public class DatabaseUtilTest extends TestCase
         bag.add(new Date(999999));
         bag.add(new Date(100));
         Employee employee = (Employee) DynamicUtil.createObject(Collections.singleton(Employee.class));
-        employee.setId(new Integer(5000));
+        employee.setId(new InterMineId(5000));
         bag.add(employee);
         Manager manager = (Manager) DynamicUtil.createObject(Collections.singleton(Manager.class));
-        manager.setId(new Integer(5001));
+        manager.setId(new InterMineId(5001));
         bag.add(manager);
         Company company = (Company) DynamicUtil.createObject(Collections.singleton(Company.class));
-        company.setId(new Integer(6000));
+        company.setId(new InterMineId(6000));
         bag.add(company);
 
         // this shouldn't appear in any table
         bag.add(BigInteger.ONE);
 
-        DatabaseUtil.createBagTable(db, con, "integer_table", bag, Integer.class);
+        DatabaseUtil.createBagTable(db, con, "integer_table", bag, InterMineId.class);
         DatabaseUtil.createBagTable(db, con, "long_table", bag, Long.class);
         DatabaseUtil.createBagTable(db, con, "short_table", bag, Short.class);
         DatabaseUtil.createBagTable(db, con, "bigdecimal_table", bag, BigDecimal.class);
@@ -264,9 +265,9 @@ public class DatabaseUtilTest extends TestCase
         }
 
         Set expected = new HashSet();
-        expected.add(new Integer(-10000));
-        expected.add(new Integer(0));
-        expected.add(new Integer(10000));
+        expected.add(new InterMineId(-10000));
+        expected.add(new InterMineId(0));
+        expected.add(new InterMineId(10000));
 
         assertEquals(expected, result);
 
@@ -290,9 +291,9 @@ public class DatabaseUtilTest extends TestCase
         }
 
         expected = new HashSet();
-        expected.add(new Integer((short) -10000));
-        expected.add(new Integer((short) 0));
-        expected.add(new Integer((short) 10000));
+        expected.add(new InterMineId((short) -10000));
+        expected.add(new InterMineId((short) 0));
+        expected.add(new InterMineId((short) 10000));
 
         assertEquals(expected, result);
 

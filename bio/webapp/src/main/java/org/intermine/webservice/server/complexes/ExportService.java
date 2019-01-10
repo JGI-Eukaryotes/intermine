@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.results.ExportResultsIterator;
 import org.intermine.api.results.ResultElement;
@@ -170,7 +171,7 @@ public class ExportService extends JSONService
             String properties = (String) row.get(2).getField();
             // String function = (String) row.get(3).getField();
             String primaryIdentifier = (String) row.get(4).getField();
-            Integer stoichiometry = (Integer) row.get(5).getField();
+            InterMineId stoichiometry = (Integer) row.get(5).getField();
             if (stoichiometry == null) {
                 stoichiometry = 1;
             }
@@ -189,7 +190,7 @@ public class ExportService extends JSONService
             // organism
             DefaultOrganism organism = null;
             if (row.get(6) != null && row.get(6).getField() != null) {
-                Integer taxonId = (Integer) row.get(6).getField();
+                InterMineId taxonId = (Integer) row.get(6).getField();
                 organism = new DefaultOrganism(taxonId);
             }
 
@@ -212,8 +213,8 @@ public class ExportService extends JSONService
                 // same as protein above
                 //String featureIdentifier = (String) row.get(9).getField();
                 String locatedOn = (String) row.get(10).getField();
-                Integer start = (Integer) row.get(11).getField();
-                Integer end = (Integer) row.get(12).getField();
+                InterMineId start = (Integer) row.get(11).getField();
+                InterMineId end = (Integer) row.get(12).getField();
 
                 // range
                 DefaultPosition startPosition = new DefaultPosition(new Long(start));
@@ -271,7 +272,7 @@ public class ExportService extends JSONService
 
     private DefaultModelledParticipant getParticipant(DefaultComplex complex,
             String primaryIdentifier, DefaultInteractor interactor, String biologicalRole,
-            Integer stoichiometry) {
+            InterMineId stoichiometry) {
         DefaultModelledParticipant participant = participants.get(primaryIdentifier);
         if (participant == null) {
             participant = new DefaultModelledParticipant(interactor);

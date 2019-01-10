@@ -11,6 +11,7 @@ package org.intermine.api.tracker.track;
  */
 import java.sql.Timestamp;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.tracker.util.ListBuildMode;
 import org.intermine.api.tracker.util.ListTrackerEvent;
 import org.intermine.api.tracker.util.TrackerUtil;
@@ -78,9 +79,9 @@ public class ListTrack extends TrackAbstract
     @Override
     public Object[] getFormattedTrack() {
         if (buildMode == null) {
-            return new Object[] {type, count, "", event, userName, sessionIdentifier, timestamp};
+            return new Object[] {type, InterMineId.valueOf(count), "", event, userName, sessionIdentifier, timestamp};
         }
-        return new Object[] {type, count, buildMode, event, userName, sessionIdentifier, timestamp};
+        return new Object[] {type, InterMineId.valueOf(count), buildMode, event, userName, sessionIdentifier, timestamp};
     }
 
     /**

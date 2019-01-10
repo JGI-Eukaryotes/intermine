@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
 import org.intermine.api.profile.TagManager;
@@ -177,7 +178,7 @@ public class ModelService extends WebService
                 String fullyQualifiedClassName = cd.getName();
                 try {
                     // Add the count for this class.
-                    classData.put("count", oss.getClassCount(fullyQualifiedClassName));
+                    classData.put("count", InterMineId.valueOf(oss.getClassCount(fullyQualifiedClassName)));
                 } catch (RuntimeException e) {
                     LOG.error("No class count", e);
                 }

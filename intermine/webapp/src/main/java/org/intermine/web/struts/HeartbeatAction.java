@@ -57,7 +57,7 @@ public class HeartbeatAction extends InterMineAction
             q.addFrom(c);
             q.addToSelect(c);
             // Add a unique value to the select to avoid caching the query
-            QueryValue token = new QueryValue(System.currentTimeMillis());
+            QueryValue token = new QueryValue(Long.valueOf(System.currentTimeMillis()));
             q.addToSelect(token);
             Results r = os.execute(q, 1, false, false, false);
             if (r.get(0) != null) {

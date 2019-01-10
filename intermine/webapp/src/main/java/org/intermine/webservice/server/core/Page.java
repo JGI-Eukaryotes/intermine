@@ -10,6 +10,8 @@ package org.intermine.webservice.server.core;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * Parameter class for passing start and limit arguments to
  * iterators.
@@ -19,14 +21,14 @@ package org.intermine.webservice.server.core;
 public class Page
 {
     private final int start;
-    private final Integer size;
+    private final InterMineId size;
 
     /**
      * Construct a new page.
      * @param start The index of the first row to return.
      * @param size The maximum number of rows to return.
      */
-    public Page(int start, Integer size) {
+    public Page(int start, InterMineId size) {
         this.start = start;
         this.size = size;
     }
@@ -52,7 +54,7 @@ public class Page
      * @return The requested size, or NULL if all results are
      * requested.
      */
-    public Integer getSize() {
+    public InterMineId getSize() {
         return size;
     }
 
@@ -60,11 +62,11 @@ public class Page
      * @return The index of the last result to be returned, or NULL
      * if all results are requested.
      */
-    public Integer getEnd() {
+    public InterMineId getEnd() {
         if (size == null) {
             return null;
         } else {
-            return start + size;
+            return InterMineId.valueOf(start + size.intValue());
         }
     }
 
@@ -73,8 +75,8 @@ public class Page
      * @return Whether or not the given index lies within the page.
      */
     public boolean withinRange(int index) {
-        Integer end = getEnd();
-        if (end != null && index >= end) {
+        InterMineId end = getEnd();
+        if (end != null && index >= end.intValue()) {
             return false;
         }
         return index >= start;

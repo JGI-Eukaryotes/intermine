@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.intermine.model.InterMineId;
 import org.intermine.model.fulldata.Attribute;
 import org.intermine.model.fulldata.Item;
 import org.intermine.model.fulldata.Reference;
@@ -45,8 +46,8 @@ public class MockItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public Integer store(Item item) {
-        item.setId(idCounter++);
+    public InterMineId store(Item item) {
+        item.setId(Integer.valueOf(idCounter++));
         storedItems.put(item.getIdentifier(), item);
         storedItemIds.put(item.getId(), item);
         return item.getId();
@@ -55,7 +56,7 @@ public class MockItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public void store(ReferenceList refList, Integer itemId) {
+    public void store(ReferenceList refList, InterMineId itemId) {
         Item item = storedItemIds.get(itemId);
         refList.setItem(item);
         item.addCollections(refList);
@@ -64,7 +65,7 @@ public class MockItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public void store(Reference ref, Integer itemId) {
+    public void store(Reference ref, InterMineId itemId) {
         Item item = storedItemIds.get(itemId);
         ref.setItem(item);
         item.addReferences(ref);
@@ -73,7 +74,7 @@ public class MockItemWriter implements ItemWriter
     /**
      * {@inheritDoc}
      */
-    public void store(Attribute att, Integer itemId) {
+    public void store(Attribute att, InterMineId itemId) {
         Item item = storedItemIds.get(itemId);
         att.setItem(item);
         item.addAttributes(att);

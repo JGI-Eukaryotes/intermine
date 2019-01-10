@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.bag.BagQueryResult;
 import org.intermine.api.bag.BagQueryResult.IssueResult;
@@ -85,14 +86,14 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static Map<String, Map<String, Integer>> getStats(BagQueryResult bqr) {
-        Map<String, Map<String, Integer>> stats = new HashMap<String, Map<String, Integer>>();
-        Map<String, Integer> objectStats = new HashMap<String, Integer>();
-        Map<String, Integer> termStats = new HashMap<String, Integer>();
+    private static Map<String, Map<String, InterMineId>> getStats(BagQueryResult bqr) {
+        Map<String, Map<String, InterMineId>> stats = new HashMap<String, Map<String, InterMineId>>();
+        Map<String, InterMineId> objectStats = new HashMap<String, InterMineId>();
+        Map<String, InterMineId> termStats = new HashMap<String, InterMineId>();
         Set<String> goodMatchTerms = new HashSet<String>();
         Set<String> issueMatchTerms = new HashSet<String>();
-        Set<Integer> matchedObjects = bqr.getMatches().keySet();
-        Set<Integer> allMatchedObjects = bqr.getMatchAndIssueIds();
+        Set<InterMineId> matchedObjects = bqr.getMatches().keySet();
+        Set<InterMineId> allMatchedObjects = bqr.getMatchAndIssueIds();
 
         // Do any processing that needs doing here.
         for (List inputTerms: bqr.getMatches().values()) {
@@ -105,16 +106,16 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
         }
 
         int notFound = bqr.getUnresolvedIdentifiers().size();
-        termStats.put("matches", goodMatchTerms.size());
-        termStats.put("issues", issueMatchTerms.size());
+        termStats.put("matches", InterMineId.valueOf(goodMatchTerms.size()));
+        termStats.put("issues", InterMineId.valueOf(issueMatchTerms.size()));
         goodMatchTerms.addAll(issueMatchTerms); // Mutation - beware!!
-        termStats.put("all", notFound + goodMatchTerms.size());
-        termStats.put("notFound", notFound);
+        termStats.put("all", InterMineId.valueOf(notFound + goodMatchTerms.size()));
+        termStats.put("notFound", InterMineId.valueOf(notFound));
 
-        objectStats.put("matches", matchedObjects.size());
-        objectStats.put("all", allMatchedObjects.size());
+        objectStats.put("matches", InterMineId.valueOf(matchedObjects.size()));
+        objectStats.put("all", InterMineId.valueOf(allMatchedObjects.size()));
         allMatchedObjects.removeAll(matchedObjects);  // Mutation - beware!!
-        objectStats.put("issues", allMatchedObjects.size());
+        objectStats.put("issues", InterMineId.valueOf(allMatchedObjects.size()));
 
         stats.put("objects", objectStats);
         stats.put("identifiers", termStats);
@@ -148,7 +149,7 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
         final Map<String, Object> matchObj;
         if (match == null) {
             throw new IllegalStateException("null match returned.");
-        } else if (match instanceof Integer) {
+        } else if (match instanceof InterMineId) {
             matchObj = processMatch((Integer) match);
         } else if (match instanceof InterMineObject) {
             matchObj = processMatch((InterMineObject) match);

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.model.testmodel.Address;
 import org.intermine.model.testmodel.Company;
@@ -158,8 +159,8 @@ public class TypeUtilTest extends TestCase
     }
 
     public void testStringToObject() throws Exception {
-        assertEquals(new Integer(6), TypeUtil.stringToObject(Integer.class, "6"));
-        assertEquals(new Integer(6), TypeUtil.stringToObject(Integer.TYPE, "6"));
+        assertEquals(new InterMineId(6), TypeUtil.stringToObject(Integer.class, "6"));
+        assertEquals(new InterMineId(6), TypeUtil.stringToObject(Integer.TYPE, "6"));
         assertEquals(Boolean.TRUE, TypeUtil.stringToObject(Boolean.class, "true"));
         assertEquals(Boolean.TRUE, TypeUtil.stringToObject(Boolean.TYPE, "true"));
         assertEquals(new Double(12.0d), TypeUtil.stringToObject(Double.class, "12.0"));

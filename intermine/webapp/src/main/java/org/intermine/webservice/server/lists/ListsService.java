@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.intermine.model.InterMineId;
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.InterMineBag;
 import org.intermine.api.profile.Profile;
@@ -71,7 +72,7 @@ public class ListsService extends AvailableListsService
 
         final ListsServiceInput input = getInput();
 
-        Integer objectId = null;
+        InterMineId objectId = null;
         if (input.getMineId() == null) {
             objectId = resolveMineId(request, input);
             if (objectId == null) {
@@ -88,7 +89,7 @@ public class ListsService extends AvailableListsService
                 .getListsContaining(objectId);
     }
 
-    private boolean objectExists(final HttpServletRequest request, final Integer objectId) {
+    private boolean objectExists(final HttpServletRequest request, final InterMineId objectId) {
         final ObjectStore os = im.getObjectStore();
         try {
             final InterMineObject objectById = os.getObjectById(objectId);
@@ -98,7 +99,7 @@ public class ListsService extends AvailableListsService
         }
     }
 
-    private Integer resolveMineId(final HttpServletRequest request,
+    private InterMineId resolveMineId(final HttpServletRequest request,
             final ListsServiceInput input) {
         final Model model = im.getModel();
 

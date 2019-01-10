@@ -32,6 +32,7 @@ import org.biojava.nbio.core.sequence.io.FastaReader;
 import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
 import org.biojava.nbio.core.sequence.io.PlainFastaHeaderParser;
 import org.biojava.nbio.core.sequence.template.Sequence;
+import org.intermine.model.InterMineId;
 import org.intermine.bio.util.OrganismData;
 import org.intermine.bio.util.OrganismRepository;
 import org.intermine.metadata.Util;
@@ -333,7 +334,7 @@ public class FastaLoaderTask extends FileDirectDataLoaderTask
         }
         imo.setOrganism(organism);
         try {
-            imo.setFieldValue("length", new Integer(flymineSequence.getLength()));
+            imo.setFieldValue("length", new InterMineId(flymineSequence.getLength()));
         } catch (Exception e) {
             throw new IllegalArgumentException("Error setting: " + className + ".length to: "
                     + flymineSequence.getLength() + ". Does the attribute exist?");

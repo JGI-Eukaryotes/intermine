@@ -10,6 +10,8 @@ package org.intermine.sql.precompute;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * A class specifically for use with the OptimiserCache, designed to split a SQL string into
  * its functional part, and the limit and offset.
@@ -49,7 +51,7 @@ public class LimitOffsetQuery
         int multiplier = 1;
         int number = 0;
         int pos = in.length() - 1;
-        limit = Integer.MAX_VALUE;
+        limit = InterMineId.MAX_VALUE;
         offset = 0;
         while ((state != FINISHED) && (state != FINISHED_WELL)) {
             char c = in.charAt(pos);
@@ -162,7 +164,7 @@ public class LimitOffsetQuery
             }
         }
         if (state == FINISHED) {
-            limit = Integer.MAX_VALUE;
+            limit = InterMineId.MAX_VALUE;
             offset = 0;
             query = in;
         } else {
@@ -204,7 +206,7 @@ public class LimitOffsetQuery
      * @return in plus the LIMIT and OFFSET
      */
     public String reconstruct(String in) {
-        return in + (limit == Integer.MAX_VALUE ? "" : " LIMIT " + limit)
+        return in + (limit == InterMineId.MAX_VALUE ? "" : " LIMIT " + limit)
             + (offset == 0 ? "" : " OFFSET " + offset);
     }
 }

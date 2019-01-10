@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
+import org.intermine.model.InterMineId;
 import org.intermine.metadata.TypeUtil;
 import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.Chromosome;
@@ -231,7 +232,7 @@ public class VcfLoaderTask extends FileDirectDataLoaderTask
         final int length = 1;
         Location location = getDirectDataLoader().createObject(
                 org.intermine.model.bio.Location.class);
-        int start = new Integer(pos);
+        int start = new InterMineId(pos);
         int end = start + length;
         if (start < end) {
             location.setStart(start);

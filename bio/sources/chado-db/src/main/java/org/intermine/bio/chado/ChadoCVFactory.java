@@ -10,6 +10,7 @@ package org.intermine.bio.chado;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,7 +47,7 @@ public class ChadoCVFactory
 
         ResultSet cvtermRes = getCVTermResultSet(connection, cvName);
         while (cvtermRes.next()) {
-            Integer cvtermId = new Integer(cvtermRes.getInt("cvterm_id"));
+            InterMineId cvtermId = new InterMineId(cvtermRes.getInt("cvterm_id"));
             String cvtermName = cvtermRes.getString("cvterm_name");
             ChadoCVTerm cvTerm = new ChadoCVTerm(cvtermName);
             cv.addByChadoId(cvtermId, cvTerm);
@@ -54,8 +55,8 @@ public class ChadoCVFactory
 
         ResultSet cvrelRes = getCVTermRelationshipResultSet(connection, cvName);
         while (cvrelRes.next()) {
-            Integer subjectId = new Integer(cvrelRes.getInt("subject_id"));
-            Integer objectId = new Integer(cvrelRes.getInt("object_id"));
+            InterMineId subjectId = new InterMineId(cvrelRes.getInt("subject_id"));
+            InterMineId objectId = new InterMineId(cvrelRes.getInt("object_id"));
             ChadoCVTerm subject = cv.getByChadoId(subjectId);
             ChadoCVTerm object = cv.getByChadoId(objectId);
 
