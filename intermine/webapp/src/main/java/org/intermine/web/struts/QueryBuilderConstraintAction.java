@@ -10,6 +10,7 @@ package org.intermine.web.struts;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -141,7 +142,7 @@ public class QueryBuilderConstraintAction extends InterMineAction
 
         PathConstraint newConstraint = null;
         if (constrainToAnAttribute) {
-            ConstraintOp constraintOp = ConstraintOp.getOpForIndex(Integer.valueOf(constraintForm
+            ConstraintOp constraintOp = ConstraintOp.getOpForIndex(InterMineId.valueOf(constraintForm
                     .getAttributeOp()));
             String constraintValue = constraintForm.getAttributeValue();
             if (ConstraintOp.LOOKUP.equals(constraintOp)) {
@@ -157,7 +158,7 @@ public class QueryBuilderConstraintAction extends InterMineAction
             }
         } else if (constrainToABag) {
             ConstraintOp constraintOp =
-                    ConstraintOp.getOpForIndex(Integer.valueOf(constraintForm.getBagOp()));
+                    ConstraintOp.getOpForIndex(InterMineId.valueOf(constraintForm.getBagOp()));
             String constraintValue = constraintForm.getBagValue();
             // Note, we constrain the parent if the path is an attribute
             Path path1 = query.makePath(constraintForm.getPath());
@@ -167,7 +168,7 @@ public class QueryBuilderConstraintAction extends InterMineAction
             newConstraint = new PathConstraintBag(path1.getNoConstraintsString(), constraintOp,
                     constraintValue);
         } else if (constrainToALoop) {
-            ConstraintOp constraintOp = ConstraintOp.getOpForIndex(Integer.valueOf(constraintForm
+            ConstraintOp constraintOp = ConstraintOp.getOpForIndex(InterMineId.valueOf(constraintForm
                     .getLoopQueryOp()));
             String constraintValue = constraintForm.getLoopQueryValue();
             // Here, we trust the the jsp has already prevented us from creating a loop over an
@@ -183,7 +184,7 @@ public class QueryBuilderConstraintAction extends InterMineAction
             String[] bits = rangeString.split("[, ]+");
             ranges.addAll(Arrays.asList(bits));
             ConstraintOp constraintOp
-                = ConstraintOp.getOpForIndex(Integer.valueOf(constraintForm.getRangeOp()));
+                = ConstraintOp.getOpForIndex(InterMineId.valueOf(constraintForm.getRangeOp()));
             newConstraint = new PathConstraintRange(constraintForm.getPath(), constraintOp, ranges);
         } else if (constrainToNull) {
             if ("NotNULL".equals(constraintForm.getNullConstraint())) {

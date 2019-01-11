@@ -89,7 +89,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
     protected Batch batch;
     protected String createSituation;
     protected String closeSituation;
-    protected Map<Integer, Boolean> recentSequences;
+    protected Map<InterMineId, Boolean> recentSequences;
     protected Map<String, TableInfo> tableToInfo;
     protected Map<String, String[]> tableToColNameArray;
     protected Map<String, Set<CollectionDescriptor>> tableToCollections;
@@ -97,7 +97,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
     protected Set<Object> tablesAltered = new HashSet<Object>();
 
     private Long cumulativeWait = new Long(0);    // just for diagnostic, can be removed
-    private InterMineId getConnectionCalls = InterMineId.valueOf(0);       // as above
+    private Integer getConnectionCalls = Integer.valueOf(0);       // as above
 
     // if the property is set to true (recommended for the webapp), getConncetion() will get a new
     // connection if the current one has been closed by the back-end.
@@ -145,7 +145,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
         createSituation = message.toString();
         int index = createSituation.indexOf("at junit.framework.TestCase.runBare");
         createSituation = (index < 0 ? createSituation : createSituation.substring(0, index));
-        recentSequences = Collections.synchronizedMap(new WeakHashMap<Integer, Boolean>());
+        recentSequences = Collections.synchronizedMap(new WeakHashMap<InterMineId, Boolean>());
         batch = new Batch(new BatchWriterPostgresCopyImpl());
         tableToInfo = new HashMap<String, TableInfo>();
         tableToColNameArray = new HashMap<String, String[]>();
@@ -430,7 +430,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
             conn = this.os.getConnection();
         }
         Long end = Long.valueOf(System.currentTimeMillis());
-        null.valueOf(getConnectionCalls)++;
+        getConnectionCalls++;
 
         if (end.longValue() > start.longValue()) {
             cumulativeWait = Long.valueOf(cumulativeWait.longValue() + (end.longValue() - start.longValue()));
@@ -839,7 +839,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * {@inheritDoc}
      */
     @Override
-    public void addToCollection(Integer hasId, Class<?> clazz, String fieldName, InterMineId hadId)
+    public void addToCollection(InterMineId hasId, Class<?> clazz, String fieldName, InterMineId hadId)
         throws ObjectStoreException {
         Connection c = null;
         try {
@@ -1103,7 +1103,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
         }
 
         try {
-            for (Integer element : coll) {
+            for (InterMineId element : coll) {
                 batch.addRow(c, INT_BAG_TABLE_NAME, BAGID_COLUMN, BAGVAL_COLUMN, osb.getBagId(),
                         element.intValue());
                 tablesAltered.add(osb);
@@ -1166,7 +1166,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
         }
 
         try {
-            for (Integer element : coll) {
+            for (InterMineId element : coll) {
                 batch.deleteRow(c, INT_BAG_TABLE_NAME, BAGID_COLUMN, BAGVAL_COLUMN, osb.getBagId(),
                         element.intValue());
                 tablesAltered.add(osb);
@@ -1196,7 +1196,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
             throw new IllegalArgumentException("Query has incorrect number of SELECT elements.");
         }
         Class<?> type = select.get(0).getType();
-        if (!(Integer.class.equals(type) || InterMineObject.class.isAssignableFrom(type))) {
+        if (!(InterMineId.class.equals(type) || InterMineObject.class.isAssignableFrom(type))) {
             throw new IllegalArgumentException("The type of the result colum (" + type.getName()
                     + ") is not an InterMineId or InterMineObject");
         }
@@ -1734,7 +1734,7 @@ public class ObjectStoreWriterInterMineImpl extends ObjectStoreInterMineImpl
      * This method is overridden in order to flush matches properly before the read.
      */
     @Override
-    protected InterMineObject internalGetObjectById(Integer id,
+    protected InterMineObject internalGetObjectById(InterMineId id,
             Class<? extends InterMineObject> clazz) throws ObjectStoreException {
         if (schema.isFlatMode(clazz)) {
             return super.internalGetObjectById(id, clazz);

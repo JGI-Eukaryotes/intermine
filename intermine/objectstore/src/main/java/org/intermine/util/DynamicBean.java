@@ -110,7 +110,7 @@ public class DynamicBean implements MethodInterceptor
         if ("equals".equals(method.getName())) {
             if (args[0] instanceof InterMineObject) {
                 InterMineId otherId = ((InterMineObject) args[0]).getId();
-                InterMineId thisId = (Integer) map.get("id");
+                InterMineId thisId = (InterMineId) map.get("id");
                 return Boolean.valueOf(thisId != null ? thisId.equals(otherId) : obj == args[0]);
             }
             return Boolean.FALSE;
@@ -234,7 +234,7 @@ public class DynamicBean implements MethodInterceptor
                     retval = Boolean.FALSE;
                 } else if (Short.TYPE.equals(fieldType)) {
                     retval = new Short((short) 0);
-                } else if (Integer.TYPE.equals(fieldType)) {
+                } else if (InterMineId.TYPE.equals(fieldType)) {
                     retval = new InterMineId(0);
                 } else if (Long.TYPE.equals(fieldType)) {
                     retval = new Long(0);
@@ -271,7 +271,7 @@ public class DynamicBean implements MethodInterceptor
                     retval = Boolean.FALSE;
                 } else if (Short.TYPE.equals(fieldType)) {
                     retval = new Short((short) 0);
-                } else if (Integer.TYPE.equals(fieldType)) {
+                } else if (InterMineId.TYPE.equals(fieldType)) {
                     retval = new InterMineId(0);
                 } else if (Long.TYPE.equals(fieldType)) {
                     retval = new Long(0);

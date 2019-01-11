@@ -24,14 +24,14 @@ public interface InterMineFastPathObject extends FastPathObject
      *
      * @return an InterMineId
      */
-    java.lang.Integer getId();
+    org.intermine.model.InterMineId getId();
 
     /**
      * Setter for the ID field.
      *
      * @param id an InterMineId
      */
-    void setId(java.lang.Integer id);
+    void setId(org.intermine.model.InterMineId id);
 
     /**
      * Returns the NotXml serialised version of this object.

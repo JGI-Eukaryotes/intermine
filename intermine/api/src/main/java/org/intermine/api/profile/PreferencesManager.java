@@ -230,7 +230,7 @@ public class PreferencesManager
                 ResultSet rs = stm.executeQuery();
                 Set<InterMineId> matches = new HashSet<InterMineId>();
                 while (rs.next()) {
-                    matches.add(Integer.valueOf(rs.getInt(1)));
+                    matches.add(InterMineId.valueOf(rs.getInt(1)));
                 }
                 if (matches.isEmpty()) {
                     return null;

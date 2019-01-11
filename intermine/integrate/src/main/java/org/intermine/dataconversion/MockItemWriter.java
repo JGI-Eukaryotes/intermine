@@ -32,7 +32,7 @@ import org.intermine.xml.full.ItemHelper;
 public class MockItemWriter implements ItemWriter
 {
     Map<String, Item> storedItems;
-    Map<Integer, Item> storedItemIds = new LinkedHashMap<Integer, Item>();
+    Map<InterMineId, Item> storedItemIds = new LinkedHashMap<InterMineId, Item>();
     private static int idCounter = 0;
 
     /**
@@ -47,7 +47,7 @@ public class MockItemWriter implements ItemWriter
      * {@inheritDoc}
      */
     public InterMineId store(Item item) {
-        item.setId(Integer.valueOf(idCounter++));
+        item.setId(InterMineId.valueOf(idCounter++));
         storedItems.put(item.getIdentifier(), item);
         storedItemIds.put(item.getId(), item);
         return item.getId();

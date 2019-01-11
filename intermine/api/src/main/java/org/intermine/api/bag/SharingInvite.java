@@ -10,6 +10,7 @@ package org.intermine.api.bag;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -370,7 +371,7 @@ public class SharingInvite
             IntermediateRepresentation rep) throws ObjectStoreException {
         ObjectStore os = pm.getProfileObjectStoreWriter();
         Profile inviter = pm.getProfile(rep.inviterId);
-        SavedBag savedBag = (SavedBag) os.getObjectById(Integer.valueOf(rep.bagId), SavedBag.class);
+        SavedBag savedBag = (SavedBag) os.getObjectById(InterMineId.valueOf(rep.bagId), SavedBag.class);
         InterMineBag bag = bm.getBag(inviter, savedBag.getName());
         return new SharingInvite(bag,
                 rep.invitee, rep.token, rep.createdAt, rep.acceptedAt, rep.accepted);

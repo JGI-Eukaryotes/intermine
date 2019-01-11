@@ -68,7 +68,7 @@ public class BagUploadConfirmInlineResultsTableRow extends InlineResultsTableRow
      * Set how many rows this identifier spans
      * @param rowSpan InterMineId
      */
-    public void setRowSpan(Integer rowSpan) {
+    public void setRowSpan(InterMineId rowSpan) {
         this.rowSpan = rowSpan;
     }
 

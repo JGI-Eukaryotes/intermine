@@ -61,8 +61,8 @@ public class AddToBagAction extends InterMineAction
         if (existingBag != null) {
             // TODO add a warning when object already in bag ??
             try {
-                InterMineObject o = im.getObjectStore().getObjectById(Integer.valueOf(id));
-                existingBag.addIdToBag(Integer.valueOf(id), Util.getFriendlyName(o.getClass()));
+                InterMineObject o = im.getObjectStore().getObjectById(InterMineId.valueOf(id));
+                existingBag.addIdToBag(InterMineId.valueOf(id), Util.getFriendlyName(o.getClass()));
                 recordMessage(new ActionMessage("bag.addedToBag", existingBag.getName()),
                         request);
             } catch (IncompatibleTypesException e) {

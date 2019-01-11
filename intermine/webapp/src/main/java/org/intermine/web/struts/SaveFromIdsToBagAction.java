@@ -84,7 +84,7 @@ public class SaveFromIdsToBagAction extends InterMineAction
                 // ids are comma delimited
                 String[] idArray = request.getParameter("ids").split(",");
                 for (String id : idArray) {
-                    idSet.add(Integer.valueOf(id.trim()));
+                    idSet.add(InterMineId.valueOf(id.trim()));
                 }
             }
 

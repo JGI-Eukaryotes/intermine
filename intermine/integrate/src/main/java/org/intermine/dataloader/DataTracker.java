@@ -56,9 +56,9 @@ public class DataTracker
      */
     private int maxSize;
     private int commitSize;
-    private LinkedHashMap<Integer, ObjectDescription> cache;
-    private HashMap<Integer, ObjectDescription> writeBack =
-        new HashMap<Integer, ObjectDescription>();
+    private LinkedHashMap<InterMineId, ObjectDescription> cache;
+    private HashMap<InterMineId, ObjectDescription> writeBack =
+        new HashMap<InterMineId, ObjectDescription>();
     private HashMap<String, Source> nameToSource = new HashMap<String, Source>();
     private HashMap<Source, String> sourceToName = new HashMap<Source, String>();
     private Connection conn;
@@ -86,7 +86,7 @@ public class DataTracker
         this.maxSize = maxSize;
         this.commitSize = commitSize;
         this.db = db;
-        cache = new LinkedHashMap<Integer, ObjectDescription>(maxSize * 14 / 10, 0.75F, true);
+        cache = new LinkedHashMap<InterMineId, ObjectDescription>(maxSize * 14 / 10, 0.75F, true);
         try {
             conn = db.getConnection();
             conn.setAutoCommit(true);
@@ -147,7 +147,7 @@ public class DataTracker
                     e.initCause(broken);
                     throw e;
                 }
-                for (Integer id : ids) {
+                for (InterMineId id : ids) {
                     ObjectDescription desc = cache.get(id);
                     if (desc == null) {
                         desc = writeBack.get(id);
@@ -158,7 +158,7 @@ public class DataTracker
                     }
                 }
             }
-            Map<Integer, ObjectDescription> idsFetched = new HashMap<Integer, ObjectDescription>();
+            Map<InterMineId, ObjectDescription> idsFetched = new HashMap<InterMineId, ObjectDescription>();
             int highestVersionSeen = InterMineId.MIN_VALUE;
             if (!toFetch.isEmpty()) {
                 int count = 0;
@@ -236,7 +236,7 @@ public class DataTracker
      * @param field the name of the field
      * @return the Source
      */
-    public synchronized Source getSource(Integer id, String field) {
+    public synchronized Source getSource(InterMineId id, String field) {
         if (id == null) {
             throw new NullPointerException("id cannot be null");
         }
@@ -256,7 +256,7 @@ public class DataTracker
      * @param forWrite true if the returned value is going to be modified
      * @return an ObjectDescriptor
      */
-    private ObjectDescription getDesc(Integer id, boolean forWrite) {
+    private ObjectDescription getDesc(InterMineId id, boolean forWrite) {
         long startTime = System.currentTimeMillis();
         ObjectDescription desc = cache.get(id);
         if (desc == null) {
@@ -313,7 +313,7 @@ public class DataTracker
      * @param field the name of the field
      * @param source the Source of the field
      */
-    public synchronized void setSource(Integer id, String field, Source source) {
+    public synchronized void setSource(InterMineId id, String field, Source source) {
         if (id == null) {
             throw new NullPointerException("id cannot be null");
         }
@@ -343,7 +343,7 @@ public class DataTracker
      *
      * @param id the ID of the object
      */
-    public synchronized void clearObj(Integer id) {
+    public synchronized void clearObj(InterMineId id) {
         if (broken != null) {
             IllegalArgumentException e = new IllegalArgumentException();
             e.initCause(broken);
@@ -367,7 +367,7 @@ public class DataTracker
         }
         synchronized (writeBack) {
             int cacheSize = cache.size();
-            Map<Integer, ObjectDescription> writeBatch = getWriteBatch();
+            Map<InterMineId, ObjectDescription> writeBatch = getWriteBatch();
             if (writeBatch != null) {
                 LOG.info("Writing cache batch - batch size: " + writeBatch.size()
                         + ", cache size: " + cacheSize + "->" + cache.size());
@@ -449,13 +449,13 @@ public class DataTracker
      *
      * @return a Map from InterMineId to ObjectDescription
      */
-    private synchronized Map<Integer, ObjectDescription> getWriteBatch() {
+    private synchronized Map<InterMineId, ObjectDescription> getWriteBatch() {
         if (cache.size() > maxSize) {
-            Map<Integer, ObjectDescription> retval = new HashMap<Integer, ObjectDescription>();
+            Map<InterMineId, ObjectDescription> retval = new HashMap<InterMineId, ObjectDescription>();
             int count = 0;
-            Iterator<Map.Entry<Integer, ObjectDescription>> iter = cache.entrySet().iterator();
+            Iterator<Map.Entry<InterMineId, ObjectDescription>> iter = cache.entrySet().iterator();
             while ((count < commitSize) && iter.hasNext()) {
-                Map.Entry<Integer, ObjectDescription> iterEntry = iter.next();
+                Map.Entry<InterMineId, ObjectDescription> iterEntry = iter.next();
                 InterMineId id = iterEntry.getKey();
                 ObjectDescription desc = iterEntry.getValue();
                 if (desc.isDirty()) {
@@ -490,7 +490,7 @@ public class DataTracker
      * false if the given Map is going to be thrown away.
      * @throws SQLException on any error with the backing database
      */
-    private void writeMap(Map<Integer, ObjectDescription> map, boolean clean) throws SQLException {
+    private void writeMap(Map<InterMineId, ObjectDescription> map, boolean clean) throws SQLException {
         long start = System.currentTimeMillis();
         try {
             org.postgresql.copy.CopyManager copyManager = null;
@@ -512,7 +512,7 @@ public class DataTracker
                 s = storeConn.createStatement();
                 LOG.warn("Using slow portable writing method");
             }
-            for (Map.Entry<Integer, ObjectDescription> entry : map.entrySet()) {
+            for (Map.Entry<InterMineId, ObjectDescription> entry : map.entrySet()) {
                 InterMineId id = entry.getKey();
                 ObjectDescription desc = entry.getValue();
                 if (desc.isDirty()) {

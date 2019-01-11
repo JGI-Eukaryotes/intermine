@@ -55,7 +55,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     protected long maxTime = Long.MAX_VALUE;
     // Optimiser will use a default query parse time if none is provided from properties
     protected Long maxQueryParseTime = null;
-    protected CacheMap<Integer, InterMineObject> cache;
+    protected CacheMap<InterMineId, InterMineObject> cache;
 
     protected int getObjectOps = 0;
     protected int getObjectHits = 0;
@@ -98,7 +98,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
 
         LOG.info("Creating new " + getClass().getName() + " with sequence = " + sequenceNumber
                 + ", model = \"" + model.getName() + "\"");
-        cache = new CacheMap<Integer, InterMineObject>(getClass().getName() + " with sequence = "
+        cache = new CacheMap<InterMineId, InterMineObject>(getClass().getName() + " with sequence = "
                 + sequenceNumber + ", model = \"" + model.getName() + "\" getObjectById cache");
     }
 
@@ -177,14 +177,14 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id) throws ObjectStoreException {
+    public InterMineObject getObjectById(InterMineId id) throws ObjectStoreException {
         return getObjectById(id, InterMineObject.class);
     }
 
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    public InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException {
         getObjectOps++;
         if (getObjectOps % 10000 == 0) {
@@ -226,7 +226,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
      * @return an object from the database
      * @throws ObjectStoreException if an error occurs during the running of the Query
      */
-    protected InterMineObject internalGetObjectById(Integer id,
+    protected InterMineObject internalGetObjectById(InterMineId id,
             Class<? extends InterMineObject> clazz) throws ObjectStoreException {
         Results results = new Results(QueryCreator.createQueryForId(id, clazz), this,
                 SEQUENCE_IGNORE);
@@ -283,7 +283,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public void prefetchObjectById(Integer id) {
+    public void prefetchObjectById(InterMineId id) {
         getObjectPrefetches++;
         try {
             getObjectById(id);
@@ -295,7 +295,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public void invalidateObjectById(Integer id) {
+    public void invalidateObjectById(InterMineId id) {
         synchronized (cache) {
             cache.remove(id);
         }
@@ -304,7 +304,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public Object cacheObjectById(Integer id, InterMineObject obj) {
+    public Object cacheObjectById(InterMineId id, InterMineObject obj) {
         synchronized (cache) {
             cache.put(id, obj);
         }
@@ -323,7 +323,7 @@ public abstract class ObjectStoreAbstractImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public InterMineObject pilferObjectById(Integer id) {
+    public InterMineObject pilferObjectById(InterMineId id) {
         synchronized (cache) {
             return cache.get(id);
         }

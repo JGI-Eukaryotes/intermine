@@ -890,7 +890,7 @@ public final class DatabaseUtil
         String typeString;
 
         if (InterMineObject.class.isAssignableFrom(c)) {
-            typeString = db.getColumnTypeString(Integer.class);
+            typeString = db.getColumnTypeString(InterMineId.class);
         } else {
             typeString = db.getColumnTypeString(c);
 
@@ -1127,7 +1127,7 @@ public final class DatabaseUtil
             sb.append(" ");
             sb.append(DatabaseUtil.getColumnName(rd));
             sb.append(" ");
-            sb.append(db.getColumnTypeString(Integer.class));
+            sb.append(db.getColumnTypeString(InterMineId.class));
             needsComma = true;
         }
         sb.append(")");

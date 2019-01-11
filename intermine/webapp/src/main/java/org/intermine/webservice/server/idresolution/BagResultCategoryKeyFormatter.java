@@ -150,7 +150,7 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
         if (match == null) {
             throw new IllegalStateException("null match returned.");
         } else if (match instanceof InterMineId) {
-            matchObj = processMatch((Integer) match);
+            matchObj = processMatch((InterMineId) match);
         } else if (match instanceof InterMineObject) {
             matchObj = processMatch((InterMineObject) match);
         } else if (match instanceof ConvertedObjectPair) {
@@ -161,7 +161,7 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
         return matchObj;
     }
 
-    private Map<String, Object> processMatch(Integer id) {
+    private Map<String, Object> processMatch(InterMineId id) {
         Map<String, Object> matchObj = new HashMap<String, Object>();
         matchObj.put("id", id);
         matchObj.put("summary", getObjectDetails(id));
@@ -184,7 +184,7 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
 
     private List<Map<String, Object>> getMatches(BagQueryResult bqr) {
         final List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        for (@SuppressWarnings("rawtypes") Entry<Integer, List> match
+        for (@SuppressWarnings("rawtypes") Entry<InterMineId, List> match
                 :bqr.getMatches().entrySet()) {
             Map<String, Object> obj = new HashMap<String, Object>();
             obj.put("id", match.getKey());
@@ -195,7 +195,7 @@ public class BagResultCategoryKeyFormatter implements BagResultFormatter
         return result;
     }
 
-    private Map<String, Object> getObjectDetails(Integer objId) {
+    private Map<String, Object> getObjectDetails(InterMineId objId) {
         InterMineObject imo;
         if (objId == null) {
             throw new IllegalArgumentException("obj cannot be null");

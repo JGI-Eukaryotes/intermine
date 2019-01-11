@@ -95,7 +95,7 @@ public interface ObjectStoreWriter extends ObjectStore
      * @param hadId the ID of the object to place in the collection
      * @throws ObjectStoreException if a problem occurs
      */
-    void addToCollection(Integer hasId, Class<?> clazz, String fieldName, InterMineId hadId)
+    void addToCollection(InterMineId hasId, Class<?> clazz, String fieldName, InterMineId hadId)
         throws ObjectStoreException;
 
     /**

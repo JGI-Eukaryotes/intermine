@@ -146,7 +146,7 @@ public final class SqlGenerator
      * @return a String suitable for passing to an SQL server
      * @throws ObjectStoreException if the given class is not in the model
      */
-    public static String generateQueryForId(Integer id, Class<?> clazz,
+    public static String generateQueryForId(InterMineId id, Class<?> clazz,
             DatabaseSchema schema) throws ObjectStoreException {
         ClassDescriptor tableMaster;
 //        if (schema.isFlatMode(clazz)) {
@@ -251,7 +251,7 @@ public final class SqlGenerator
                         String sql = generate(q, schema, db, c, QUERY_NORMAL, bagTableNames);
                         cacheEntry.setLast(start, sql);
                     }
-                    SortedMap<Integer, String> headMap = cacheEntry.getCached()
+                    SortedMap<InterMineId, String> headMap = cacheEntry.getCached()
                         .headMap(new InterMineId(start + 1));
                     InterMineId lastKey = null;
                     try {
@@ -382,7 +382,7 @@ public final class SqlGenerator
             Map<Query, CacheEntry> schemaCache = getCacheForSchema(schema);
             CacheEntry cacheEntry = schemaCache.get(q);
             if (cacheEntry != null) {
-                SortedMap<Integer, String> headMap = cacheEntry.getCached()
+                SortedMap<InterMineId, String> headMap = cacheEntry.getCached()
                     .headMap(new InterMineId(start + 1));
                 InterMineId lastKey = null;
                 try {
@@ -2819,7 +2819,7 @@ public final class SqlGenerator
 
     private static class CacheEntry
     {
-        private TreeMap<Integer, String> cached = new TreeMap<Integer, String>();
+        private TreeMap<InterMineId, String> cached = new TreeMap<InterMineId, String>();
         private int lastOffset;
         private String lastSQL;
 
@@ -2828,7 +2828,7 @@ public final class SqlGenerator
             this.lastSQL = lastSQL;
         }
 
-        public TreeMap<Integer, String> getCached() {
+        public TreeMap<InterMineId, String> getCached() {
             return cached;
         }
 

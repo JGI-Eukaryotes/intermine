@@ -431,7 +431,7 @@ public class TemplateManager
      * @param size maximum number of templates to return
      * @return List of template names
      */
-    public List<String> getMostPopularTemplateOrder(Integer size) {
+    public List<String> getMostPopularTemplateOrder(InterMineId size) {
         return getMostPopularTemplateOrder(null, null, size);
     }
 

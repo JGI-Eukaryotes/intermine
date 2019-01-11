@@ -129,14 +129,14 @@ public class PortalQueryAction extends InterMineAction
                 = bagRunner.searchForBag(defaultClass, Arrays.asList(idList), extraFieldValue,
                         false);
 
-            Map<Integer, List> matches = bqr.getMatches();
+            Map<InterMineId, List> matches = bqr.getMatches();
             Map<String, Map<String, Map<String, List>>> issues = bqr.getIssues();
             if (matches.isEmpty() && issues.isEmpty()) {
                 return new ForwardParameters(mapping.findForward("noResults")).forward();
             }
 
             // check the matches first...
-            for (Map.Entry<Integer, List> entry : matches.entrySet()) {
+            for (Map.Entry<InterMineId, List> entry : matches.entrySet()) {
                 String id = entry.getKey().toString();
                 return new ForwardParameters(mapping.findForward("report"))
                     .addParameter("id", id).forward();

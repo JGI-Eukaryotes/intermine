@@ -245,7 +245,7 @@ public class AcceptanceTestTask extends Task
 
         List<InterMineId> allTrackerIds = new ArrayList<InterMineId>();
         for (AcceptanceTestResult atr : testResults) {
-            for (Integer id : atr.getTrackerMap().keySet()) {
+            for (InterMineId id : atr.getTrackerMap().keySet()) {
                 // to avoid repeating trackers entries
                 if (allTrackerIds.contains(id)) {
                     continue;
@@ -283,7 +283,7 @@ public class AcceptanceTestTask extends Task
                 pw.println("<td>");
                 if (o != null) {
                     if (o instanceof InterMineId) {
-                        InterMineId id = (Integer) o;
+                        InterMineId id = (InterMineId) o;
                         List<List<Object>> trackerRows = atr.getTrackerMap().get(id);
                         if (trackerRows == null) {
                             pw.println(id);
@@ -542,8 +542,8 @@ class AcceptanceTestResult
     private List<String> columnLabels = null;
     private int resultCount = -1;
     // a Map from InterMine ID to the corresponding entries in the tracker table
-    private Map<Integer, List<List<Object>>> trackerMap
-        = new HashMap<Integer, List<List<Object>>>();
+    private Map<InterMineId, List<List<Object>>> trackerMap
+        = new HashMap<InterMineId, List<List<Object>>>();
     private final long time;
 
     /**
@@ -582,7 +582,7 @@ class AcceptanceTestResult
                         && "id".equals(metadata.getColumnLabel(i))) {
                         // look up each ID in the tracker table and save the results
                         for (List<Object> row : results) {
-                            InterMineId id = (Integer) row.get(i - 1);
+                            InterMineId id = (InterMineId) row.get(i - 1);
                             List<List<Object>> trackerRows = getTrackerRows(id, con);
 
                             trackerMap.put(id, trackerRows);
@@ -600,7 +600,7 @@ class AcceptanceTestResult
      * IDs seen in query results will appear in the keySet of the Map.
      * @return the tracker Map
      */
-    public Map<Integer, List<List<Object>>> getTrackerMap() {
+    public Map<InterMineId, List<List<Object>>> getTrackerMap() {
         return trackerMap;
     }
 
@@ -625,7 +625,7 @@ class AcceptanceTestResult
      * @return the results as a List of Lists or null if there is an SQLException (which is stored
      * in sqlException)
      */
-    private List<List<Object>> getTrackerRows(Integer id, Connection con) {
+    private List<List<Object>> getTrackerRows(InterMineId id, Connection con) {
         Statement sm = null;
         ResultSet rs = null;
         try {

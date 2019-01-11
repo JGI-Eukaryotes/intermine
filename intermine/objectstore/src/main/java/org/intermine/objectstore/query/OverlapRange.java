@@ -41,16 +41,16 @@ public class OverlapRange
             throw new NullPointerException("Parent parameter cannot be null");
         }
         if (start.getType().equals(UnknownTypeValue.class)) {
-            start.youAreType(Integer.class);
+            start.youAreType(InterMineId.class);
         }
         if (end.getType().equals(UnknownTypeValue.class)) {
-            end.youAreType(Integer.class);
+            end.youAreType(InterMineId.class);
         }
-        if (!Integer.class.equals(start.getType())) {
+        if (!InterMineId.class.equals(start.getType())) {
             throw new IllegalArgumentException("Start parameter (" + start.getType()
                     + ") is not an InterMineId");
         }
-        if (!Integer.class.equals(end.getType())) {
+        if (!InterMineId.class.equals(end.getType())) {
             throw new IllegalArgumentException("End parameter (" + end.getType()
                     + ") is not an InterMineId");
         }

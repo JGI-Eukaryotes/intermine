@@ -389,7 +389,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @param dest the ID of the object from the destination
      * @throws ObjectStoreException if an attempt is made to change an existing mapping
      */
-    public void assignMapping(Integer source, InterMineId dest) throws ObjectStoreException {
+    public void assignMapping(InterMineId source, InterMineId dest) throws ObjectStoreException {
         if (source != null && dest != null) {
             InterMineId existingValue = idMap.get(source);
             if (existingValue != null && !existingValue.equals(dest)) {
@@ -417,7 +417,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @return the retrieved object
      * @throws ObjectStoreException if an error occurs retieving the object
      */
-    public InterMineObject getObjectById(Integer id) throws ObjectStoreException {
+    public InterMineObject getObjectById(InterMineId id) throws ObjectStoreException {
         return osw.getObjectById(id);
     }
 
@@ -429,7 +429,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @return the retrieved object
      * @throws ObjectStoreException if an error occurs retrieving the object
      */
-    public InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    public InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException {
         return osw.getObjectById(id, clazz);
     }
@@ -461,7 +461,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
      * @param hadId the ID of the object to be placed in the collection
      * @throws ObjectStoreException if something goes wrong
      */
-    public void addToCollection(Integer hasId, Class<?> clazz, String fieldName, InterMineId hadId)
+    public void addToCollection(InterMineId hasId, Class<?> clazz, String fieldName, InterMineId hadId)
         throws ObjectStoreException {
         osw.addToCollection(hasId, clazz, fieldName, hadId);
     }
@@ -675,21 +675,21 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
     /**
      * {@inheritDoc}
      */
-    public void prefetchObjectById(Integer id) {
+    public void prefetchObjectById(InterMineId id) {
         osw.prefetchObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void invalidateObjectById(Integer id) {
+    public void invalidateObjectById(InterMineId id) {
         osw.invalidateObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Object cacheObjectById(Integer id, InterMineObject obj) {
+    public Object cacheObjectById(InterMineId id, InterMineObject obj) {
         return osw.cacheObjectById(id, obj);
     }
 
@@ -703,7 +703,7 @@ public abstract class IntegrationWriterAbstractImpl implements IntegrationWriter
     /**
      * {@inheritDoc}
      */
-    public InterMineObject pilferObjectById(Integer id) {
+    public InterMineObject pilferObjectById(InterMineId id) {
         return osw.pilferObjectById(id);
     }
 

@@ -346,7 +346,7 @@ public class TemplateAction extends InterMineAction
 
                 if (tf.getUseBagConstraint(key)) {
                     ConstraintOp constraintOp = ConstraintOp
-                            .getOpForIndex(Integer.valueOf(tf.getBagOp(key)));
+                            .getOpForIndex(InterMineId.valueOf(tf.getBagOp(key)));
                     String constraintValue = (String) tf.getBag(key);
                     value = new TemplateValue(c, constraintOp, constraintValue,
                             TemplateValue.ValueType.BAG_VALUE, switchOffAbility);
@@ -393,7 +393,7 @@ public class TemplateAction extends InterMineAction
                             }
                         } else {
                             ConstraintOp constraintOp = ConstraintOp
-                                    .getOpForIndex(Integer.valueOf(op));
+                                    .getOpForIndex(InterMineId.valueOf(op));
                             String constraintValue = "";
                             String multiValueAttribute = tf.getMultiValueAttribute(key);
                             if (multiValueAttribute != null && !("".equals(multiValueAttribute))) {

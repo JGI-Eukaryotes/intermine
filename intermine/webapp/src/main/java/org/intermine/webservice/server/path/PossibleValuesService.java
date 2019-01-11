@@ -170,7 +170,7 @@ public class PossibleValuesService extends JSONService
         int total = im.getObjectStore().count(q, ObjectStore.SEQUENCE_IGNORE);
 
         if (count) {
-            addResultValue(Integer.valueOf(total), false);
+            addResultValue(InterMineId.valueOf(total), false);
         } else {
             addOutputInfo("count", InterMineId.toString(total));
 

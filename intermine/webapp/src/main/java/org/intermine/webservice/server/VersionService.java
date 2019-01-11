@@ -10,6 +10,7 @@ package org.intermine.webservice.server;
  *
  */
 
+import org.intermine.model.InterMineId;
 import static org.apache.commons.lang.StringUtils.defaultString;
 import static org.apache.commons.lang.StringUtils.lowerCase;
 import static org.intermine.metadata.StringUtil.trimSlashes;
@@ -51,7 +52,7 @@ public class VersionService extends JSONService
         } else if (versionType.startsWith("intermine")) {
             addResultValue(Constants.INTERMINE_VERSION, false);
         } else {
-            addResultValue(Integer.valueOf(Constants.WEB_SERVICE_VERSION), false);
+            addResultValue(InterMineId.valueOf(Constants.WEB_SERVICE_VERSION), false);
         }
     }
 

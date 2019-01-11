@@ -34,7 +34,7 @@ public class HeaderConfigTitle
     /** @var decides whether to append or only inherit config from parent, used by WebConfig only */
     private Boolean appendConfig = Boolean.FALSE;
 
-    private InterMineId numberOfMainTitlesToShow = InterMineId.valueOf(Integer.MAX_VALUE);
+    private InterMineId numberOfMainTitlesToShow = InterMineId.valueOf(InterMineId.MAX_VALUE);
 
     /**
      * The first part of a page title.
@@ -69,7 +69,7 @@ public class HeaderConfigTitle
      * How many main titles to show in the main title
      * @param maxNumber integer
      */
-    public void setNumberOfMainTitlesToShow(Integer maxNumber) {
+    public void setNumberOfMainTitlesToShow(InterMineId maxNumber) {
         this.numberOfMainTitlesToShow = maxNumber;
     }
 

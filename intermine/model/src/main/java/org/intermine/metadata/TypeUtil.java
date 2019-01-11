@@ -459,7 +459,7 @@ public final class TypeUtil
      * @return the corresponding Class
      */
     public static Class<?> getTypeByName(String name) {
-        if (name.equals(Integer.TYPE.toString())) {
+        if (name.equals(InterMineId.TYPE.toString())) {
             return InterMineId.class;
         }
         if (name.equals(Boolean.TYPE.toString())) {
@@ -749,9 +749,10 @@ public final class TypeUtil
      * @param value the value to convert
      * @return the corresponding Class
      */
+    // TODO intermineid here?
     public static Object stringToObject(Class<?> clazz, String value) {
         if (clazz.equals(Integer.class) || clazz.equals(Integer.TYPE)) {
-            return InterMineId.valueOf(value.replace(",", ""));
+            return Integer.valueOf(value.replace(",", ""));
         }
         if (clazz.equals(Boolean.class) || clazz.equals(Boolean.TYPE)) {
             if ("NULL".equals(value)) {

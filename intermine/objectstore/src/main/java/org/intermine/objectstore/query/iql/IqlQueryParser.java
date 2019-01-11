@@ -596,7 +596,7 @@ public final class IqlQueryParser
      */
     private static ObjectStoreBag processNewObjectStoreBag(AST ast) {
         String value = unescape(ast.getText());
-        return new ObjectStoreBag(Integer.parseInt(value));
+        return new ObjectStoreBag(InterMineId.parseInt(value));
     }
 
     /**
@@ -613,12 +613,12 @@ public final class IqlQueryParser
             if (IqlTokenTypes.QUESTION_MARK == sibling.getType()) {
                 @SuppressWarnings("unchecked") Collection<ObjectStoreBag> param =
                     (Collection) iterator.next();
-                return new ObjectStoreBagsForObject(new InterMineId(Integer.parseInt(value)), param);
+                return new ObjectStoreBagsForObject(new InterMineId(InterMineId.parseInt(value)), param);
             }
             throw new IllegalArgumentException("Unknown AST node: " + sibling.getText() + " ["
                     + sibling.getType() + "]");
         }
-        return new ObjectStoreBagsForObject(new InterMineId(Integer.parseInt(value)));
+        return new ObjectStoreBagsForObject(new InterMineId(InterMineId.parseInt(value)));
     }
 
     /**
@@ -1073,7 +1073,7 @@ public final class IqlQueryParser
             typeClass = Boolean.class;
         } else if ("Short".equals(type)) {
             typeClass = Short.class;
-        } else if ("Integer".equals(type)) {
+        } else if ("InterMineId".equals(type)) {
             typeClass = InterMineId.class;
         } else if ("Long".equals(type)) {
             typeClass = Long.class;

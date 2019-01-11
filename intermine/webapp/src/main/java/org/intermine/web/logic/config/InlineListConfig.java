@@ -54,7 +54,7 @@ public class InlineListConfig
      * @see the number is approximate as we do not break inside the text
      * @param lineLength total character length (spaces, commas included!)
      */
-    public void setLineLength(Integer lineLength) {
+    public void setLineLength(InterMineId lineLength) {
         this.lineLength = lineLength;
     }
 

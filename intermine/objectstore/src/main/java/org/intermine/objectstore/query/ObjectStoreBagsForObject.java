@@ -31,7 +31,7 @@ public class ObjectStoreBagsForObject implements QuerySelectable
      *
      * @param value the value to look for in the bags
      */
-    public ObjectStoreBagsForObject(Integer value) {
+    public ObjectStoreBagsForObject(InterMineId value) {
         this.value = value;
         this.bags = null;
     }
@@ -43,7 +43,7 @@ public class ObjectStoreBagsForObject implements QuerySelectable
      * @param value the value to look for in the bags
      * @param bags a Collection of ObjectStoreBag objects which may be present in the results
      */
-    public ObjectStoreBagsForObject(Integer value, Collection<ObjectStoreBag> bags) {
+    public ObjectStoreBagsForObject(InterMineId value, Collection<ObjectStoreBag> bags) {
         this.value = value;
         this.bags = bags;
     }

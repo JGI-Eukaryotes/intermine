@@ -67,7 +67,7 @@ public class BagQueryResult
         = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
                 DUPLICATE, OTHER, TYPE_CONVERTED, WILDCARD)));
 
-    private Map<Integer, List> matches = new LinkedHashMap<Integer, List>();
+    private Map<InterMineId, List> matches = new LinkedHashMap<InterMineId, List>();
 
     /**
      * A map from issueType -> Query -> Identifier -> FoundThing[]
@@ -126,7 +126,7 @@ public class BagQueryResult
      * appear twice in the list of inputs matching the InterMineObject id.
      * @return a map from InterMineObject id to list of input strings
      */
-    public Map<Integer, List> getMatches() {
+    public Map<InterMineId, List> getMatches() {
         return matches;
     }
 
@@ -171,7 +171,7 @@ public class BagQueryResult
                 } else if (obj instanceof ConvertedObjectPair) {
                     ids.add(((ConvertedObjectPair) obj).getNewObject().getId());
                 } else if (obj instanceof InterMineId) {
-                    ids.add((Integer) obj);
+                    ids.add((InterMineId) obj);
                 }
             }
         }

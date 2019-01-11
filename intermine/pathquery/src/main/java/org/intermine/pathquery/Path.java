@@ -613,11 +613,11 @@ public class Path
             if (elements.get(index).equals(field)) {
                 cd = getElementClassDescriptors().get(index);
                 if (cd.getSimpleName().equals(cls)) {
-                    indexElementsContainingField.add(Integer.valueOf(index));
+                    indexElementsContainingField.add(InterMineId.valueOf(index));
                 } else {
                     for (String superClass : cd.getAllSuperclassNames()) {
                         if (superClass.equals(cls)) {
-                            indexElementsContainingField.add(Integer.valueOf(index));
+                            indexElementsContainingField.add(InterMineId.valueOf(index));
                             break;
                         }
                     }

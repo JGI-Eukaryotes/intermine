@@ -10,6 +10,8 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
+
 /**
  * A QueryFunction represents an aggregate
  *
@@ -94,7 +96,7 @@ public class QueryFunction implements QueryEvaluable
         this(qe, op);
         if ((qe instanceof QueryField) || (qe instanceof QueryExpression)
                 || (qe instanceof QueryCast) || (qe instanceof QueryForeignKey)) {
-            if (!(Integer.class.isAssignableFrom(qe2.getType())
+            if (!(InterMineId.class.isAssignableFrom(qe2.getType())
                     || qe2.getType().equals(UnknownTypeValue.class))) {
                 throw new IllegalArgumentException("Invalid parameter argument type for "
                           + "specified operation");

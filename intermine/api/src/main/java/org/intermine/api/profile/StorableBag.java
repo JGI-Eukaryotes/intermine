@@ -158,7 +158,7 @@ public abstract class StorableBag implements WebSearchable
      * @param bagValues the list of the key field values of the objects contained by the bag
      * @throws ObjectStoreException if something goes wrong when inserting data into the database.
      */
-    public void saveWithBagValues(Integer profile, Collection<BagValue> bagValues)
+    public void saveWithBagValues(InterMineId profile, Collection<BagValue> bagValues)
         throws ObjectStoreException {
         if (profile == null) {
             throw new NullPointerException("profileId may not be null");

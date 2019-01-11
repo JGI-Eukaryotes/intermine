@@ -163,7 +163,7 @@ public class FindInListAction extends InterMineAction
 
             if ("java.lang.Integer".equals(attType)) {
                 try {
-                    InterMineId intSearchTerm = InterMineId.valueOf(searchTerm);
+                    Integer intSearchTerm = Integer.valueOf(searchTerm);
                     queryValue = new QueryValue(intSearchTerm);
                 } catch (NumberFormatException e) {
                     // not a number so don't constrain this field

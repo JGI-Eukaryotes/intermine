@@ -188,7 +188,7 @@ public final class ResultsConverter
                                 }
                             } else if (Short.class.equals(node.getType())
                                     && (currentColumn instanceof InterMineId)) {
-                                int i = ((Integer) currentColumn).intValue();
+                                int i = ((InterMineId) currentColumn).intValue();
                                 currentColumn = new Short((short) i);
                             } else if (ClobAccess.class.equals(node.getType())) {
                                 currentColumn = ClobAccess.decodeDbDescription(os,
@@ -202,7 +202,7 @@ public final class ResultsConverter
             }
             // fetch any objects not found in cache from the intermineobject table
             if (!idsToFetch.isEmpty()) {
-                Map<Integer, InterMineObject> fetched = fetchByIds(os, c, sequence,
+                Map<InterMineId, InterMineObject> fetched = fetchByIds(os, c, sequence,
                         InterMineObject.class, idsToFetch, extra);
                 for (ResultsRow<Object> row : retval) {
                     for (int i = 0; i < row.size(); i++) {
@@ -315,7 +315,7 @@ public final class ResultsConverter
                     value = new Date(((Long) value).longValue());
                 } else if ((value instanceof InterMineId) && (Short.class.equals(expectedType)
                         || Short.TYPE.equals(expectedType))) {
-                    value = new Short((short) ((Integer) value).intValue());
+                    value = new Short((short) ((InterMineId) value).intValue());
                 }
                 try {
                     retval.setFieldValue(fieldName, value);
@@ -331,7 +331,7 @@ public final class ResultsConverter
             } else if (fd instanceof ReferenceDescriptor) {
                 ReferenceDescriptor rd = (ReferenceDescriptor) fd;
                 //long time3 = System.currentTimeMillis();
-                InterMineId id = (Integer) sqlResults.getObject(alias + DatabaseUtil.getColumnName(fd));
+                InterMineId id = (InterMineId) sqlResults.getObject(alias + DatabaseUtil.getColumnName(fd));
                 //timeSpentSql += System.currentTimeMillis() - time3;
                 @SuppressWarnings("unchecked") Class<? extends InterMineObject> refType =
                     (Class) rd.getReferencedClassDescriptor().getType();
@@ -402,9 +402,9 @@ public final class ResultsConverter
         List<ResultsRow<Object>> res = os.executeWithConnection(c, qopeQuery, 0,
                 InterMineId.MAX_VALUE, optimise, false, sequence, goFasterTables, goFasterCache);
         extra.addTime(System.currentTimeMillis() - startTime);
-        Map<Integer, ResultsRow<Object>> fetched = new HashMap<Integer, ResultsRow<Object>>();
+        Map<InterMineId, ResultsRow<Object>> fetched = new HashMap<InterMineId, ResultsRow<Object>>();
         for (ResultsRow<Object> row : res) {
-            fetched.put((Integer) row.get(0), row);
+            fetched.put((InterMineId) row.get(0), row);
         }
         int columnCount = q.getSelect().size();
         // iterate over main query results again and add the outer join query results in the
@@ -466,7 +466,7 @@ public final class ResultsConverter
             Set<PrecomputedTable> goFasterTables,
             OptimiserCache goFasterCache) throws ObjectStoreException {
         int startingPoint;
-        Map<Integer, List<Object>> idsToFetch = new HashMap<Integer, List<Object>>();
+        Map<InterMineId, List<Object>> idsToFetch = new HashMap<InterMineId, List<Object>>();
         Set<InterMineObject> objectsToFetch = new HashSet<InterMineObject>();
         int columnToReplace = q.getSelect().indexOf(qcpe);
         QueryClass qc = qcpe.getQueryClass();
@@ -493,7 +493,7 @@ public final class ResultsConverter
             boolean singleton = qcpe.isSingleton();
             // put list of objects returned by outer join query in a map keyed by starting object id
             for (ResultsRow<Object> row : results) {
-                InterMineId id = (Integer) row.get(0);
+                InterMineId id = (InterMineId) row.get(0);
 
                 List<Object> list = idsToFetch.get(id);
                 if (singleton) {
@@ -519,7 +519,7 @@ public final class ResultsConverter
 
             // first iterate over the main query results and find all referenced ids on which to
             // perform the outer join
-            Map<Integer, InterMineId> objectIds = new HashMap<Integer, InterMineId>();
+            Map<InterMineId, InterMineId> objectIds = new HashMap<InterMineId, InterMineId>();
             for (ResultsRow<Object> row : retval) {
                 InterMineObject o = (InterMineObject) row.get(startingPoint);
                 InterMineId refId = null;
@@ -543,7 +543,7 @@ public final class ResultsConverter
             extra.addTime(System.currentTimeMillis() - startTime);
             boolean singleton = qcpe.isSingleton();
             for (ResultsRow<Object> row : results) {
-                InterMineId id = (Integer) row.get(0);
+                InterMineId id = (InterMineId) row.get(0);
                 List<Object> list = idsToFetch.get(id);
                 if (singleton) {
                     list.add(row.get(1));
@@ -579,7 +579,7 @@ public final class ResultsConverter
      * @return a Map from ID to object
      * @throws ObjectStoreException if an error occurs
      */
-    protected static Map<Integer, InterMineObject> fetchByIds(ObjectStoreInterMineImpl os,
+    protected static Map<InterMineId, InterMineObject> fetchByIds(ObjectStoreInterMineImpl os,
             Connection c, Map<Object, InterMineId> sequence, Class<?> clazz,
             Collection<InterMineId> idsToFetch, ExtraQueryTime extra) throws ObjectStoreException {
         try {
@@ -605,7 +605,7 @@ public final class ResultsConverter
             if (bttr != null) {
                 os.removeTempBagTable(c, bttr);
             }
-            Map<Integer, InterMineObject> fetched = new HashMap<Integer, InterMineObject>();
+            Map<InterMineId, InterMineObject> fetched = new HashMap<InterMineId,InterMineObject>();
             while (iter.hasNext()) {
                 ResultsRow<Object> fetchedObjectRow = iter.next();
                 InterMineObject fetchedObject = (InterMineObject) fetchedObjectRow.get(0);

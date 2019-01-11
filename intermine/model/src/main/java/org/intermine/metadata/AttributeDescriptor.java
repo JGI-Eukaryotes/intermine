@@ -31,6 +31,7 @@ public class AttributeDescriptor extends FieldDescriptor
             "int", "long", "float", "double", "boolean", "java.lang.Short", "java.lang.Integer",
             "java.lang.Long", "java.lang.Float", "java.lang.Double", "java.lang.Boolean",
             "java.lang.String", "java.util.Date", "java.math.BigDecimal", "java.util.UUID",
+            "org.intermine.model.InterMineId",
             "org.intermine.objectstore.query.ClobAccess"));
 
     /**
@@ -123,6 +124,7 @@ public class AttributeDescriptor extends FieldDescriptor
     public boolean isNumeric() {
         return "short".equals(type)     || "java.lang.Short".equals(type)
                 || "int".equals(type)    || "java.lang.Integer".equals(type)
+                                         || "org.intermine.model.InterMineId".equals(type)
                 || "long".equals(type)   || "java.lang.Long".equals(type)
                 || "float".equals(type)  || "java.lang.Float".equals(type)
                 || "double".equals(type) || "java.lang.Double".equals(type);

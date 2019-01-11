@@ -48,7 +48,7 @@ public abstract class TrackAbstract implements Track
             for (int index = 0; index < valuesSize; ) {
                 value = values[index];
                 if (value instanceof InterMineId) {
-                    stm.setInt(++index, ((Integer) value).intValue());
+                    stm.setInt(++index, ((InterMineId) value).intValue());
                 } else if (value instanceof Timestamp) {
                     stm.setTimestamp(++index, (Timestamp) value);
                 } else {

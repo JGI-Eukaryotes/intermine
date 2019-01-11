@@ -118,7 +118,7 @@ public interface ObjectStore
      * @return the object from the ObjectStore or cache, or null if none exists
      * @throws ObjectStoreException if an error occurs during retrieval of the object
      */
-    InterMineObject getObjectById(Integer id) throws ObjectStoreException;
+    InterMineObject getObjectById(InterMineId id) throws ObjectStoreException;
 
     /**
      * Get an object from the ObjectStore by giving an ID and a hint of the Class of the object.
@@ -131,7 +131,7 @@ public interface ObjectStore
      * @return the object from the ObjectStore or the cache, or null if none exists
      * @throws ObjectStoreException if an error occurs during the retrieval of the object
      */
-    InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException;
 
     /**
@@ -156,7 +156,7 @@ public interface ObjectStore
      *
      * @param id the ID of the object to prefetch
      */
-    void prefetchObjectById(Integer id);
+    void prefetchObjectById(InterMineId id);
 
     /**
      * Removes an entry from the objectstore getObjectById cache. The objectstore must
@@ -166,7 +166,7 @@ public interface ObjectStore
      *
      * @param id the ID of the object to invalidate
      */
-    void invalidateObjectById(Integer id);
+    void invalidateObjectById(InterMineId id);
 
     /**
      * Places an entry into the objectstore getObjectById cache. This method (like prefetch) is
@@ -181,7 +181,7 @@ public interface ObjectStore
      * for the purpose of ensuring the entry does not expire from the cache. To endure this, the
      * caller merely needs to keep a strong reference to this returned value.
      */
-    Object cacheObjectById(Integer id, InterMineObject obj);
+    Object cacheObjectById(InterMineId id, InterMineObject obj);
 
     /**
      * Completely empties the getObjectById cache. The objectstore must guarantee that the
@@ -197,7 +197,7 @@ public interface ObjectStore
      * @param id the ID of the object
      * @return the object, or null
      */
-    InterMineObject pilferObjectById(Integer id);
+    InterMineObject pilferObjectById(InterMineId id);
 
     /**
      * Explain a Query (give estimate for execution time and number of rows).

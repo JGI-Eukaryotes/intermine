@@ -46,8 +46,8 @@ public class ResultsBatches
     protected ResultsInfo info;
 
     // A map of batch number against a List of ResultsRows
-    protected Map<Integer, List<Object>> batches = Collections.synchronizedMap(
-            new CacheMap<Integer, List<Object>>("Results batches"));
+    protected Map<InterMineId, List<Object>> batches = Collections.synchronizedMap(
+            new CacheMap<InterMineId, List<Object>>("Results batches"));
 
     /**
      * Construct a new ResultsBatches object. This is generally only called by the Results object.
@@ -373,7 +373,7 @@ public class ResultsBatches
      * @return a batch of rows
      */
     public List<Object> getBatchFromCache(int batchNo) {
-        List<Object> retval = batches.get(Integer.valueOf(batchNo));
+        List<Object> retval = batches.get(InterMineId.valueOf(batchNo));
         if (retval != null) {
             return Collections.unmodifiableList(retval);
         } else {

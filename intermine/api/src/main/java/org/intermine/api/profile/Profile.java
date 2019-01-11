@@ -315,7 +315,7 @@ public class Profile
      *
      * @param userId an InterMineId
      */
-    public void setUserId(Integer userId) {
+    public void setUserId(InterMineId userId) {
         InterMineId oldId = getUserId();
         this.userId = userId;
         if (this.userId != null && !this.userId.equals(oldId)) { // Need to update the preferences

@@ -551,7 +551,7 @@ public class BagManager
      * @param id the id to search bags for
      * @return bags containing the given id
      */
-    public Collection<InterMineBag> getGlobalBagsContainingId(Integer id) {
+    public Collection<InterMineBag> getGlobalBagsContainingId(InterMineId id) {
         return getBagsContainingId(getGlobalBags(), id);
     }
 
@@ -607,7 +607,7 @@ public class BagManager
     private Collection<InterMineBag> getBagsContainingId(Map<String, InterMineBag> imBags,
             InterMineId id) {
         Collection<ObjectStoreBag> objectStoreBags = getObjectStoreBags(imBags.values());
-        Map<Integer, InterMineBag> osBagIdToInterMineBag =
+        Map<InterMineId, InterMineBag> osBagIdToInterMineBag =
             getOsBagIdToInterMineBag(imBags.values());
 
         // this searches bags for an object
@@ -623,7 +623,7 @@ public class BagManager
         Results res = osProduction.executeSingleton(q);
         Iterator<Object> resIter = res.iterator();
         while (resIter.hasNext()) {
-            InterMineId osBagId = (Integer) resIter.next();
+            InterMineId osBagId = (InterMineId) resIter.next();
             if (osBagIdToInterMineBag.containsKey(osBagId)) {
                 bagsContainingId.add(osBagIdToInterMineBag.get(osBagId));
             }
@@ -632,9 +632,9 @@ public class BagManager
         return bagsContainingId;
     }
 
-    private static Map<Integer, InterMineBag> getOsBagIdToInterMineBag(
+    private static Map<InterMineId, InterMineBag> getOsBagIdToInterMineBag(
             Collection<InterMineBag> imBags) {
-        Map<Integer, InterMineBag> osBagIdToInterMineBag = new HashMap<Integer, InterMineBag>();
+        Map<InterMineId, InterMineBag> osBagIdToInterMineBag = new HashMap<InterMineId, InterMineBag>();
 
         for (InterMineBag imBag : imBags) {
             osBagIdToInterMineBag.put(new InterMineId(imBag.getOsb().getBagId()), imBag);
@@ -667,10 +667,10 @@ public class BagManager
             for (Tag t : tags) {
                 String name = t.getTagName();
                 if (name.startsWith("im:order:")) {
-                    return InterMineId.valueOf(Integer.parseInt(name.replaceAll("[^0-9]", "")));
+                    return InterMineId.valueOf(InterMineId.parseInt(name.replaceAll("[^0-9]", "")));
                 }
             }
-            return InterMineId.valueOf(Integer.MAX_VALUE);
+            return InterMineId.valueOf(InterMineId.MAX_VALUE);
         }
 
         @Override

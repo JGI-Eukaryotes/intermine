@@ -10,6 +10,7 @@ package org.intermine.webservice.server.core;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,7 +49,7 @@ public class ListManager implements Producer<Map<String, InterMineBag>>
      * @param objectId object id
      * @return A list of list names
      */
-    public List<String> getListsNames(Integer objectId) {
+    public List<String> getListsNames(InterMineId objectId) {
         List<String> ret = new ArrayList<String>();
 
         Collection<InterMineBag> bags
@@ -97,7 +98,7 @@ public class ListManager implements Producer<Map<String, InterMineBag>>
      * @param objectId the id of an InterMineObject to look up
      * @return A collection of lists.
      */
-    public Collection<InterMineBag> getListsContaining(Integer objectId) {
+    public Collection<InterMineBag> getListsContaining(InterMineId objectId) {
         return bagManager.getCurrentBagsContainingId(profile, objectId);
     }
 

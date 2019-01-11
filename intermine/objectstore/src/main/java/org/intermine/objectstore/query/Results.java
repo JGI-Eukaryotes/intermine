@@ -400,8 +400,8 @@ public class Results extends AbstractList<Object> implements LazyCollection<Obje
             }
             cursor++;
             int currentBatchNo = getBatchNoForRow(cursor);
-            thisBatch = resultsBatches.batches.get(Integer.valueOf(currentBatchNo));
-            nextBatch = resultsBatches.batches.get(Integer.valueOf(currentBatchNo + 1));
+            thisBatch = resultsBatches.batches.get(InterMineId.valueOf(currentBatchNo));
+            nextBatch = resultsBatches.batches.get(InterMineId.valueOf(currentBatchNo + 1));
             return retval;
         }
 

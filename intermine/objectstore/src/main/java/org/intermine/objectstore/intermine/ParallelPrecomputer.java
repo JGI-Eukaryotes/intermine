@@ -88,7 +88,7 @@ public class ParallelPrecomputer
         }
 
         Iterator<Job> jobIter = new SynchronisedIterator<Job>(todo.iterator());
-        Map<Integer, String> threads = new TreeMap<Integer, String>();
+        Map<InterMineId, String> threads = new TreeMap<InterMineId, String>();
         List<Exception> exceptions = Collections.synchronizedList(new ArrayList<Exception>());
 
         synchronized (threads) {
@@ -225,12 +225,12 @@ public class ParallelPrecomputer
 
     private class Worker implements Runnable
     {
-        private Map<Integer, String> threads;
+        private Map<InterMineId, String> threads;
         private Iterator<Job> jobIter;
         private int threadNo;
         private List<Exception> exceptions;
 
-        public Worker(Map<Integer, String> threads, Iterator<Job> jobIter, int threadNo,
+        public Worker(Map<InterMineId, String> threads, Iterator<Job> jobIter, int threadNo,
                 List<Exception> exceptions) {
             this.threads = threads;
             this.jobIter = jobIter;

@@ -450,7 +450,7 @@ public final class Util
      * @return the corresponding Class
      */
     protected static Class<?> instantiate(String type) {
-        if (type.equals(Integer.TYPE.toString())) {
+        if (type.equals(InterMineId.TYPE.toString())) {
             return InterMineId.class;
         }
         if (type.equals(Boolean.TYPE.toString())) {

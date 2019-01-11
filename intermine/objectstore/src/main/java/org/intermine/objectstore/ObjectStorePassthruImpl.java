@@ -93,14 +93,14 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id) throws ObjectStoreException {
+    public InterMineObject getObjectById(InterMineId id) throws ObjectStoreException {
         return os.getObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public InterMineObject getObjectById(Integer id, Class<? extends InterMineObject> clazz)
+    public InterMineObject getObjectById(InterMineId id, Class<? extends InterMineObject> clazz)
         throws ObjectStoreException {
         return os.getObjectById(id, clazz);
     }
@@ -116,21 +116,21 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public void prefetchObjectById(Integer id) {
+    public void prefetchObjectById(InterMineId id) {
         os.prefetchObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void invalidateObjectById(Integer id) {
+    public void invalidateObjectById(InterMineId id) {
         os.invalidateObjectById(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Object cacheObjectById(Integer id, InterMineObject obj2) {
+    public Object cacheObjectById(InterMineId id, InterMineObject obj2) {
         return os.cacheObjectById(id, obj2);
     }
 
@@ -144,7 +144,7 @@ public class ObjectStorePassthruImpl implements ObjectStore
     /**
      * {@inheritDoc}
      */
-    public InterMineObject pilferObjectById(Integer id) {
+    public InterMineObject pilferObjectById(InterMineId id) {
         return os.pilferObjectById(id);
     }
 

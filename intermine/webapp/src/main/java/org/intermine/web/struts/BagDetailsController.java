@@ -200,7 +200,7 @@ public class BagDetailsController extends TilesAction
         String highlightIdStr = request.getParameter("highlightId");
         InterMineId highlightId = null;
         if (highlightIdStr != null) {
-            highlightId = new InterMineId(Integer.parseInt(highlightIdStr));
+            highlightId = new InterMineId(InterMineId.parseInt(highlightIdStr));
         }
         boolean gotoHighlighted = false;
         String gotoHighlightedStr = request.getParameter("gotoHighlighted");

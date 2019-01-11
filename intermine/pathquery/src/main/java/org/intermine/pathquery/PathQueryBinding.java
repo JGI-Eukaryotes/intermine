@@ -10,6 +10,7 @@ package org.intermine.pathquery;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.util.LinkedHashMap;
@@ -191,7 +192,7 @@ public class PathQueryBinding
                 writer.writeAttribute("op", "" + constraint.getKey().getOp());
                 StringBuilder sb = new StringBuilder();
                 boolean needComma = false;
-                for (Integer id : ((PathConstraintIds) constraint.getKey()).getIds()) {
+                for (InterMineId id : ((PathConstraintIds) constraint.getKey()).getIds()) {
                     if (needComma) {
                         sb.append(", ");
                     }

@@ -79,7 +79,7 @@ public class UnknownTypeValue
                 }
             } else if (cls.equals(Short.class)) {
                 return Short.valueOf(value);
-            } else if (cls.equals(Integer.class)) {
+            } else if (cls.equals(InterMineId.class)) {
                 return InterMineId.valueOf(value);
             } else if (cls.equals(Long.class)) {
                 return Long.valueOf(value);

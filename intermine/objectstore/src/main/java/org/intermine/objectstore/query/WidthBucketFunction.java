@@ -51,7 +51,7 @@ public class WidthBucketFunction extends QueryFunction
                 throw new IllegalArgumentException("Invalid argument type: Number expected");
             }
         }
-        if (!(Integer.class.isAssignableFrom(bins.getType())
+        if (!(InterMineId.class.isAssignableFrom(bins.getType())
                 || bins.getType().equals(UnknownTypeValue.class))) {
             throw new IllegalArgumentException("Invalid type for bins: InterMineId expected");
         }

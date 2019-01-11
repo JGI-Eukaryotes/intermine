@@ -172,7 +172,7 @@ public class TableWidgetLdr extends WidgetLdr
                     } else if (select instanceof QueryField) {
                         Object queryFieldObj = resRow.get(i);
                         if (queryFieldObj instanceof InterMineId) {
-                            flattenedRow.add((Integer) queryFieldObj);
+                            flattenedRow.add((InterMineId) queryFieldObj);
                         } else {
                             flattenedRow.add(String.valueOf(resRow.get(i)));
                         }

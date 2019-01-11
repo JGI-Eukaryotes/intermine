@@ -205,7 +205,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
             if (retval.size() > 1) {
                 QuerySelectable node = q.getSelect().get(0);
                 if (node instanceof QueryClass) {
-                    Map<Integer, InterMineObject> bagMap = new HashMap<Integer, InterMineObject>();
+                    Map<InterMineId, InterMineObject> bagMap = new HashMap<InterMineId, InterMineObject>();
                     int lowestId = InterMineId.MAX_VALUE;
                     int highestId = InterMineId.MIN_VALUE;
                     for (ResultsRow<Object> row : retval) {
@@ -224,12 +224,12 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                             .entrySet()) {
                         String fieldName = fieldEntry.getKey();
                         FieldDescriptor field = fieldEntry.getValue();
-                        Map<Integer, Collection<Object>> collections
-                            = new HashMap<Integer, Collection<Object>>();
+                        Map<InterMineId, Collection<Object>> collections
+                            = new HashMap<InterMineId, Collection<Object>>();
                         if (doThisField(field) && (field instanceof CollectionDescriptor)) {
                             CollectionDescriptor coll = (CollectionDescriptor) field;
                             time1 = System.currentTimeMillis();
-                            for (Map.Entry<Integer, InterMineObject> entry : bagMap.entrySet()) {
+                            for (Map.Entry<InterMineId, InterMineObject> entry : bagMap.entrySet()) {
                                 InterMineId id = entry.getKey();
                                 InterMineObject o = entry.getValue();
                                 @SuppressWarnings("unchecked") ProxyCollection<Object> pc
@@ -352,7 +352,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
                                     timeSpentSubExecute += time2 - time1;
                                 }
                             }
-                            for (Map.Entry<Integer, Collection<Object>> entry : collections
+                            for (Map.Entry<InterMineId, Collection<Object>> entry : collections
                                     .entrySet()) {
                                 InterMineId id = entry.getKey();
                                 Collection<Object> materialisedCollection = entry.getValue();
@@ -380,7 +380,7 @@ public class ObjectStoreFastCollectionsImpl extends ObjectStorePassthruImpl
         }
     }
 
-    private void insertResults(Map<Integer, Collection<Object>> collections, Results l)
+    private void insertResults(Map<InterMineId, Collection<Object>> collections, Results l)
         throws IllegalAccessException {
         @SuppressWarnings({ "unchecked", "rawtypes" })
         Collection<ResultsRow<Object>> res = (Collection) l;

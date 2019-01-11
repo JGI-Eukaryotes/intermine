@@ -328,7 +328,7 @@ public class PathQueryHandler extends DefaultHandler
                 Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                 for (String id : idArray) {
                     try {
-                        idsCollection.add(Integer.valueOf(id.trim()));
+                        idsCollection.add(InterMineId.valueOf(id.trim()));
                     } catch (NumberFormatException e) {
                         throw new SAXException(
                                 "List of IDs contains invalid integer: " + id,

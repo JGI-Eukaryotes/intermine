@@ -260,7 +260,7 @@ public class EnrichmentWidget extends Widget
                 row.add(labels.get(id));
                 row.add(Double.valueOf(pValues.get(id).doubleValue()));
                 row.add(counts.get(id));
-                row.add(Integer.valueOf(annotatedPopulationInfo.get(id).getSize()));
+                row.add(InterMineId.valueOf(annotatedPopulationInfo.get(id).getSize()));
                 exportResults.add(row);
             }
         }
@@ -291,7 +291,7 @@ public class EnrichmentWidget extends Widget
             List<InterMineId> intermineIds = new ArrayList<InterMineId>();
             for (int i = 0; i < idStrings.length; i++) {
                 try {
-                    intermineIds.add(Integer.valueOf(Integer.parseInt(idStrings[i])));
+                    intermineIds.add(InterMineId.valueOf(InterMineId.parseInt(idStrings[i])));
                 } catch (NumberFormatException e) {
                     LOG.error("bad IDs for list in enrichment.", e);
                     return null;
@@ -381,7 +381,7 @@ public class EnrichmentWidget extends Widget
             List<InterMineId> intermineIds = new ArrayList<InterMineId>();
             for (int i = 0; i < idStrings.length; i++) {
                 try {
-                    intermineIds.add(Integer.valueOf(Integer.parseInt(idStrings[i])));
+                    intermineIds.add(InterMineId.valueOf(InterMineId.parseInt(idStrings[i])));
                 } catch (NumberFormatException e) {
                     LOG.error("bad IDs for list in enrichment.", e);
                     return null;

@@ -31,7 +31,7 @@ public class IntPresentSet
     private static final int PAGE_SIZE = 0x2000; // Number of words per page
     private static final int PAGE_MASK = PAGE_SIZE - 1;
 
-    private Map<Integer, int[]> pages = new HashMap<Integer, int[]>();
+    private Map<InterMineId, int[]> pages = new HashMap<InterMineId, int[]>();
     private int size = 0;
 
     /**
@@ -104,7 +104,7 @@ public class IntPresentSet
      *
      * @param i an InterMineId
      */
-    public void add(Integer i) {
+    public void add(InterMineId i) {
         if (i == null) {
             throw new NullPointerException("i is null");
         }
@@ -118,7 +118,7 @@ public class IntPresentSet
      * @param i any InterMineId
      * @return true or false
      */
-    public boolean contains(Integer i) {
+    public boolean contains(InterMineId i) {
         if (i == null) {
             throw new NullPointerException("i is null");
         }
@@ -166,7 +166,7 @@ public class IntPresentSet
                                 retval.append(", ");
                             }
                             needComma = true;
-                            retval.append(Integer.toString((pageNoInt * PAGE_SIZE + wordNo)
+                            retval.append(InterMineId.toString((pageNoInt * PAGE_SIZE + wordNo)
                                         * WORD_SIZE + bitNo));
                         }
                         bitMask <<= 1;

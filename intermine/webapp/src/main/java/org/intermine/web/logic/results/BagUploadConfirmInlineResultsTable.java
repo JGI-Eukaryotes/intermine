@@ -10,6 +10,7 @@ package org.intermine.web.logic.results;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class BagUploadConfirmInlineResultsTable extends InlineResultsTable
      * @param id imObj
      * @param tableRowObject BagUploadConfirmInlineResultsTableRow
      */
-    protected void saveObjectIdOnTableRow(Integer id, Object tableRowObject) {
+    protected void saveObjectIdOnTableRow(InterMineId id, Object tableRowObject) {
         BagUploadConfirmInlineResultsTableRow tableRow =
             (BagUploadConfirmInlineResultsTableRow) tableRowObject;
         tableRow.setObjectId(id);

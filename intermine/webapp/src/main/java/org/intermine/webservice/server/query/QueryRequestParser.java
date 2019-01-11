@@ -130,17 +130,17 @@ public class QueryRequestParser extends WebServiceRequestParser
     public static String decompressLZW(List<InterMineId> compressed) {
         // Build the dictionary.
         int dictSize = 256;
-        Map<Integer, String> dictionary = new HashMap<Integer, String>();
+        Map<InterMineId, String> dictionary = new HashMap<InterMineId, String>();
         for (int i = 0; i < 256; i++) {
-            dictionary.put(Integer.valueOf(i), "" + (char) i);
+            dictionary.put(InterMineId.valueOf(i), "" + (char) i);
         }
 
         String w = "" + (char) compressed.remove(0).intValue();
         String result = w;
         for (int k : compressed) {
             String entry;
-            if (dictionary.containsKey(Integer.valueOf(k))) {
-                entry = dictionary.get(Integer.valueOf(k));
+            if (dictionary.containsKey(InterMineId.valueOf(k))) {
+                entry = dictionary.get(InterMineId.valueOf(k));
             } else if (k == dictSize) {
                 entry = w + w.charAt(0);
             } else {
@@ -150,7 +150,7 @@ public class QueryRequestParser extends WebServiceRequestParser
             result += entry;
 
             // Add w+entry[0] to the dictionary.
-            dictionary.put(Integer.valueOf(dictSize++), w + entry.charAt(0));
+            dictionary.put(InterMineId.valueOf(dictSize++), w + entry.charAt(0));
 
             w = entry;
         }

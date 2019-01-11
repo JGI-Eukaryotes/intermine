@@ -24,9 +24,9 @@ public class TemplateSummary implements org.intermine.model.InterMineObject
     public org.intermine.model.InterMineObject proxGetTemplate() { return template; }
 
     // Attr: org.intermine.model.InterMineObject.id
-    protected java.lang.Integer id;
-    public java.lang.Integer getId() { return id; }
-    public void setId(final java.lang.Integer id) { this.id = id; }
+    protected org.intermine.model.InterMineObject id;
+    public org.intermine.model.InterMineObject getId() { return id; }
+    public void setId(final org.intermine.model.InterMineObject id) { this.id = id; }
 
     @Override public boolean equals(Object o) { return (o instanceof TemplateSummary && id != null) ? id.equals(((TemplateSummary)o).getId()) : this == o; }
     @Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }
@@ -71,7 +71,7 @@ public class TemplateSummary implements org.intermine.model.InterMineObject
         } else if ("template".equals(fieldName)) {
             template = (org.intermine.model.InterMineObject) value;
         } else if ("id".equals(fieldName)) {
-            id = (java.lang.Integer) value;
+            id = (org.intermine.model.InterMineObject) value;
         } else {
             if (!org.intermine.api.userprofile.TemplateSummary.class.equals(getClass())) {
                 DynamicUtil.setFieldValue(this, fieldName, value);
@@ -88,7 +88,7 @@ public class TemplateSummary implements org.intermine.model.InterMineObject
             return org.intermine.api.userprofile.SavedTemplateQuery.class;
         }
         if ("id".equals(fieldName)) {
-            return java.lang.Integer.class;
+            return org.intermine.model.InterMineObject.class;
         }
         if (!org.intermine.api.userprofile.TemplateSummary.class.equals(getClass())) {
             return TypeUtil.getFieldType(org.intermine.api.userprofile.TemplateSummary.class, fieldName);

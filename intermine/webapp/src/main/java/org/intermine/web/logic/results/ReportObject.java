@@ -596,7 +596,7 @@ public class ReportObject
         String maxInlineTableSizeString =
             (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
         try {
-            return InterMineId.valueOf(Integer.parseInt(maxInlineTableSizeString));
+            return InterMineId.valueOf(InterMineId.parseInt(maxInlineTableSizeString));
         } catch (NumberFormatException e) {
             LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                      + maxInlineTableSizeString);

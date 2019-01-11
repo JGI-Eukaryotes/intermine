@@ -337,7 +337,7 @@ public class ProfileManager
         Map<String, List<FieldDescriptor>> classKeys = getClassKeys(os.getModel());
         UserProfile up;
         try {
-            up = (UserProfile) uosw.getObjectById(Integer.valueOf(id), UserProfile.class);
+            up = (UserProfile) uosw.getObjectById(InterMineId.valueOf(id), UserProfile.class);
         } catch (ObjectStoreException e) {
             throw new RuntimeException("Error retrieving profile", e);
         }
@@ -483,7 +483,7 @@ public class ProfileManager
                     Results bags = uosw.execute(q, 1000, false, false, true);
                     for (Iterator<?> i = bags.iterator(); i.hasNext();) {
                         ResultsRow<?> row = (ResultsRow<?>) i.next();
-                        InterMineId bagId = (Integer) row.get(0);
+                        InterMineId bagId = (InterMineId) row.get(0);
                         SavedBag savedBag = (SavedBag) row.get(1);
                         String bagName = savedBag.getName();
                         if (StringUtils.isBlank(bagName)) {
@@ -923,7 +923,7 @@ public class ProfileManager
      * @param userId the id of the user
      * @return the relevant UserProfile
      */
-    public synchronized UserProfile getUserProfile(Integer userId) {
+    public synchronized UserProfile getUserProfile(InterMineId userId) {
         if (userId == null) {
             return null;
         }
@@ -966,7 +966,7 @@ public class ProfileManager
      */
     public synchronized String getProfileUserName(int profileId) {
         try {
-            UserProfile profile = (UserProfile) uosw.getObjectById(Integer.valueOf(profileId), UserProfile.class);
+            UserProfile profile = (UserProfile) uosw.getObjectById(InterMineId.valueOf(profileId), UserProfile.class);
             return profile.getUsername();
         } catch (ObjectStoreException e) {
             return null; // Not in DB.

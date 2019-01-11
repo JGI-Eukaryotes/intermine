@@ -283,7 +283,7 @@ public class GraphWidgetLoader extends WidgetLdr implements DataSetLdr
                 try {
                     category = (String) row.get(0);
                 } catch (ClassCastException cce) {
-                    category = InterMineId.toString(((Integer) row.get(0)).intValue());
+                    category = InterMineId.toString(((InterMineId) row.get(0)).intValue());
                 }
                 long count = ((Long) row.get(1)).longValue();
                 long[] counts = {count};

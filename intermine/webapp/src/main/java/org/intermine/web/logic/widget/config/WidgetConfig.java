@@ -168,7 +168,7 @@ public abstract class WidgetConfig
                 Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                 for (String intermineId : idArray) {
                     try {
-                        idsCollection.add(Integer.valueOf(intermineId.trim()));
+                        idsCollection.add(InterMineId.valueOf(intermineId.trim()));
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("List of IDs contains invalid integer: "
                                 + intermineId, e);

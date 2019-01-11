@@ -70,7 +70,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
 
         Set<InterMineId> objectIds = getObjectIds(results);
 
-        Map<Integer, InterMineObject> objMap = null;
+        Map<InterMineId, InterMineObject> objMap = null;
 
         try {
             objMap = Objects.getObjects(im, objectIds);
@@ -140,7 +140,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
 
             try {
                 if (document != null) {
-                    objectIds.add(Integer.valueOf(document.getFieldValue("id").toString()));
+                    objectIds.add(InterMineId.valueOf(document.getFieldValue("id").toString()));
                 }
             } catch (NumberFormatException e) {
                 LOG.info("Invalid id '" + document.getFieldValue("id") + "' for hit '"
@@ -158,7 +158,7 @@ public final class SolrKeywordSearchHandler implements KeywordSearchHandler
      * @return matching object
      */
     private Vector<KeywordSearchResultContainer> getSearchHits(SolrDocumentList documents,
-                                                              Map<Integer, InterMineObject> objMap,
+                                                              Map<InterMineId, InterMineObject> objMap,
                                                               float maxScore) {
         long time = System.currentTimeMillis();
 

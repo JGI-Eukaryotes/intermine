@@ -10,6 +10,7 @@ package org.intermine.web.struts;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -136,7 +137,7 @@ public class BeginAction extends InterMineAction
 
                     tab.put("templates", templates);
 
-                    bagOfTabs.put(Integer.toString(i), tab);
+                    bagOfTabs.put(InterMineId.toString(i), tab);
                     i++;
                 } else {
                     break;

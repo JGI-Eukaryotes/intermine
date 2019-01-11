@@ -10,6 +10,7 @@ package org.intermine.task;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class PrecomputeTask extends Task
      *
      * @param minRows the minimum row count
      */
-    public void setMinRows(Integer minRows) {
+    public void setMinRows(InterMineId minRows) {
         this.minRows = minRows.intValue();
     }
 

@@ -10,6 +10,7 @@ package org.intermine.api.searchengine.solr;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -334,7 +335,7 @@ public class SolrObjectHandler extends Thread
                 // current object's id. See:
                 // https://github.com/intermine/intermine/issues/473
                 while (resultsContainer.getIterator().hasNext()
-                        && ((Integer) next.get(0)).compareTo(
+                        && ((InterMineId) next.get(0)).compareTo(
                         object.getId()) == -1) {
                     next = resultsContainer.getIterator().next();
                 }

@@ -151,15 +151,15 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
     protected Map<String, Results> resultsCache = new CacheMap<String, Results>();
     protected Map<String, SingletonResults> singletonResultsCache
         = new CacheMap<String, SingletonResults>();
-    protected Map<String, Map<Integer, ResultsBatches>> batchesCache
-        = new CacheMap<String, Map<Integer, ResultsBatches>>();
+    protected Map<String, Map<InterMineId, ResultsBatches>> batchesCache
+        = new CacheMap<String, Map<InterMineId, ResultsBatches>>();
 
     private static final String[] LOG_TABLE_COLUMNS = new String[] {"timestamp", "optimise",
         "estimated", "execute", "permitted", "convert", "iql", "sql"};
 
     /**
      * The name of the SEQUENCE in the database to use when generating unique integers in
-     * getUniqueInteger().
+     * getUniqueInterMineId().
      */
     public static final String UNIQUE_INTEGER_SEQUENCE_NAME = "objectstore_unique_integer";
     /** The name of the table that holds the integer ObjectStoreBag elements. */
@@ -744,9 +744,9 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
             if (retval == null) {
                 String batchesKey = q.toString();
                 synchronized (batchesCache) {
-                    Map<Integer, ResultsBatches> batches = batchesCache.get(batchesKey);
+                    Map<InterMineId, ResultsBatches> batches = batchesCache.get(batchesKey);
                     if (batches == null) {
-                        batches = new CacheMap<Integer, ResultsBatches>();
+                        batches = new CacheMap<InterMineId, ResultsBatches>();
                         batchesCache.put(batchesKey, batches);
                     }
                     ResultsBatches batch = getResultsBatches(batches, batchSize);
@@ -800,9 +800,9 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
             if (retval == null) {
                 String batchesKey = q.toString();
                 synchronized (batchesCache) {
-                    Map<Integer, ResultsBatches> batches = batchesCache.get(batchesKey);
+                    Map<InterMineId, ResultsBatches> batches = batchesCache.get(batchesKey);
                     if (batches == null) {
-                        batches = new CacheMap<Integer, ResultsBatches>();
+                        batches = new CacheMap<InterMineId, ResultsBatches>();
                         batchesCache.put(batchesKey, batches);
                     }
 
@@ -811,7 +811,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
                         retval = new SingletonResults(batch, optimise, explain, prefetch);
                     } else {
                         retval = super.executeSingleton(q, batchSize, optimise, explain, prefetch);
-                        batches.put(Integer.valueOf(batchSize), retval.getResultsBatches());
+                        batches.put(InterMineId.valueOf(batchSize), retval.getResultsBatches());
                     }
 
                     singletonResultsCache.put(cacheKey, retval);
@@ -825,8 +825,8 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
         }
     }
 
-    private ResultsBatches getResultsBatches(Map<Integer, ResultsBatches> batches, int batchSize) {
-        ResultsBatches batch = batches.get(Integer.valueOf(batchSize));
+    private ResultsBatches getResultsBatches(Map<InterMineId, ResultsBatches> batches, int batchSize) {
+        ResultsBatches batch = batches.get(InterMineId.valueOf(batchSize));
         if (batch != null) {
             try {
                 checkSequence(batch.getSequence(), null, null);
@@ -839,7 +839,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
             // This holds the first batch in memory to prevent it being garbage collected until
             // makeWithDifferentBatchSize is completed.
             List<Object> firstBatch = null;
-            for (Integer candidateSizeObj : batches.keySet()) {
+            for (InterMineId candidateSizeObj : batches.keySet()) {
                 ResultsBatches candidateBatch = batches.get(candidateSizeObj);
                 if (candidateBatch != null) {
                     try {
@@ -862,7 +862,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
             }
             if (batch != null) {
                 batch = batch.makeWithDifferentBatchSize(batchSize);
-                batches.put(Integer.valueOf(batchSize), batch);
+                batches.put(InterMineId.valueOf(batchSize), batch);
             }
         }
         return batch;
@@ -1527,7 +1527,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
                 .getType();
         }
         String tableName =
-            TypeUtil.unqualifiedName(type.getName()) + "_bag_" + getUniqueInteger(c);
+            TypeUtil.unqualifiedName(type.getName()) + "_bag_" + getUniqueInterMineId(c);
         if (log) {
             LOG.info("Creating temporary table " + tableName + " of size "
                     + bagConstraint.getBag().size() + " for " + text);
@@ -1552,7 +1552,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
      */
     protected BagTableToRemove createTempBagTable(Connection c, QueryClassBag qcb,
             boolean log, String text) throws SQLException {
-        String tableName = "Integer_bag_" + getUniqueInteger(c);
+        String tableName = "InterMineId_bag_" + getUniqueInterMineId(c);
         if (log) {
             LOG.info("Creating temporary table " + tableName + " of size "
                     + qcb.getIds().size() + " for " + text);
@@ -1770,7 +1770,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
      * implementation does not bother with the EXPLAIN call to the underlying SQL database.
      */
     @Override
-    protected InterMineObject internalGetObjectById(Integer id,
+    protected InterMineObject internalGetObjectById(InterMineId id,
             Class<? extends InterMineObject> clazz) throws ObjectStoreException {
         if (schema.isFlatMode(clazz)) {
             return super.internalGetObjectById(id, clazz);
@@ -1933,7 +1933,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
         QueryOrderable qn = null;
         String sql = null;
         try {
-            int tableNumber = getUniqueInteger(c);
+            int tableNumber = getUniqueInterMineId(c);
             if (getMinBagTableSize() != -1) {
                 createTempBagTables(c, q);
                 flushOldTempBagTables(c);
@@ -2174,7 +2174,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
                     PrecomputedTable pt = ptm.lookupSql(sql);
                     if (pt == null) {
                         pt = new PrecomputedTable(new org.intermine.sql.query.Query(sql), sql,
-                                "temporary_precomp_" + getUniqueInteger(c), "goFaster", c);
+                                "temporary_precomp_" + getUniqueInterMineId(c), "goFaster", c);
                         ptm.addTableToDatabase(pt, new HashSet<String>(), false);
                         tablesToDrop.add(pt.getName());
                     }
@@ -2193,7 +2193,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
                                 if (subPt == null) {
                                     subPt = new PrecomputedTable(
                                             new org.intermine.sql.query.Query(sql), sql,
-                                            "temporary_precomp_" + getUniqueInteger(c), "goFaster",
+                                            "temporary_precomp_" + getUniqueInterMineId(c), "goFaster",
                                             c);
                                     ptm.addTableToDatabase(subPt, new HashSet<String>(), false);
                                     tablesToDrop.add(subPt.getName());
@@ -2213,7 +2213,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
                                 if (subPt == null) {
                                     subPt = new PrecomputedTable(
                                             new org.intermine.sql.query.Query(sql), sql,
-                                            "temporary_precomp_" + getUniqueInteger(c), "goFaster",
+                                            "temporary_precomp_" + getUniqueInterMineId(c), "goFaster",
                                             c);
                                     ptm.addTableToDatabase(subPt, new HashSet<String>(), false);
                                     tablesToDrop.add(subPt.getName());
@@ -2292,7 +2292,7 @@ public class ObjectStoreInterMineImpl extends ObjectStoreAbstractImpl implements
      * @return an integer that is unique in this database
      * @throws SQLException if something goes wrong
      */
-    public int getUniqueInteger(Connection c) throws SQLException {
+    public int getUniqueInterMineId(Connection c) throws SQLException {
         Statement s = c.createStatement();
         ResultSet r = s.executeQuery("SELECT nextval('" + UNIQUE_INTEGER_SEQUENCE_NAME + "')");
         if (!r.next()) {

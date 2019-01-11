@@ -70,7 +70,7 @@ public class ItemToObjectTranslator extends Translator
     private static final Logger LOG = Logger.getLogger(ItemToObjectTranslator.class);
 
     protected Model model;
-    protected SortedMap<Integer, String> idToNamespace = new TreeMap<Integer, String>();
+    protected SortedMap<InterMineId, String> idToNamespace = new TreeMap<InterMineId, String>();
     protected Map<String, InterMineId> namespaceToId = new HashMap<String, InterMineId>();
 
     /**
@@ -112,7 +112,7 @@ public class ItemToObjectTranslator extends Translator
                     String namespace = (String) row.get(0);
                     idToNamespace.put(new InterMineId(offset), namespace);
                     namespaceToId.put(namespace, new InterMineId(offset));
-                    int highest = ((Integer) row.get(1)).intValue();
+                    int highest = ((InterMineId) row.get(1)).intValue();
                     offset += highest + 1;
                 }
             }
@@ -127,7 +127,7 @@ public class ItemToObjectTranslator extends Translator
      * @param id an InterMineObject id
      * @return the corresponding item identifier
      */
-    public String idToIdentifier(Integer id) {
+    public String idToIdentifier(InterMineId id) {
         if (id == null) {
             return null;
         }
@@ -135,9 +135,9 @@ public class ItemToObjectTranslator extends Translator
         if (namespace != null) {
             return namespace + "_0";
         } else {
-            InterMineId baseInteger = idToNamespace.headMap(id).lastKey();
-            namespace = idToNamespace.get(baseInteger);
-            int base = baseInteger.intValue();
+            InterMineId baseInterMineId = idToNamespace.headMap(id).lastKey();
+            namespace = idToNamespace.get(baseInterMineId);
+            int base = baseInterMineId.intValue();
             return namespace + "_" + (id.intValue() - base);
         }
     }
@@ -146,7 +146,7 @@ public class ItemToObjectTranslator extends Translator
      * {@inheritDoc}
      */
     @Override
-    public Object translateIdToIdentifier(Integer id) {
+    public Object translateIdToIdentifier(InterMineId id) {
         return idToIdentifier(id);
     }
 
@@ -222,7 +222,7 @@ public class ItemToObjectTranslator extends Translator
                 SimpleConstraint sc =
                     new SimpleConstraint(new QueryField(qc, "identifier"),
                             ConstraintOp.EQUALS,
-                            new QueryValue(idToIdentifier((Integer) (((QueryValue)
+                            new QueryValue(idToIdentifier((InterMineId) (((QueryValue)
                                         ((SimpleConstraint) constraint).getArg2())).getValue())));
                 q.setConstraint(sc);
             } else {
@@ -382,7 +382,7 @@ public class ItemToObjectTranslator extends Translator
                 BagConstraint bc;
                 try {
                     bc = new BagConstraint(qf, ConstraintOp.IN,
-                        toIntegers(new HashSet<String>(StringUtil.tokenize(refs.getRefIds()))));
+                        toInterMineIds(new HashSet<String>(StringUtil.tokenize(refs.getRefIds()))));
                 } catch (Exception e) {
                     throw new RuntimeException("failed to find some referenced Items from "
                             + "identifiers " + refs.getRefIds() + " in object store from Item "
@@ -436,7 +436,7 @@ public class ItemToObjectTranslator extends Translator
      */
     protected Collection<String> toStrings(Collection<InterMineId> integers) {
         Collection<String> strings = new ArrayList<String>();
-        for (Integer i : integers) {
+        for (InterMineId i : integers) {
             strings.add(idToIdentifier(i));
         }
         return strings;
@@ -447,7 +447,7 @@ public class ItemToObjectTranslator extends Translator
      * @param strings a set of Strings
      * @return the corresponding set of InterMineIds
      */
-    protected Collection<InterMineId> toIntegers(Collection<String> strings) {
+    protected Collection<InterMineId> toInterMineIds(Collection<String> strings) {
         Collection<InterMineId> integers = new ArrayList<InterMineId>();
         for (String s : strings) {
             integers.add(identifierToId(s));

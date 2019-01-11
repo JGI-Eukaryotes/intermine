@@ -192,7 +192,7 @@ public class BagQueryRunner
                     Results res = os.execute(q, 10000, true, true, false);
                     for (Object rowObj : res) {
                         ResultsRow<?> row = (ResultsRow<?>) rowObj;
-                        InterMineId id = (Integer) row.get(0);
+                        InterMineId id = (InterMineId) row.get(0);
                         for (int i = 1; i < row.size(); i++) {
                             final Object fieldObject = row.get(i);
                             if (fieldObject != null) {
@@ -226,7 +226,7 @@ public class BagQueryRunner
                         false);
                 for (Object rowObj : res) {
                     ResultsRow<?> row = (ResultsRow<?>) rowObj;
-                    InterMineId id = (Integer) row.get(0);
+                    InterMineId id = (InterMineId) row.get(0);
                     for (int i = 1; i < row.size(); i++) {
                         String field = "" + row.get(i);
                         String lowerField = field.toLowerCase();
@@ -283,7 +283,7 @@ public class BagQueryRunner
         Map<String, Set<Object>> objsOfWrongType = new HashMap<String, Set<Object>>();
 
         // Gather together all the id lookups and perform them in one.
-        Map<Integer, InterMineObject> fetchedObjects = new HashMap<Integer, InterMineObject>();
+        Map<InterMineId, InterMineObject> fetchedObjects = new HashMap<InterMineId, InterMineObject>();
         Set<InterMineId> idsToFetch = new HashSet<InterMineId>();
         try {
             for (Map.Entry<String, Set<InterMineId>> resEntry : resMap.entrySet()) {
@@ -311,7 +311,7 @@ public class BagQueryRunner
                     bqr.addMatch(input, ids.iterator().next());
                 } else if (!areWildcards) {
                     List<Object> objs = new ArrayList<Object>();
-                    for (Integer objectId : ids) {
+                    for (InterMineId objectId : ids) {
                         Object obj = fetchedObjects.get(objectId);
                         if (obj == null) {
                             throw new NullPointerException("Could not find object with ID "
@@ -327,7 +327,7 @@ public class BagQueryRunner
 
                 // we have a list of objects that result from some query, divide into any that
                 // match the type of the bag to be created and candidates for conversion
-                for (Integer objectId : ids) {
+                for (InterMineId objectId : ids) {
                     InterMineObject obj = fetchedObjects.get(objectId);
                     if (obj == null) {
                         throw new NullPointerException("Could not find object with ID " + objectId);

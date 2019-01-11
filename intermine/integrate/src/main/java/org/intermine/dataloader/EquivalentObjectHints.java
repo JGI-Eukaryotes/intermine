@@ -173,13 +173,13 @@ public class EquivalentObjectHints
                         false, ObjectStore.SEQUENCE_IGNORE);
                 if (results.size() < SUMMARY_SIZE) {
                     q = QueryCloner.cloneQuery(q);
-                    q.setLimit(Integer.MAX_VALUE);
+                    q.setLimit(InterMineId.MAX_VALUE);
                     q.setDistinct(true);
                     results = os.execute(q, 0, SUMMARY_SIZE, false, false,
                             ObjectStore.SEQUENCE_IGNORE);
                 }
                 if (results.size() >= SUMMARY_SIZE) {
-                    if (Integer.class.equals(qs.getType())) {
+                    if (InterMineId.class.equals(qs.getType())) {
                         q = new Query();
                         q.addFrom(qc);
                         q.addToSelect(new QueryFunction(qs, QueryFunction.MIN));
@@ -187,8 +187,8 @@ public class EquivalentObjectHints
                         q.setDistinct(false);
                         List<ResultsRow<Object>> results2 = os.execute(q, 0, 2, false, false,
                                 ObjectStore.SEQUENCE_IGNORE);
-                        values = new InterMineIdRangeSet(((Integer) results2.get(0).get(0)).intValue(),
-                                ((Integer) results2.get(0).get(1)).intValue());
+                        values = new InterMineIdRangeSet(((InterMineId) results2.get(0).get(0)).intValue(),
+                                ((InterMineId) results2.get(0).get(1)).intValue());
                     } else {
                         values = AlwaysSet.getInstance();
                     }
@@ -286,13 +286,13 @@ public class EquivalentObjectHints
         }
 
         public boolean contains(Object o) {
-            int i = ((Integer) o).intValue();
+            int i = ((InterMineId) o).intValue();
             return (i >= low) && (i <= high);
         }
 
         @Override
         public boolean add(Object o) {
-            int i = ((Integer) o).intValue();
+            int i = ((InterMineId) o).intValue();
             low = Math.min(low, i);
             high = Math.max(high, i);
             return false;
@@ -300,7 +300,7 @@ public class EquivalentObjectHints
 
         @Override
         public String toString() {
-            return "IntegerRangeSet(" + low + " - " + high + ")";
+            return "InterMineIdRangeSet(" + low + " - " + high + ")";
         }
     }
 }

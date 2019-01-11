@@ -163,12 +163,12 @@ public class QueryExpression implements QueryEvaluable
                         + arg2.getType() + ") for substring operation");
             }
             if (arg2.getType().equals(UnknownTypeValue.class)) {
-                arg2.youAreType(Integer.class);
+                arg2.youAreType(InterMineId.class);
             } else if (!Number.class.isAssignableFrom(arg2.getType())) {
                 throw new ClassCastException("Invalid arguments (" + arg1.getType() + ", "
                         + arg2.getType() + ") for substring operation");
             }
-            if ((arg2 instanceof QueryValue) && (((Integer) ((QueryValue) arg2).getValue())
+            if ((arg2 instanceof QueryValue) && (((InterMineId) ((QueryValue) arg2).getValue())
                         .intValue() <= 0)) {
                 throw (new IllegalArgumentException("Invalid pos argument less than or equal to"
                             + " zero for substring"));
@@ -200,23 +200,23 @@ public class QueryExpression implements QueryEvaluable
                     + pos.getType() + ", " + len.getType() + ") for substring operation");
         }
         if (pos.getType().equals(UnknownTypeValue.class)) {
-            pos.youAreType(Integer.class);
+            pos.youAreType(InterMineId.class);
         } else if (!Number.class.isAssignableFrom(pos.getType())) {
             throw new ClassCastException("Invalid arguments (" + arg.getType() + ", "
                     + pos.getType() + ", " + len.getType() + ") for substring operation");
         }
         if (len.getType().equals(UnknownTypeValue.class)) {
-            len.youAreType(Integer.class);
+            len.youAreType(InterMineId.class);
         } else if (!Number.class.isAssignableFrom(len.getType())) {
             throw new ClassCastException("Invalid arguments (" + arg.getType() + ", "
                     + pos.getType() + ", " + len.getType() + ") for substring operation");
         }
-        if ((pos instanceof QueryValue) && (((Integer) ((QueryValue) pos).getValue()).intValue()
+        if ((pos instanceof QueryValue) && (((InterMineId) ((QueryValue) pos).getValue()).intValue()
                     <= 0)) {
             throw (new IllegalArgumentException("Invalid pos argument less than or equal to zero"
                         + " for substring"));
         }
-        if ((len instanceof QueryValue) && (((Integer) ((QueryValue) len).getValue()).intValue()
+        if ((len instanceof QueryValue) && (((InterMineId) ((QueryValue) len).getValue()).intValue()
                     < 0)) {
             throw (new IllegalArgumentException("Invalid len argument less than zero for "
                         + "substring"));

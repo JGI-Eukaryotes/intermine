@@ -83,7 +83,7 @@ public class PagedTable
     // object ids that have been selected in the table
     // TODO this may be more memory efficient with an IntPresentSet
     // note: if allSelected != -1 then this map contains those objects that are NOT selected
-    private Map<Integer, String> selectionIds = new LinkedHashMap<Integer, String>();
+    private Map<InterMineId, String> selectionIds = new LinkedHashMap<InterMineId, String>();
 
     // the index of the column the has all checkbox checked
     private int allSelected = -1;
@@ -586,7 +586,7 @@ public class PagedTable
     private Iterator<SelectionEntry> selectedEntryIterator() {
         if (allSelected == -1) {
             return new Iterator<SelectionEntry>() {
-                Iterator<Map.Entry<Integer, String>> selectionIter =
+                Iterator<Map.Entry<InterMineId, String>> selectionIter =
                     selectionIds.entrySet().iterator();
                 @Override
                 public boolean hasNext() {
@@ -595,7 +595,7 @@ public class PagedTable
                 @Override
                 public SelectionEntry next() {
                     final SelectionEntry retEntry = new SelectionEntry();
-                    final Map.Entry<Integer, String> entry = selectionIter.next();
+                    final Map.Entry<InterMineId, String> entry = selectionIter.next();
                     retEntry.id = entry.getKey();
                     retEntry.fieldValue = entry.getValue();
                     return retEntry;
@@ -1066,14 +1066,14 @@ public class PagedTable
     /**
      * @return the selectionIds
      */
-    public Map<Integer, String> getSelectionIds() {
+    public Map<InterMineId, String> getSelectionIds() {
         return selectionIds;
     }
 
     /**
      * @param selectionIds the selectionIds to set
      */
-    public void setSelectionIds(final Map<Integer, String> selectionIds) {
+    public void setSelectionIds(final Map<InterMineId, String> selectionIds) {
         this.selectionIds = selectionIds;
     }
 

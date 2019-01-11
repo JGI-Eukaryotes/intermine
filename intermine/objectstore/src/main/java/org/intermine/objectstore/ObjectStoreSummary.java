@@ -320,11 +320,11 @@ public class ObjectStoreSummary
      * @return the count of the instances of the class
      */
     public int getClassCount(String className) {
-        InterMineId countInteger = classCountsMap.get(className);
-        if (countInteger == null) {
+        InterMineId countInterMineId = classCountsMap.get(className);
+        if (countInterMineId == null) {
             throw new RuntimeException("cannot find class count for: " + className);
         }
-        return countInteger.intValue();
+        return countInterMineId.intValue();
     }
 
     /**

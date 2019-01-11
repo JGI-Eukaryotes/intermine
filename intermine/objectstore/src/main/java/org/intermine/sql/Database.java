@@ -382,8 +382,8 @@ public class Database implements Shutdownable
      */
     public boolean isVersionAtLeast(String testVersionStr) {
 
-        List<InterMineId> dbVersion = versionStringToInts(getVersion());
-        List<InterMineId> testVersion = versionStringToInts(testVersionStr);
+        List<Integer> dbVersion = versionStringToInts(getVersion());
+        List<Integer> testVersion = versionStringToInts(testVersionStr);
         for (int i = 0; i < testVersion.size(); i++) {
             if (dbVersion.size() > i) {
                 if (dbVersion.get(i).intValue() < testVersion.get(i).intValue()) {
@@ -403,13 +403,13 @@ public class Database implements Shutdownable
     }
 
     // parse the postgres version, e.g. 9.2.1
-    private List<InterMineId> versionStringToInts(String versionStr) {
-        List<InterMineId> versionInts = new ArrayList<InterMineId>();
+    private List<Integer> versionStringToInts(String versionStr) {
+        List<Integer> versionInts = new ArrayList<Integer>();
         String[] parts = versionStr.split("\\.");
         for (int i = 0; i < parts.length; i++) {
             String partToParse = parts[i];
             if (StringUtils.isNumeric(partToParse)) {
-                versionInts.add(new InterMineId(partToParse));
+                versionInts.add(new Integer(partToParse));
             } else {
                 // beta version, e.g. 9.4beta3
                 if (partToParse.contains("beta")) {
@@ -418,7 +418,7 @@ public class Database implements Shutdownable
                         String betaDigit = betaBits[0];
                         if (StringUtils.isNumeric(betaDigit)
                                 && StringUtils.isNotEmpty(betaDigit)) {
-                            versionInts.add(new InterMineId(betaDigit));
+                            versionInts.add(new Integer(betaDigit));
                         }
                     }
                 }
@@ -543,6 +543,7 @@ public class Database implements Shutdownable
         POSTGRESQL_TYPE_STRING_MAP.put(Double.class, "double precision");
         POSTGRESQL_TYPE_STRING_MAP.put(Short.class, "smallint");
         POSTGRESQL_TYPE_STRING_MAP.put(Integer.class, "integer");
+        POSTGRESQL_TYPE_STRING_MAP.put(InterMineId.class, InterMineId.JDBC_TYPE);
         POSTGRESQL_TYPE_STRING_MAP.put(Long.class, "bigint");
         POSTGRESQL_TYPE_STRING_MAP.put(BigDecimal.class, "numeric");
         POSTGRESQL_TYPE_STRING_MAP.put(Date.class, "bigint");

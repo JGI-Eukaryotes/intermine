@@ -475,7 +475,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param profileId the ID of the new userprofile
      * @throws ObjectStoreException if something goes wrong
      */
-    public void setProfileId(Integer profileId)
+    public void setProfileId(InterMineId profileId)
         throws ObjectStoreException {
         this.profileId = profileId;
         SavedBag savedBag = storeSavedBag();
@@ -712,7 +712,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param dataType the type of ids being added
      * @throws ObjectStoreException if problem storing
      */
-    public void addIdToBag(Integer id, String dataType) throws ObjectStoreException {
+    public void addIdToBag(InterMineId id, String dataType) throws ObjectStoreException {
         addIdsToBag(Collections.singleton(id), dataType);
     }
 
@@ -733,7 +733,7 @@ public class InterMineBag extends StorableBag implements Cloneable
         if (profileId != null) {
             //we add only the ids not already contained
             Collection<InterMineId> idsContained = getIdsContained(ids);
-            for (Integer idContained : idsContained) {
+            for (InterMineId idContained : idsContained) {
                 ids.remove(idContained);
             }
             if (!ids.isEmpty()) {
@@ -803,7 +803,7 @@ public class InterMineBag extends StorableBag implements Cloneable
      * @param id the id to remove
      * @throws ObjectStoreException if problem storing
      */
-    public void removeIdFromBag(Integer id) throws ObjectStoreException {
+    public void removeIdFromBag(InterMineId id) throws ObjectStoreException {
         removeIdsFromBag(Collections.singleton(id), true);
     }
 

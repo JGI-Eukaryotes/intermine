@@ -31,7 +31,7 @@ public class IntToIntMap
     private static final int OUTER_MASK = ~INNER_MASK;
     private static final int PAGE_SIZE = INNER_MASK + 1;
 
-    private Map<Integer, int[]> pages = new HashMap<Integer, int[]>();
+    private Map<InterMineId, int[]> pages = new HashMap<InterMineId, int[]>();
     private int size = 0;
 
     /**
@@ -93,7 +93,7 @@ public class IntToIntMap
      * @param from an InterMineId
      * @param to any InterMineId other than -1, or null to remove a mapping
      */
-    public void put(Integer from, InterMineId to) {
+    public void put(InterMineId from, InterMineId to) {
         if (from == null) {
             throw new NullPointerException("from is null");
         }
@@ -114,7 +114,7 @@ public class IntToIntMap
      * @param from any InterMineId
      * @return an InterMineId other than -1, or null if there is no mapping that matches
      */
-    public InterMineId get(Integer from) {
+    public InterMineId get(InterMineId from) {
         if (from == null) {
             throw new NullPointerException("from is null");
         }

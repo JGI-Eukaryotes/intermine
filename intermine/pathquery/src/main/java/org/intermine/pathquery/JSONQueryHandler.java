@@ -174,7 +174,7 @@ public final class JSONQueryHandler
                             List<InterMineId> ids = new ArrayList<InterMineId>();
                             for (int j = 0; j < idArray.length(); j++) {
                                 String id = idArray.get(j).toString();
-                                ids.add(Integer.valueOf(Integer.parseInt(id)));
+                                ids.add(InterMineId.valueOf(InterMineId.parseInt(id)));
                             }
                             constraint = new PathConstraintIds(path, constraintOp, ids);
                         }

@@ -44,10 +44,10 @@ public class Item implements org.intermine.model.InterMineObject
     public void setReferences(final java.util.Set<org.intermine.model.fulldata.Reference> references) { this.references = references; }
     public void addReferences(final org.intermine.model.fulldata.Reference arg) { references.add(arg); }
 
-    // Attr: org.intermine.model.InterMineObject.id
-    protected java.lang.Integer id;
-    public java.lang.Integer getId() { return id; }
-    public void setId(final java.lang.Integer id) { this.id = id; }
+    // Attr: org.intermine.model.id
+    protected org.intermine.model.InterMineId id;
+    public org.intermine.model.InterMineId getId() { return id; }
+    public void setId(final org.intermine.model.InterMineId id) { this.id = id; }
 
     @Override public boolean equals(Object o) { return (o instanceof Item && id != null) ? id.equals(((Item)o).getId()) : this == o; }
     @Override public int hashCode() { return (id != null) ? id.hashCode() : super.hashCode(); }
@@ -120,7 +120,7 @@ public class Item implements org.intermine.model.InterMineObject
         } else if ("references".equals(fieldName)) {
             references = (java.util.Set) value;
         } else if ("id".equals(fieldName)) {
-            id = (java.lang.Integer) value;
+            id = (org.intermine.model.InterMineId) value;
         } else {
             if (!org.intermine.model.fulldata.Item.class.equals(getClass())) {
                 DynamicUtil.setFieldValue(this, fieldName, value);
@@ -149,7 +149,7 @@ public class Item implements org.intermine.model.InterMineObject
             return java.util.Set.class;
         }
         if ("id".equals(fieldName)) {
-            return java.lang.Integer.class;
+            return org.intermine.model.InterMineId.class;
         }
         if (!org.intermine.model.fulldata.Item.class.equals(getClass())) {
             return TypeUtil.getFieldType(org.intermine.model.fulldata.Item.class, fieldName);

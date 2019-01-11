@@ -706,6 +706,8 @@ public class JavaModelOutput
                 } else if ("java.lang.Short".equals(attribute.getType())) {
                     sb.append(fieldName + " = Short.valueOf(notXml[i]);\n");
                 } else if ("java.lang.Integer".equals(attribute.getType())) {
+                    sb.append(fieldName + " = Integer.valueOf(notXml[i]);\n");
+                } else if ("org.intermine.model.InterMineId".equals(attribute.getType())) {
                     sb.append(fieldName + " = InterMineId.valueOf(notXml[i]);\n");
                 } else if ("java.lang.Long".equals(attribute.getType())) {
                     sb.append(fieldName + " = Long.valueOf(notXml[i]);\n");

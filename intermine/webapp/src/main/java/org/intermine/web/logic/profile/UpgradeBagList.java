@@ -63,7 +63,7 @@ public class UpgradeBagList implements Runnable
                         && (result.getIssues().isEmpty()
                             || onlyOtherIssuesAlreadyContained(result))) {
                         @SuppressWarnings("rawtypes")
-                        Map<Integer, List> matches = result.getMatches();
+                        Map<InterMineId, List> matches = result.getMatches();
                         //we don't need to update the extra field added later
                         bag.upgradeOsb(matches.keySet(), false);
                     } else {

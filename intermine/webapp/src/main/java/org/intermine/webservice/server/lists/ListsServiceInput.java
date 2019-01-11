@@ -67,7 +67,7 @@ public class ListsServiceInput extends WebServiceInput
      * Sets Intermine unique object id
      * @param mineId object id
      */
-    public void setMineId(Integer mineId) {
+    public void setMineId(InterMineId mineId) {
         this.mineId = mineId;
     }
 

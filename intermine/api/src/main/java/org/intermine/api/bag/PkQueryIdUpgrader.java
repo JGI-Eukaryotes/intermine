@@ -40,7 +40,7 @@ public class PkQueryIdUpgrader implements IdUpgrader
     private Source source = null;
     EquivalentObjectFetcher eof;
     private IntToIntMap newIdsCacheSingle = new IntToIntMap();
-    private Map<Integer, Set<InterMineId>> newIdsCacheMultiple = new HashMap<Integer, Set<InterMineId>>();
+    private Map<InterMineId, Set<InterMineId>> newIdsCacheMultiple = new HashMap<InterMineId, Set<InterMineId>>();
     private int cacheHits = 0;
     private int cacheLookups = 0;
 
@@ -137,7 +137,7 @@ public class PkQueryIdUpgrader implements IdUpgrader
         }
     }
 
-    private void cacheNewIds(Integer oldId, Set<InterMineId> newIds) {
+    private void cacheNewIds(InterMineId oldId, Set<InterMineId> newIds) {
         if (newIds.size() == 1) {
             InterMineId newId = newIds.iterator().next();
             newIdsCacheSingle.put(oldId, newId);
@@ -147,7 +147,7 @@ public class PkQueryIdUpgrader implements IdUpgrader
     }
 
 
-    private Set<InterMineId> fetchFromCache(Integer oldId) {
+    private Set<InterMineId> fetchFromCache(InterMineId oldId) {
         InterMineId newId = newIdsCacheSingle.get(oldId);
         if (newId != null) {
             return new HashSet<InterMineId>(Collections.singleton(newId));

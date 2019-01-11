@@ -65,7 +65,7 @@ public class InlineResultsTableRow
      * Set imObj ID for the object (taken from the first valid imObj id for this row)
      * @param id imObj id
      */
-    public void setObjectId(Integer id) {
+    public void setObjectId(InterMineId id) {
         this.imObjId  = id;
     }
 

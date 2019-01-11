@@ -255,7 +255,7 @@ public class ObjectStoreTranslatingImpl extends ObjectStoreAbstractImpl
      * {@inheritDoc}
      */
     @Override
-    public InterMineObject internalGetObjectById(Integer id,
+    public InterMineObject internalGetObjectById(InterMineId id,
             Class<? extends InterMineObject> clazz) throws ObjectStoreException {
         InterMineObject retval = super.internalGetObjectById(id, clazz);
         //Exception e = new Exception("internalGetObjectById called for "

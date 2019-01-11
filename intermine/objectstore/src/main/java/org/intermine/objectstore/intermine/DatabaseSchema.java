@@ -277,6 +277,7 @@ public class DatabaseSchema
     }
 
     private static boolean compatible(String type1, String type2) {
+        // TODO need intermineid?
         if ("int".equals(type1) || "java.lang.Integer".equals(type1) || "reference".equals(type1)) {
             if ("int".equals(type2) || "java.lang.Integer".equals(type2)
                     || "reference".equals(type2)) {

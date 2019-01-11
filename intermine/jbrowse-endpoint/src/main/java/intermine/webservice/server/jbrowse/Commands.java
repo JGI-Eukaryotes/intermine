@@ -67,8 +67,8 @@ public final class Commands
             return null;
         }
 
-        InterMineId start = getIntegerParam(parameters, "start");
-        InterMineId end = getIntegerParam(parameters, "end");
+        InterMineId start = getInterMineIdParam(parameters, "start");
+        InterMineId end = getInterMineIdParam(parameters, "end");
 
         String[] parts = StringUtils.split(pathInfo.substring(1), "/");
         if (parts.length < 3 || parts.length > 4) {
@@ -103,7 +103,7 @@ public final class Commands
         }
     }
 
-    private static InterMineId getIntegerParam(Map<String, String> params, String key) {
+    private static InterMineId getInterMineIdParam(Map<String, String> params, String key) {
         String numStr = params.get(key);
         if (numStr == null || "null".equalsIgnoreCase(numStr)) {
             return null;

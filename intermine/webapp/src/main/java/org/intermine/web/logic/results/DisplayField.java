@@ -107,7 +107,7 @@ public class DisplayField
                 String maxInlineTableSizeString =
                     (String) webProperties.get(Constants.INLINE_TABLE_SIZE);
                 try {
-                    tableSize = InterMineId.valueOf(Integer.parseInt(maxInlineTableSizeString));
+                    tableSize = InterMineId.valueOf(InterMineId.parseInt(maxInlineTableSizeString));
                 } catch (NumberFormatException e) {
                     LOG.warn("Failed to parse " + Constants.INLINE_TABLE_SIZE + " property: "
                              + maxInlineTableSizeString);

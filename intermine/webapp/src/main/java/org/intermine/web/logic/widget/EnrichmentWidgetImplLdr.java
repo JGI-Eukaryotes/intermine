@@ -149,7 +149,7 @@ public class EnrichmentWidgetImplLdr extends WidgetLdr
                 Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                 for (String id : idArray) {
                     try {
-                        idsCollection.add(Integer.valueOf(id.trim()));
+                        idsCollection.add(InterMineId.valueOf(id.trim()));
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("List of IDs contains invalid integer: " + id,
                                 e);
@@ -272,7 +272,7 @@ public class EnrichmentWidgetImplLdr extends WidgetLdr
                             Collection<InterMineId> idsCollection = new LinkedHashSet<InterMineId>();
                             for (String intermineId : idArray) {
                                 try {
-                                    idsCollection.add(Integer.valueOf(intermineId.trim()));
+                                    idsCollection.add(InterMineId.valueOf(intermineId.trim()));
                                 } catch (NumberFormatException e) {
                                     throw new RuntimeException("List of IDs contains invalid "
                                             + "integer: " + intermineId, e);

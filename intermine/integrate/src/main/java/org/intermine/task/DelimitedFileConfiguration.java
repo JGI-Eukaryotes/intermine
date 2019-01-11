@@ -126,7 +126,7 @@ public class DelimitedFileConfiguration
         Iterator mapKeyIter = map.keySet().iterator();
 
         while (mapKeyIter.hasNext()) {
-            InterMineId key = (Integer) mapKeyIter.next();
+            InterMineId key = (InterMineId) mapKeyIter.next();
 
             if (key.intValue() > maxSoFar) {
                 maxSoFar = key.intValue();

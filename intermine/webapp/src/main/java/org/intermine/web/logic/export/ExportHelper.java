@@ -64,7 +64,7 @@ public final class ExportHelper
         List<InterMineId> ret = new ArrayList<InterMineId>();
         for (int i = 0; i < clazzes.size(); i++) {
             if (searched.isAssignableFrom(clazzes.get(i))) {
-                ret.add(Integer.valueOf(i));
+                ret.add(InterMineId.valueOf(i));
             }
         }
         return ret;

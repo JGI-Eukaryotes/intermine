@@ -174,7 +174,7 @@ public final class ProfileBinding
             writer.writeStartElement("invitations");
             Collection<SharingInvite.IntermediateRepresentation> invites =
                     SharingInvite.getInviteData(profile.getProfileManager(), profile);
-            Map<Integer, String> bagNameCache = new HashMap<Integer, String>();
+            Map<InterMineId, String> bagNameCache = new HashMap<InterMineId, String>();
             Map<String, InterMineBag> bags = profile.getSavedBags();
             for (SharingInvite.IntermediateRepresentation invite: invites) {
                 writer.writeStartElement("invite");
@@ -215,7 +215,7 @@ public final class ProfileBinding
     }
 
     private static String getBagName(
-            Map<Integer, String> cache, Map<String, InterMineBag> bags, InterMineId id) {
+            Map<InterMineId, String> cache, Map<String, InterMineBag> bags, InterMineId id) {
         if (id != null && !cache.containsKey(id)) {
             for (String name: bags.keySet()) {
                 if (id.equals(bags.get(name).getSavedBagId())) {

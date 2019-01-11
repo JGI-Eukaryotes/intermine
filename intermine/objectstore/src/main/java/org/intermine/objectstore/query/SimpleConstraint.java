@@ -10,6 +10,7 @@ package org.intermine.objectstore.query;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
@@ -213,6 +214,7 @@ public class SimpleConstraint extends Constraint
                 && (arg1.equals(String.class) || arg1.equals(Boolean.class)
                     || arg1.equals(Date.class) || arg1.equals(Short.class)
                     || arg1.equals(Integer.class) || arg1.equals(Long.class)
+                    || arg1.equals(InterMineId.class)
                     || arg1.equals(Float.class) || arg1.equals(Double.class)
                     || arg1.equals(BigDecimal.class) || arg1.equals(UnknownTypeValue.class)
                     || arg1.equals(Class.class))) {

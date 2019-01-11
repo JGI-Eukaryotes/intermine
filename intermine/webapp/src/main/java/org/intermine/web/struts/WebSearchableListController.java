@@ -177,7 +177,7 @@ public class WebSearchableListController extends TilesAction
                 for (Tag t : tags) {
                     String name = t.getTagName();
                     if (name.startsWith("im:order:")) {
-                        return InterMineId.valueOf(Integer.parseInt(name.replaceAll("[^0-9]", "")));
+                        return InterMineId.valueOf(InterMineId.parseInt(name.replaceAll("[^0-9]", "")));
                     }
                 }
                 return InterMineId.valueOf(666);

@@ -10,6 +10,7 @@ package org.intermine.xml.full;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -190,7 +191,7 @@ public final class FullParser
             }
 
             if (useIdentifier) {
-                obj.setFieldValue("id", TypeUtil.stringToObject(Integer.class,
+                obj.setFieldValue("id", TypeUtil.stringToObject(InterMineId.class,
                             item.getIdentifier()));
             }
 

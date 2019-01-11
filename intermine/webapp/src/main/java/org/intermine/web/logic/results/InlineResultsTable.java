@@ -285,7 +285,7 @@ public class InlineResultsTable
      * @param id imObj
      * @param tableRowObject InlineResultsTableRow (default)
      */
-    protected void saveObjectIdOnTableRow(Integer id, Object tableRowObject) { }
+    protected void saveObjectIdOnTableRow(InterMineId id, Object tableRowObject) { }
 
     /**
      * Main method used from report to resolve a tablefull of ResultElements

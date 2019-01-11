@@ -137,15 +137,15 @@ public class BagUploadConfirmIssueController extends TilesAction
             for (Object rowNumber : value) {
                 // fetch the actual row in the table
                 BagUploadConfirmInlineResultsTableRow tableRow =
-                    (BagUploadConfirmInlineResultsTableRow) tableRows.get(((Integer) rowNumber).intValue());
+                    (BagUploadConfirmInlineResultsTableRow) tableRows.get(((InterMineId) rowNumber).intValue());
                 // set the new values
                 if (first.booleanValue()) {
-                    tableRow.setRowSpan(Integer.valueOf(value.size()));
+                    tableRow.setRowSpan(InterMineId.valueOf(value.size()));
                     tableRow.setShowIdentifier(Boolean.TRUE);
                 }
                 tableRow.setIdentifier((String) identifierKey);
                 // save the row back
-                tableRows.set(((Integer) rowNumber).intValue(), tableRow);
+                tableRows.set(((InterMineId) rowNumber).intValue(), tableRow);
                 // switch
                 first = Boolean.FALSE;
             }

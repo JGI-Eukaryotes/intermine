@@ -248,7 +248,7 @@ public class ReportController extends InterMineAction
         if (!StringUtils.isNumeric(idString) || StringUtils.isBlank(idString)) {
             return null;
         }
-        InterMineId id = new InterMineId(Integer.parseInt(idString));
+        InterMineId id = new InterMineId(InterMineId.parseInt(idString));
         ObjectStore os = im.getObjectStore();
         InterMineObject requestedObject = null;
         try {

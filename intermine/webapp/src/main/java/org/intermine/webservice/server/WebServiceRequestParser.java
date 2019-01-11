@@ -164,20 +164,20 @@ public class WebServiceRequestParser
         input.setLimit(DEFAULT_LIMIT);
         input.setStart(DEFAULT_START);
 
-        InterMineId start = parseInteger(request.getParameter(START_PARAMETER), START_PARAMETER, 0,
+        InterMineId start = parseInterMineId(request.getParameter(START_PARAMETER), START_PARAMETER, 0,
                 InterMineId.MAX_VALUE);
         if (start != null) {
             input.setStart(start);
         }
 
-        InterMineId limit = parseInteger(request.getParameter(LIMIT_PARAMETER),
+        InterMineId limit = parseInterMineId(request.getParameter(LIMIT_PARAMETER),
                 LIMIT_PARAMETER, MIN_LIMIT, MAX_LIMIT.intValue());
         if (limit != null) {
             input.setLimit(limit);
         }
     }
 
-    private InterMineId parseInteger(String stringValue, String name, int minValue, int maxValue) {
+    private InterMineId parseInterMineId(String stringValue, String name, int minValue, int maxValue) {
         InterMineId ret = null;
         if (stringValue != null && !"".equals(stringValue)) {
             try {

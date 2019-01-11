@@ -137,14 +137,14 @@ public class NavigationBarTag extends SimpleTagSupport
     /**
      * @param currentPage index of page that should be current
      */
-    public void setCurrentPage(Integer currentPage) {
+    public void setCurrentPage(InterMineId currentPage) {
         this.currentPage = currentPage;
     }
 
     /**
      * @param pageSize new page size
      */
-    public void setPageSize(Integer pageSize) {
+    public void setPageSize(InterMineId pageSize) {
         this.pageSize = pageSize;
     }
 

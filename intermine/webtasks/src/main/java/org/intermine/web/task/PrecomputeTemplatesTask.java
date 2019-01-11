@@ -10,6 +10,7 @@ package org.intermine.web.task;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -95,7 +96,7 @@ public class PrecomputeTemplatesTask extends Task
      * than this number of rows will not be precomputed.
      * @param minRows the minimum row count
      */
-    public void setMinRows(Integer minRows) {
+    public void setMinRows(InterMineId minRows) {
         this.minRows = minRows.intValue();
     }
 

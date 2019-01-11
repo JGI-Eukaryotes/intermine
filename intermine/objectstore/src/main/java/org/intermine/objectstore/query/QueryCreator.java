@@ -41,7 +41,7 @@ public final class QueryCreator
      * @param clazz a Class in the object
      * @return a Query
      */
-    public static Query createQueryForId(Integer id, Class<? extends InterMineObject> clazz) {
+    public static Query createQueryForId(InterMineId id, Class<? extends InterMineObject> clazz) {
         Query q = new Query();
         QueryClass qc = new QueryClass(clazz);
         q.addFrom(qc);

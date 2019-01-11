@@ -10,6 +10,7 @@ package org.intermine.webservice.server.lists;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -52,7 +53,7 @@ public class ListAppendService extends ListUploadService
 
         processIdentifiers(bag.getType(), input, ids, unmatchedIds, bag);
 
-        setListSize(Integer.valueOf(bag.size()));
+        setListSize(InterMineId.valueOf(bag.size()));
         setListId(bag.getSavedBagId());
 
         for (Iterator<String> i = unmatchedIds.iterator(); i.hasNext();) {

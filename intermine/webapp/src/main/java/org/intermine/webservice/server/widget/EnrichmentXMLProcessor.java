@@ -10,6 +10,7 @@ package org.intermine.webservice.server.widget;
  *
  */
 
+import org.intermine.model.InterMineId;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +38,14 @@ public final class EnrichmentXMLProcessor implements WidgetResultProcessor
         return INSTANCE;
     }
 
-    private static final Map<Integer, String> ELEMENTS = new HashMap<Integer, String>() {
+    private static final Map<InterMineId, String> ELEMENTS = new HashMap<InterMineId, String>() {
         private static final long serialVersionUID = 5353373450297092694L;
         {
-            put(Integer.valueOf(0), "identifier");
-            put(Integer.valueOf(1), "description");
-            put(Integer.valueOf(2), "pValue");
-            put(Integer.valueOf(3), "count");
-            put(Integer.valueOf(4), "populationAnnotationCount");
+            put(InterMineId.valueOf(0), "identifier");
+            put(InterMineId.valueOf(1), "description");
+            put(InterMineId.valueOf(2), "pValue");
+            put(InterMineId.valueOf(3), "count");
+            put(InterMineId.valueOf(4), "populationAnnotationCount");
         }
     };
 
@@ -53,7 +54,7 @@ public final class EnrichmentXMLProcessor implements WidgetResultProcessor
         StringBuffer sb = new StringBuffer("<result>");
         int i = 0;
         for (Object cell: row) {
-            sb.append(formatCell(ELEMENTS.get(Integer.valueOf(i)), cell));
+            sb.append(formatCell(ELEMENTS.get(InterMineId.valueOf(i)), cell));
             i++;
         }
         sb.append("</result>");
