@@ -28,6 +28,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.objectstore.proxy.ProxyReference;
 import org.intermine.util.DynamicUtil;
+//import org.intermine.dataloader.DirectParallelBatchingFetcher;
 
 /**
  * A DataLoader with helper methods for creating and storing objects using an IntegrationWriter.
@@ -66,6 +67,19 @@ public class DirectDataLoader extends DataLoader
     }
 
     /**
+     * Register the ObjectStore id associated with a newly created object.
+     * This is typically done if we have a priori knowledge that an
+     * equivalent object already exists in the database (i.e., we did a query!)
+     * @param imo the InterMineObject
+     * @param InterMineId the ObjectStore id
+     */
+    public void has_id(InterMineObject imo,Integer InterMineId) {
+        HintingFetcher eof =
+                ((IntegrationWriterDataTrackingImpl) getIntegrationWriter()).getEof();
+        eof.has_id(imo,InterMineId);
+    }
+
+    /**
      * Store an object using the IntegrationWriter, buffering writes so that integration queries
      * and database writes can be run in batches.
      * @param o the InterMineObject
@@ -79,6 +93,7 @@ public class DirectDataLoader extends DataLoader
             storeBatch();
         }
     }
+
 
     /**
      *

@@ -246,4 +246,18 @@ public class HintingFetcher extends BaseEquivalentObjectFetcher
         }
         super.createPKQueryForPK(obj, queryNulls, cld, pk, source, returnSet);
     }
+
+
+    /**
+     * The ultimate hint we can give to the fetcher is to tell it the
+     * known real InterMineId of the object
+     *
+     * @param imo the (newly created) InterMineObject
+     * @param InterMineId the (known) InterMine Id
+     *
+     * @author J Carlson
+     */
+    public void has_id(InterMineObject imo, Integer InterMineId) {
+        idMap.put(imo.getId(), InterMineId);
+    }
 }
