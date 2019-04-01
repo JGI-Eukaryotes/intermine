@@ -255,14 +255,8 @@ class IntegrateUtils {
             }
         }
         if (props.containsKey("have.file.custom.direct")) {
-            def argList = [integrationWriterAlias: "integration.production",
-                                       sourceName: source.name, sourceType: source.type]
-            source.userProperties.each { prop -> if (! "src.data.dir".equals(prop.name) &&
-                                                     ! "dataSourceName".equals(prop.name) &&
-                                                     ! "dataSourceTitle".equals(prop.name) &&
-                                                     ! (source.type+".includes").equals(prop.name) )
-                                                            {argList[prop.name] = prop.value} }
-            ant.dataLoad(argList) {
+           ant.dataLoad(integrationWriterAlias: "integration.production",
+                    sourceName: source.name, sourceType: source.type){
                 fileset(dir: BioSourceProperties.getUserProperty(source, "src.data.dir"),
                         includes: BioSourceProperties.getUserProperty(source, source.type + ".includes"))
             }
