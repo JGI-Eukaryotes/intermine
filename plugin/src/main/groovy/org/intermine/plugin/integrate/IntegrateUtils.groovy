@@ -251,7 +251,9 @@ class IntegrateUtils {
             } else {
                 classname = props.getProperty("loader.class")
             }
-        } else {
+        } else if (props.containsKey("have.db.direct")) {
+            classname = props.getProperty("loader.class")
+        } else  {
             classname = "org.intermine.dataloader.ObjectStoreDataLoaderTask"
         }
         ant.taskdef(name: "dataLoad", classname: classname) {
@@ -267,6 +269,12 @@ class IntegrateUtils {
                 fileset(dir: BioSourceProperties.getUserProperty(source, "src.data.dir"),
                         includes: BioSourceProperties.getUserProperty(source, source.type + ".includes"))
             }
+        } else if (props.containsKey("have.db.direct")) {
+            def argList = [integrationWriterAlias: "integration.production",
+                    sourceName: source.name, sourceType: source.type,
+            sourceDbName:  BioSourceProperties.getUserProperty(source, "source.db.name")]
+            source.userProperties.each { prop -> if (!"source.db.name".equals(prop.name) ) {argList[prop.name] = prop.value} }
+            ant.dataLoad(argList)
         } else {
             ant.dataLoad(integrationWriter: "integration.production",
                     source: "os." + COMMON_OS_PREFIX + "-translated",
