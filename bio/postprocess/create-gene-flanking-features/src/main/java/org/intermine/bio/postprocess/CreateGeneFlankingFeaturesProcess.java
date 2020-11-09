@@ -52,14 +52,16 @@ public class CreateGeneFlankingFeaturesProcess extends PostProcessor
     /**
      * The sizes in kb of flanking regions to create.
      */
-    private static double[] distances = new double[] {0.5, 1, 2, 5, 10};
+    //private static double[] distances = new double[] {0.5, 1, 2, 5, 10};
+    private static double[] distances = new double[] {10};
 
     /**
      * The values strings for up/down stream from a gene.
      */
     private static String[] directions = new String[] {"upstream", "downstream"};
 
-    private static boolean[] includeGenes = new boolean[] {true, false};
+    //private static boolean[] includeGenes = new boolean[] {true, false};
+    private static boolean[] includeGenes = new boolean[] {true};
 
     private static final Logger LOG = Logger.getLogger(CreateGeneFlankingFeaturesProcess.class);
 

@@ -103,7 +103,9 @@ public final class FriendlyMineLinkGenerator implements InterMineLinkGenerator
             Map<String, Set<ObjectDetails>> genes = remoteHomologueStrategy(req);
             // Phase two -- query this mine for homologues.
             if (genes == null || genes.isEmpty()) {
-                genes = localHomologueStrategy(req);
+                try {
+                   genes = localHomologueStrategy(req);
+                } catch (Exception e) {}
             }
 
             // Phase three - check if the remote mine contains this actual object.

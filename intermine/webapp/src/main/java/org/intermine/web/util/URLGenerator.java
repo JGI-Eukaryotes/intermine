@@ -63,7 +63,7 @@ public class URLGenerator
         }
 
         if (request.getServerPort() != 80 && request.getServerPort() != 443) {
-            baseUrl += ":" + request.getServerPort();
+            //baseUrl += ":" + request.getServerPort();
         }
         String path = webProperties.getProperty("webapp.path");
         URL url = null;

@@ -39,7 +39,7 @@
                     notification.close();
                     if (window.$SERVICE) {
                       var errHandler = function(err) {new FailureNotification({message: err}).render()};
-                      $SERVICE.fetchList(bagName, function(l) {
+                      $SERVICE.fetchLists(bagName, function(l) {
                           l.inviteUserToShare(user).fail(errHandler);
                       }).fail(errHandler);
                     } else {

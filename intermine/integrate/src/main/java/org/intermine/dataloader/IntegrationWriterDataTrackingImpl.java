@@ -569,11 +569,14 @@ public class IntegrationWriterDataTrackingImpl extends IntegrationWriterAbstract
 
             if (!(field instanceof CollectionDescriptor)) {
                 if (lastSource == null) {
-                    throw new NullPointerException("Error: lastSource is null for"
+                    LOG.warn("Error: lastSource is null for"
                             + " object " + o.getId() + " and fieldName " + fieldName);
-                }
+                //    throw new NullPointerException("Error: lastSource is null for"
+                //            + " object " + o.getId() + " and fieldName " + fieldName);
+                } else {
 
                 trackingMap.put(fieldName, lastSource);
+                }
             }
         }
     }

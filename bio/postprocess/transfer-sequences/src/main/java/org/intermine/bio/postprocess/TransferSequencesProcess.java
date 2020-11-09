@@ -120,10 +120,23 @@ public class TransferSequencesProcess extends PostProcessor
         q.addFrom(qcChr);
         q.addToSelect(qcChr);
         QueryObjectReference seqRef = new QueryObjectReference(qcChr, "sequence");
-        ContainsConstraint cc = new ContainsConstraint(seqRef, ConstraintOp.IS_NOT_NULL);
-        q.setConstraint(cc);
+        QueryClass qcLoc = new QueryClass(Location.class);
+        q.addFrom(qcLoc);
+        QueryObjectReference locChromRef = new QueryObjectReference(qcLoc,"locatedOn");
+        QueryObjectReference locFeatRef = new QueryObjectReference(qcLoc,"feature");
+        QueryClass qcFeat = new QueryClass(SequenceFeature.class);
+        q.addFrom(qcFeat);
+        QueryObjectReference featSeqRef = new QueryObjectReference(qcFeat, "sequence");
 
-        SingletonResults res = os.executeSingleton(q);
+        ConstraintSet cSet = new ConstraintSet(ConstraintOp.AND);
+        cSet.addConstraint(new ContainsConstraint(seqRef, ConstraintOp.IS_NOT_NULL));
+        cSet.addConstraint(new ContainsConstraint(featSeqRef, ConstraintOp.IS_NULL));
+        cSet.addConstraint(new ContainsConstraint(locChromRef,ConstraintOp.CONTAINS,qcChr));
+        cSet.addConstraint(new ContainsConstraint(locFeatRef,ConstraintOp.CONTAINS,qcFeat));
+        q.setConstraint(cSet);
+        q.setDistinct(true);
+
+        SingletonResults res = os.executeSingleton(q,100000,true,true,true);
         Iterator<?> chrIter = res.iterator();
 
         Set<Chromosome> chromosomes = new HashSet<Chromosome>();
@@ -132,7 +145,7 @@ public class TransferSequencesProcess extends PostProcessor
             chromosomes.add(chr);
         }
 
-        LOG.info("Found " + chromosomes.size() + " chromosomes with sequence, took "
+        LOG.info("With modified query found " + chromosomes.size() + " chromosomes with sequence, took "
                 + (System.currentTimeMillis() - startTime) + " ms.");
 
         for (Chromosome chr : chromosomes) {

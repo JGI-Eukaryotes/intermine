@@ -706,6 +706,7 @@ public class AjaxServices
                 || StringUtils.isEmpty(idents)) {
             return null;
         }
+        domains = domains.replaceAll(" [^ ]*$","");
         final HttpSession session = WebContextFactory.get().getSession();
         final InterMineAPI im = SessionMethods.getInterMineAPI(session);
         final ServletContext servletContext = WebContextFactory.get().getServletContext();
@@ -1429,6 +1430,7 @@ public class AjaxServices
 
         final InterMineBag bag = profile.getSavedBags().get(bagName);
         final Profile invitee = pm.getProfile(userName);
+        LOG.info("About to share bag "+bagName+" with "+userName);
         if (bag == null) {
             return "This is not one of your lists";
         }
@@ -1449,6 +1451,7 @@ public class AjaxServices
         boolean queuedMessage = InterMineContext.queueMessage(new MailAction() {
             @Override
             public void act(Emailer emailer) throws Exception {
+                LOG.info("About to send email to "+invitee.getEmailAddress());
                 emailer.informUserOfNewSharedBag(invitee.getEmailAddress(), profile, bag);
             }
         });

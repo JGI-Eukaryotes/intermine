@@ -36,6 +36,9 @@ function trimTable(e) {
           })
       }).appendTo(target);
   }
+  // tweak
+  console.log("JWC Tweak");
+  table.parent().parent().find('div.show-in-table').css('display', '');
 
 }
 
