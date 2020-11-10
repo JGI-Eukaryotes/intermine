@@ -1,7 +1,7 @@
 package org.intermine.web.struts;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -184,8 +184,8 @@ public class ReportController extends InterMineAction
             String type = reportObject.getType();
             request.setAttribute("objectType", type);
             String idString = request.getParameter("id");
-            String fairPermanentLink = (new PermanentURIHelper(request)).getPermanentURL(type,
-                    Integer.parseInt(idString));
+            String fairPermanentLink = (new PermanentURIHelper(request)).getPermanentURL(
+                    Integer.parseInt(idString), SessionMethods.getProfile(session));
             if (fairPermanentLink != null) {
                 request.setAttribute("stableLink", fairPermanentLink);
             }
@@ -340,6 +340,4 @@ public class ReportController extends InterMineAction
             entry.getValue().remove(name);
         }
     }
-
-
 }

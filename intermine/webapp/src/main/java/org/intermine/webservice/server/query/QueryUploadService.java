@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.query;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -106,7 +106,7 @@ public class QueryUploadService extends WebService
         switch (getFormat()) {
             case JSON:
                 headerAttributes.put(JSONFormatter.KEY_INTRO, "\"queries\":{");
-                headerAttributes.put(JSONFormatter.KEY_OUTRO, "},");
+                headerAttributes.put(JSONFormatter.KEY_OUTRO, "}");
                 break;
             default:
                 break;

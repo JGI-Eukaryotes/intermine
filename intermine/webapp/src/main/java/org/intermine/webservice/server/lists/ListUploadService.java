@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.lists;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -217,7 +217,7 @@ public class ListUploadService extends ListMakerService
                     final String token = st.nextToken();
                     ids.add(token);
                 }
-                if (ids.size() >= BAG_QUERY_MAX_BATCH_SIZE) {
+                if (ids.size() <= BAG_QUERY_MAX_BATCH_SIZE) {
                     addIdsToList(ids, tempBag, type, input.getExtraValue(),
                             unmatchedIds, addIssues);
                     ids.clear();

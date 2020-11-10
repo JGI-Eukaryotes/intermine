@@ -7,6 +7,7 @@ include ':bio-source-biogrid',
 ':bio-source-ensembl-compara',
 ':bio-source-entrez-organism',
 ':bio-source-fasta',
+':bio-source-gff',
 ':bio-source-go',
 ':bio-source-go-annotation',
 ':bio-source-hgnc',
@@ -39,10 +40,13 @@ include ':bio-source-biogrid',
 ':bio-source-update-publications',
 ':bio-source-vcf',
 ':bio-source-wormbase-identifiers',
+':bio-source-isa',
 //bio-examples-sources
 //':bio-source-kegg',
 //':bio-source-kegg-identifiers',
 ':bio-source-malaria-gff'
+
+project(':bio-source-isa').projectDir = new File(settingsDir, './isa')
 
 project(':bio-source-biogrid').projectDir = new File(settingsDir, './biogrid')
 project(':bio-source-chado-db').projectDir = new File(settingsDir, './chado-db')
@@ -51,6 +55,7 @@ project(':bio-source-eco').projectDir = new File(settingsDir, './eco')
 project(':bio-source-ensembl-compara').projectDir = new File(settingsDir, './ensembl-compara')
 project(':bio-source-entrez-organism').projectDir = new File(settingsDir, './entrez-organism')
 project(':bio-source-fasta').projectDir = new File(settingsDir, './fasta')
+project(':bio-source-gff').projectDir = new File(settingsDir, './gff')
 project(':bio-source-go').projectDir = new File(settingsDir, './go')
 project(':bio-source-go-annotation').projectDir = new File(settingsDir, './go-annotation')
 project(':bio-source-hgnc').projectDir = new File(settingsDir, './hgnc')

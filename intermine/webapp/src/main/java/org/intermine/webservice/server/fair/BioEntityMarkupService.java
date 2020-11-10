@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.fair;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -11,7 +11,7 @@ package org.intermine.webservice.server.fair;
  */
 
 import org.intermine.api.InterMineAPI;
-import org.intermine.web.fair.SemanticMarkupUtil;
+import org.intermine.web.fair.SemanticMarkupFormatter;
 import org.intermine.webservice.server.core.JSONService;
 
 /**
@@ -31,13 +31,12 @@ public class BioEntityMarkupService extends JSONService
 
     @Override
     protected void execute() throws Exception {
-        String entityType = getRequiredParameter("type");
         int id = Integer.parseInt(getRequiredParameter("id"));
-        addResultItem(SemanticMarkupUtil.getBioEntityMarkup(request, entityType, id), false);
+        addResultItem(SemanticMarkupFormatter.formatBioEntity(request, id), false);
     }
 
     @Override
     public String getResultsKey() {
-        return "properties";
+        return "semantic-markups";
     }
 }

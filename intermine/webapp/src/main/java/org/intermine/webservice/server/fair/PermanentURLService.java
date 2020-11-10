@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.fair;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -39,10 +39,9 @@ public class PermanentURLService extends JSONService
 
     @Override
     protected void execute() throws Exception {
-        String type = getRequiredParameter("type");
         String id = getRequiredParameter("id");
-        String url = (new PermanentURIHelper(request)).getPermanentURL(type,
-                Integer.parseInt(id));
+        String url = (new PermanentURIHelper(request)).getPermanentURL(
+                Integer.parseInt(id), getPermission().getProfile());
         if (url == null) {
             addOutputInfo("url", StringUtils.EMPTY);
         } else {

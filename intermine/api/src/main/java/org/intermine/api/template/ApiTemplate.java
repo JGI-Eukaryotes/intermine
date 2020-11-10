@@ -1,7 +1,7 @@
 package org.intermine.api.template;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -101,8 +101,6 @@ public class ApiTemplate extends TemplateQuery implements WebSearchable
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result
-                + ((observers == null) ? 0 : observers.hashCode());
         result = prime
                 * result
                 + ((savedTemplateQuery == null) ? 0 : savedTemplateQuery

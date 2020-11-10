@@ -1,7 +1,7 @@
 package org.intermine.web.logic;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -12,10 +12,10 @@ package org.intermine.web.logic;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.intermine.api.uri.InterMineLUI;
-import org.intermine.api.uri.InterMineLUIConverter;
-import org.intermine.objectstore.ObjectStoreException;
+import org.intermine.api.profile.Profile;
 import org.intermine.web.context.InterMineContext;
+import org.intermine.web.uri.InterMineLUI;
+import org.intermine.web.uri.InterMineLUIConverter;
 import org.intermine.web.util.URLGenerator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,18 +82,14 @@ public class PermanentURIHelper
     /**
      * Returns the permanent URL given the class name and the primary identifier
      * The permanent URL is used in the Share button, to set the url in Schema.org
-     * @param type the class name
-     * @param interMineId the internal id or null if can not generate the url
-     * @return the permanent url
+     * @param interMineId the internal id
+     * @param profile the profile
+     * @return the permanent url or null if can not generate the url
      */
-    public String getPermanentURL(String type, Integer interMineId) {
-        InterMineLUIConverter converter = new InterMineLUIConverter();
+    public String getPermanentURL(Integer interMineId, Profile profile) {
+        InterMineLUIConverter converter = new InterMineLUIConverter(profile);
         InterMineLUI interMineLUI = null;
-        try {
-            interMineLUI = converter.getInterMineLUI(type, interMineId);
-        } catch (ObjectStoreException ex) {
-            LOGGER.error("Problems retrieving identifier from InterMineObjectStore");
-        }
+        interMineLUI = converter.getInterMineLUI(interMineId);
         return getPermanentURL(interMineLUI);
     }
 

@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.output;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -165,6 +165,10 @@ public class JSONFormatter extends Formatter
     private String quoteValue(String val) {
         if (val == null) {
             return "null";
+        }
+        //we do the check here because StringUtils.isNumeric returns true for empty string
+        if (StringUtils.isEmpty(val)) {
+            return "\"" + val + "\"";
         }
         if ("null".equals(val) || "true".equals(val) || "false".equals(val)
                 || StringUtils.isNumeric(val)) {

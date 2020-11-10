@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.user;
 
 /*
- * Copyright (C) 2002-2019 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -9,9 +9,6 @@ package org.intermine.webservice.server.user;
  * information or http://www.gnu.org/copyleft/lesser.html.
  *
  */
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.intermine.api.InterMineAPI;
 import org.intermine.api.profile.Profile;
@@ -58,12 +55,7 @@ public class WhoAmIService extends JSONService
     @Override
     protected void execute() throws Exception {
         Profile profile = getPermission().getProfile();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("username", profile.getUsername());
-        String id = (profile.getUserId() != null) ? profile.getUserId().toString() : null;
-        data.put("id", id);
-        data.put("preferences", profile.getPreferences());
-        addResultItem(data, false);
+        addResultItem((new JSONUserFormatter(profile)).format(), false);
     }
 
 
