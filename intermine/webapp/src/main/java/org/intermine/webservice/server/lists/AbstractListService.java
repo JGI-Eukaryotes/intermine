@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.lists;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -30,6 +30,7 @@ public abstract class AbstractListService extends JSONService
     protected static final String LIST_NAME_KEY = "listName";
     protected static final String LIST_SIZE_KEY = "listSize";
     protected static final String LIST_ID_KEY = "listId";
+    protected static final String LIST_DESCRIPTION_KEY = "listDescription";
 
     /** @param im The InterMine state object **/
     public AbstractListService(InterMineAPI im) {

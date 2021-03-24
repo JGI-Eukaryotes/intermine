@@ -603,9 +603,12 @@ attribute when using this service.
                 of the ID resolution mechanism and then taking
                 all the good matches.
             </description>
-              <param required="true"
+            <param required="true"
                   type="String"
                   description="The name of the new list">name</param>
+            <param required="false"
+                   type="String"
+                   description="The description of the new list">description</param>
             <param required="true"
                 options="/model|model.classes"
                 default="{name}"
@@ -629,6 +632,22 @@ attribute when using this service.
             <format accept="application/json">json</format>
             <format accept="text/plain">text</format>
           </returns>
+        </method>
+        <method type="PUT" authenticationRequired="true">
+            <summary>Update the description of an existing list</summary>
+            <description>
+                This service allows users to updated the
+                description of lists belonging to them.
+            </description>
+            <param required="true"
+                   type="String"
+                   description="The name of the list">name</param>
+            <param required="true" type="String"
+            description="The new list's description">newDescription</param>
+            <returns>
+                <format accept="application/json">json</format>
+                <format accept="text/plain">text</format>
+            </returns>
         </method>
     </metadata>
   </servlet-mapping>
@@ -666,7 +685,49 @@ attribute when using this service.
   </metadata>
   </servlet-mapping>
 
-  <servlet>
+    <servlet>
+        <servlet-name>ws-lists-jaccard-index</servlet-name>
+        <servlet-class>org.intermine.webservice.server.lists.JaccardIndexServlet</servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ws-lists-jaccard-index</servlet-name>
+        <url-pattern>/service/lists/jaccard-index/*</url-pattern>
+        <metadata>
+            <name>Jaccard Index</name>
+            <minVersion>30</minVersion>
+            <method type="GET" authenticationRequired="false" ALSO="POST">
+                <summary>Measure similarity of lists using Jaccard Index</summary>
+                <description>
+                    This service compares the named list with all available lists. (public lists and
+                    private ones if the user is logged in). Its returns the name of each list
+                    compared plus a number representing the Jaccard Index. See https://en.wikipedia.org/wiki/Jaccard_index
+                </description>
+                <param required="false" type="String"
+                       options="/lists|lists{authorized}"
+                       default="{name}"
+                       description="The name of the list">list</param>
+                <param required="false" type="String" description="The list of InterMine IDs">ids</param>
+                <param required="false" type="Float" default="0.05" description="If the Jaccard Index is lower than this value, discard">min</param>
+                <param
+                        type="String"
+                        required="false"
+                        options="/model|model.classes"
+                        default="{name}"
+                        description="The type of InterMine objects (if providing IDs)">type</param>
+                <returns>
+                    <format accept="application/json">json</format>
+                </returns>
+            </method>
+        </metadata>
+    </servlet-mapping>
+
+
+    <servlet>
   <servlet-name>ws-template-upload</servlet-name>
   <servlet-class>org.intermine.webservice.server.template.TemplateUploadServlet</servlet-class>
   <init-param>
@@ -2503,6 +2564,10 @@ query could be used:
          <param-name>DELETE</param-name>
          <param-value>org.intermine.webservice.server.user.DeregistrationService</param-value>
      </init-param>
+       <init-param>
+           <param-name>POST</param-name>
+           <param-value>org.intermine.webservice.server.user.ChangePasswordService</param-value>
+       </init-param>
    </servlet>
 
    <servlet-mapping>
@@ -2520,7 +2585,7 @@ query could be used:
              <returns>
                 <format key="user" accept="application/json">json</format>
             </returns>
-        </method>
+         </method>
          <method type="DELETE" authenticationRequired="true">
              <summary>Delete the Current User</summary>
              <description format="markdown">
@@ -2539,6 +2604,21 @@ query could be used:
                  type="String">deregistrationToken</param>
              <returns>
                 <format accept="application/xml">xml</format>
+            </returns>
+         </method>
+         <method type="POST" authenticationRequired="true">
+             <summary>Modify the password of the current User</summary>
+             <description format="markdown">
+                 This service modify the password of the current user.
+             </description>
+             <param type="String"
+                    required="true"
+                    description="The current password associated with the account.">oldPassword</param>
+             <param type="String"
+                    required="true"
+                    description="The new password to associate with the account.">newPassword</param>
+             <returns>
+                <format accept="application/json">json</format>
             </returns>
         </method>
     </metadata>
@@ -2998,7 +3078,6 @@ The different token types are:
   </servlet-mapping>
 
   <!-- New in version 17 -->
-
     <servlet>
      <servlet-name>ws-jbrowse-config</servlet-name>
      <servlet-class>org.intermine.webservice.server.core.RestfulServlet</servlet-class>
@@ -3057,9 +3136,7 @@ The different token types are:
     </metadata>
   </servlet-mapping>
 
-
    <!-- New in version 18 -->
-
     <servlet>
      <servlet-name>ws-complexes-export</servlet-name>
      <servlet-class>org.intermine.webservice.server.core.RestfulServlet</servlet-class>
@@ -3122,6 +3199,258 @@ The different token types are:
         </method>
     </metadata>
   </servlet-mapping>
+  
+  <!-- New in version 28 -->
+
+  <servlet>
+      <servlet-name>ws-system-template</servlet-name>
+      <servlet-class>org.intermine.webservice.server.core.RestfulServlet</servlet-class>
+      <init-param>
+          <param-name>GET</param-name>
+          <param-value>org.intermine.webservice.server.template.SystemTemplatesService</param-value>
+      </init-param>
+  </servlet>
+
+ <servlet-mapping>
+        <servlet-name>ws-system-template</servlet-name>
+        <url-pattern>/service/templates/system</url-pattern>
+        <metadata>
+            <name>Templates (System)</name>
+            <method type="GET" authenticationRequired="false">
+                <summary>Get the list of system templates.</summary>
+                <description format="markdown">
+                    Get a listing of the templates configured in an InterMine instance tagged with
+                    the `im:converter` tag.
+                </description>
+                <returns>
+                    <format>xml</format>
+                    <format key="templates">json</format>
+                </returns>
+            </method>
+        </metadata>
+    </servlet-mapping>
+
+    <!-- new in version 29 -->
+
+    <servlet>
+        <servlet-name>ws-template-tags</servlet-name>
+        <servlet-class>org.intermine.webservice.server.core.RestfulServlet</servlet-class>
+        <init-param>
+            <param-name>GET</param-name>
+            <param-value>org.intermine.webservice.server.template.TemplateTagService</param-value>
+        </init-param>
+        <init-param>
+            <param-name>POST</param-name>
+            <param-value>org.intermine.webservice.server.template.TemplateTagAddingService</param-value>
+        </init-param>
+        <init-param>
+            <param-name>DELETE</param-name>
+            <param-value>org.intermine.webservice.server.template.TemplateTagRemovalService</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ws-template-tags</servlet-name>
+        <url-pattern>/service/template/tags/*</url-pattern>
+        <metadata>
+            <name>Template Tags</name>
+            <minVersion>7</minVersion>
+            <method authenticationRequired="false" type="GET" >
+                <summary>Get the tags for a template, or all the tags for a given user</summary>
+                <description>
+                    Fetch an up-to-date list of all tags associated with a template, or all templates.
+                </description>
+                <param type="String" required="false" description="The name of a template whose tags to retrieve. If no template is provided, then all the tags associated with the authenticating user will be returned.">name</param>
+                <returns>
+                    <format key="tags">json</format>
+                    <format>xml</format>
+                    <format>tab</format>
+                    <format>csv</format>
+                </returns>
+            </method>
+            <method authenticationRequired="true" type="POST">
+                <summary>Add one or more tags to a list</summary>
+                <param type="String" required="true" description="The name of a template to add the tag(s) to.">name</param>
+                <param type="String" required="true" description="The name of the tags to add. It should take to from of a semi-colon delimited concatenation of the tag names.">tags</param>
+                <returns>
+                    <format key="tags">json</format>
+                    <format>xml</format>
+                    <format>tab</format>
+                    <format>csv</format>
+                </returns>
+            </method>
+            <method authenticationRequired="true" type="DELETE">
+                <summary>Delete one or more tags from a list</summary>
+                <param type="String" required="true" description="The name of a template to add the tag(s) to.">name</param>
+                <param type="String" required="true" description="The name of the tags to remove. It should take to from of a semi-colon delimited concatenation of the tag names.">tags</param>
+                <returns>
+                    <format key="tags">json</format>
+                    <format>xml</format>
+                    <format>tab</format>
+                    <format>csv</format>
+                </returns>
+            </method>
+        </metadata>
+    </servlet-mapping>
+
+<!-- new in version 30-->
+  <servlet>
+      <servlet-name>ws-bioentity-markup</servlet-name>
+      <servlet-class>org.intermine.webservice.server.core.RestfulServlet</servlet-class>
+      <init-param>
+          <param-name>GET</param-name>
+          <param-value>org.intermine.webservice.server.fair.BioEntityMarkupService</param-value>
+      </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ws-bioentity-markup</servlet-name>
+    <url-pattern>/service/semantic-markup/reportpage</url-pattern>
+    <metadata>
+        <name>Semantic Markup</name>
+        <minVersion>30</minVersion>
+        <method type="GET" authenticationRequired="false">
+            <summary>Get semantic markup for bioentity</summary>
+            <description>
+                This service provides semantic markup for Gene, Protein, DataSet types and BioChemEntity (if configured in the web.properties file)
+            </description>
+             <param
+                required="true"
+                type="int"
+                description="The internal InterMine id">id</param>
+            <returns>
+                <format accept="application/json">json</format>
+            </returns>
+        </method>
+    </metadata>
+  </servlet-mapping>
+    
+  <servlet>
+      <servlet-name>ws-permanent-url</servlet-name>
+      <servlet-class>org.intermine.webservice.server.core.RestfulServlet</servlet-class>
+      <init-param>
+          <param-name>GET</param-name>
+          <param-value>org.intermine.webservice.server.fair.PermanentURLService</param-value>
+      </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ws-permanent-url</servlet-name>
+    <url-pattern>/service/permanent-url</url-pattern>
+    <metadata>
+        <name>Permanent URL</name>
+        <minVersion>30</minVersion>
+        <method type="GET" authenticationRequired="false">
+            <summary>Get permanent URL for data objetct</summary>
+            <description>
+                This service generates permanent URL based on the internal intermine ID
+            </description>
+            <param
+                required="true"
+                type="String"
+                description="The internal InterMine ID">id</param>
+            <returns>
+                <format accept="application/json">json</format>
+            </returns>
+        </method>
+    </metadata>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>ws-homepage-markup</servlet-name>
+      <servlet-class>org.intermine.webservice.server.core.RestfulServlet</servlet-class>
+      <init-param>
+          <param-name>GET</param-name>
+          <param-value>org.intermine.webservice.server.fair.HomePageMarkupService</param-value>
+      </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ws-homepage-markup</servlet-name>
+    <url-pattern>/service/semantic-markup/homepage</url-pattern>
+    <metadata>
+        <name>Semantic Markup</name>
+        <minVersion>30</minVersion>
+        <method type="GET" authenticationRequired="false">
+            <summary>Get semantic markup for the home page</summary>
+            <description>
+                This service provides semantic markup for the InterMine home page
+            </description>
+            <returns>
+                <format accept="application/json">json</format>
+            </returns>
+        </method>
+    </metadata>
+  </servlet-mapping>
+
+<!-- new in version 31 -->
+  <servlet>
+    <servlet-name>ws-login</servlet-name>
+    <servlet-class>org.intermine.webservice.server.user.LoginServlet</servlet-class>
+    <init-param>
+     <param-name>debug</param-name>
+     <param-value>true</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ws-login</servlet-name>
+    <url-pattern>/service/login/*</url-pattern>
+    <metadata>
+        <name>Login</name>
+        <minVersion>31</minVersion>
+        <method type="POST" authenticationRequired="true">
+            <summary>Login a user</summary>
+            <description>
+                This service checks user's credential and attach anonymously created lists to
+                the user's account. A new session token is generated, to be used for further
+                requests
+            </description>
+            <param
+                required="true"
+                type="String"
+                description="The username">user</param>
+            <param
+                description="The user's password"
+                required="true"
+                type="String">password</param>
+            <returns>
+                <format accept="application/json">json</format>
+            </returns>
+        </method>
+    </metadata>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ws-logout</servlet-name>
+    <servlet-class>org.intermine.webservice.server.user.LogoutServlet</servlet-class>
+    <init-param>
+     <param-name>debug</param-name>
+     <param-value>true</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ws-logout</servlet-name>
+    <url-pattern>/service/logout</url-pattern>
+    <metadata>
+        <name>Logout</name>
+        <minVersion>31</minVersion>
+        <method type="GET" authenticationRequired="true">
+            <summary>Login a user</summary>
+            <description>
+                This service invalidates the session token assigned the user logging out
+            </description>
+            <returns>
+                <format accept="application/json">json</format>
+            </returns>
+        </method>
+    </metadata>
+  </servlet-mapping>
 
   <!-- MUST BE LISTED LAST OF ALL WEBSERVICES AS IT IS THE MOST GENERAL -->
   <servlet-mapping>
@@ -3153,6 +3482,16 @@ The different token types are:
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+
+  <filter>
+      <filter-name>PermanentURLFilter</filter-name>
+      <filter-class>org.intermine.web.filters.PermanentURLFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+      <filter-name>PermanentURLFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
   <!-- Interpret POST parameters as UTF-8 by default -->
   <filter>

@@ -1,7 +1,7 @@
 package org.intermine.api.query;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -923,6 +923,9 @@ public final class MainHelper
         } else if (ConstraintOp.CONTAINS.equals(op)) {
             return new SimpleConstraint(qe, ConstraintOp.MATCHES,
                     new QueryValue("%" + value + "%"));
+        } else if (ConstraintOp.DOES_NOT_CONTAIN.equals(op)) {
+            return new SimpleConstraint(qe, ConstraintOp.DOES_NOT_MATCH,
+                    new QueryValue("%" + value + "%"));
         } else {
             return new SimpleConstraint(qe, op, new QueryValue(value));
         }
@@ -1365,7 +1368,7 @@ public final class MainHelper
                 || (summaryType == Long.class) || (summaryType == Integer.class)
                 || (summaryType == Short.class) || (summaryType == Byte.class)
                 || (summaryType == Float.class) || (summaryType == Double.class)
-                || (summaryType == BigDecimal.class)) {
+                || (summaryType == BigDecimal.class) || (summaryType == Date.class)) {
             q.addToSelect(qf);
             q.addToGroupBy(qf);
             QueryNode count = new QueryFunction();
@@ -1374,7 +1377,6 @@ public final class MainHelper
             pathToQueryNode.put("Occurrences", count);
             q.addToOrderBy(new OrderDescending(count));
         } else {
-            // Probably Date
             throw new IllegalArgumentException("Cannot summarise this column");
         }
         return q;

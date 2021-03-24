@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -40,7 +40,7 @@ public class PantherConverter extends BioFileConverter
 {
     private Properties props = new Properties();
     private static final String PROP_FILE = "panther_config.properties";
-    private static final String DATASET_TITLE = "Orthologue and paralogue predictions";
+    private static final String DATASET_TITLE = "Panther orthologue and paralogue predictions";
     private static final String DATA_SOURCE_NAME = "Panther";
     private static final Logger LOG = Logger.getLogger(PantherConverter.class);
     private Set<String> taxonIds = new HashSet<String>();
@@ -66,7 +66,8 @@ public class PantherConverter extends BioFileConverter
      */
     public PantherConverter(ItemWriter writer, Model model)
         throws ObjectStoreException {
-        super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
+        super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE,
+                "http://www.gnu.org/licenses/gpl.txt");
         readConfig();
         or = OrganismRepository.getOrganismRepository();
     }
@@ -137,6 +138,17 @@ public class PantherConverter extends BioFileConverter
         }
         String resolvedGenePid = parseIdentifier(geneId);
 
+        if (resolvedGenePid == null) {
+            // parsed the gene string but was protein see #1995
+            return null;
+        }
+
+        // A. thaliana bug fix for Gene IDs.
+        // Example: At5g04395 is stored as two different genes: At5g04395 and AT5G04395.
+        if ("3702".equals(taxonId)) {
+            resolvedGenePid = resolvedGenePid.toUpperCase();
+        }
+
         // only resolve if fish - TODO put in config file
         if ("7955".equals(taxonId) || "9606".equals(taxonId) || "10116".equals(taxonId)) {
             resolvedGenePid = resolveGene(taxonId, resolvedGenePid);
@@ -169,6 +181,10 @@ public class PantherConverter extends BioFileConverter
     private String parseIdentifier(String ident) {
         String[] identifierString = ident.split("=");
         String dbName = identifierString[0];
+        // see https://github.com/intermine/intermine/issues/1995
+        if ("Gene".equalsIgnoreCase(dbName)) {
+            return null;
+        }
         String identifier = identifierString[identifierString.length - 1];
         if (databasesNamesToPrepend.contains(dbName)) {
             identifier = dbName + ":" + identifier;

@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -295,8 +295,14 @@ Example
                                 text.substring(0, spaceIndex));
                         organism.setAttribute("species",
                                 text.substring(spaceIndex + 1));
-                        organism.setAttribute("shortName", text.charAt(0)
-                                + ". " + text.substring(spaceIndex + 1));
+                        // Organism name could have [] in it , as a result the shortname
+                        // will start with [. toFix : check if it does not start with [
+                        String shortName = text.charAt(0)
+                                + ". " + text.substring(spaceIndex + 1);
+                        if (text.startsWith("[") ) {
+                            shortName = text.charAt(1) + ". " + text.substring(spaceIndex + 1);
+                        }
+                        organism.setAttribute("shortName", shortName);
                     }
                 }
             } else if ("CommonName".equals(name)) {

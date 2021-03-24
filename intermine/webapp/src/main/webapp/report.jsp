@@ -126,10 +126,12 @@
     <%-- summary long fields --%>
     <table>
       <c:forEach var="field" items="${object.objectSummaryFields}">
+        <c:set var="fieldDisplayText"
+          value="${imf:formatFieldChain(field.pathString, INTERMINE_API, WEBCONFIG)}"/>
         <c:if test="${field.doNotTruncate}">
           <tr>
             <c:if test="${!empty field.value}">
-              <td class="label">${field.name}&nbsp;<im:typehelp type="${field.pathString}"/></td>
+              <td class="label">${fieldDisplayText}&nbsp;<im:typehelp type="${field.pathString}"/></td>
               <td><strong><c:out escapeXml="${field.escapeXml}" value="${field.value}" /></strong></td>
             </c:if>
           </tr>
@@ -154,6 +156,7 @@
 
     <%-- permalink --%>
     <%-- <p class="share">Share this page: <a href="${stableLink}">${stableLink}</a></p> --%>
+    <c:if test="${stableLink != null}">
     <div id="share">
       <a></a>
       <div class="popup">
@@ -175,8 +178,8 @@
         });
         //]]>
       </script>
-  </div>
-
+    </div>
+    </c:if>
   </div>
 </div>
 

@@ -1,7 +1,7 @@
 package org.intermine.web.logic;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -214,13 +214,17 @@ public final class Constants
      * 25 - Add id to whoami
      * 26 - Add listId to all web services. #1669
      * 27 - Renamed xml parameter to query #1676
+     * 28 - Added system templates #1726
+     * 29 - Add template tagging
+     * 30 - Jaccard Index,  Add semantic markup endpoints & permanent URL
+     * 31 - Login/Logout/Change password, simplified markup endpoints
      */
-    public static final int WEB_SERVICE_VERSION = 27;
+    public static final int WEB_SERVICE_VERSION = 31;
 
     /**
      * Current version of the InterMine code
      */
-    public static final String INTERMINE_VERSION = "3.1.0";
+    public static final String INTERMINE_VERSION = "4.3.0";
 
     /**
      * Key for a Map from class name to Boolean.TRUE for all classes in the model that do not have
@@ -267,4 +271,7 @@ public final class Constants
 
     /** The key under which OAuth2 providers are stored **/
     public static final String OAUTH2_PROVIDERS = "OAUTH2_PROVIDERS";
+
+    /** The key under which basic instance info (from the registry) are stored **/
+    public static final String INSTANCE_INFO = "INSTANCE_INFO";
 }

@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -46,7 +46,6 @@ import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.Stoichiometry;
 import psidev.psi.mi.jami.model.Xref;
 import uk.ac.ebi.chebi.webapps.chebiWS.client.ChebiWebServiceClient;
-import uk.ac.ebi.chebi.webapps.chebiWS.model.ChebiWebServiceFault_Exception;
 import uk.ac.ebi.chebi.webapps.chebiWS.model.Entity;
 
 
@@ -323,8 +322,8 @@ public class PsiComplexesConverter extends BioFileConverter
         boolean createSynonym = false;
         // Chop off the PRO ontology, we aren't using it yet
         // P00424-PRO0000006097, P00425-PRO0000006098, P00427-PRO_0000006108
-        if (originalAccession.contains("-")) {
-            accession = originalAccession.substring(0, originalAccession.indexOf("-"));
+        if (originalAccession.contains("-PRO")) {
+            accession = originalAccession.substring(0, originalAccession.indexOf("-PRO"));
             createSynonym = true;
         } else {
             accession = originalAccession;
@@ -378,7 +377,7 @@ public class PsiComplexesConverter extends BioFileConverter
             ChebiWebServiceClient client = new ChebiWebServiceClient();
             Entity entity = client.getCompleteEntity(identifier);
             return entity.getChebiAsciiName();
-        } catch (ChebiWebServiceFault_Exception e) {
+        } catch (Exception e) {
             LOG.warn(e.getMessage());
         }
         return null;
@@ -418,8 +417,10 @@ public class PsiComplexesConverter extends BioFileConverter
     private void processType(Complex interactionEvidence,
             DetailHolder detail) throws ObjectStoreException {
         CvTerm cvterm = interactionEvidence.getInteractionType();
-        String termName = cvterm.getFullName();
-        detail.setRelationshipType(termName);
+        if (cvterm != null) {
+            String termName = cvterm.getFullName();
+            detail.setRelationshipType(termName);
+        }
     }
 
     private void processAnnotations(ModelledParticipant modelledParticipant, Item interactor) {

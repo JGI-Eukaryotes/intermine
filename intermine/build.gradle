@@ -14,7 +14,7 @@ buildscript {
 
 subprojects {
     group = 'org.intermine'
-    version '3.1.0'
+    version '4.3.0'
 
     apply plugin: 'net.researchgate.release'
     apply plugin: "java"
@@ -39,10 +39,18 @@ subprojects {
         }
     }
 
+    configurations {
+        all{
+            resolutionStrategy {
+                force 'org.apache.logging.log4j:log4j-1.2-api:2.8.2'
+            }
+        }
+    }
+
     if (it.name != 'intermine-resources') {
         dependencies {
             compile group: 'ant', name: 'ant', version: '1.6.5'
-            compile group: 'org.apache.logging.log4j', name: 'log4j-1.2-api', version: '2.10.0'
+            compile group: 'org.apache.logging.log4j', name: 'log4j-1.2-api', version: '2.8.2'
             compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
             testCompile group: 'junit', name: 'junit', version: '4.8.2'
         }
@@ -61,15 +69,15 @@ subprojects {
 
     checkstyle {
         toolVersion '7.8.1'
-        configFile file("../../config/checkstyle/checkstyle.xml")
+        configFile file("${rootDir}/../config/checkstyle/checkstyle.xml")
         sourceSets = [sourceSets.main]
         showViolations = true
         ignoreFailures = false
         maxWarnings = 0
         //reportsDir = file("$project.rootDir/reports/checkstyle/$project.name")
         configProperties = [
-                'checkstyle.header.file': "../config/checkstyle/copyright_header.txt",
-                'suppressionFile': "../config/checkstyle/suppressions.xml"
+                'checkstyle.header.file': "${rootDir}/../config/checkstyle/copyright_header.txt",
+                'suppressionFile': "${rootDir}/../config/checkstyle/suppressions.xml"
         ]
     }
 
@@ -163,9 +171,9 @@ subprojects {
             vcsUrl = 'https://github.com/intermine/intermine.git'
             publicDownloadNumbers = true
             version {
-                name = '3.1.0'
-                desc = 'InterMine 3.1.0'
-                vcsTag = 'intermine-3.1.0'
+                name = '4.3.0'
+                desc = 'InterMine 4.3.0'
+                vcsTag = 'intermine-4.3.0'
             }
         }
         configurations = ['archives']

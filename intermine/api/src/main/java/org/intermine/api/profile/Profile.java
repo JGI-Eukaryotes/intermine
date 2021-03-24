@@ -1,7 +1,7 @@
 package org.intermine.api.profile;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -745,6 +745,24 @@ public class Profile
             savedInvalidBags.remove(name);
             saveBag(recovered.getName(), recovered);
         }
+    }
+
+    /**
+     * Update the description of bag.
+     * If there is no such bag associated with the account, no action is performed.
+     * @param name the bag name
+     * @param newDescription the description to set
+     * @throws BagDoesNotExistException if the bag doesn't exist
+     * @throws ObjectStoreException if problems updating bag
+     */
+    public void updateBagDescription(String name, String newDescription)
+            throws BagDoesNotExistException, ObjectStoreException {
+        if (!savedBags.containsKey(name)) {
+            throw new BagDoesNotExistException(name + " not found");
+        }
+
+        InterMineBag bagToUpdate = savedBags.get(name);
+        bagToUpdate.setDescription(newDescription);
     }
 
 

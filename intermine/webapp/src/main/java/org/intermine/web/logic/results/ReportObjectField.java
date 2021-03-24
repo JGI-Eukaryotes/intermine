@@ -1,7 +1,7 @@
 package org.intermine.web.logic.results;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -11,6 +11,9 @@ package org.intermine.web.logic.results;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.intermine.pathquery.ConstraintValueParser;
+
+import java.util.Date;
 
 /**
  * Object field, used in header the summary of ReportObject
@@ -64,7 +67,13 @@ public class ReportObjectField
             boolean doNotTruncate,
             boolean escapeXml) {
         this.fieldName = fieldName;
-        this.fieldValue = fieldValue;
+        if (fieldValue instanceof String) {
+            this.fieldValue = (fieldValue != null && fieldValue.equals("null")) ? "" : fieldValue;
+        } else if (fieldValue instanceof Date) {
+            this.fieldValue = ConstraintValueParser.ISO_DATE_FORMAT.format(fieldValue);
+        } else {
+            this.fieldValue = fieldValue;
+        }
         this.fieldDisplayerPage = fieldDisplayerPage;
         this.fieldDoNotTruncate = doNotTruncate;
         this.fieldEscapeXml = escapeXml;

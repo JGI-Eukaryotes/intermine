@@ -1,7 +1,7 @@
 package org.intermine.webservice.server.lists;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -28,6 +28,8 @@ public class AvailableListsServlet extends WebServiceServlet
                 return new ListUploadService(api);
             case DELETE:
                 return new ListDeletionService(api);
+            case PUT:
+                return new ListUpdateService(api);
             default:
                 throw new NoServiceException();
         }

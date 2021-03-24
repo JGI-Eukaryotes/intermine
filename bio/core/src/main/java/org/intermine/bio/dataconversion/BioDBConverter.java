@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -72,6 +72,32 @@ public abstract class BioDBConverter extends DBConverter
      * @param database the database to read from
      * @param tgtModel the Model used by the object store we will write to with the ItemWriter
      * @param writer an ItemWriter used to handle the resultant Items
+     * @param dataSourceName the DataSource name
+     * @param dataSetTitle the DataSet title
+     * @param licence the URI to the licence to these data
+     */
+    public BioDBConverter(Database database, Model tgtModel, ItemWriter writer,
+                          String dataSourceName, String dataSetTitle, String licence) {
+        super(database, tgtModel, writer);
+        Item dataSource = null;
+        Item dataSet = null;
+        sequenceOntologyRefId = BioConverterUtil.getOntology(this);
+        if (StringUtils.isNotEmpty(dataSourceName) && StringUtils.isNotEmpty(dataSetTitle)) {
+            dataSource = getDataSourceItem(dataSourceName);
+            dataSet = getDataSetItem(dataSetTitle, dataSource);
+            setStoreHook(new BioStoreHook(tgtModel, dataSet.getIdentifier(),
+                    dataSource.getIdentifier(), sequenceOntologyRefId));
+        } else {
+            setStoreHook(new BioStoreHook(tgtModel, null, null, sequenceOntologyRefId));
+        }
+    }
+
+    /**
+     * Create a new BioDBConverter object.  The constructor will automatically create a
+     * DataConverterStoreHook for this converter that sets DataSet references and collections.
+     * @param database the database to read from
+     * @param tgtModel the Model used by the object store we will write to with the ItemWriter
+     * @param writer an ItemWriter used to handle the resultant Items
      */
     public BioDBConverter(Database database, Model tgtModel, ItemWriter writer) {
         super(database, tgtModel, writer);
@@ -96,12 +122,25 @@ public abstract class BioDBConverter extends DBConverter
     }
 
     /**
-     * Return the DataSet Item created from the dataSetTitle.
+     * Return the DataSet Item created from the dataSetTitle. Used by chado.
+     *
      * @param taxonId the taxon id of the to use when creating the DataSet
      * @return the DataSet Item
      */
     public Item getDataSetItem(String taxonId) {
-        return getDataSetItem(getDataSetTitle(taxonId), getDataSourceItem());
+        return getDataSetItem(getDataSetTitle(taxonId), getDataSourceItem(), getLicence());
+    }
+
+
+    /**
+     * Return the DataSet Item created from the dataSetTitle.
+     *
+     * @param taxonId the taxon id of the to use when creating the DataSet
+     * @param licence URL to the licence for these data
+     * @return the DataSet Item
+     */
+    public Item getDataSetItem(String taxonId, String licence) {
+        return getDataSetItem(getDataSetTitle(taxonId), getDataSourceItem(), licence);
     }
 
     /**
@@ -113,19 +152,17 @@ public abstract class BioDBConverter extends DBConverter
     }
 
     /**
-     * Make a Location Relation between a LocatedSequenceFeature and a Chromosome.
+     * Make a Location Item locating a SequenceFeature on a Chromosome.
      * @param chromosomeId Chromosome Item identifier
      * @param locatedSequenceFeatureId the Item identifier of the feature
      * @param start the start position
      * @param end the end position
      * @param strand the strand
-     * @param taxonId the taxon id to use when finding the Chromosome for the Location
      * @return the new Location object
      */
     protected Item makeLocation(String chromosomeId, String locatedSequenceFeatureId,
-                                int start, int end, int strand, String taxonId) {
+                                int start, int end, int strand) {
         Item location = createItem("Location");
-
         if (start < end) {
             location.setAttribute("start", String.valueOf(start));
             location.setAttribute("end", String.valueOf(end));
@@ -175,21 +212,38 @@ public abstract class BioDBConverter extends DBConverter
     }
 
     /**
+     * Return the DataSet title for a given taxon id.
+     * @param taxonId the taxon id
+     * @return the title
+     */
+    public abstract String getDataSetTitle(String taxonId);
+
+    /**
+     * Return the licence for these data
+     * @return the licence, a URL for the licence for these data
+     */
+    public abstract String getLicence();
+
+    /**
      * Return a DataSource item for the given name
      * @param title the DataSet title
      * @param dataSourceItem the DataSource referenced by the the DataSet
      * @return the DataSet Item
      */
     public Item getDataSetItem(String title, Item dataSourceItem) {
-        return getDataSetItem(title, null, null, dataSourceItem);
+        return getDataSetItem(title, null, null, dataSourceItem, null);
     }
 
     /**
-     * Return the DataSet title for a given taxon id.
-     * @param taxonId the taxon id
-     * @return the title
+     * Return a DataSource item for the given name
+     * @param title the DataSet title
+     * @param dataSourceItem the DataSource referenced by the the DataSet
+     * @param licence URI to the licence for these data
+     * @return the DataSet Item
      */
-    public abstract String getDataSetTitle(String taxonId);
+    public Item getDataSetItem(String title, Item dataSourceItem, String licence) {
+        return getDataSetItem(title, null, null, dataSourceItem, licence);
+    }
 
     /**
      * Return a DataSource item with the given details.
@@ -200,6 +254,20 @@ public abstract class BioDBConverter extends DBConverter
      * @return the DataSet Item
      */
     public Item getDataSetItem(String title, String url, String description, Item dataSourceItem) {
+        return getDataSetItem(title, url, description, dataSourceItem, null);
+    }
+
+    /**
+     * Return a DataSource item with the given details.
+     * @param title the DataSet title
+     * @param url the new url field, or null if the url shouldn't be set
+     * @param description the new description field, or null if the field shouldn't be set
+     * @param dataSourceItem the DataSource referenced by the the DataSet
+     * @param licence URL to the licence for these data
+     * @return the DataSet Item
+     */
+    public Item getDataSetItem(String title, String url, String description, Item dataSourceItem,
+                               String licence) {
         Item dataSet = dataSets.get(title);
         if (dataSet == null) {
             dataSet = createItem("DataSet");
@@ -207,6 +275,9 @@ public abstract class BioDBConverter extends DBConverter
             dataSet.setReference("dataSource", dataSourceItem);
             if (url != null) {
                 dataSet.setAttribute("url", url);
+            }
+            if (licence != null) {
+                dataSet.setAttribute("licence", licence);
             }
             if (description != null) {
                 dataSet.setAttribute("description", description);

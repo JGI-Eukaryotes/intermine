@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2018 FlyMine
+ * Copyright (C) 2002-2020 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -158,7 +158,8 @@ public class GFF3RecordHandler
     }
 
     /**
-     * Remove the feature item that was set with setFeature() and associated synonyms
+     * Remove the feature item that was set with setFeature() and associated synonyms,
+     * as well as the associated Location.
      */
     protected void removeFeature() {
         items.remove("_feature");
@@ -166,6 +167,7 @@ public class GFF3RecordHandler
             items.remove(synonym.getIdentifier());
         }
         synonyms.clear();
+        clearLocation();
     }
 
     /**
